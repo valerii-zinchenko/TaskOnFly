@@ -1,0 +1,25 @@
+{
+    "name": "TaskMe",
+    "version": "0.0.1",
+    "description": "",
+    "main": "index.js",
+    "directories": {
+        "test": "test"
+    },
+    "dependencies": {
+        "mocha":"",
+        "chai":"",
+        "sinon":"",
+        "underscore":"",
+        "backbone":"",
+        "node-localstorage":"",
+        "dom-lite":"",
+        "requirejs":"",
+        "amdrequire":""
+    },
+    "scripts": {
+        "test": "node test/test"
+    },
+    "author": "Valerii Zinchenko",
+    "license": "CDDL-1.0"
+}
