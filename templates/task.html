@@ -1,0 +1,28 @@
+<div data-role="header">
+    <h1>Task</h1>
+</div>
+<div data-role="content">
+    <form>
+        <input type="checkbox" id="done" <% if (done) { %>checked<% } %>/>
+        <div data-role="fieldcontain">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" value="<%= title %>"/>
+        </div>
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-type="horizontal">
+                <legend>Priority:</legend>
+                <label for="low">Low</label>
+                <input type="radio" id="low" name="low" value="0">
+                <label for="normal">Normal</label>
+                <input type="radio" id="normal" name="normal" value="1">
+                <label for="high">High</label>
+                <input type="radio" id="high" name="high" value="2">
+            </fieldset>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description"><%= description %></textarea>
+        </div>
+    </form>
+</div>
+<div data-role="footer"></div>
