@@ -22,3 +22,7 @@ SOURCES += main.cpp
 # Please do not modify the following two lines. Required for deployment.
 include(html5applicationviewer/html5applicationviewer.pri)
 qtcAddDeployment()
+
+OTHER_FILES += \
+    package.json \
+    LICENSE.txt

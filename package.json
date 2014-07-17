@@ -21,5 +21,5 @@
         "test": "node test/test"
     },
     "author": "Valerii Zinchenko",
-    "license": "CDDL-1.0"
+    "license": "MIT"
 }
