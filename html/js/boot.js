@@ -23,16 +23,19 @@ requirejs.config({
             exports: '_'
         },
         'backbone': {
-            deps: ['mainLibs'],
+            deps: ['underscore', 'jquery'],
             exports: 'Backbone'
-        },
-        'mainLibs': {
-            deps: ['jquery.mobile', 'underscore']
         }
-    }
+    },
+    deps: ['jquery.mobile', 'underscore']
 });
 
 requirejs(['js/routers/MainRouter'], function(MainRouter) {
-    new MainRouter();
-    location.hash = 'home';
+    var rooter = new MainRouter();
+
+    if (location.hash === '') {
+        location.hash = '#home';
+    } else {
+        rooter[location.hash.slice(1)]();
+    }
 });

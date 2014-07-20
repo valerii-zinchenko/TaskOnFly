@@ -1,6 +1,5 @@
 define([
-    'text!templates/home.html',
-    'mainLibs'
+    'text!templates/home.html'
 ], function(template) {
     function HomeView() {
         var instance;
@@ -24,7 +23,7 @@ define([
                 return this;
             },
             addTask: function() {
-
+                location.hash = 'task';
             }
         });
 

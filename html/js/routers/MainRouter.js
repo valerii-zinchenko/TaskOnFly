@@ -21,7 +21,7 @@ define([
             _openView('HomeView');
         },
         addTask: function() {
-            _openView('AddTask');
+            _openView('TaskView');
         }
     });
 

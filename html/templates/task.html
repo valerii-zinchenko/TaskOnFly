@@ -1,27 +1,33 @@
 <div data-role="header">
+    <a href="" data-role="back" data-icon="carat-l">Back</a>
     <h1>Task</h1>
 </div>
 <div data-role="content">
     <form>
-        <input type="checkbox" id="done" <% if (done) { %>checked<% } %>/>
+        <div data-role="fieldcontain">
+            <input type="checkbox" id="done" />
+        </div>
         <div data-role="fieldcontain">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" value="<%= title %>"/>
         </div>
         <div data-role="fieldcontain">
-            <fieldset data-role="controlgroup" data-type="horizontal">
-                <legend>Priority:</legend>
+            <fieldset id="priority" data-role="controlgroup" data-type="horizontal">
                 <label for="low">Low</label>
-                <input type="radio" id="low" name="low" value="0">
+                <input type="radio" id="low" name="priority" value="0">
                 <label for="normal">Normal</label>
-                <input type="radio" id="normal" name="normal" value="1">
+                <input type="radio" id="normal" name="priority" value="1" checked>
                 <label for="high">High</label>
-                <input type="radio" id="high" name="high" value="2">
+                <input type="radio" id="high" name="priority" value="2">
             </fieldset>
         </div>
         <div data-role="fieldcontain">
             <label for="description">Description:</label>
             <textarea id="description" name="description"><%= description %></textarea>
+        </div>
+        <div data-role="fieldcontain">
+            <a href="#list" id="save" data-role="button">Save</a>
+            <a href="#list" id="cancel" data-role="button">Cancel</a>
         </div>
     </form>
 </div>

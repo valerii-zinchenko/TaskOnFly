@@ -6,10 +6,11 @@ define([
 ],function () {
     var Task = Backbone.Model.extend({
         defaults: {
-            title: '',
             isDone: false,
+            title: '',
             priority: 1,
-            description: ''
+            description: '',
+            timestamp: null
         }
     });
 
