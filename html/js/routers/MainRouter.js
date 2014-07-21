@@ -4,9 +4,14 @@
 define([
     'backbone'
 ],function () {
-    function _openView (viewName) {
+    function _openView (viewName, fn) {
         requirejs(['js/views/' + viewName], function(View) {
-            new View();
+            var view = new View();
+            view.render();
+
+            if (fn) {
+                fn();
+            }
         });
     }
 
