@@ -15,10 +15,10 @@
         "node-localstorage":"",
         "dom-lite":"",
         "requirejs":"",
-        "amdrequire":""
+        "jquery":""
     },
     "scripts": {
-        "test": "node test/test"
+        "test": "node test/js/test"
     },
     "author": "Valerii Zinchenko",
     "license": "MIT"

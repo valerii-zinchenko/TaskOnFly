@@ -4,21 +4,24 @@
 define([
     'js/models/Task'
 ],function (Task) {
-    function Tasks() {
+    var Tasks;
+
+    (function() {
         var instance;
 
         Tasks = function() {
-            return instance;
+            if (instance) {
+                return instance;
+            }
+
+            _.extend(this, new (Backbone.Collection.extend({
+                model: Task
+            }))() );
+
+            instance = this;
+            return this;
         };
-        Tasks.prototype = this;
-
-        instance = new Tasks();
-        _.extend(instance, new (Backbone.Collection.extend({
-            model: Task
-        }))() );
-
-        return instance;
-    }
+    })();
 
     return Tasks;
 });

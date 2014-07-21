@@ -5,27 +5,24 @@
 assert = require('chai').assert;
 dom = require('dom-lite');
 Mocha = require('mocha');
+_ = require('underscore');
+Backbone = require('backbone');
+jquery = require('jquery');
+$ = jquery;
 
 requirejs = require('requirejs');
 define = requirejs.define;
 
 requirejs.config({
-    baseUrl: 'js',
+    baseUrl: 'html',
     paths: {
-        jquery: 'libs/jQuery',
-        underscore: 'libs/underscore',
-        backbone: 'libs/backbone'
+//        'jquery.mobile':    'js/lib/jquery.mobile-1.4.3',
+        'text':             'js/lib/text-2.0.12',
+        'i18n':             'js/lib/i18n-2.0.4'
     },
     shim: {
-        jquery: {
-            exports: '$'
-        },
-        underscore: {
-            exports: '_'
-        },
-        backbone: {
-            deps: ['underscore'],
-            exports: 'Backbone'
+        'jquery.mobile': {
+            deps: ['jquery']
         }
     },
 
@@ -34,7 +31,8 @@ requirejs.config({
 
 testRunner = new Mocha({ui: 'tdd'/*, reporter: 'html-cov'*/});
 [
-    ''
+    'test/js/models/testTask',
+    'test/js/collections/testTasks'
 ].forEach(function(file) {
         testRunner.addFile(file);
     });
