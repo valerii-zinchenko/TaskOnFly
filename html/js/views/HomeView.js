@@ -23,13 +23,11 @@ define([
                     this.$el.trigger('create');
 
                     return this;
-                },
-                addTask: function() {
-                    location.hash = 'task';
                 }
             });
 
             this.initialize();
+
             instance = this;
             return this;
         };

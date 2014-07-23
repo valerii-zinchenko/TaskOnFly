@@ -3,9 +3,8 @@
  */
 define([
     'text!templates/task.html',
-    'js/collections/Tasks',
     'js/models/Task'
-],function (template, Tasks, Task) {
+],function (template, Task) {
     var TaskView;
 
     (function() {
@@ -17,15 +16,24 @@ define([
             }
 
             _.extend(this, {
-                initialize: function() {
-                    this.model = new Task();
+                initialize: function() {},
+
+                setList: function(list) {
+                    //todo: Check if list is instance of TaskList
+                    this.list = list;
+                },
+                setTask: function(task) {
+                    //todo: Check if task is instance of Task
+                    this.task = task;
                 },
                 render: function() {
+                    this.checkIntegrity();
+
                     if (!this.$el || this.$el.length === 0) {
-                        this.$el = $('#addTask');
+                        this.$el = $('#task');
                     }
 
-                    this.$el.html(_.template(template, this.model.attributes));
+                    this.$el.html(_.template(template, this.task.attributes));
                     this.$el.trigger('create');
 
                     if (!this.$task || this.$task.length === 0) {
@@ -49,9 +57,18 @@ define([
                 },
 
                 // controls
+                checkIntegrity: function() {
+                    if (!this.list) {
+                        throw new Error('List is not defined');
+                    }
+                    if (!this.task) {
+                        this.task = new Task();
+                    }
+                },
                 save: function(taskData) {
-                    this.model.set(taskData);
-                    new Tasks().add(this.model);
+                    this.task.set(taskData);
+                    this.task._listRef = this.list;
+                    this.list.add(this.task);
                 }
             });
 

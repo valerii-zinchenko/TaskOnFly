@@ -27,15 +27,5 @@ requirejs.config({
             exports: 'Backbone'
         }
     },
-    deps: ['jquery.mobile', 'underscore']
-});
-
-requirejs(['js/routers/MainRouter'], function(MainRouter) {
-    var rooter = new MainRouter();
-
-    if (location.hash === '') {
-        location.hash = '#home';
-    } else {
-        rooter[location.hash.slice(1)]();
-    }
+    deps: ['jquery.mobile', 'backbone', 'js/main']
 });

@@ -11,6 +11,6 @@ suite('Test Tasks collection', function() {
     });
 
     test('Is singleton?', function() {
-        assert(new Module() === new Module());
+        assert(new Module() !== new Module());
     });
 });

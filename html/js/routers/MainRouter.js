@@ -1,17 +1,16 @@
 /**
  * Created by valera on 7/18/14.
  */
-define([
-    'backbone'
-],function () {
+define(function () {
     function _openView (viewName, fn) {
         requirejs(['js/views/' + viewName], function(View) {
             var view = new View();
-            view.render();
 
             if (fn) {
-                fn();
+                fn.call(view);
             }
+
+            view.render();
         });
     }
 
@@ -19,14 +18,46 @@ define([
         routes: {
             '': 'home',
             'home': 'home',
-            'addTask': 'addTask'
+            'task': 'task',
+            'task/:listInd': 'task',
+            'task/:listInd/:taskInd': 'task',
+            'list/new/*path': 'list',
+            'list/view/*path': 'list'
         },
 
         home: function() {
             _openView('HomeView');
         },
-        addTask: function() {
-            _openView('TaskView');
+        task: function(listInd, taskInd) {
+            _openView('TaskView', function() {
+                var list = MAIN.TASK_LIST,
+                    task;
+
+                if (listInd) {
+                    list = MAIN.TASK_LIST[listInd];
+                }
+                if (taskInd) {
+                    task = list.models[taskInd];
+                }
+
+                this.setList(list);
+                this.setTask(task);
+            });
+        },
+        list: function(action, path) {
+            _openView('TaskView', function() {
+                var list = MAIN.TASK_LIST;
+                if (path) {
+                    path = path.split('/');
+                    for (var i = 0, N = path.length; i < N; i++) {
+                        list = list[path[i]];
+                    }
+                }
+
+                if (action === 'new') {
+                    list.createSubList();
+                }
+            })
         }
     });
 

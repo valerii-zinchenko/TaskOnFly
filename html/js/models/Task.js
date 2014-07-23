@@ -1,9 +1,7 @@
 /**
  * Created by valera on 7/17/14.
  */
-define([
-    'backbone'
-],function () {
+define(function () {
     var Task = Backbone.Model.extend({
         defaults: {
             isDone: false,
@@ -11,7 +9,8 @@ define([
             priority: 1,
             description: '',
             timestamp: null
-        }
+        },
+        _listRef: null
     });
 
     return Task;
