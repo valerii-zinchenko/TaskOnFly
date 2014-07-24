@@ -26,6 +26,9 @@ requirejs.config({
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
         }
-    },
-    deps: ['jquery.mobile', 'backbone', 'js/main']
+    }
+});
+
+requirejs(['jquery.mobile', 'backbone'], function() {
+    requirejs(['js/main']);
 });
