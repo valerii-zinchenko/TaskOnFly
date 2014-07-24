@@ -10,13 +10,87 @@ suite('Test Task model', function() {
         })
     });
 
-    test('Default values', function() {
-        var model = new Module();
+    test('Constructor without arguments', function() {
+        var err = 0;
+        try {
+            new Module();
+        } catch(e) {
+            if (e.constructor === Error) {
+                err++;
+            }
+            if (e.message === 'Path is not defined') {
+                err++;
+            }
+        }
+        assert(2 === err);
+    });
+    test('Constructor with path', function() {
+        assert('L0/T0' === (new Module('L0')).get('path'));
+    });
 
-        assert(false === model.get('isDone'),   '"idDone" is not false by default');
-        assert('' === model.get('title'),       '"title" is not empty by default');
-        assert(1 === model.get('priority'),     '"priority" is not 1 by default');
-        assert('' === model.get('description'), '"description" is not empty by default');
-        assert(null === model.get('timestamp'), '"timestamp" is not null by default');
+    test('Constructor with unaccepted data', function() {
+        var err = 0;
+        try {
+            new Module('', 0);
+        } catch(e) {
+            if (e.constructor === Error) {
+                err++;
+            }
+            if (e.message === 'Data should be an object') {
+                err++;
+            }
+        }
+        assert(2 === err);
+    });
+    test('Constructor with accepted data', function() {
+        var path = 'L0/L2',
+            isDone = true,
+            title = 'test task',
+            priority = 3,
+            description = 'task description',
+            timestamp = new Date();
+
+        var task = new Module(path, {
+            isDone: isDone,
+            title: title,
+            priority: priority,
+            description: description,
+            timestamp: timestamp
+        });
+
+        assert((path + '/T0') === task.get('path'));
+        assert(isDone === task.get('isDone'));
+        assert(title === task.get('title'));
+        assert(priority === task.get('priority'));
+        assert(description === task.get('description'));
+        assert(timestamp === task.get('timestamp'));
+    });
+
+    test('Save data function', function() {
+        var path = 'L0/L2',
+            isDone = true,
+            title = 'test task',
+            priority = 3,
+            description = 'task description',
+            timestamp = new Date();
+
+        var task = new Module(path);
+        task.saveData({
+            isDone: isDone,
+            title: title,
+            priority: priority,
+            description: description,
+            timestamp: timestamp
+        });
+
+        assert(isDone === task.get('isDone'));
+        assert(title === task.get('title'));
+        assert(priority === task.get('priority'));
+        assert(description === task.get('description'));
+        assert(timestamp === task.get('timestamp'));
+    });
+
+    test('Is Module a singleton?', function() {
+        assert(new Module('') !== new Module(''));
     });
 });

@@ -32,7 +32,7 @@ requirejs.config({
 testRunner = new Mocha({ui: 'tdd'/*, reporter: 'html-cov'*/});
 [
     'test/js/models/testTask',
-    'test/js/collections/testTasks'
+    'test/js/collections/testTaskList'
 ].forEach(function(file) {
         testRunner.addFile(file);
     });

@@ -8,10 +8,35 @@ define(function () {
             title: '',
             priority: 1,
             description: '',
-            timestamp: null
+            timestamp: null,
+            path: ''
         },
-        _listRef: null
+
+        _genPath: function(path) {
+            return [path, '/T', Task._counter++].join('');
+        },
+
+        initialize: function(path, data) {
+            if (!arguments.length) {
+                throw new Error('Path is not defined');
+            }
+
+            this.path = this._genPath(path);
+
+            if (data) {
+                if (typeof data !== 'object') {
+                    this.saveData(data);
+                } else {
+                    throw new Error('Data should be an object');
+                }
+            }
+        },
+        saveData: function(data) {
+            this.set(data);
+        }
     });
+
+    Task._counter = 0;
 
     return Task;
 });

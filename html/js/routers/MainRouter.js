@@ -18,24 +18,45 @@ define(function () {
         routes: {
             '': 'home',
             'home': 'home',
-            'task': 'task',
-            'task/:listInd': 'task',
-            'task/:listInd/:taskInd': 'task',
-            'list/new/*path': 'list',
-            'list/view/*path': 'list'
+            'task/:action/*path': 'task',
+            'list/:action/*path': 'list'
         },
 
         home: function() {
             _openView('HomeView');
         },
-        task: function(listInd, taskInd) {
+        task: function(action, path) {
+            var actionFN = null;
+
+            switch (action) {
+                case 'new':
+                    actionFN = 'createTask';
+                    break;
+                case 'view':
+                    break;
+                default:
+                    throw new Error('Unhandled action "' + action + '"');
+            }
+
+            if (!path) {
+                throw new Error('Path is not defined');
+            }
+
             _openView('TaskView', function() {
                 var list = MAIN.TASK_LIST,
                     task;
 
-                if (listInd) {
-                    list = MAIN.TASK_LIST[listInd];
+                if (path) {
+                    path = path.split('/');
+                    for (var i = 0, N = path.length; i < N; i++) {
+                        list = list[path[i]];
+                    }
                 }
+
+                if (action) {
+                    list[action]()
+                }
+
                 if (taskInd) {
                     task = list.models[taskInd];
                 }
@@ -45,6 +66,22 @@ define(function () {
             });
         },
         list: function(action, path) {
+            var actionFN = null;
+
+            switch (action) {
+                case 'new':
+                    actionFN = 'createSubList';
+                    break;
+                case 'view':
+                    break;
+                default:
+                    throw new Error('Unhandled action "' + action + '"');
+            }
+
+            if (!path) {
+                throw new Error('Path is not defined');
+            }
+
             _openView('TaskView', function() {
                 var list = MAIN.TASK_LIST;
                 if (path) {
@@ -54,8 +91,8 @@ define(function () {
                     }
                 }
 
-                if (action === 'new') {
-                    list.createSubList();
+                if (action) {
+                    list[action]()
                 }
             })
         }
