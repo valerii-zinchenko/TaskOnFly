@@ -10,7 +10,9 @@ requirejs.config({
         'underscore':       'js/lib/underscore-1.6.0',
         'backbone':         'js/lib/backbone-1.1.2',
         'text':             'js/lib/text-2.0.12',
-        'i18n':             'js/lib/i18n-2.0.4'
+        'i18n':             'js/lib/i18n-2.0.4',
+        'class':            'js/patterns/Class',
+        'singleton':        'js/patterns/SingletonClass'
     },
     shim: {
         jquery: {
@@ -25,10 +27,21 @@ requirejs.config({
         'backbone': {
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
+        },
+        'class': {
+            exports: 'Class'
+        },
+        'singleton': {
+            exports: 'Singleton'
         }
     }
 });
 
-requirejs(['jquery.mobile', 'backbone'], function() {
+requirejs([
+    'class',
+    'singleton',
+    'jquery.mobile',
+    'backbone'
+], function() {
     requirejs(['js/main']);
 });
