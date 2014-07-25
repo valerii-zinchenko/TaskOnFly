@@ -10,20 +10,17 @@ Backbone = require('backbone');
 jquery = require('jquery');
 $ = jquery;
 
+Class = require('../../html/js/patterns/Class.js').Class;
+SingletonClass = require('../../html/js/patterns/SingletonClass').SingletonClass;
+
 requirejs = require('requirejs');
 define = requirejs.define;
 
 requirejs.config({
     baseUrl: 'html',
     paths: {
-//        'jquery.mobile':    'js/lib/jquery.mobile-1.4.3',
-        'text':             'js/lib/text-2.0.12',
-        'i18n':             'js/lib/i18n-2.0.4'
-    },
-    shim: {
-        'jquery.mobile': {
-            deps: ['jquery']
-        }
+        'text':         'js/lib/text-2.0.12',
+        'i18n':         'js/lib/i18n-2.0.4'
     },
 
     nodeRequire: require
@@ -31,8 +28,10 @@ requirejs.config({
 
 testRunner = new Mocha({ui: 'tdd'/*, reporter: 'html-cov'*/});
 [
+    'test/js/patterns/testClass',
+    'test/js/patterns/testSingletonClass'/*,
     'test/js/models/testTask',
-    'test/js/collections/testTaskList'
+    'test/js/collections/testTaskList'*/
 ].forEach(function(file) {
         testRunner.addFile(file);
     });

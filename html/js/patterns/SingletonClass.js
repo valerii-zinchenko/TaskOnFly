@@ -2,7 +2,7 @@
  * Created by valera on 7/21/14.
  */
 
-'use strict'
+'use strict';
 
 function SingletonClass(Parent, props) {
     var instance = null,

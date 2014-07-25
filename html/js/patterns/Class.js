@@ -2,7 +2,7 @@
  * Created by valera on 7/25/14.
  */
 
-'use strict'
+'use strict';
 
 function Class(Parent, props) {
     var Child, F, i;
