@@ -2,6 +2,8 @@
  * Created by valera on 7/25/14.
  */
 
+'use strict'
+
 function Class(Parent, props) {
     var Child, F, i;
 
@@ -14,8 +16,12 @@ function Class(Parent, props) {
         }
     };
 
-    if (!Parent) {
+    if (typeof Parent !== 'function') {
+        props = Parent;
         Parent = Object;
+    }
+    if (props && typeof props !== 'object') {
+        throw new Error('Incorrect input arguments. It should be: new Class([[Function], Object])');
     }
 
     F = function(){};
@@ -31,4 +37,8 @@ function Class(Parent, props) {
     }
 
     return Child;
+}
+
+if (exports) {
+    exports.Class = Class;
 }

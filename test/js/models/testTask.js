@@ -11,36 +11,18 @@ suite('Test Task model', function() {
     });
 
     test('Constructor without arguments', function() {
-        var err = 0;
-        try {
+        assert.throw(function() {
             new Module();
-        } catch(e) {
-            if (e.constructor === Error) {
-                err++;
-            }
-            if (e.message === 'Path is not defined') {
-                err++;
-            }
-        }
-        assert(2 === err);
+        }, Error, 'Path is not defined');
     });
     test('Constructor with path', function() {
         assert('L0/T0' === (new Module('L0')).get('path'));
     });
 
     test('Constructor with unaccepted data', function() {
-        var err = 0;
-        try {
+        assert.throw(function() {
             new Module('', 0);
-        } catch(e) {
-            if (e.constructor === Error) {
-                err++;
-            }
-            if (e.message === 'Data should be an object') {
-                err++;
-            }
-        }
-        assert(2 === err);
+        }, Error, 'Data should be an object');
     });
     test('Constructor with accepted data', function() {
         var path = 'L0/L2',
