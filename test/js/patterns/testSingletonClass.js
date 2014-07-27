@@ -5,10 +5,10 @@
 suite('SingletonClass. General', function() {
     test('initialize()', function() {
         assert.doesNotThrow(function() {
-            (new SingletonClass())();
+            new (new SingletonClass())();
         });
         assert.throw(function() {
-            (new SingletonClass({
+            new (new SingletonClass({
                 initialize: function() {
                     throw 'OK';
                 }

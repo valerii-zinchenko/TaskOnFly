@@ -4,38 +4,22 @@
 
 'use strict';
 
-function SingletonClass(Parent, props) {
-    var instance = null,
-        initialize = null;
-
-    if (typeof Parent !== 'function') {
-        props = Parent;
-        Parent = Object;
-    }
-
-    if (!props) {
-        props = {};
-    }
-    if (props.initialize) {
-        initialize = props.initialize;
-    }
-
-    props.initialize = function() {
-        if (instance) {
-            return instance;
+var SingletonClass = new AClass(function() {
+        if (this.constructor.instance) {
+            return this.constructor.instance;
         }
-        instance = this;
+        this.constructor.instance = this;
 
-        if (initialize) {
-            initialize.apply(this, arguments);
+        if (this.constructor.parent && this.constructor.parent.hasOwnProperty('initialize')) {
+            this.constructor.parent.initialize.apply(this, arguments);
+        }
+        if (this.constructor.prototype.hasOwnProperty('initialize')) {
+            this.constructor.prototype.initialize.apply(this, arguments);
         }
 
-        return instance;
-    };
+        return this.constructor.instance;
+    });
 
-    return new Class(Parent, props);
-}
-
-if (exports) {
-    exports.SingletonClass = SingletonClass;
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = SingletonClass;
 }

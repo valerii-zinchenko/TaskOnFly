@@ -10,8 +10,9 @@ Backbone = require('backbone');
 jquery = require('jquery');
 $ = jquery;
 
-Class = require('../../html/js/patterns/Class.js').Class;
-SingletonClass = require('../../html/js/patterns/SingletonClass').SingletonClass;
+AClass = require('../../html/js/patterns/AClass');
+Class = require('../../html/js/patterns/Class');
+SingletonClass = require('../../html/js/patterns/SingletonClass');
 
 requirejs = require('requirejs');
 define = requirejs.define;

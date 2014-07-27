@@ -2,7 +2,7 @@
  * Created by valera on 7/25/14.
  */
 
-suite('Class. General', function() {
+suite('Class. General.', function() {
     suite('Input arguments', function() {
         test('No arguments', function() {
             assert.doesNotThrow(function() {
@@ -32,10 +32,10 @@ suite('Class. General', function() {
 
     test('initialize()', function() {
         assert.doesNotThrow(function() {
-            (new Class())();
+            new (new Class())();
         });
         assert.throw(function() {
-            (new Class({
+            new (new Class({
                 initialize: function() {
                     throw 'OK';
                 }
@@ -84,7 +84,7 @@ suite('Class. General', function() {
     });
 });
 
-suite('Class. Inheritance', function() {
+suite('Class. Inheritance.', function() {
     var Parent,
         prop = 5,
         value = 2;
