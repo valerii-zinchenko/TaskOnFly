@@ -29,6 +29,7 @@ requirejs.config({
 
 testRunner = new Mocha({ui: 'tdd'/*, reporter: 'html-cov'*/});
 [
+    'test/js/patterns/testAClass',
     'test/js/patterns/testClass',
     'test/js/patterns/testSingletonClass'/*,
     'test/js/models/testTask',

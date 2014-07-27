@@ -3,6 +3,12 @@
  */
 
 function AClass(Constructor) {
+    if (arguments.length === 0) {
+        throw new Error('Incorrect input arguments. Constructor function is not defined');
+    }
+    if (typeof Constructor !== 'function') {
+        throw new Error('Constructor should be an function');
+    }
     return function(Parent, props){
         var FutureClass, Class, i;
 
@@ -21,7 +27,6 @@ function AClass(Constructor) {
 
         // Clone class constructor function
         eval('FutureClass = ' + Constructor.toString());
-//        FutureClass = Constructor;
         // Setup class constructor function
         FutureClass.prototype = new Class();
         FutureClass.parent = Parent.prototype;
