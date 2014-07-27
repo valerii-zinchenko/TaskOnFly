@@ -13,6 +13,7 @@ define([
     var rooter = new MainRouter();
 
     MAIN.TASK_LIST = new TaskList('');
+    MAIN.CURRENT_LIST = MAIN.TASK_LIST;
 
     if (location.hash === '') {
         location.hash = '#home';

@@ -11,7 +11,7 @@ requirejs.config({
         'backbone':         'js/lib/backbone-1.1.2',
         'text':             'js/lib/text-2.0.12',
         'i18n':             'js/lib/i18n-2.0.4',
-        'aclass':     'js/patterns/AClass',
+        'aclass':           'js/patterns/AClass',
         'class':            'js/patterns/Class',
         'singleton':        'js/patterns/SingletonClass'
     },
@@ -45,8 +45,15 @@ requirejs([
     'aclass',
     'class',
     'singleton',
-    'jquery.mobile',
+    'jquery',
     'backbone'
 ], function() {
-    requirejs(['js/main']);
+    $(document).on('mobileinit', function() {
+        $.extend($.mobile, {
+            linkBindingEnabled: false,
+            hashListeningEnabled: false
+        });
+    });
+
+    requirejs(['jquery.mobile', 'js/main']);
 });

@@ -36,10 +36,12 @@ define([
         },
 
         addTask: function(ev) {
-            MAIN.TASK_LIST.createTask();
+            ev.preventDefault();
+            window.location.hash = '#task/new/L0';
         },
         addList: function(ev) {
-            MAIN.TASK_LIST.createSubList();
+            ev.preventDefault();
+            window.location.hash = '#list/new/L0';
         }
     });
 
