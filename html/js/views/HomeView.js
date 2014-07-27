@@ -1,62 +1,47 @@
+'use strict';
+
 define([
     'text!templates/home.html'
 ], function(template) {
-    var HomeView;
+    var HomeView = new Class({
+        $addTaskBtn: null,
+        $addListBtn: null,
+        _isReady: false,
 
-    (function() {
-        var instance;
+        initialize: function() {
+            //todo: sync data from device
+        },
+        render: function() {
+            if (!this.$el || this.$el.length === 0) {
+                this.$el = $('#home');
+            }
+            this.$el.html(_.template(template));
+            this.$el.trigger('create');
 
-        HomeView = function() {
-            if (instance) {
-                return instance;
+            this._initControls();
+
+            return this;
+        },
+        _initControls: function() {
+            if (this._isReady) {
+                return;
             }
 
-            _.extend(this, {
-                $addTaskBtn: null,
-                $addListBtn: null,
-                isReady: false,
+            this._isReady = true;
+            this.$addTaskBtn = this.$el.find('#addTask');
+            this.$addListBtn = this.$el.find('#addList');
 
-                initialize: function() {
-                    //todo: sync data from device
-                },
-                render: function() {
-                    if (!this.$el || this.$el.length === 0) {
-                        this.$el = $('#home');
-                    }
-                    this.$el.html(_.template(template));
-                    this.$el.trigger('create');
+            this.$addTaskBtn.on('click', this.addTask);
+            this.$addListBtn.on('click', this.addList);
+        },
 
-                    this._initControls();
-
-                    return this;
-                },
-                _initControls: function() {
-                    if (this.isReady) {
-                        return;
-                    }
-
-                    this.isReady = true;
-                    this.$addTaskBtn = this.$el.find('#addTask');
-                    this.$addListBtn = this.$el.find('#addList');
-
-                    this.$addTaskBtn.on('click', this.addTask);
-                    this.$addListBtn.on('click', this.addList);
-                },
-
-                addTask: function(ev) {
-                    MAIN.TASK_LIST.createTask();
-                },
-                addList: function(ev) {
-                    MAIN.TASK_LIST.createSubList();
-                }
-            });
-
-            this.initialize();
-
-            instance = this;
-            return this;
-        };
-    })();
+        addTask: function(ev) {
+            MAIN.TASK_LIST.createTask();
+        },
+        addList: function(ev) {
+            MAIN.TASK_LIST.createSubList();
+        }
+    });
 
     return HomeView;
 });

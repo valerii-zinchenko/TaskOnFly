@@ -18,12 +18,12 @@ suite('SingletonClass. General', function() {
 
     test('Check constructor', function() {
         var Obj = new SingletonClass();
-        assert(Obj === (new Obj()).constructor);
+        assert.equal(Obj, (new Obj()).constructor);
     });
 
     test('SingletonClass class should behave as singleton', function() {
         var Obj = new SingletonClass();
-        assert(new Obj() === new Obj());
+        assert.equal(new Obj(), new Obj());
     });
 
     test('Second calling of initialize() for Singleton object', function() {
@@ -42,8 +42,8 @@ suite('SingletonClass. General', function() {
     });
 
     test('Calling of parent initialize()', function() {
-        var value = 5,
-            k = 2;
+        var value = 11,
+            k = 4;
 
         var Parent = new SingletonClass({
             initialize: function() {
@@ -56,6 +56,6 @@ suite('SingletonClass. General', function() {
             }
         });
 
-        assert(value*k === (new Child()).value);
+        assert.equal((new Child()).value, value*k);
     });
 });

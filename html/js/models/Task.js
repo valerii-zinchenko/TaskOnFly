@@ -1,9 +1,12 @@
 /**
  * Created by valera on 7/17/14.
  */
+
+'use strict';
+
 define(function () {
-    var Task = Backbone.Model.extend({
-        defaults: {
+    var Task = new Class({
+        public: {
             isDone: false,
             title: '',
             priority: 1,
@@ -12,19 +15,21 @@ define(function () {
             path: ''
         },
 
+        _pathPrefix: 'T',
+
         _genPath: function(path) {
-            return [path, '/T', Task._counter++].join('');
+            return [path, '/', this._pathPrefix, this.constructor._counter++].join('');
         },
 
         initialize: function(path, data) {
-            if (!arguments.length) {
+            if (arguments.length === 0) {
                 throw new Error('Path is not defined');
             }
 
-            this.path = this._genPath(path);
+            this.public.path = this._genPath(path);
 
-            if (data) {
-                if (typeof data !== 'object') {
+            if (data !== undefined) {
+                if (typeof data === 'object') {
                     this.saveData(data);
                 } else {
                     throw new Error('Data should be an object');
@@ -32,7 +37,7 @@ define(function () {
             }
         },
         saveData: function(data) {
-            this.set(data);
+            _.extend(this.public, data);
         }
     });
 

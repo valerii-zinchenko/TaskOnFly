@@ -10,7 +10,7 @@ function AClass(Constructor) {
         throw new Error('Constructor should be an function');
     }
     return function(Parent, props){
-        var FutureClass, Class, i;
+        var Class, CoreClass, i;
 
         // Check input argumnets
         if (typeof Parent !== 'function') {
@@ -22,24 +22,24 @@ function AClass(Constructor) {
         }
 
         // Create proxy function
-        Class = function(){};
-        Class.prototype = Parent.prototype;
+        CoreClass = function(){};
+        CoreClass.prototype = Parent.prototype;
 
         // Clone class constructor function
-        eval('FutureClass = ' + Constructor.toString());
+        eval('Class = ' + Constructor.toString());
         // Setup class constructor function
-        FutureClass.prototype = new Class();
-        FutureClass.parent = Parent.prototype;
-        FutureClass.prototype.constructor = FutureClass;
+        Class.prototype = new CoreClass();
+        Class.parent = Parent.prototype;
+        Class.prototype.constructor = Class;
 
         // Setup input properties to the new class
         for (i in props) {
             if (props.hasOwnProperty(i)) {
-                FutureClass.prototype[i] = props[i];
+                Class.prototype[i] = props[i];
             }
         }
 
-        return FutureClass;
+        return Class;
     }
 }
 

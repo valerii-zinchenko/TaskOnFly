@@ -17,7 +17,7 @@ suite('Class. General.', function() {
                 new Class({});
             });
             assert.throw(function() {
-                new Class(2);
+                new Class(11);
             }, Error, 'Incorrect input arguments. It should be: new Class([[Function], Object])');
         });
         test('Two arguments', function() {
@@ -25,7 +25,7 @@ suite('Class. General.', function() {
                 new Class(Object, {});
             });
             assert.throw(function() {
-                new Class(Object, 2);
+                new Class(Object, 11);
             }, Error, 'Incorrect input arguments. It should be: new Class([[Function], Object])');
         });
     });
@@ -45,31 +45,31 @@ suite('Class. General.', function() {
 
     test('Check constructor', function() {
         var Obj = new Class();
-        assert(Obj === (new Obj()).constructor);
+        assert.equal((new Obj()).constructor, Obj);
     });
 
     test('Class class should not behave as singleton', function() {
         var Obj = new Class();
-        assert(new Obj() !== new Obj());
+        assert.notEqual(new Obj(), new Obj());
     });
 
     test('Property', function() {
-        var value = 0;
+        var value = 11;
         var Obj = new Class({
             value: value
         });
 
-        assert(value === (new Obj()).value);
+        assert.equal((new Obj()).value, value);
     });
     test('Method', function() {
-        var value = 0;
+        var value = 11;
         var Obj = new Class({
             fn: function() {
                 return value;
             }
         });
 
-        assert(value === (new Obj()).fn());
+        assert.equal((new Obj()).fn(), value);
     });
     test('Calling of initialize()', function() {
         var Obj = new Class({
@@ -86,8 +86,8 @@ suite('Class. General.', function() {
 
 suite('Class. Inheritance.', function() {
     var Parent,
-        prop = 5,
-        value = 2;
+        prop = 4,
+        value = 11;
     setup(function() {
         Parent = new Class({
             prop: prop,
@@ -100,12 +100,12 @@ suite('Class. Inheritance.', function() {
     test('Check constructor', function() {
         var Child = new Class(Parent);
 
-        assert(Child === (new Child()).constructor);
-        assert(Parent !== (new Child()).constructor);
+        assert.equal((new Child()).constructor, Child);
+        assert.notEqual((new Child()).constructor, Parent);
     });
     test('Public property', function() {
         var Child = new Class(Parent);
-        assert(prop === (new Child()).prop);
+        assert.equal((new Child()).prop, prop);
     });
     test('Calling of parent initialize()', function() {
         var k = 2;
@@ -115,6 +115,6 @@ suite('Class. Inheritance.', function() {
             }
         });
 
-        assert(value*k === (new Child()).value);
+        assert.equal((new Child()).value, value*k);
     });
 });

@@ -2,6 +2,8 @@
  * Created by valera on 7/23/14.
  */
 
+'use strict';
+
 this.MAIN = {};
 
 define([
@@ -10,7 +12,7 @@ define([
 ], function(MainRouter, TaskList) {
     var rooter = new MainRouter();
 
-    MAIN.TASK_LIST = new TaskList();
+    MAIN.TASK_LIST = new TaskList('');
 
     if (location.hash === '') {
         location.hash = '#home';

@@ -1,6 +1,9 @@
 /**
  * Created by valera on 7/18/14.
  */
+
+'use strict';
+
 define(function () {
     function _openView (viewName, fn) {
         requirejs(['js/views/' + viewName], function(View) {

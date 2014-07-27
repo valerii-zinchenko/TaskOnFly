@@ -9,6 +9,9 @@ suite('Test Task model', function() {
             done();
         })
     });
+    teardown(function() {
+        Module._counter = 0;
+    });
 
     test('Constructor without arguments', function() {
         assert.throw(function() {
@@ -16,7 +19,7 @@ suite('Test Task model', function() {
         }, Error, 'Path is not defined');
     });
     test('Constructor with path', function() {
-        assert('L0/T0' === (new Module('L0')).get('path'));
+        assert.equal((new Module('L0')).public.path, 'L0/T0');
     });
 
     test('Constructor with unaccepted data', function() {
@@ -40,12 +43,12 @@ suite('Test Task model', function() {
             timestamp: timestamp
         });
 
-        assert((path + '/T0') === task.get('path'));
-        assert(isDone === task.get('isDone'));
-        assert(title === task.get('title'));
-        assert(priority === task.get('priority'));
-        assert(description === task.get('description'));
-        assert(timestamp === task.get('timestamp'));
+        assert.equal(task.public.path, (path + '/T0'));
+        assert.equal(task.public.isDone, isDone);
+        assert.equal(task.public.title, title);
+        assert.equal(task.public.priority, priority);
+        assert.equal(task.public.description, description);
+        assert.equal(task.public.timestamp, timestamp);
     });
 
     test('Save data function', function() {
@@ -65,14 +68,14 @@ suite('Test Task model', function() {
             timestamp: timestamp
         });
 
-        assert(isDone === task.get('isDone'));
-        assert(title === task.get('title'));
-        assert(priority === task.get('priority'));
-        assert(description === task.get('description'));
-        assert(timestamp === task.get('timestamp'));
+        assert.equal(task.public.isDone, isDone);
+        assert.equal(task.public.title, title);
+        assert.equal(task.public.priority, priority);
+        assert.equal(task.public.description, description);
+        assert.equal(task.public.timestamp, timestamp);
     });
 
     test('Is Module a singleton?', function() {
-        assert(new Module('') !== new Module(''));
+        assert.notEqual(new Module(''), new Module(''));
     });
 });
