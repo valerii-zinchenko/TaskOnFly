@@ -10,9 +10,6 @@ define([
         $addTaskBtn: null,
         $addListBtn: null,
 
-        initialize: function() {
-            //todo: sync data from device
-        },
         render: function() {
             if (!this.$el || this.$el.length === 0) {
                 this.$el = $('#' + this.page);

@@ -15,6 +15,8 @@ define([
     MAIN.TASK_LIST = new TaskList('');
     MAIN.CURRENT_LIST = MAIN.TASK_LIST;
 
+    //todo: sync data from device
+
     if (location.hash === '') {
         location.hash = '#home';
     } else {

@@ -47,16 +47,20 @@ define(function () {
             }
 
             _openView('TaskView', function() {
-                var list = MAIN.TASK_LIST;
+                var list = MAIN.TASK_LIST,
+                    item;
+
                 if (path) {
                     path = path.split('/');
-                    for (var i = 0, N = path.length; i < N; i++) {
+                    for (var i = 1, N = path.length; i < N; i++) {
                         list = list[path[i]];
                     }
                 }
 
-                this.setItem(list);
-                this.setCallback(list[actionFn]);
+                item = list[actionFn]();
+
+                this.setItem(item);
+                this.setCallback(list.saveData);
             });
         },
         list: function(action, path) {
@@ -77,7 +81,9 @@ define(function () {
             }
 
             _openView('TaskView', function() {
-                var list = MAIN.TASK_LIST;
+                var list = MAIN.TASK_LIST,
+                    item;
+
                 if (path) {
                     path = path.split('/');
                     for (var i = 1, N = path.length; i < N; i++) {
@@ -85,8 +91,10 @@ define(function () {
                     }
                 }
 
-                this.setItem(list);
-                this.setCallback(list[actionFn]);
+                item = list[actionFn]();
+
+                this.setItem(item);
+                this.setCallback(list.saveData);
             })
         }
     });
