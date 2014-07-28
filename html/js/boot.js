@@ -50,6 +50,7 @@ requirejs([
 ], function() {
     $(document).on('mobileinit', function() {
         $.extend($.mobile, {
+            ajaxEnabled: false,
             linkBindingEnabled: false,
             hashListeningEnabled: false
         });

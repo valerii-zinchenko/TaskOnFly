@@ -26,6 +26,9 @@ suite('Test Task model', function() {
         assert.throw(function() {
             new Module('', 0);
         }, Error, 'Data should be an object');
+        assert.throw(function() {
+            new Module(undefined, undefined);
+        }, Error, 'Path is not defined');
     });
     test('Constructor with accepted data', function() {
         var path = 'L0/L2',

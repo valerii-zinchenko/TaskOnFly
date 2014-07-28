@@ -13,6 +13,7 @@ define(function () {
                 fn.call(view);
             }
 
+            $.mobile.changePage('#' + view.page);
             view.render();
         });
     }
@@ -29,51 +30,11 @@ define(function () {
             _openView('HomeView');
         },
         task: function(action, path) {
-            var actionFN = null;
+            var actionFn = null;
 
             switch (action) {
                 case 'new':
-                    actionFN = 'createTask';
-                    break;
-                case 'view':
-                    break;
-                default:
-                    throw new Error('Unhandled action "' + action + '"');
-            }
-
-            if (!path) {
-                throw new Error('Path is not defined');
-            }
-
-            _openView('TaskView', function() {
-                var list = MAIN.TASK_LIST,
-                    task;
-
-                if (path) {
-                    path = path.split('/');
-                    for (var i = 0, N = path.length; i < N; i++) {
-                        list = list[path[i]];
-                    }
-                }
-
-                if (action) {
-                    list[action]()
-                }
-
-                if (taskInd) {
-                    task = list.models[taskInd];
-                }
-
-                this.setList(list);
-                this.setTask(task);
-            });
-        },
-        list: function(action, path) {
-            var actionFN = null;
-
-            switch (action) {
-                case 'new':
-                    actionFN = 'createSubList';
+                    actionFn = 'createTask';
                     break;
                 case 'view':
                     break;
@@ -94,9 +55,38 @@ define(function () {
                     }
                 }
 
-                if (action) {
-                    list[action]()
+                this.setItem(list);
+                this.setCallback(list[actionFn]);
+            });
+        },
+        list: function(action, path) {
+            var actionFn = null;
+
+            switch (action) {
+                case 'new':
+                    actionFn = 'createSubList';
+                    break;
+                case 'view':
+                    break;
+                default:
+                    throw new Error('Unhandled action "' + action + '"');
+            }
+
+            if (!path) {
+                throw new Error('Path is not defined');
+            }
+
+            _openView('TaskView', function() {
+                var list = MAIN.TASK_LIST;
+                if (path) {
+                    path = path.split('/');
+                    for (var i = 1, N = path.length; i < N; i++) {
+                        list = list.models[path[i]];
+                    }
                 }
+
+                this.setItem(list);
+                this.setCallback(list[actionFn]);
             })
         }
     });

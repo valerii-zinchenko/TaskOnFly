@@ -6,6 +6,9 @@
 
 define(function () {
     var Task = new Class({
+        _pathPrefix: 'T',
+        _name: '',
+
         public: {
             isDone: false,
             title: '',
@@ -15,14 +18,15 @@ define(function () {
             path: ''
         },
 
-        _pathPrefix: 'T',
-
         _genPath: function(path) {
-            return [path, '/', this._pathPrefix, this.constructor._counter++].join('');
+            this._name = this._pathPrefix + this.constructor._counter++;
+            return [path, '/', this._name].join('');
         },
 
         initialize: function(path, data) {
-            if (arguments.length === 0) {
+            if (arguments.length === 0 ||
+                (typeof path === 'undefined' && typeof data === 'undefined'))
+            {
                 throw new Error('Path is not defined');
             }
 

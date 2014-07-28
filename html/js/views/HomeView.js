@@ -4,16 +4,18 @@ define([
     'text!templates/home.html'
 ], function(template) {
     var HomeView = new Class({
+        _isReady: false,
+
+        page: 'home',
         $addTaskBtn: null,
         $addListBtn: null,
-        _isReady: false,
 
         initialize: function() {
             //todo: sync data from device
         },
         render: function() {
             if (!this.$el || this.$el.length === 0) {
-                this.$el = $('#home');
+                this.$el = $('#' + this.page);
             }
             this.$el.html(_.template(template));
             this.$el.trigger('create');

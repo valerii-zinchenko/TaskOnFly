@@ -13,20 +13,10 @@ suite('Test TaskList', function() {
         Module._counter = 0;
     });
 
-    test('Constructor without path', function() {
-        assert.throw(function() {
-            new Module();
-        }, Error, 'Path is not defined');
-    });
     test('Constructor with path', function() {
         assert.equal((new Module('L0')).public.path, 'L0/L0');
     });
 
-    test('Constructor with unaccepted data', function() {
-        assert.throw(function() {
-            new Module('', 0);
-        }, Error, 'Data should be an object');
-    });
     test('Constructor with accepted data', function() {
         var path = 'L0/L2',
             isDone = true,

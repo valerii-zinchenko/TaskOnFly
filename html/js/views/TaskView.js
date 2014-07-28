@@ -6,27 +6,36 @@
 
 define([
     'text!templates/task.html',
-    'js/models/Task'
-],function (template, Task) {
+    'js/models/Task',
+    'js/collections/TaskList'
+],function (template, Task, TaskList) {
     var TaskView = new Class({
+        _callback: null,
+        item: null,
+        page: 'task',
+
         initialize: function() {},
 
-        setList: function(list) {
-            //todo: Check if list is instance of TaskList
-            this.list = list;
+        setItem: function(item) {
+            if (item && item.constructor !== Task && item.constructor !== TaskList) {
+                throw new Error('Incorrect input arguments');
+            }
+            this.item = item;
         },
-        setTask: function(task) {
-            //todo: Check if task is instance of Task
-            this.task = task;
+        setCallback: function(callback) {
+            if (typeof callback !== 'function') {
+                throw new Error('Incorrect input arguments');
+            }
+            this._callback = callback;
         },
         render: function() {
             this.checkIntegrity();
 
             if (!this.$el || this.$el.length === 0) {
-                this.$el = $('#task');
+                this.$el = $('#' + this.page);
             }
 
-            this.$el.html(_.template(template, this.task.attributes));
+            this.$el.html(_.template(template, this.item.public));
             this.$el.trigger('create');
 
             if (!this.$task || this.$task.length === 0) {
@@ -51,17 +60,12 @@ define([
 
         // controls
         checkIntegrity: function() {
-            if (!this.list) {
-                throw new Error('List is not defined');
-            }
-            if (!this.task) {
-                this.task = new Task();
+            if (!this.item) {
+                throw new Error('Item is not defined');
             }
         },
         save: function(taskData) {
-            this.task.set(taskData);
-            this.task._listRef = this.list;
-            this.list.add(this.task);
+            this._callback.call(this.item, taskData);
         }
     });
 
