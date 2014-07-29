@@ -9,7 +9,7 @@
 
     <% if (MAIN.CURRENT_LIST.length > 0) { %>
     <div data-role="fieldcontain">
-        <ul data-role="listview" data-inset="true">
+        <ul id="list" data-role="listview" data-inset="true">
         <% _.each(MAIN.CURRENT_LIST.models, function(item) { %>
             <li data-path="<%= item.public.path %>" class="priority-<%= item.public.priority %>">
                 <input type="checkbox" <% if (item.public.isDone) { %> checked <% } %>>

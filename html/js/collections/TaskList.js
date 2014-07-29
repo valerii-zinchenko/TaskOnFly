@@ -12,19 +12,25 @@ define([
         models: {},
         length: 0,
 
-        createSubList: function(data) {
+        addSubList: function(data) {
             var list = new TaskList(this.public.path, data);
             this.models[list._name] = list;
             this.length++;
 
             return list;
         },
-        createTask: function(data) {
+        addTask: function(data) {
             var task = new Task(this.public.path, data);
             this.models[task._name] = task;
             this.length++;
 
             return task;
+        },
+
+        getItem: function(name) {
+            return _.find(this.models, function(item) {
+                return name === item._name;
+            });
         }
     });
 

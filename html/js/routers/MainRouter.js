@@ -22,39 +22,39 @@ define(function () {
         routes: {
             '': 'home',
             'home': 'home',
-            'task/:action/*path': 'task',
-            'list/:action/*path': 'list'
+            'view/:path' : 'view',
+            'add/:item/*path': 'add'
         },
 
         home: function() {
             _openView('HomeView');
         },
-        task: function(action, path) {
+        add: function(item, path) {
             var actionFn = null;
 
-            switch (action) {
-                case 'new':
-                    actionFn = 'createTask';
+            switch (item) {
+                case 'task':
+                    actionFn = 'addTask';
                     break;
-                case 'view':
+                case 'list':
+                    actionFn = 'addSubList';
                     break;
                 default:
-                    throw new Error('Unhandled action "' + action + '"');
+                    throw new Error('Unhandled item "' + item + '"');
             }
 
             if (!path) {
                 throw new Error('Path is not defined');
             }
 
+            path = path.split('/');
+
             _openView('TaskView', function() {
                 var list = MAIN.TASK_LIST,
                     item;
 
-                if (path) {
-                    path = path.split('/');
-                    for (var i = 1, N = path.length; i < N; i++) {
-                        list = list[path[i]];
-                    }
+                for (var i = 1, N = path.length; i < N; i++) {
+                    list = list.models[path[i]];
                 }
 
                 item = list[actionFn]();
@@ -63,35 +63,37 @@ define(function () {
                 this.setCallback(list.saveData);
             });
         },
-        list: function(action, path) {
-            var actionFn = null;
-
-            switch (action) {
-                case 'new':
-                    actionFn = 'createSubList';
-                    break;
-                case 'view':
-                    break;
-                default:
-                    throw new Error('Unhandled action "' + action + '"');
-            }
+        view: function(path) {
+            var viewName,
+                itemName;
 
             if (!path) {
                 throw new Error('Path is not defined');
             }
 
-            _openView('TaskView', function() {
+            path = path.split('/');
+            itemName = path.pop();
+
+            switch (itemName[0]) {
+                case 'T':
+                    viewName = 'TaskView';
+                    break;
+                case 'L':
+                    viewName = 'ListView';
+                    break;
+                default :
+                    throw new Error('Unhandled item "' + itemName[0] + '"');
+            }
+
+            _openView(viewName, function() {
                 var list = MAIN.TASK_LIST,
                     item;
 
-                if (path) {
-                    path = path.split('/');
-                    for (var i = 1, N = path.length; i < N; i++) {
-                        list = list.models[path[i]];
-                    }
+                for (var i = 1, N = path.length; i < N; i++) {
+                    list = list.models[path[i]];
                 }
 
-                item = list[actionFn]();
+                item = list.getItem(itemName);
 
                 this.setItem(item);
                 this.setCallback(list.saveData);

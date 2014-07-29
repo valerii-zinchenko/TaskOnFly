@@ -18,6 +18,7 @@ define([
             this.$el.trigger('create');
 
             this._initControls();
+            this.$el.find('#list li').off('vclick').on('vclick', this.viewItem);
 
             return this;
         },
@@ -36,11 +37,16 @@ define([
 
         addTask: function(ev) {
             ev.preventDefault();
-            window.location.hash = '#task/new/L0';
+            window.location.hash = '#add/task' + MAIN.CURRENT_LIST.public.path;
         },
         addList: function(ev) {
             ev.preventDefault();
-            window.location.hash = '#list/new/L0';
+            window.location.hash = '#add/list' + MAIN.CURRENT_LIST.public.path;
+        },
+
+        viewItem: function(ev) {
+            ev.preventDefault();
+            window.location.hash = '#view' + MAIN.CURRENT_LIST.public.path;
         }
     });
 

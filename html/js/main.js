@@ -10,10 +10,10 @@ define([
     'js/routers/MainRouter',
     'js/collections/TaskList'
 ], function(MainRouter, TaskList) {
-    var rooter = new MainRouter();
-
     MAIN.TASK_LIST = new TaskList('');
     MAIN.CURRENT_LIST = MAIN.TASK_LIST;
+
+    var rooter = new MainRouter();
 
     //todo: sync data from device
 
