@@ -14,7 +14,7 @@ define(function () {
             title: '',
             priority: 1,
             description: '',
-            timestamp: null,
+            timestamp: '',
             path: ''
         },
 
@@ -41,7 +41,10 @@ define(function () {
             }
         },
         saveData: function(data) {
-            _.extend(this.public, data);
+            if (data.timestamp && typeof data.timestamp !== 'string') {
+                data.timestamp = data.timestamp.toString();
+            }
+            utils.deepExtend(this.public, data);
         }
     });
 

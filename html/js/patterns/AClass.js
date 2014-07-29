@@ -9,8 +9,9 @@ function AClass(Constructor) {
     if (typeof Constructor !== 'function') {
         throw new Error('Constructor should be an function');
     }
+
     return function(Parent, props){
-        var Class, CoreClass, i;
+        var Class, CoreClass, key, value;
 
         // Check input argumnets
         if (typeof Parent !== 'function') {
@@ -32,10 +33,26 @@ function AClass(Constructor) {
         Class.parent = Parent.prototype;
         Class.prototype.constructor = Class;
 
+        Class.prototype._defaults = {};
+        // Clone default properties from parent class
+        if (Class.parent._defaults) {
+            utils.deepExtend(Class.prototype._defaults, Class.parent._defaults);
+        }
         // Setup input properties to the new class
-        for (i in props) {
-            if (props.hasOwnProperty(i)) {
-                Class.prototype[i] = props[i];
+        for (key in props) {
+            if (props.hasOwnProperty(key)) {
+                value = props[key];
+                switch (typeof value) {
+                    case 'function':
+                        Class.prototype[key] = value;
+                        break;
+                    case 'object':
+                        Class.prototype._defaults[key] = {};
+                        utils.deepExtend(Class.prototype._defaults[key], value);
+                        break;
+                    default :
+                        Class.prototype._defaults[key] = value;
+                }
             }
         }
 

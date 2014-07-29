@@ -71,6 +71,19 @@ suite('Class. General.', function() {
 
         assert.equal((new Obj()).fn(), value);
     });
+    test('Cloning of property', function() {
+        var value = 11;
+        var Obj = new Class({
+            obj: {
+                key: value
+            }
+        });
+
+        var obj1 = new Obj(),
+            obj2 = new Obj();
+
+        assert.notEqual(obj1.obj, obj2.obj);
+    });
     test('Calling of initialize()', function() {
         var Obj = new Class({
             initialize: function() {

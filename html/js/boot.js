@@ -11,6 +11,7 @@ requirejs.config({
         'backbone':         'js/lib/backbone-1.1.2',
         'text':             'js/lib/text-2.0.12',
         'i18n':             'js/lib/i18n-2.0.4',
+        'utils':            'js/misc/utils',
         'aclass':           'js/patterns/AClass',
         'class':            'js/patterns/Class',
         'singleton':        'js/patterns/SingletonClass'
@@ -29,6 +30,9 @@ requirejs.config({
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
         },
+        'utils': {
+            exports: 'utils'
+        },
         'aclass': {
             exports: 'aclass'
         },
@@ -42,6 +46,7 @@ requirejs.config({
 });
 
 requirejs([
+    'utils',
     'aclass',
     'class',
     'singleton',

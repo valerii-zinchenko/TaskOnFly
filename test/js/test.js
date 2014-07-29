@@ -10,6 +10,7 @@ Backbone = require('backbone');
 jquery = require('jquery');
 $ = jquery;
 
+utils = require('../../html/js/misc/utils');
 AClass = require('../../html/js/patterns/AClass');
 Class = require('../../html/js/patterns/Class');
 SingletonClass = require('../../html/js/patterns/SingletonClass');
@@ -20,8 +21,8 @@ define = requirejs.define;
 requirejs.config({
     baseUrl: 'html',
     paths: {
-        'text':         'js/lib/text-2.0.12',
-        'i18n':         'js/lib/i18n-2.0.4'
+        'text': 'js/lib/text-2.0.12',
+        'i18n': 'js/lib/i18n-2.0.4'
     },
 
     nodeRequire: require
