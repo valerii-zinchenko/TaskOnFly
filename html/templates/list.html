@@ -1,3 +1,8 @@
-<div data-role="header"></div>
-<div data-role="content"></div>
-<div data-role="footer"></div>
+<ul id="list" data-role="listview" data-inset="true">
+    <% _.each(models, function(item) { %>
+    <li data-name="<%= item._name %>" class="priority-<%= item.public.priority %> <%= item._type %>">
+        <input id="<%= item._name %>" type="checkbox" <% if (item.public.isDone) { %> checked <% } %>>
+        <label for="<%= item._name %>"><%= item.public.title %></label>
+    </li>
+    <% }) %>
+</ul>

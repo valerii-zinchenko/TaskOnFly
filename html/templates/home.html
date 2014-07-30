@@ -1,23 +1,11 @@
 <div data-role="header">
     <h1>Home</h1>
 </div>
-<div data-role="content">
+<div id="content" data-role="content">
     <div data-role="fieldcontain">
-        <a href="#" id="addTask" data-role="button">New task</a>
-        <a href="#" id="addList" data-role="button">New list</a>
+        <a href="#task" id="addTask" data-role="button">New task</a>
+        <a href="#task" id="addList" data-role="button">New list</a>
+        <a href="#" id="prevList" data-role="button">Previous list</a>
     </div>
-
-    <% if (MAIN.CURRENT_LIST.length > 0) { %>
-    <div data-role="fieldcontain">
-        <ul id="list" data-role="listview" data-inset="true">
-        <% _.each(MAIN.CURRENT_LIST.models, function(item) { %>
-            <li data-path="<%= item.public.path %>" class="priority-<%= item.public.priority %>">
-                <input type="checkbox" <% if (item.public.isDone) { %> checked <% } %>>
-                <span><%= item.public.title %></span>
-            </li>
-        <% }) %>
-        </ul>
-    </div>
-    <% } %>
 </div>
 <div data-role="footer"></div>

@@ -9,10 +9,12 @@ define([
 ], function (Task) {
     var TaskList = new Class(Task, {
         _pathPrefix: 'L',
+        _type: 'list',
+        _parent: null,
         models: {},
         length: 0,
 
-        addSubList: function(data) {
+        addList: function(data) {
             var list = new TaskList(this.public.path, data);
             this.models[list._name] = list;
             this.length++;
@@ -28,9 +30,16 @@ define([
         },
 
         getItem: function(name) {
-            return _.find(this.models, function(item) {
-                return name === item._name;
-            });
+            return this.models[name];
+        },
+
+        selectList: function(name) {
+            var parent = MAIN.CURRENT_LIST;
+            MAIN.CURRENT_LIST = parent.getItem(name);
+            MAIN.CURRENT_LIST._parent = parent;
+        },
+        selectParentList: function() {
+            MAIN.CURRENT_LIST = this._parent;
         }
     });
 

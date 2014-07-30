@@ -1,5 +1,5 @@
 <div data-role="header">
-    <a href="#home" data-role="back" data-icon="carat-l">Back</a>
+    <a href="#" data-role="back" data-icon="carat-l">Back</a>
     <h1>Task</h1>
 </div>
 <div data-role="content">
@@ -13,11 +13,11 @@
         <div data-role="fieldcontain">
             <fieldset id="priority" data-role="controlgroup" data-type="horizontal">
                 <label for="low">Low</label>
-                <input type="radio" id="low" name="priority" value="0">
+                <input type="radio" id="low" name="priority" value="0" <% if (0 === priority) {%> checked <% } %>>
                 <label for="normal">Normal</label>
-                <input type="radio" id="normal" name="priority" value="1" checked>
+                <input type="radio" id="normal" name="priority" value="1" <% if (1 === priority) {%> checked <% } %>>
                 <label for="high">High</label>
-                <input type="radio" id="high" name="priority" value="2">
+                <input type="radio" id="high" name="priority" value="2" <% if (2 === priority) {%> checked <% } %>>
             </fieldset>
         </div>
         <div data-role="fieldcontain">

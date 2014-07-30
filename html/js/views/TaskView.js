@@ -13,6 +13,14 @@ define([
         _callback: null,
         item: null,
         page: 'task',
+        _defaults: {
+            isDone: false,
+            title: '',
+            priority: 1,
+            description: '',
+            timestamp: '',
+            path: ''
+        },
 
         initialize: function() {},
 
@@ -22,20 +30,18 @@ define([
             }
             this.item = item;
         },
-        setCallback: function(callback) {
+        setSaveCallback: function(callback) {
             if (typeof callback !== 'function') {
                 throw new Error('Incorrect input arguments');
             }
             this._callback = callback;
         },
         render: function() {
-            this.checkIntegrity();
-
             if (!this.$el || this.$el.length === 0) {
                 this.$el = $('#' + this.page);
             }
 
-            this.$el.html(_.template(template, this.item.public));
+            this.$el.html(_.template(template, this.item.public || this._defaults));
             this.$el.trigger('create');
 
             if (!this.$task || this.$task.length === 0) {
@@ -59,13 +65,8 @@ define([
         },
 
         // controls
-        checkIntegrity: function() {
-            if (!this.item) {
-                throw new Error('Item is not defined');
-            }
-        },
         save: function(taskData) {
-            this._callback.call(this.item, taskData);
+            this._callback(taskData);
         }
     });
 

@@ -22,6 +22,15 @@ var utils = {
                 target[key] = value;
             }
         }
+
+        return target;
+    },
+
+    changeView: function(page) {
+        if (page[0] !== '#') {
+            page = '#' + page;
+        }
+        window.location.hash = page;
     }
 };
 

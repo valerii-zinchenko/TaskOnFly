@@ -5,6 +5,12 @@
 'use strict';
 
 define(function () {
+    /**
+     *
+     * @param {string} viewName View name, that should be opened
+     * @param {Function} [fn] Function that calls before rendering of view.
+     * @private
+     */
     function _openView (viewName, fn) {
         requirejs(['js/views/' + viewName], function(View) {
             var view = new View();
@@ -22,82 +28,49 @@ define(function () {
         routes: {
             '': 'home',
             'home': 'home',
-            'view/:path' : 'view',
-            'add/:item/*path': 'add'
+            'add/:what': 'add',
+            'edit/:name': 'edit'
         },
 
         home: function() {
             _openView('HomeView');
         },
-        add: function(item, path) {
-            var actionFn = null;
 
-            switch (item) {
+        /**
+         *
+         * @param {string} what Defines what should be added to the current list. It can be: 'task', 'list'
+         */
+        add: function(what) {
+            switch (what) {
                 case 'task':
-                    actionFn = 'addTask';
-                    break;
                 case 'list':
-                    actionFn = 'addSubList';
-                    break;
-                default:
-                    throw new Error('Unhandled item "' + item + '"');
-            }
-
-            if (!path) {
-                throw new Error('Path is not defined');
-            }
-
-            path = path.split('/');
-
-            _openView('TaskView', function() {
-                var list = MAIN.TASK_LIST,
-                    item;
-
-                for (var i = 1, N = path.length; i < N; i++) {
-                    list = list.models[path[i]];
-                }
-
-                item = list[actionFn]();
-
-                this.setItem(item);
-                this.setCallback(list.saveData);
-            });
-        },
-        view: function(path) {
-            var viewName,
-                itemName;
-
-            if (!path) {
-                throw new Error('Path is not defined');
-            }
-
-            path = path.split('/');
-            itemName = path.pop();
-
-            switch (itemName[0]) {
-                case 'T':
-                    viewName = 'TaskView';
-                    break;
-                case 'L':
-                    viewName = 'ListView';
                     break;
                 default :
-                    throw new Error('Unhandled item "' + itemName[0] + '"');
+                    console.warn('Unknown element name "' + what + '"');
+                    return;
             }
 
-            _openView(viewName, function() {
-                var list = MAIN.TASK_LIST,
-                    item;
+            var fn = 'add' + what[0].toUpperCase() + what.slice(1);
+            _openView('TaskView', function() {
+                this.setSaveCallback(MAIN.CURRENT_LIST[fn].bind(MAIN.CURRENT_LIST));
+            });
+        },
 
-                for (var i = 1, N = path.length; i < N; i++) {
-                    list = list.models[path[i]];
+        /**
+         *
+         * @param {string} name Item name in the current list.
+         */
+        edit: function(name) {
+            _openView('TaskView', function() {
+                var item = MAIN.CURRENT_LIST.getItem(name);
+
+                if (!item) {
+                    throw new Error('Item with name "' + name + '" was not found');
                 }
 
-                item = list.getItem(itemName);
-
                 this.setItem(item);
-                this.setCallback(list.saveData);
-            })
+                this.setSaveCallback(MAIN.CURRENT_LIST.saveData.bind(item));
+            });
         }
     });
 

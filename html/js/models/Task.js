@@ -6,8 +6,9 @@
 
 define(function () {
     var Task = new Class({
-        _pathPrefix: 'T',
         _name: '',
+        _pathPrefix: 'T',
+        _type: 'task',
 
         public: {
             isDone: false,

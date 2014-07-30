@@ -17,9 +17,9 @@ define([
 
     //todo: sync data from device
 
-    if (location.hash === '') {
+//    if (location.hash === '') {
         location.hash = '#home';
-    } else {
-        rooter[location.hash.slice(1)]();
-    }
+//    } else {
+//        rooter[location.hash.slice(1)]();
+//    }
 });
