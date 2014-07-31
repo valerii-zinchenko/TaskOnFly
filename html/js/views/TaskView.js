@@ -9,7 +9,7 @@ define([
     'js/models/Task',
     'js/collections/TaskList'
 ],function (template, Task, TaskList) {
-    var TaskView = new Class({
+    var TaskView = new SingletonClass({
         _callback: null,
         item: null,
         page: 'task',
@@ -22,7 +22,17 @@ define([
             path: ''
         },
 
-        initialize: function() {},
+        initialize: function() {
+            this.$el = $('#' + this.page);
+            this.$el.html(_.template(template, this.item.public || this._defaults));
+
+            this.$title= this.$el.find('#title');
+            this.$priority = this.$el.find('#priority');
+            this.$description = this.$el.find('#description');
+
+            this.$el.find('#save').on('vclick', this.save.bind(this));
+            this.$el.find('form').on('submit', this.save.bind(this));
+        },
 
         setItem: function(item) {
             if (item && item.constructor !== Task && item.constructor !== TaskList) {
@@ -37,36 +47,28 @@ define([
             this._callback = callback;
         },
         render: function() {
-            if (!this.$el || this.$el.length === 0) {
-                this.$el = $('#' + this.page);
-            }
+            var data = this.item.public || this._defaults;
+            this.$title.val(data.title);
+            this.$priority.find('#' + data.priority).attr('checked', 'checked');
+            this.$description.val(data.description);
 
-            this.$el.html(_.template(template, this.item.public || this._defaults));
             this.$el.trigger('create');
-
-            if (!this.$task || this.$task.length === 0) {
-                this.$task = {
-                    title: this.$el.find('#title'),
-                    priority: this.$el.find('#priority'),
-                    description: this.$el.find('#description')
-                };
-
-                this.$el.find('#save').on('vclick', function() {
-                    this.save({
-                        title: this.$task.title.val(),
-                        priority: this.$task.priority.find(':checked').val(),
-                        description: this.$task.description.val(),
-                        timestamp: new Date()
-                    });
-                }.bind(this));
-            }
 
             return this;
         },
 
         // controls
-        save: function(taskData) {
-            this._callback(taskData);
+        save: function(ev) {
+            ev.preventDefault();
+
+            this._callback({
+                title: this.$title.val(),
+                priority: this.$priority.find(':checked').val(),
+                description: this.$description.val(),
+                timestamp: new Date()
+            });
+
+            utils.changeView('#home');
         }
     });
 
