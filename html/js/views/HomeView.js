@@ -4,7 +4,7 @@ define([
     'text!templates/home.html',
     'text!templates/list.html'
 ], function(template, templateList) {
-    var HomeView = new Class({
+    var HomeView = new SingletonClass({
         _isReady: false,
 
         page: 'home',
@@ -14,11 +14,12 @@ define([
         render: function() {
             if (!this.$el || this.$el.length === 0) {
                 this.$el = $('#' + this.page);
+                this.$el.html(_.template(template));
             }
-            this.$el.html(_.template(template));
 
             this._init();
             if (MAIN.CURRENT_LIST.length > 0) {
+                this.$content.find('#list').remove();
                 this.$content.append(_.template(templateList, MAIN.CURRENT_LIST));
             }
 
@@ -45,8 +46,8 @@ define([
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
         },
         _attachListEvents: function() {
-            this.$content.find('#list li.task').off('click').on('click', this.editItem);
-            this.$content.find('#list li.list').off('click').on('click', this.selectList.bind(this));
+            this.$content.find('#list div.task').off('click').on('click', this.editItem);
+            this.$content.find('#list div.list').off('click').on('click', this.selectList.bind(this));
         },
 
         addTask: function(ev) {
@@ -59,22 +60,34 @@ define([
         },
         editItem: function(ev) {
             ev.preventDefault();
-            var parent = $(ev.target).parents('li');
-            var name = parent.data('name');
-            utils.changeView('edit/' + $(ev.target).data('name'));
+            var $el = $(ev.target),
+                name;
+
+            if (!$el.data("name")) {
+                $el = $el.parents('li');
+            }
+
+            name = $el.data('name');
+            utils.changeView('edit/' + name);
         },
         selectList: function(ev) {
             ev.preventDefault();
-            MAIN.CURRENT_LIST.selectList($(ev.target).data('name'));
+            var $el = $(ev.target),
+                name;
+
+            if (!$el.data("name")) {
+                $el = $el.parents('div.list');
+            }
+
+            name = $el.data('name');
+            MAIN.CURRENT_LIST.selectList(name);
 
             var $prevList = this.$content.find('#list'),
                 $list = $(_.template(templateList, MAIN.CURRENT_LIST));
 
             if (MAIN.CURRENT_LIST.length > 0) {
                 this.$content.append($list);
-                $list.fieldcontain();
-                $list.find('ul').listview();
-                $list.find('input').checkboxradio();
+                $list.controlgroup();
             }
 
             //todo animate the list changing
@@ -94,9 +107,7 @@ define([
 
             if (MAIN.CURRENT_LIST.length > 0) {
                 this.$content.append($list);
-                $list.fieldcontain();
-                $list.find('ul').listview();
-                $list.find('input').checkboxradio();
+                $list.controlgroup();
             }
 
             //todo animate the list changing

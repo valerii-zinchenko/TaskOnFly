@@ -1,8 +1,8 @@
-<ul id="list" data-role="listview" data-inset="true">
+<fieldset id="list" data-role="controlgroup">
     <% _.each(models, function(item) { %>
-    <li data-name="<%= item._name %>" class="priority-<%= item.public.priority %> <%= item._type %>">
+    <div data-name="<%= item._name %>" class="priority-<%= item.public.priority %> <%= item._type %>">
         <input id="<%= item._name %>" type="checkbox" <% if (item.public.isDone) { %> checked <% } %>>
         <label for="<%= item._name %>"><%= item.public.title %></label>
-    </li>
+    </div>
     <% }) %>
-</ul>
+</fieldset>
