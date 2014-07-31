@@ -10,6 +10,8 @@ var SingletonClass = new AClass(function() {
         }
         this.constructor.instance = this;
 
+        utils.deepExtend(this, this.constructor.prototype._defaults);
+
         if (this.constructor.parent && this.constructor.parent.hasOwnProperty('initialize')) {
             this.constructor.parent.initialize.apply(this, arguments);
         }
