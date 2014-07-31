@@ -46,7 +46,8 @@ define([
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
         },
         _attachListEvents: function() {
-            this.$content.find('#list div.task').off('click').on('click', this.editItem);
+            //todo Reattach this event to the edit button
+//            this.$content.find('#list div.task').off('click').on('click', this.editItem);
             this.$content.find('#list div.list').off('click').on('click', this.selectList.bind(this));
         },
 
@@ -60,11 +61,15 @@ define([
         },
         editItem: function(ev) {
             ev.preventDefault();
-            var $el = $(ev.target),
+            var $target = $(ev.target),
+                $el = $target,
                 name;
 
-            if (!$el.data("name")) {
-                $el = $el.parents('li');
+            if (!$el.data('name')) {
+                $el = $target.parents('div.task');
+                if (!$el.data('name')) {
+                    $el = $target.parents('div.list');
+                }
             }
 
             name = $el.data('name');
@@ -75,7 +80,7 @@ define([
             var $el = $(ev.target),
                 name;
 
-            if (!$el.data("name")) {
+            if (!$el.data('name')) {
                 $el = $el.parents('div.list');
             }
 
