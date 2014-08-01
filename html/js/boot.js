@@ -11,10 +11,11 @@ requirejs.config({
         'backbone':         'js/lib/backbone-1.1.2',
         'text':             'js/lib/text-2.0.12',
         'i18n':             'js/lib/i18n-2.0.4',
-        'utils':            'js/misc/utils',
-        'aclass':           'js/patterns/AClass',
-        'class':            'js/patterns/Class',
-        'singleton':        'js/patterns/SingletonClass'
+        'taskme':           'js/core/TaskMe',
+        'aclass':           'js/core/AClass',
+        'class':            'js/core/Class',
+        'utils':            'js/core/utils',
+        'singleton':        'js/core/SingletonClass'
     },
     shim: {
         jquery: {
@@ -46,10 +47,11 @@ requirejs.config({
 });
 
 requirejs([
-    'utils',
+    'taskme',
     'aclass',
     'class',
     'singleton',
+    'utils',
     'jquery',
     'backbone'
 ], function() {

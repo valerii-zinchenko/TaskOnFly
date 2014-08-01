@@ -12,20 +12,22 @@ define([
         $addListBtn: null,
 
         render: function() {
+            var list = TaskMe.getCurrentList();
+
             if (!this.$el || this.$el.length === 0) {
                 this.$el = $('#' + this.page);
                 this.$el.html(_.template(template));
             }
 
             this._init();
-            if (MAIN.CURRENT_LIST.length > 0) {
+            if (list.length > 0) {
                 this.$content.find('#list').remove();
-                this.$content.append(_.template(templateList, MAIN.CURRENT_LIST));
+                this.$content.append(_.template(templateList, list));
             }
 
             this.$el.trigger('create');
 
-            if (MAIN.CURRENT_LIST.length > 0) {
+            if (list.length > 0) {
                 this._attachListEvents();
             }
             return this;
@@ -53,11 +55,11 @@ define([
 
         addTask: function(ev) {
             ev.preventDefault();
-            utils.changeView('add/task');
+            TaskMe.changeView('add/task');
         },
         addList: function(ev) {
             ev.preventDefault();
-            utils.changeView('add/list');
+            TaskMe.changeView('add/list');
         },
         editItem: function(ev) {
             ev.preventDefault();
@@ -73,11 +75,12 @@ define([
             }
 
             name = $el.data('name');
-            utils.changeView('edit/' + name);
+            TaskMe.changeView('edit/' + name);
         },
         selectList: function(ev) {
             ev.preventDefault();
-            var $el = $(ev.target),
+            var list = TaskMe.getCurrentList(),
+                $el = $(ev.target),
                 name;
 
             if (!$el.data('name')) {
@@ -85,12 +88,12 @@ define([
             }
 
             name = $el.data('name');
-            MAIN.CURRENT_LIST.selectList(name);
+            list.selectList(name);
 
             var $prevList = this.$content.find('#list'),
-                $list = $(_.template(templateList, MAIN.CURRENT_LIST));
+                $list = $(_.template(templateList, list));
 
-            if (MAIN.CURRENT_LIST.length > 0) {
+            if (list.length > 0) {
                 this.$content.append($list);
                 $list.controlgroup();
             }
@@ -99,18 +102,19 @@ define([
 
             $prevList.remove();
 
-            if (MAIN.CURRENT_LIST.length > 0) {
+            if (list.length > 0) {
                 this._attachListEvents()
             }
         },
         selectPreviousList: function(ev) {
             ev.preventDefault();
-            MAIN.CURRENT_LIST.selectParentList();
+            var list = TaskMe.getCurrentList();
+            list.selectParentList();
 
             var $prevList = this.$content.find('#list'),
-                $list = $(_.template(templateList, MAIN.CURRENT_LIST));
+                $list = $(_.template(templateList, list));
 
-            if (MAIN.CURRENT_LIST.length > 0) {
+            if (list.length > 0) {
                 this.$content.append($list);
                 $list.controlgroup();
             }
@@ -119,7 +123,7 @@ define([
 
             $prevList.remove();
 
-            if (MAIN.CURRENT_LIST.length > 0) {
+            if (list.length > 0) {
                 this._attachListEvents()
             }
         }

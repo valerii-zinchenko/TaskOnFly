@@ -52,7 +52,8 @@ define(function () {
 
             var fn = 'add' + what[0].toUpperCase() + what.slice(1);
             _openView('TaskView', function() {
-                this.setSaveCallback(MAIN.CURRENT_LIST[fn].bind(MAIN.CURRENT_LIST));
+                var list = TaskMe.getCurrentList();
+                this.setSaveCallback(list[fn].bind(list));
             });
         },
 
@@ -62,14 +63,15 @@ define(function () {
          */
         edit: function(name) {
             _openView('TaskView', function() {
-                var item = MAIN.CURRENT_LIST.getItem(name);
+                var list = TaskMe.getCurrentList(),
+                    item = list.getItem(name);
 
                 if (!item) {
                     throw new Error('Item with name "' + name + '" was not found');
                 }
 
                 this.setItem(item);
-                this.setSaveCallback(MAIN.CURRENT_LIST.saveData.bind(item));
+                this.setSaveCallback(list.saveData.bind(item));
             });
         }
     });

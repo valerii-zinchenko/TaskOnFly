@@ -68,7 +68,7 @@ define([
                 timestamp: new Date()
             });
 
-            utils.changeView('#home');
+            TaskMe.changeView('#home');
         }
     });
 

@@ -34,12 +34,12 @@ define([
         },
 
         selectList: function(name) {
-            var parent = MAIN.CURRENT_LIST;
-            MAIN.CURRENT_LIST = parent.getItem(name);
-            MAIN.CURRENT_LIST._parent = parent;
+            var parent = TaskMe.getCurrentList();
+            TaskMe.setCurrentList(parent.getItem(name));
+            TaskMe.getCurrentList()._parent = parent;
         },
         selectParentList: function() {
-            MAIN.CURRENT_LIST = this._parent;
+            TaskMe.setCurrentList(this._parent);
         }
     });
 

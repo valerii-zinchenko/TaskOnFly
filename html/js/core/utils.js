@@ -24,13 +24,6 @@ var utils = {
         }
 
         return target;
-    },
-
-    changeView: function(page) {
-        if (page[0] !== '#') {
-            page = '#' + page;
-        }
-        window.location.hash = page;
     }
 };
 
