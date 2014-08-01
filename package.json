@@ -7,6 +7,8 @@
         "test": "test"
     },
     "dependencies": {
+        "rimraf":"",
+        "jscoverage":"",
         "mocha":"",
         "chai":"",
         "sinon":"",
@@ -18,6 +20,9 @@
         "jquery":""
     },
     "scripts": {
+        "prestart": "node test/js/pretest",
+        "start": "node test/js/test > CodeCoverage/js.html",
+        "poststart": "node test/js/posttest",
         "test": "node test/js/test"
     },
     "author": "Valerii Zinchenko",

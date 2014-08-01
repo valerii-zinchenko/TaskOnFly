@@ -2,6 +2,17 @@
  * Created by valera on 7/14/14.
  */
 
+if (process.env.npm_lifecycle_event === 'test') {
+    reporter = 'dot';
+    srcPrefix = '../../html/js/';
+    baseUrl = './html'
+} else {
+    reporter = 'html-cov';
+    srcPrefix = '../_jsTestFiles/js/';
+    baseUrl = 'test' + srcPrefix.slice(2,-3);
+}
+
+
 assert = require('chai').assert;
 dom = require('dom-lite');
 Mocha = require('mocha');
@@ -10,32 +21,34 @@ Backbone = require('backbone');
 jquery = require('jquery');
 $ = jquery;
 
-utils = require('../../html/js/misc/utils');
-AClass = require('../../html/js/patterns/AClass');
-Class = require('../../html/js/patterns/Class');
-SingletonClass = require('../../html/js/patterns/SingletonClass');
-
 requirejs = require('requirejs');
 define = requirejs.define;
 
 requirejs.config({
-    baseUrl: 'html',
-    paths: {
-        'text': 'js/lib/text-2.0.12',
-        'i18n': 'js/lib/i18n-2.0.4'
-    },
+    baseUrl: baseUrl,
 
     nodeRequire: require
 });
 
-testRunner = new Mocha({ui: 'tdd'/*, reporter: 'html-cov'*/});
+TaskMe = require(srcPrefix + 'core/TaskMe');
+utils = require(srcPrefix + 'core/utils');
+AClass = require(srcPrefix + 'core/AClass');
+Class = require(srcPrefix + 'core/Class');
+SingletonClass = require(srcPrefix + 'core/SingletonClass');
+
+testRunner = new Mocha({
+    ui: 'tdd',
+    reporter: reporter
+});
+
+testPrefix = './test/js/';
 [
-    'test/js/patterns/testAClass',
-    'test/js/patterns/testClass',
-    'test/js/patterns/testSingletonClass',
-    'test/js/models/testTask',
-    'test/js/collections/testTaskList'
+    'core/testAClass',
+    'core/testClass',
+    'core/testSingletonClass',
+    'models/testTask',
+    'collections/testTaskList'
 ].forEach(function(file) {
-        testRunner.addFile(file);
-    });
+    testRunner.addFile(testPrefix + file);
+});
 testRunner.run();
