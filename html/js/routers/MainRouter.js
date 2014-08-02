@@ -76,6 +76,5 @@ define(function () {
         }
     });
 
-    Backbone.history.start();
     return MainRooter;
 });
