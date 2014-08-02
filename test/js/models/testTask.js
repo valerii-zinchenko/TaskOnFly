@@ -9,36 +9,38 @@ suite('Test Task model', function() {
             done();
         })
     });
-    teardown(function() {
-        Module._counter = 0;
-    });
 
     test('Constructor without arguments', function() {
         assert.throw(function() {
             new Module();
-        }, Error, 'Path is not defined');
+        }, Error, 'Invalid input arguments');
     });
-    test('Constructor with path', function() {
-        assert.equal((new Module('L0')).public.path, 'L0/T0');
+    test('Constructor with parentID', function() {
+        var parentID = 'parentID',
+            obj = new Module(parentID);
+        assert.equal(obj.public.parentID, parentID);
     });
 
     test('Constructor with unaccepted data', function() {
         assert.throw(function() {
-            new Module('', 0);
-        }, Error, 'Data should be an object');
-        assert.throw(function() {
             new Module(undefined, undefined);
-        }, Error, 'Path is not defined');
+        }, Error, 'Invalid input arguments');
+        assert.throw(function() {
+            new Module('', 0);
+        }, Error, 'parentID is not defined');
+        assert.throw(function() {
+            new Module('parentID', 0);
+        }, Error, 'Incorrect type of data input argument');
     });
     test('Constructor with accepted data', function() {
-        var path = 'L0/L2',
+        var parentID = 'parentID',
             isDone = true,
             title = 'test task',
             priority = 3,
             description = 'task description',
             timestamp = new Date();
 
-        var task = new Module(path, {
+        var task = new Module(parentID, {
             isDone: isDone,
             title: title,
             priority: priority,
@@ -46,7 +48,7 @@ suite('Test Task model', function() {
             timestamp: timestamp
         });
 
-        assert.equal(task.public.path, (path + '/T0'));
+        assert.equal(task.public.parentID, parentID);
         assert.equal(task.public.isDone, isDone);
         assert.equal(task.public.title, title);
         assert.equal(task.public.priority, priority);
@@ -54,15 +56,15 @@ suite('Test Task model', function() {
         assert.equal(task.public.timestamp, timestamp);
     });
 
-    test('Save data function', function() {
-        var path = 'L0/L2',
+    test('saveData()', function() {
+        var parenID = 'parentID',
             isDone = true,
             title = 'test task',
             priority = 3,
             description = 'task description',
             timestamp = new Date();
 
-        var task = new Module(path);
+        var task = new Module(parenID);
         task.saveData({
             isDone: isDone,
             title: title,
@@ -79,18 +81,21 @@ suite('Test Task model', function() {
     });
 
     test('Is Module a singleton?', function() {
-        assert.notEqual(new Module(''), new Module(''));
+        assert.notEqual(new Module('id'), new Module('id'));
     });
 
     test('Two instances', function() {
-        var path = 'L0/L2',
+        var parentID = 'parentID',
             isDone = true,
             title = 'test task',
+            title1 = 'test task1',
             priority = 3,
+            priority1 = 4,
             description = 'task description',
+            description1 = 'task description1',
             timestamp = new Date().toString();
 
-        var task1 = new Module(path);
+        var task1 = new Module(parentID);
         task1.saveData({
             isDone: isDone,
             title: title,
@@ -99,12 +104,12 @@ suite('Test Task model', function() {
             timestamp: timestamp
         });
 
-        var task2 = new Module(path);
+        var task2 = new Module(parentID);
         task2.saveData({
             isDone: isDone,
-            title: title + 1,
-            priority: priority - 1,
-            description: description + 1,
+            title: title1,
+            priority: priority1,
+            description: description1,
             timestamp: timestamp
         });
 
@@ -115,9 +120,9 @@ suite('Test Task model', function() {
         assert.equal(task1.public.timestamp, timestamp);
 
         assert.equal(task2.public.isDone, isDone);
-        assert.equal(task2.public.title, title+1);
-        assert.equal(task2.public.priority, priority-1);
-        assert.equal(task2.public.description, description+1);
+        assert.equal(task2.public.title, title1);
+        assert.equal(task2.public.priority, priority1);
+        assert.equal(task2.public.description, description1);
         assert.equal(task2.public.timestamp, timestamp);
     });
 });

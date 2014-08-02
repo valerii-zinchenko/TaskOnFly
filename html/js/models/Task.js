@@ -6,8 +6,6 @@
 
 define(function () {
     var Task = new Class({
-        _name: '',
-        _pathPrefix: 'T',
         _type: 'task',
 
         public: {
@@ -16,28 +14,36 @@ define(function () {
             priority: 1,
             description: '',
             timestamp: '',
-            path: ''
+            id: '',
+            parentID: ''
         },
 
-        _genPath: function(path) {
-            this._name = this._pathPrefix + this.constructor._counter++;
-            return [path, '/', this._name].join('');
+        _genID: function() {
+            return [
+                Date.now().toString(16),
+                (Math.random() * 0x10000 | 0).toString(16) + this.constructor._counter++
+            ].join('-');
         },
 
-        initialize: function(path, data) {
-            if (arguments.length === 0 ||
-                (typeof path === 'undefined' && typeof data === 'undefined'))
+        initialize: function(parentID, data) {
+            if (arguments.length === 0
+                || (typeof parentID === 'undefined' && typeof data === 'undefined'))
             {
-                throw new Error('Path is not defined');
+                throw new Error('Invalid input arguments');
             }
 
-            this.public.path = this._genPath(path);
+            if (typeof parentID !== 'string' || 0 === parentID.length) {
+                throw new Error('parentID is not defined');
+            }
+            this.public.parentID = parentID;
 
-            if (data !== undefined) {
+            this.public.id = this._genID();
+
+            if (typeof data !== 'undefined') {
                 if (typeof data === 'object') {
                     this.saveData(data);
                 } else {
-                    throw new Error('Data should be an object');
+                    throw new Error('Incorrect type of data input argument');
                 }
             }
         },

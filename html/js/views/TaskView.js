@@ -19,7 +19,7 @@ define([
             priority: 1,
             description: '',
             timestamp: '',
-            path: ''
+            id: ''
         },
 
         initialize: function() {

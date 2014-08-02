@@ -14,18 +14,19 @@ suite('Test TaskList', function() {
     });
 
     test('Constructor with path', function() {
-        assert.equal((new Module('L0')).public.path, 'L0/L0');
+        var parentID = 'parentID';
+        assert.equal((new Module(parentID)).public.parentID, parentID);
     });
 
     test('Constructor with accepted data', function() {
-        var path = 'L0/L2',
+        var parentID = 'parentID',
             isDone = true,
             title = 'test task',
             priority = 3,
             description = 'task description',
             timestamp = new Date();
 
-        var task = new Module(path, {
+        var task = new Module(parentID, {
             isDone: isDone,
             title: title,
             priority: priority,
@@ -33,7 +34,7 @@ suite('Test TaskList', function() {
             timestamp: timestamp
         });
 
-        assert.equal(task.public.path, (path + '/L0'));
+        assert.equal(task.public.parentID, parentID);
         assert.equal(task.public.isDone, isDone);
         assert.equal(task.public.title, title);
         assert.equal(task.public.priority, priority);
@@ -42,14 +43,14 @@ suite('Test TaskList', function() {
     });
 
     test('Save data function', function() {
-        var path = 'L0/L2',
+        var parentID = 'parentID',
             isDone = true,
             title = 'test task',
             priority = 3,
             description = 'task description',
             timestamp = new Date();
 
-        var task = new Module(path);
+        var task = new Module(parentID);
         task.saveData({
             isDone: isDone,
             title: title,
@@ -66,6 +67,6 @@ suite('Test TaskList', function() {
     });
 
     test('Is Module a singleton?', function() {
-        assert.notEqual(new Module(''), new Module(''));
+        assert.notEqual(new Module('id'), new Module('id'));
     });
 });
