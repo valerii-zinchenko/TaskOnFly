@@ -54,6 +54,7 @@ testPrefix = './test/js/';
     'core/testClass',
     'core/testSingletonClass',
     'core/testTaskMe',
+    'core/test_utils',
     'test_main',
     'models/testTask',
     'collections/testTaskList'
