@@ -1,5 +1,5 @@
 /**
- * Created by valera on 7/27/14.
+ * Created by Valerii Zinchenko on 7/27/14.
  */
 
 suite('Class. General.', function() {

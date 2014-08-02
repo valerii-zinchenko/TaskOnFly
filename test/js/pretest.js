@@ -1,5 +1,5 @@
 /**
- * Created by valera on 8/1/14.
+ * Created by Valerii Zinchenko on 8/1/14.
  */
 
 jscoverage = require('jscoverage');

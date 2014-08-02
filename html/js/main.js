@@ -1,5 +1,5 @@
 /**
- * Created by valera on 7/23/14.
+ * Created by Valerii Zinchenko on 7/23/14.
  */
 
 'use strict';
