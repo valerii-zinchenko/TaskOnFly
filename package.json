@@ -14,7 +14,6 @@
         "sinon":"",
         "underscore":"",
         "backbone":"",
-        "node-localstorage":"",
         "dom-lite":"",
         "requirejs":""
     },

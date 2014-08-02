@@ -52,6 +52,8 @@ define(function () {
                 data.timestamp = data.timestamp.toString();
             }
             utils.deepExtend(this.public, data);
+
+            TaskMe.saveItem(this);
         }
     });
 

@@ -3,14 +3,22 @@
  */
 
 window = {
-    storage: {},
     localStorage: {
+        storage: {},
+
         setItem: function(key, value) {
-            window.storage.key = value;
+            window.localStorage.storage[key] = value;
         },
         getItem: function(key) {
-            return window.storage[key];
+            return window.localStorage.storage[key];
+        },
+        clear: function() {
+            delete window.localStorage.storage;
+            window.localStorage.storage = {};
         }
+    },
+    location: {
+        hash: ''
     }
 };
 
