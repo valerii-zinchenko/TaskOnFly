@@ -13,19 +13,17 @@ define([
         models: {},
         length: 0,
 
-        addList: function(data) {
-            var list = new TaskList(this._id, data);
-            this.models[list._id] = list;
+        _add: function(item) {
+            this.models[item.public.id] = item;
             this.length++;
 
-            return list;
+            return item;
+        },
+        addList: function(data) {
+            return this._add(new TaskList(this.public.id, data));
         },
         addTask: function(data) {
-            var task = new Task(this._id, data);
-            this.models[task._id] = task;
-            this.length++;
-
-            return task;
+            return this._add(new Task(this.public.id, data));
         },
 
         getItem: function(name) {
@@ -33,9 +31,8 @@ define([
         },
 
         selectList: function(name) {
-            var parent = TaskMe.getCurrentList();
-            TaskMe.setCurrentList(parent.getItem(name));
-            TaskMe.getCurrentList()._parent = parent;
+            TaskMe.setCurrentList(this.getItem(name));
+            TaskMe.getCurrentList()._parent = this;
         },
         selectParentList: function() {
             TaskMe.setCurrentList(this._parent);

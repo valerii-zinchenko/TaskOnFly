@@ -2,68 +2,57 @@
  * Created by Valerii Zinchenko on 7/21/14.
  */
 suite('Test TaskList', function() {
-    var Module;
+    var Module,
+        List;
     setup(function(done) {
         requirejs(['js/collections/TaskList'], function(TaskList) {
             Module = TaskList;
+            List = new Module('root');
             done();
         })
     });
 
-    test('Constructor with path', function() {
-        var parentID = 'parentID';
-        assert.equal((new Module(parentID)).public.parentID, parentID);
+    test('_add()', function() {
+        var item = {
+            public: {id: '11'}
+        };
+
+        assert.equal(List._add(item), item);
+        assert.equal(List.models[item.public.id], item);
+        assert.equal(List.length, 1);
     });
 
-    test('Constructor with accepted data', function() {
-        var parentID = 'parentID',
-            isDone = true,
-            title = 'test task',
-            priority = 3,
-            description = 'task description',
-            timestamp = new Date();
-
-        var task = new Module(parentID, {
-            isDone: isDone,
-            title: title,
-            priority: priority,
-            description: description,
-            timestamp: timestamp
-        });
-
-        assert.equal(task.public.parentID, parentID);
-        assert.equal(task.public.isDone, isDone);
-        assert.equal(task.public.title, title);
-        assert.equal(task.public.priority, priority);
-        assert.equal(task.public.description, description);
-        assert.equal(task.public.timestamp, timestamp);
+    test('addList()', function() {
+        assert.doesNotThrow(function() {
+            var item = List.addList();
+            assert.equal(item.constructor, Module);
+        })
     });
 
-    test('Save data function', function() {
-        var parentID = 'parentID',
-            isDone = true,
-            title = 'test task',
-            priority = 3,
-            description = 'task description',
-            timestamp = new Date();
-
-        var task = new Module(parentID);
-        task.saveData({
-            isDone: isDone,
-            title: title,
-            priority: priority,
-            description: description,
-            timestamp: timestamp
-        });
-
-        assert.equal(task.public.isDone, isDone);
-        assert.equal(task.public.title, title);
-        assert.equal(task.public.priority, priority);
-        assert.equal(task.public.description, description);
-        assert.equal(task.public.timestamp, timestamp);
+    test('addList()', function() {
+        assert.doesNotThrow(function() {
+            var value = 11;
+            assert.equal(List.addTask({value: value}).public.value, value);
+        })
     });
 
-    test('Is Module a singleton?', function() {
-        assert.notEqual(new Module('id'), new Module('id'));
+    test('getItem()', function() {
+        var item = List.addList();
+        assert.equal(List.getItem(item.public.id), item);
+    });
+
+    test('selectList()', function() {
+        var List2 = List.addList();
+        List.selectList(List2.public.id);
+
+        assert.equal(TaskMe.getCurrentList(), List2);
+    });
+
+    test('selectParentList()', function() {
+        var List2 = List.addList();
+        List.selectList(List2.public.id);
+        List2.selectParentList();
+
+        assert.equal(TaskMe.getCurrentList(), List);
     });
 });
