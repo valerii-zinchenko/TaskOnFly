@@ -7,11 +7,16 @@
 var TaskMe;
 (function() {
     function saveLocal(key, data) {
-        window.localStorage.setItem(key, data);
+        window.localStorage.setItem(key, JSON.stringify(data));
     }
 
     function loadLocal(key) {
-        return window.localStorage.getItem(key);
+        var value = window.localStorage.getItem(key);
+        return value ? JSON.parse(value) : null;
+    }
+
+    function removeLocal(key) {
+        window.localStorage.removeItem(key);
     }
 
     function checkItemType(type) {
@@ -65,9 +70,12 @@ var TaskMe;
                 throw new Error('Item id is not defined');
             }
 
+            var key = [item._type, item.public.id].join('-'),
+                items = loadLocal(item._type + 's') || [];
 
-            var key = [item._type, item.public.id].join('-');
-            saveLocal(key, JSON.stringify(item.public));
+            items.push(item.public.id);
+            saveLocal(item._type+'s', items);
+            saveLocal(key, item.public);
         },
         loadItem: function(type, id) {
             checkItemType(type);
@@ -76,7 +84,23 @@ var TaskMe;
             }
 
             var key = [type, id].join('-');
-            return JSON.parse(loadLocal(key));
+            return loadLocal(key);
+        },
+        removeItem: function(item) {
+            if (!item) {
+                return;
+            }
+
+            var key = [item._type, item.public.id].join('-'),
+                items = loadLocal(item._type + 's'),
+                index = items.indexOf(item.public.id);
+
+            if (index > -1) {
+                items.splice(index,1);
+            }
+
+            saveLocal(item._type + 's', items);
+            removeLocal(key);
         }
     };
 })();

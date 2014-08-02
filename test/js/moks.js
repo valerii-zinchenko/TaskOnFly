@@ -12,6 +12,9 @@ window = {
         getItem: function(key) {
             return window.localStorage.storage[key];
         },
+        removeItem: function(key) {
+            delete window.localStorage.storage[key];
+        },
         clear: function() {
             delete window.localStorage.storage;
             window.localStorage.storage = {};

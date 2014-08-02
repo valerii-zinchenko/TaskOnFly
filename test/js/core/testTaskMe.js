@@ -113,12 +113,27 @@ suite('Test TaskMe IO', function() {
     test('saveItem() Check localStorage', function() {
         TaskMe.saveItem(item);
         assert.equal(window.localStorage.getItem(id), JSON.stringify(item.public));
+        assert.ok(window.localStorage.getItem(item._type + 's'));
     });
+
     test('loadItem()', function() {
         TaskMe.saveItem(item);
 
         var storedItem = TaskMe.loadItem(item._type, item.public.id);
         assert.equal(storedItem.id, item.public.id);
         assert.equal(storedItem.value, item.public.value);
-    })
+    });
+
+    test('removeItem()', function() {
+        assert.doesNotThrow(function() {
+            TaskMe.removeItem();
+        });
+
+        TaskMe.saveItem(item);
+        assert.doesNotThrow(function() {
+            TaskMe.removeItem(item);
+        });
+
+        assert.isNull(TaskMe.loadItem(item._type, item.public.id));
+    });
 });
