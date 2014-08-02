@@ -16,8 +16,7 @@
         "backbone":"",
         "node-localstorage":"",
         "dom-lite":"",
-        "requirejs":"",
-        "jquery":""
+        "requirejs":""
     },
     "scripts": {
         "prestart": "node test/js/pretest",

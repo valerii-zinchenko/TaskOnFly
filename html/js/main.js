@@ -8,12 +8,14 @@ define([
     'js/routers/MainRouter',
     'js/collections/TaskList'
 ], function(MainRouter, TaskList) {
-    TaskMe.setRootList(new TaskList(''));
-    TaskMe.setCurrentList(TaskMe.getRootList());
+    return function() {
+        TaskMe.setRootList(new TaskList('root'));
+        TaskMe.setCurrentList(TaskMe.getRootList());
 
-    var rooter = new MainRouter();
+        var rooter = new MainRouter();
 
-    //todo: sync data from device
+        //todo: sync data from device
 
-    rooter.home();
+        rooter.home();
+    }
 });

@@ -63,5 +63,10 @@ requirejs([
         });
     });
 
-    requirejs(['jquery.mobile', 'js/main']);
+    requirejs(['jquery.mobile'], function() {
+        requirejs(['js/main'], function(main) {
+            main();
+            Backbone.history.start();
+        });
+    });
 });

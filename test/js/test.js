@@ -3,7 +3,7 @@
  */
 
 if (process.env.npm_lifecycle_event === 'test') {
-    reporter = 'dot';
+    reporter = 'spec';
     srcPrefix = '../../html/js/';
     baseUrl = './html'
 } else {
@@ -18,14 +18,16 @@ dom = require('dom-lite');
 Mocha = require('mocha');
 _ = require('underscore');
 Backbone = require('backbone');
-jquery = require('jquery');
-$ = jquery;
 
 requirejs = require('requirejs');
 define = requirejs.define;
 
 requirejs.config({
     baseUrl: baseUrl,
+    paths: {
+        'text': 'js/lib/text-2.0.12',
+        'i18n': 'js/lib/i18n-2.0.4'
+    },
 
     nodeRequire: require
 });
@@ -46,9 +48,13 @@ testPrefix = './test/js/';
     'core/testAClass',
     'core/testClass',
     'core/testSingletonClass',
+    'test_main',
     'models/testTask',
     'collections/testTaskList'
 ].forEach(function(file) {
     testRunner.addFile(testPrefix + file);
 });
+
+requirejs('./test/js/moks.js');
+
 testRunner.run();

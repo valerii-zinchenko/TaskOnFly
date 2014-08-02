@@ -21,7 +21,9 @@ destPrefix = './test/_jsTestFiles/js/';
     'routers/MainRouter.js',
 
     'views/HomeView.js',
-    'views/TaskView.js'
+    'views/TaskView.js',
+
+    'main'
 ].forEach(function(file) {
     jscoverage.processFile(srcPrefix + file, destPrefix + file);
 });
