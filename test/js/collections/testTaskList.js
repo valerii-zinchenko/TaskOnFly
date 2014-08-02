@@ -9,9 +9,6 @@ suite('Test TaskList', function() {
             done();
         })
     });
-    teardown(function() {
-        Module._counter = 0;
-    });
 
     test('Constructor with path', function() {
         var parentID = 'parentID';

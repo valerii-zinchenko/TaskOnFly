@@ -20,7 +20,7 @@
     },
     "scripts": {
         "prestart": "node test/js/pretest",
-        "start": "node test/js/test > CodeCoverage/js.html",
+        "start": "node test/js/test > reports/js.html",
         "poststart": "node test/js/posttest",
         "test": "node test/js/test"
     },

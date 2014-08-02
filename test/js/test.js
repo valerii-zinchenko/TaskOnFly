@@ -5,11 +5,15 @@
 if (process.env.npm_lifecycle_event === 'test') {
     reporter = 'spec';
     srcPrefix = '../../html/js/';
-    baseUrl = './html'
+    baseUrl = './html';
+    libUrl = 'js/lib/';
+    templatesUrl = '';
 } else {
     reporter = 'html-cov';
     srcPrefix = '../_jsTestFiles/js/';
     baseUrl = 'test' + srcPrefix.slice(2,-3);
+    libUrl = '../../html/js/lib/';
+    templatesUrl = '../../html/templates';
 }
 
 
@@ -25,8 +29,9 @@ define = requirejs.define;
 requirejs.config({
     baseUrl: baseUrl,
     paths: {
-        'text': 'js/lib/text-2.0.12',
-        'i18n': 'js/lib/i18n-2.0.4'
+        'text': libUrl + 'text-2.0.12',
+        'i18n': libUrl + 'i18n-2.0.4',
+        'templates': templatesUrl
     },
 
     nodeRequire: require
