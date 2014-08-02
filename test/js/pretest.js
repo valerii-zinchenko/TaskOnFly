@@ -23,7 +23,7 @@ destPrefix = './test/_jsTestFiles/js/';
     'views/HomeView.js',
     'views/TaskView.js',
 
-    'main'
+    'main.js'
 ].forEach(function(file) {
     jscoverage.processFile(srcPrefix + file, destPrefix + file);
 });
