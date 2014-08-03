@@ -19,7 +19,7 @@ suite('Test TaskList', function() {
 
         assert.equal(List._add(item), item);
         assert.equal(List.models[item.public.id], item);
-        assert.equal(List.length, 1);
+        assert.equal(List.public.items.length, 1);
     });
 
     test('addList()', function() {

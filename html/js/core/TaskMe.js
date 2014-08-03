@@ -19,16 +19,6 @@ var TaskMe;
         window.localStorage.removeItem(key);
     }
 
-    function checkItemType(type) {
-        switch (type) {
-            case 'task':
-            case 'list':
-                break;
-            default :
-                throw new Error('Unknown item type');
-        }
-    }
-
     TaskMe = {
         ROOT_TASK_LIST: null,
         CURRENT_TASK_LIST: null,
@@ -61,8 +51,6 @@ var TaskMe;
                 throw new Error('item is not defined');
             }
 
-            checkItemType(item._type);
-
             if (!item.public || typeof item.public !== 'object') {
                 throw new Error('Item object does not contain public object');
             }
@@ -70,37 +58,53 @@ var TaskMe;
                 throw new Error('Item id is not defined');
             }
 
-            var key = [item._type, item.public.id].join('-'),
-                items = loadLocal(item._type + 's') || [];
+            var id = item.public.id,
+                items = loadLocal('items') || [];
 
-            items.push(item.public.id);
-            saveLocal(item._type+'s', items);
-            saveLocal(key, item.public);
+            if (items.indexOf(id) === -1) {
+                items.push(id);
+            } else {
+                console.log('update ' + id);
+            }
+
+            saveLocal('items', items);
+            saveLocal(id, item.public);
         },
-        loadItem: function(type, id) {
-            checkItemType(type);
+        loadItem: function(id) {
             if (!id) {
                 throw new Error('Item id is not defined');
             }
-
-            var key = [type, id].join('-');
-            return loadLocal(key);
+            return loadLocal(id);
         },
         removeItem: function(item) {
             if (!item) {
                 return;
             }
 
-            var key = [item._type, item.public.id].join('-'),
-                items = loadLocal(item._type + 's'),
-                index = items.indexOf(item.public.id);
+            var id = item.public.id,
+                items = loadLocal('items'),
+                index = items.indexOf(id);
 
             if (index > -1) {
                 items.splice(index,1);
             }
 
-            saveLocal(item._type + 's', items);
-            removeLocal(key);
+            saveLocal('items', items);
+            removeLocal(id);
+        },
+        loadAllItems: function() {
+            var itemList = loadLocal('items'),
+                items = {};
+
+            if (!itemList) {
+                return null;
+            }
+
+            itemList.forEach(function(id) {
+                items[id] = loadLocal(id)
+            });
+
+            return items;
         }
     };
 })();

@@ -54,28 +54,17 @@ suite('Test TaskMe', function() {
         }, Error, 'item is not defined');
         assert.throw(function() {
             TaskMe.saveItem({});
-        }, Error, 'Unknown item type');
-
-        assert.throw(function() {
-            TaskMe.saveItem({_type: 'type'});
-        }, Error, 'Unknown item type');
-        assert.throw(function() {
-            TaskMe.saveItem({_type: 'task'});
-        }, Error, 'Item object does not contain public object');
-        assert.throw(function() {
-            TaskMe.saveItem({_type: 'list'});
         }, Error, 'Item object does not contain public object');
 
         assert.throw(function() {
-            TaskMe.saveItem({_type: 'task', public: 5});
+            TaskMe.saveItem({public: 5});
         }, Error, 'Item object does not contain public object');
         assert.throw(function() {
-            TaskMe.saveItem({_type: 'task', public: {}});
+            TaskMe.saveItem({public: {}});
         }, Error, 'Item id is not defined');
     });
     test('saveItem() with correct input arguments', function() {
         var item = {
-            _type: 'task',
             public: {
                 id: '04',
                 value: 11
@@ -88,23 +77,19 @@ suite('Test TaskMe', function() {
 
     test('loadItem() with incorrect input arguments', function() {
         assert.throw(function() {
-            TaskMe.loadItem('item');
-        }, Error, 'Unknown item type');
-        assert.throw(function() {
-            TaskMe.loadItem('task');
+            TaskMe.loadItem();
         }, Error, 'Item id is not defined');
     });
 });
 
 suite('Test TaskMe IO', function() {
     var item = {
-            _type: 'task',
             public: {
                 id: '04',
                 value: 11
             }
         },
-        id = [item._type, item.public.id].join('-');
+        id = item.public.id;
 
     setup(function() {
         window.localStorage.clear();
@@ -113,13 +98,13 @@ suite('Test TaskMe IO', function() {
     test('saveItem() Check localStorage', function() {
         TaskMe.saveItem(item);
         assert.equal(window.localStorage.getItem(id), JSON.stringify(item.public));
-        assert.ok(window.localStorage.getItem(item._type + 's'));
+        assert.ok(window.localStorage.getItem('items'));
     });
 
     test('loadItem()', function() {
         TaskMe.saveItem(item);
 
-        var storedItem = TaskMe.loadItem(item._type, item.public.id);
+        var storedItem = TaskMe.loadItem(item.public.id);
         assert.equal(storedItem.id, item.public.id);
         assert.equal(storedItem.value, item.public.value);
     });
@@ -134,6 +119,6 @@ suite('Test TaskMe IO', function() {
             TaskMe.removeItem(item);
         });
 
-        assert.isNull(TaskMe.loadItem(item._type, item.public.id));
+        assert.isNull(TaskMe.loadItem(item.public.id));
     });
 });

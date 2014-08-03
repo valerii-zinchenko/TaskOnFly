@@ -6,8 +6,6 @@
 
 define(function () {
     var Task = new Class({
-        _type: 'task',
-
         public: {
             isDone: false,
             title: '',
@@ -53,7 +51,7 @@ define(function () {
                 if (data.timestamp && typeof data.timestamp !== 'string') {
                     data.timestamp = data.timestamp.toString();
                 }
-                utils.deepExtend(this.public, data);
+                utils.deepCopy(this.public, data);
             }
 
             TaskMe.saveItem(this);

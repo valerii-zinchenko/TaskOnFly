@@ -3,7 +3,7 @@
  */
 
 var utils = {
-    deepExtend: function(target, source) {
+    deepCopy: function(target, source) {
         var key,
             value;
 
@@ -13,13 +13,42 @@ var utils = {
             }
 
             value = source[key];
-            if (typeof value === 'object') {
-                if (!target[key]) {
-                    target[key] = {};
+            switch (Object.prototype.toString.call(value)) {
+                case '[object Object]':
+                    if (!target[key]) {
+                        target[key] = {};
+                    }
+                    utils.deepCopy(target[key], value);
+                    break;
+                default :
+                    target[key] = value
+            }
+        }
+
+        return target;
+    },
+    deepExtend: function(target, source) {
+        var key,
+            value;
+
+        for (key in source) {
+            value = source[key];
+            if (target.hasOwnProperty(key)) {
+                if (typeof target[key] === 'object') {
+                    utils.deepExtend(target[key], value);
                 }
-                utils.deepExtend(target[key], value);
-            } else {
-                target[key] = value;
+                continue;
+            }
+
+            switch (Object.prototype.toString.call(value)) {
+                case '[object Object]':
+                    if (!target[key]) {
+                        target[key] = {};
+                    }
+                    utils.deepExtend(target[key], value);
+                    break;
+                default :
+                    target[key] = value
             }
         }
 

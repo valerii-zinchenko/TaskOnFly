@@ -8,30 +8,39 @@ define([
     'js/models/Task'
 ], function (Task) {
     var TaskList = new Class(Task, {
-        _type: 'list',
         _parent: null,
         models: {},
-        length: 0,
+
+        public: {
+            type: 'List',
+            items: []
+        },
 
         _add: function(item) {
             this.models[item.public.id] = item;
-            this.length++;
+            this.public.items.push(item.public.id);
 
             return item;
-        },
-        addList: function(data) {
-            return this._add(new TaskList(this.public.id, data));
         },
         addTask: function(data) {
             return this._add(new Task(this.public.id, data));
         },
-
-        getItem: function(name) {
-            return this.models[name];
+        addList: function(data) {
+            return this._add(new TaskList(this.public.id, data));
         },
 
-        selectList: function(name) {
-            TaskMe.setCurrentList(this.getItem(name));
+        getItem: function(id) {
+            return this.models[id];
+        },
+
+        removeItem: function(id) {
+            TaskMe.removeItem(this.models[id]);
+            this.public.items.splice(this.public.items.indexOf(id), 1);
+            delete this.models[id];
+        },
+
+        selectList: function(id) {
+            TaskMe.setCurrentList(this.getItem(id));
             TaskMe.getCurrentList()._parent = this;
         },
         selectParentList: function() {
