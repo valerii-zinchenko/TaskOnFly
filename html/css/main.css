@@ -8,3 +8,12 @@ table.list th {
 table.list td {
     white-space: nowrap;
 }
+
+#priority .ui-controlgroup-controls div:nth-child(2) .ui-btn.ui-btn-active {
+    background-color: #28c828;
+    border-color: #28c828;
+}
+#priority .ui-controlgroup-controls div:last-child .ui-btn.ui-btn-active {
+    background-color: #dc2828;
+    border-color: #dc2828;
+}

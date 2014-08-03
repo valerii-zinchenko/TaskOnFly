@@ -3,22 +3,22 @@
     float: none;
 }
 
-table.list.fixed {
+table.fixed {
     table-layout: fixed;
 }
 
-table.list tbody th label.nowrap {
+table tbody th label.nowrap {
     white-space: nowrap;
 }
 
-table.list .ui-controlgroup,
-table.list .ui-checkbox {
+table .ui-controlgroup,
+table .ui-checkbox,
+table .ui-input-text {
     margin: 0;
 }
 
 table.list .ui-checkbox label {
     text-overflow: ellipsis;
-    /*white-space: nowrap;*/
 }
 
 table.list .ui-controlgroup .ui-controlgroup-controls:before,
@@ -26,3 +26,37 @@ table.list .ui-controlgroup .ui-controlgroup-controls:after {
     display: block;
 }
 
+table.task-title .ui-checkbox input {
+    position: static;
+}
+table.task-title .ui-checkbox {
+    padding: .5em 0;
+}
+
+table.task-title .ui-checkbox input.ui-btn {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+table.task-title .ui-checkbox input.ui-btn:after {
+    margin: 0;
+    left: 0;
+    top: 2px;
+    width: 33px;
+    height: 33px;
+    opacity: 1;
+}
+
+table.task-title .ui-checkbox input.ui-btn.ui-checkbox-off:after {
+    background-color: #666;
+    background-color: rgba(224,224,224,1);
+}
+
+.ui-controlgroup-horizontal.full-width,
+.ui-controlgroup-horizontal.full-width .ui-controlgroup-controls {
+    width: 100%
+}
+
+.ui-controlgroup-horizontal.full-width.ui-controlgroup-grid-b .ui-controlgroup-controls > div {
+    width: 33%
+}
