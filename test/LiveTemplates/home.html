@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TaskMe</title>
+
+    <script src="../../html/js/lib/jquery-2.1.1.js"></script>
+    <script src="../../html/js/lib/jquery.mobile-1.4.3.js"></script>
+    <link rel="stylesheet" href="../../html/css/jquery.mobile-1.4.3.css">
+    <link rel="stylesheet" href="../../html/css/main.css">
+    <link rel="stylesheet" href="../../html/css/jquery.mobile-custom.css">
+</head>
+<body>
+    <div data-role="page" id="home">
+        <div data-role="header">
+            <h1>Home</h1>
+        </div>
+        <div id="content" data-role="content">
+            <!--<div data-role="controlgroup" data-type="horizontal">-->
+            <div data-role="controlgroup">
+                <a href="#task" id="addTask" data-role="button">New task</a>
+                <a href="#task" id="addList" data-role="button">New list</a>
+                <a href="#" id="prevList" data-role="button">Previous list</a>
+            </div>
+
+            <table class="list">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>
+                            <div class="priority-1 task">
+                                <input id="T1" type="checkbox">
+                                <label for="T1">Task 1 Task 1 Task 1 Task 1</label>
+                            </div>
+                        </th>
+                        <td>
+                            <div data-role="controlgroup" data-type="horizontal">
+                                <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <div class="priority-1 task">
+                                <input id="T2" type="checkbox">
+                                <label for="T2">Task 2 Task 2 Task 2</label>
+                            </div>
+                        </th>
+                        <td>
+                            <div data-role="controlgroup" data-type="horizontal">
+                                <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <script>
+                function refreshTable() {
+                    var $table = $('table.list'),
+                        th = $table.find('th:first'),
+                        width = th.width();
+                    $table.addClass('fixed');
+                    th.css('width', width);
+                    $table.find('tbody th label').addClass('nowrap');
+                }
+
+                setTimeout(refreshTable, 1000);
+            </script>
+
+        </div>
+        <div data-role="footer"></div>
+    </div>
+    <div data-role="page" id="task"></div>
+</body>
+</html>

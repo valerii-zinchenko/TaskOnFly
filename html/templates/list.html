@@ -1,8 +1,20 @@
-<fieldset id="list" data-role="controlgroup">
+<table class="list">
+    <thead><tr><th></th><th></th></tr></thead>
+    <tbody>
     <% _.each(models, function(item) { %>
-    <div data-name="<%= item.public.id %>" class="priority-<%= item.public.priority %> <%= item._type %>">
-        <input id="<%= item.public.id %>" type="checkbox" <% if (item.public.isDone) { %> checked <% } %> <% if (item._type === 'list') { %> disabled <% } %>>
-        <label for="<%= item.public.id %>"><%= item.public.title %></label>
-    </div>
+    <tr>
+        <th>
+            <div data-name="<%= item.public.id %>" class="priority-<%= item.public.priority %> <%= item._type %>">
+                <input id="<%= item.public.id %>" type="checkbox" <% if (item.public.isDone) { %> checked <% } %> <% if (item._type === 'list') { %> disabled <% } %>>
+                <label for="<%= item.public.id %>"><%= item.public.title %></label>
+            </div>
+        </th>
+        <td>
+            <div data-role="controlgroup" data-type="horizontal">
+                <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+            </div>
+        </td>
+    </tr>
     <% }) %>
-</fieldset>
+    </tbody>
+</table>

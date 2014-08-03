@@ -1,0 +1,10 @@
+table.list {
+    width: 100%;
+}
+
+table.list th {
+    width: 100%;
+}
+table.list td {
+    white-space: nowrap;
+}

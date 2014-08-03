@@ -1,0 +1,28 @@
+.ui-controlgroup-horizontal .ui-controlgroup-controls .ui-btn.custom {
+    display: inline;
+    float: none;
+}
+
+table.list.fixed {
+    table-layout: fixed;
+}
+
+table.list tbody th label.nowrap {
+    white-space: nowrap;
+}
+
+table.list .ui-controlgroup,
+table.list .ui-checkbox {
+    margin: 0;
+}
+
+table.list .ui-checkbox label {
+    text-overflow: ellipsis;
+    /*white-space: nowrap;*/
+}
+
+table.list .ui-controlgroup .ui-controlgroup-controls:before,
+table.list .ui-controlgroup .ui-controlgroup-controls:after {
+    display: block;
+}
+
