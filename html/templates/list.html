@@ -4,8 +4,8 @@
     <% _.each(models, function(item) { %>
     <tr data-item-id="<%= item.public.id %>">
         <th>
-            <div class="priority-<%= item.public.priority %> <%= item.public.type %>">
-                <input id="<%= item.public.id %>" type="checkbox" <% if (item.public.isDone) { %> checked <% } %> <% if (item.public.type === 'list') { %> disabled <% } %>>
+            <div class="priority-<%= item.public.priority %> <%= item.public.type.toLowerCase() %>">
+                <input id="<%= item.public.id %>" type="checkbox" <% if (item.public.isDone) { %> checked <% } %> <% if (item.public.type.toLowerCase() === 'list') { %> disabled <% } %>>
                 <label for="<%= item.public.id %>"><%= item.public.title %></label>
             </div>
         </th>

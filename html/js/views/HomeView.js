@@ -39,9 +39,9 @@ define([
             return this;
         },
         _attachListEvents: function() {
-            this.$content.find('.list td .edit-btn').off('click').on('click', this.editItem);
-            this.$content.find('.list td .delete-btn').off('click').on('click', this.removeItem);
-            this.$content.find('.list div.list').off('click').on('click', this.selectList.bind(this));
+            this.$content.find('table.list td .edit-btn').off('click').on('click', this.editItem);
+            this.$content.find('table.list td .delete-btn').off('click').on('click', this.removeItem);
+            this.$content.find('table.list th .list').off('click').on('click', this.selectList.bind(this));
         },
 
         addTask: function(ev) {
@@ -68,38 +68,34 @@ define([
         },
         selectList: function(ev) {
             ev.preventDefault();
-            var list = TaskMe.getCurrentList(),
-                id = $(ev.target).parents('tr').data('item-id');
+            var id = $(ev.target).parents('tr').data('item-id'),
+                list = TaskMe.getCurrentList().selectList(id);
 
-            list.selectList(id);
-
-            var $prevList = this.$content.find('#list'),
+            var $prevList = this.$content.find('.list'),
                 $list = $(_.template(templateList, list));
 
-            if (list.length > 0) {
+            if (list.public.items.length > 0) {
                 this.$content.append($list);
-                $list.controlgroup();
+                $list.trigger('create');
             }
 
             //todo animate the list changing
 
             $prevList.remove();
 
-            if (list.length > 0) {
+            if (list.public.items.length > 0) {
                 this._attachListEvents()
             }
         },
         selectPreviousList: function(ev) {
             ev.preventDefault();
-            var list = TaskMe.getCurrentList();
-            list.selectParentList();
-
-            var $prevList = this.$content.find('#list'),
+            var list = TaskMe.getCurrentList().selectParentList(),
+                $prevList = this.$content.find('.list'),
                 $list = $(_.template(templateList, list));
 
-            if (list.length > 0) {
+            if (list.public.items.length > 0) {
                 this.$content.append($list);
-                $list.controlgroup();
+                $list.trigger('create');
             }
 
             //todo animate the list changing

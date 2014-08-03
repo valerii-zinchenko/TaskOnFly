@@ -46,11 +46,16 @@ define([
         },
 
         selectList: function(id) {
-            TaskMe.setCurrentList(this.getItem(id));
+            var list = this.getItem(id);
+            TaskMe.setCurrentList(list);
             TaskMe.getCurrentList()._parent = this;
+
+            return list;
         },
         selectParentList: function() {
             TaskMe.setCurrentList(this._parent);
+
+            return this._parent;
         }
     });
 
