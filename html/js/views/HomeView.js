@@ -26,14 +26,14 @@ define([
         render: function() {
             var list = TaskMe.getCurrentList();
 
-            if (list.length > 0) {
+            if (list.public.items.length > 0) {
                 this.$content.find('.list').remove();
                 this.$content.append(_.template(templateList, list));
             }
 
             this.$el.trigger('create');
 
-            if (list.length > 0) {
+            if (list.public.items.length > 0) {
                 this._attachListEvents();
             }
             return this;

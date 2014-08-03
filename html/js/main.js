@@ -22,7 +22,7 @@ define([
     return function() {
         var rooter = new MainRouter(),
             store = TaskMe.loadAllItems(),
-            rootList = new TaskList('root');
+            rootList = new TaskList('root', {id:'root'});
 
         if (store && store.root) {
             rootList.saveData(store.root);

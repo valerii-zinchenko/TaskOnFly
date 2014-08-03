@@ -17,9 +17,13 @@ define([
         },
 
         _add: function(item) {
-            this.models[item.public.id] = item;
-            this.public.items.push(item.public.id);
+            if (this.public.items.indexOf(item.public.id) === -1) {
+                this.public.items.push(item.public.id);
+            }
 
+            this.models[item.public.id] = item;
+
+            TaskMe.saveItem(this);
             return item;
         },
         addTask: function(data) {
@@ -34,9 +38,11 @@ define([
         },
 
         removeItem: function(id) {
-            TaskMe.removeItem(this.models[id]);
+            TaskMe.removeItem(id);
             this.public.items.splice(this.public.items.indexOf(id), 1);
             delete this.models[id];
+
+            TaskMe.saveItem(this);
         },
 
         selectList: function(id) {

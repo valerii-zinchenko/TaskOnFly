@@ -76,13 +76,12 @@ var TaskMe;
             }
             return loadLocal(id);
         },
-        removeItem: function(item) {
-            if (!item) {
+        removeItem: function(id) {
+            if (!id) {
                 return;
             }
 
-            var id = item.public.id,
-                items = loadLocal('items'),
+            var items = loadLocal('items'),
                 index = items.indexOf(id);
 
             if (index > -1) {
