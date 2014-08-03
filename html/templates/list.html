@@ -2,16 +2,16 @@
     <thead><tr><th></th><th></th></tr></thead>
     <tbody>
     <% _.each(models, function(item) { %>
-    <tr>
+    <tr data-item-id="<%= item.public.id %>">
         <th>
-            <div data-name="<%= item.public.id %>" class="priority-<%= item.public.priority %> <%= item._type %>">
+            <div class="priority-<%= item.public.priority %> <%= item._type %>">
                 <input id="<%= item.public.id %>" type="checkbox" <% if (item.public.isDone) { %> checked <% } %> <% if (item._type === 'list') { %> disabled <% } %>>
                 <label for="<%= item.public.id %>"><%= item.public.title %></label>
             </div>
         </th>
         <td>
             <div data-role="controlgroup" data-type="horizontal">
-                <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
             </div>
         </td>
     </tr>

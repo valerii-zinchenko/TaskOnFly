@@ -11,17 +11,23 @@ define([
         $addTaskBtn: null,
         $addListBtn: null,
 
+        initialize: function() {
+            this.$el = $('#' + this.page);
+            this.$el.html(_.template(template));
+            this.$content = this.$el.find('#content');
+            this.$addTaskBtn = this.$el.find('#addTask');
+            this.$addListBtn = this.$el.find('#addList');
+            this.$prevListBtn = this.$el.find('#prevList');
+
+            this.$addTaskBtn.on('click', this.addTask);
+            this.$addListBtn.on('click', this.addList);
+            this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
+        },
         render: function() {
             var list = TaskMe.getCurrentList();
 
-            if (!this.$el || this.$el.length === 0) {
-                this.$el = $('#' + this.page);
-                this.$el.html(_.template(template));
-            }
-
-            this._init();
             if (list.length > 0) {
-                this.$content.find('#list').remove();
+                this.$content.find('.list').remove();
                 this.$content.append(_.template(templateList, list));
             }
 
@@ -32,25 +38,10 @@ define([
             }
             return this;
         },
-        _init: function() {
-            if (this._isReady) {
-                return;
-            }
-            this._isReady = true;
-
-            this.$content = this.$el.find('#content');
-            this.$addTaskBtn = this.$el.find('#addTask');
-            this.$addListBtn = this.$el.find('#addList');
-            this.$prevListBtn = this.$el.find('#prevList');
-
-            this.$addTaskBtn.on('click', this.addTask);
-            this.$addListBtn.on('click', this.addList);
-            this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
-        },
         _attachListEvents: function() {
-            //todo Reattach this event to the edit button
-//            this.$content.find('#list div.task').off('click').on('click', this.editItem);
-            this.$content.find('#list div.list').off('click').on('click', this.selectList.bind(this));
+            this.$content.find('.list td .edit-btn').off('click').on('click', this.editItem);
+            this.$content.find('.list td .delete-btn').off('click').on('click', this.removeItem);
+            this.$content.find('.list div.list').off('click').on('click', this.selectList.bind(this));
         },
 
         addTask: function(ev) {
@@ -63,32 +54,24 @@ define([
         },
         editItem: function(ev) {
             ev.preventDefault();
-            var $target = $(ev.target),
-                $el = $target,
-                name;
+            var id = $(ev.target).parents('tr').data('item-id');
 
-            if (!$el.data('name')) {
-                $el = $target.parents('div.task');
-                if (!$el.data('name')) {
-                    $el = $target.parents('div.list');
-                }
-            }
+            TaskMe.changeView('edit/' + id);
+        },
+        removeItem: function(ev) {
+            ev.preventDefault();
+            var $tr = $(ev.target).parents('tr'),
+                id = $tr.data('item-id');
 
-            name = $el.data('name');
-            TaskMe.changeView('edit/' + name);
+            TaskMe.getCurrentList().removeItem(id);
+            $tr.remove();
         },
         selectList: function(ev) {
             ev.preventDefault();
             var list = TaskMe.getCurrentList(),
-                $el = $(ev.target),
-                name;
+                id = $(ev.target).parents('tr').data('item-id');
 
-            if (!$el.data('name')) {
-                $el = $el.parents('div.list');
-            }
-
-            name = $el.data('name');
-            list.selectList(name);
+            list.selectList(id);
 
             var $prevList = this.$content.find('#list'),
                 $list = $(_.template(templateList, list));

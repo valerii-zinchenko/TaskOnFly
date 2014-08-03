@@ -59,15 +59,15 @@ define(function () {
 
         /**
          *
-         * @param {string} name Item name in the current list.
+         * @param {string} id Item name in the current list.
          */
-        edit: function(name) {
+        edit: function(id) {
             _openView('TaskView', function() {
                 var list = TaskMe.getCurrentList(),
-                    item = list.getItem(name);
+                    item = list.getItem(id);
 
                 if (!item) {
-                    throw new Error('Item with name "' + name + '" was not found');
+                    throw new Error('Item with id: "' + id + '" was not found');
                 }
 
                 this.setItem(item);

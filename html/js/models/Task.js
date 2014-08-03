@@ -15,7 +15,8 @@ define(function () {
             description: '',
             timestamp: '',
             id: '',
-            parentID: ''
+            parentID: '',
+            type: 'Task'
         },
 
         _genID: function() {
@@ -48,10 +49,12 @@ define(function () {
             }
         },
         saveData: function(data) {
-            if (data.timestamp && typeof data.timestamp !== 'string') {
-                data.timestamp = data.timestamp.toString();
+            if (data) {
+                if (data.timestamp && typeof data.timestamp !== 'string') {
+                    data.timestamp = data.timestamp.toString();
+                }
+                utils.deepExtend(this.public, data);
             }
-            utils.deepExtend(this.public, data);
 
             TaskMe.saveItem(this);
         }
