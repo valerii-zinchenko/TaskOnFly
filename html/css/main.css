@@ -1,16 +1,18 @@
-table.list,
-table.task-title {
+table.full {
     width: 100%;
 }
 
-table.list th {
+table.full th {
     width: 100%;
 }
-table.list td {
+table.full td {
     white-space: nowrap;
 }
 
 table.task-title td:first-child {
+    width: 33px;
+}
+table.fast-item td:last-child {
     width: 33px;
 }
 
@@ -21,4 +23,9 @@ table.task-title td:first-child {
 #priority .ui-controlgroup-controls div:last-child .ui-btn.ui-btn-active {
     background-color: #dc2828;
     border-color: #dc2828;
+}
+
+div[data-role="footer"] a:last-child,
+div[data-role="footer"] button:last-child {
+    float: right;
 }

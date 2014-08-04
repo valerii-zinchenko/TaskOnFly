@@ -21,8 +21,8 @@ table.list .ui-checkbox label {
     text-overflow: ellipsis;
 }
 
-table.list .ui-controlgroup .ui-controlgroup-controls:before,
-table.list .ui-controlgroup .ui-controlgroup-controls:after {
+table.full .ui-controlgroup .ui-controlgroup-controls:before,
+table.full .ui-controlgroup .ui-controlgroup-controls:after {
     display: block;
 }
 

@@ -13,17 +13,32 @@
 <body>
     <div data-role="page" id="home">
         <div data-role="header">
+            <a href="#" id="prevList" data-role="button" data-icon="carat-l">Previous list</a>
             <h1>Home</h1>
         </div>
         <div id="content" class="ui-content">
-            <!--<div data-role="controlgroup" data-type="horizontal">-->
-            <div data-role="controlgroup">
-                <a href="#task" id="addTask" data-role="button">New task</a>
-                <a href="#task" id="addList" data-role="button">New list</a>
-                <a href="#" id="prevList" data-role="button">Previous list</a>
+            <div data-role="fieldcontain">
+                <table class="full fast-item">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <input id="fastItem" type="text" placeholder="Fast task">
+                        </td>
+                        <td>
+                            <button id="addFastTask" data-role="button" data-icon="plus" data-iconpos="notext">add</button>
+                            <!--<div data-role="controlgroup" data-type="horizontal" data-mini="true">-->
+                                <!--<label for="addFastTask">Task</label>-->
+                                <!--<input id="addFastTask" type="radio" name="type" value="Task" checked >-->
+                                <!--<label for="addFastList">List</label>-->
+                                <!--<input id="addFastList" type="radio" name="type" value="List" >-->
+                            <!--</div>-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <table class="list">
+            <table class="full list">
                 <thead>
                     <tr>
                         <th></th>
@@ -73,7 +88,10 @@
             </script>
 
         </div>
-        <div data-role="footer"></div>
+        <div data-role="footer">
+            <button id="addList" data-role="button" data-icon="plus">New list</button>
+            <button id="addTask" data-role="button" data-icon="plus" data-iconpos="right">New task</button>
+        </div>
     </div>
     <div data-role="page" id="task"></div>
 </body>
