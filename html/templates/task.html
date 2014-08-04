@@ -1,6 +1,7 @@
 <div data-role="header">
     <a href="#home" data-role="back" data-icon="carat-l">Back</a>
-    <h1>Task</h1>
+    <h1>Item</h1>
+    <a id="save" data-role="button" data-icon="plus" data-iconpos="right">Save</a>
 </div>
 <div data-role="content">
     <div data-role="fieldcontain">
@@ -30,10 +31,6 @@
     </div>
     <div data-role="fieldcontain">
         <textarea id="description" name="description" placeholder="Description"><%= description %></textarea>
-    </div>
-    <div data-role="fieldcontain">
-        <button id="save" data-role="button">Save</button>
-        <button id="cancel" data-role="button">Cancel</button>
     </div>
 </div>
 <div data-role="footer"></div>
