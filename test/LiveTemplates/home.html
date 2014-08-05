@@ -24,14 +24,18 @@
                         <td>
                             <input id="fastItem" type="text" placeholder="Fast task">
                         </td>
+                        <td class="select-priority">
+                            <div id="priority" class="full-width ui-controlgroup-grid-b" data-role="controlgroup" data-type="horizontal" data-mini="true">
+                                <label for="low" class="low ui-icon-arrow-d ui-btn-icon-notext">Low</label>
+                                <input id="low" type="radio" name="priority" value="0">
+                                <label for="normal">O</label>
+                                <input id="normal" type="radio" name="priority" value="1" checked>
+                                <label for="high" class="high ui-icon-arrow-u ui-btn-icon-notext">High</label>
+                                <input id="high" type="radio" name="priority" value="2">
+                            </div>
+                        </td>
                         <td class="add-btn">
                             <button id="addFastTask" data-role="button" data-icon="plus" data-iconpos="notext">add</button>
-                            <!--<div data-role="controlgroup" data-type="horizontal" data-mini="true">-->
-                                <!--<label for="addFastTask">Task</label>-->
-                                <!--<input id="addFastTask" type="radio" name="type" value="Task" checked >-->
-                                <!--<label for="addFastList">List</label>-->
-                                <!--<input id="addFastList" type="radio" name="type" value="List" >-->
-                            <!--</div>-->
                         </td>
                     </tr>
                     </tbody>
