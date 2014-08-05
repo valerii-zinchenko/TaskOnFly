@@ -24,6 +24,10 @@ div[data-role="footer"] button:last-child {
 .fast-item .add-btn {
     width: 33px;
 }
+.fast-item .add-btn #addFastTask {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
 .select-priority #priority .ui-btn-icon-notext {
     width: auto;
 }

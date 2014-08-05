@@ -12,72 +12,74 @@
 </head>
 <body>
     <div data-role="page" id="home">
-        <div data-role="header">
+        <div data-role="header" data-position="fixed">
             <a href="#" id="prevList" data-role="button" data-icon="carat-l">Previous list</a>
             <h1>Home</h1>
         </div>
         <div id="content" class="ui-content">
+            <table class="full fast-item">
+                <tbody>
+                <tr>
+                    <td>
+                        <input id="fastItem" type="text" placeholder="Fast task">
+                    </td>
+                    <td class="select-priority">
+                        <div id="priority" class="full-width ui-controlgroup-grid-b" data-role="controlgroup" data-type="horizontal" data-mini="true">
+                            <label for="low" class="low ui-icon-arrow-d ui-btn-icon-notext">Low</label>
+                            <input id="low" type="radio" name="priority" value="0">
+                            <label for="normal" class="normal ui-icon-circle ui-btn-icon-notext">Normal</label>
+                            <input id="normal" type="radio" name="priority" value="1" checked>
+                            <label for="high" class="high ui-icon-arrow-u ui-btn-icon-notext">High</label>
+                            <input id="high" type="radio" name="priority" value="2">
+                        </div>
+                    </td>
+                    <td class="add-btn">
+                        <button id="addFastTask" data-role="button" data-icon="plus" data-iconpos="notext">add</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
             <div data-role="fieldcontain">
-                <table class="full fast-item">
+                <table class="full task-list">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                            <input id="fastItem" type="text" placeholder="Fast task">
-                        </td>
-                        <td class="select-priority">
-                            <div id="priority" class="full-width ui-controlgroup-grid-b" data-role="controlgroup" data-type="horizontal" data-mini="true">
-                                <label for="low" class="low ui-icon-arrow-d ui-btn-icon-notext">Low</label>
-                                <input id="low" type="radio" name="priority" value="0">
-                                <label for="normal" class="normal ui-icon-circle ui-btn-icon-notext">Normal</label>
-                                <input id="normal" type="radio" name="priority" value="1" checked>
-                                <label for="high" class="high ui-icon-arrow-u ui-btn-icon-notext">High</label>
-                                <input id="high" type="radio" name="priority" value="2">
-                            </div>
-                        </td>
-                        <td class="add-btn">
-                            <button id="addFastTask" data-role="button" data-icon="plus" data-iconpos="notext">add</button>
-                        </td>
-                    </tr>
+                        <tr data-item-id="T1">
+                            <th>
+                                <div class="list-item task priority-2">
+                                    <input id="T1" type="checkbox">
+                                    <label for="T1">Task 1 Task 1 Task 1 Task 1</label>
+                                </div>
+                            </th>
+                            <td>
+                                <div data-role="controlgroup" data-type="horizontal">
+                                    <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-item-id="T2">
+                            <th>
+                                <div class="list-item list priority-1">
+                                    <input id="T2" type="checkbox">
+                                    <label for="T2">List 2 List 2 List 2</label>
+                                </div>
+                            </th>
+                            <td>
+                                <div data-role="controlgroup" data-type="horizontal">
+                                    <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
-            <table class="full task-list">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr data-item-id="T1">
-                        <th>
-                            <div class="list-item task priority-2">
-                                <input id="T1" type="checkbox">
-                                <label for="T1">Task 1 Task 1 Task 1 Task 1</label>
-                            </div>
-                        </th>
-                        <td>
-                            <div data-role="controlgroup" data-type="horizontal">
-                                <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr data-item-id="T2">
-                        <th>
-                            <div class="list-item list priority-1">
-                                <input id="T2" type="checkbox">
-                                <label for="T2">List 2 List 2 List 2</label>
-                            </div>
-                        </th>
-                        <td>
-                            <div data-role="controlgroup" data-type="horizontal">
-                                <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
             <script>
                 function refreshTable() {
                     var $table = $('table.task-list'),
@@ -107,7 +109,7 @@
             </script>
 
         </div>
-        <div data-role="footer">
+        <div data-role="footer" data-position="fixed">
             <button id="addList" data-role="button" data-icon="plus">New list</button>
             <button id="addTask" data-role="button" data-icon="plus" data-iconpos="right">New task</button>
         </div>
