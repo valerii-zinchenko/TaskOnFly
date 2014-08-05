@@ -80,6 +80,9 @@ table.task-title td:first-child {
     width: 33px;
 }
 
+#priority .ui-controlgroup-controls label {
+    text-align: center;
+}
 #priority .ui-controlgroup-controls div:nth-child(2) .ui-btn.ui-btn-active {
     background-color: #28c828;
     border-color: #28c828;
