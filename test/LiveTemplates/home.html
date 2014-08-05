@@ -28,7 +28,7 @@
                             <div id="priority" class="full-width ui-controlgroup-grid-b" data-role="controlgroup" data-type="horizontal" data-mini="true">
                                 <label for="low" class="low ui-icon-arrow-d ui-btn-icon-notext">Low</label>
                                 <input id="low" type="radio" name="priority" value="0">
-                                <label for="normal">O</label>
+                                <label for="normal" class="normal ui-icon-circle ui-btn-icon-notext">Normal</label>
                                 <input id="normal" type="radio" name="priority" value="1" checked>
                                 <label for="high" class="high ui-icon-arrow-u ui-btn-icon-notext">High</label>
                                 <input id="high" type="radio" name="priority" value="2">
@@ -80,7 +80,7 @@
             </table>
             <script>
                 function refreshTable() {
-                    var $table = $('table.list'),
+                    var $table = $('table.task-list'),
                         th = $table.find('th:first'),
                         width = th.width();
                     $table.addClass('fixed');
@@ -88,7 +88,22 @@
                     $table.find('tbody th label').addClass('nowrap');
                 }
 
-                setTimeout(refreshTable, 1000);
+                function disableListItems() {
+                    $('.task-list .list-item.list input').prop('disabled', true);
+                }
+
+                function checkList() {
+                    $('.task-list .list-item.list input').prop('checked', true).checkboxradio('refresh')
+                }
+                function uncheckList() {
+                    $('.task-list .list-item.list input').prop('checked', false).checkboxradio('refresh')
+                }
+
+
+                setTimeout(function() {
+                    refreshTable();
+                    disableListItems();
+                }, 1000);
             </script>
 
         </div>
