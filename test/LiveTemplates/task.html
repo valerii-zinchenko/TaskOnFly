@@ -18,14 +18,14 @@
 </div>
 <div data-role="content">
     <div data-role="fieldcontain">
-        <table class="task-title">
+        <table class="full task-title">
             <tbody>
             <tr>
                 <td>
                     <input type="checkbox" id="done" class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-checkbox-off"/>
                 </td>
                 <td>
-                    <input type="text" id="title" name="title" placeholder="Title" value="<%= title %>"/>
+                    <input type="text" id="title" name="title" placeholder="Title" value=""/>
                 </td>
             </tr>
             </tbody>
@@ -43,7 +43,7 @@
         </div>
     </div>
     <div data-role="fieldcontain">
-        <textarea id="description" name="description" placeholder="Description"><%= description %></textarea>
+        <textarea id="notes" name="description" placeholder="Notes"></textarea>
     </div>
 </div>
 <div data-role="footer"></div>

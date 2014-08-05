@@ -1,18 +1,57 @@
-table.full {
-    width: 100%;
-}
-
+/* Commons */
+table.full,
 table.full th {
     width: 100%;
 }
+
 table.full td {
     white-space: nowrap;
 }
 
-table.task-title td:first-child {
+/* Home page */
+div[data-role="footer"] a:first-child,
+div[data-role="footer"] button:first-child {
+    left: 0.4em;
+}
+
+div[data-role="footer"] a:last-child,
+div[data-role="footer"] button:last-child {
+    float: right;
+    right: 0.4em;
+}
+
+/* Fast task */
+.fast-item .add-btn {
     width: 33px;
 }
-table.fast-item td:last-child {
+
+/* List content */
+.task-list .list-item:before {
+    display: block;
+    content: "";
+    height: 45px;
+    width: 5px;
+    position: absolute;
+    z-index: 3;
+    border-radius: 5px 0 0 5px;
+}
+.task-list .list-item.priority-0:before {
+    background-color: #3388cc;
+}
+.task-list .list-item.priority-1:before {
+    background-color: #28c828;
+}
+.task-list .list-item.priority-2:before {
+    background-color: #dc2828;
+}
+
+.task-list .list-item .ui-checkbox-on {
+    text-decoration: line-through !important;
+    color: gray;
+}
+
+/* Edit page */
+table.task-title td:first-child {
     width: 33px;
 }
 
@@ -23,9 +62,4 @@ table.fast-item td:last-child {
 #priority .ui-controlgroup-controls div:last-child .ui-btn.ui-btn-active {
     background-color: #dc2828;
     border-color: #dc2828;
-}
-
-div[data-role="footer"] a:last-child,
-div[data-role="footer"] button:last-child {
-    float: right;
 }
