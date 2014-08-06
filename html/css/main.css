@@ -8,16 +8,31 @@ table.full td {
     white-space: nowrap;
 }
 
+table.fixed {
+    table-layout: fixed;
+}
+
+table .ui-controlgroup,
+table .ui-checkbox,
+table .ui-input-text {
+    margin: 0;
+}
+
+
 /* Home page */
-div[data-role="footer"] a:first-child,
-div[data-role="footer"] button:first-child {
+.ui-footer .btn-left {
     left: 0.4em;
 }
 
-div[data-role="footer"] a:last-child,
-div[data-role="footer"] button:last-child {
+.ui-footer .btn-right {
     float: right;
     right: 0.4em;
+}
+
+.ui-footer table .btn-left,
+.ui-footer table .btn-right {
+    float: none;
+    left: 0.4em;
 }
 
 /* Fast task */
@@ -55,6 +70,11 @@ div[data-role="footer"] button:last-child {
 }
 
 /* List content */
+.task-list .list-item label.nowrap {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .task-list .list-item:before {
     display: block;
     content: "";

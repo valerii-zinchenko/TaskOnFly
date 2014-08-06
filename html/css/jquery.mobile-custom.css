@@ -3,24 +3,6 @@
     float: none;
 }
 
-table.fixed {
-    table-layout: fixed;
-}
-
-table tbody th label.nowrap {
-    white-space: nowrap;
-}
-
-table .ui-controlgroup,
-table .ui-checkbox,
-table .ui-input-text {
-    margin: 0;
-}
-
-table.list .ui-checkbox label {
-    text-overflow: ellipsis;
-}
-
 table.full .ui-controlgroup .ui-controlgroup-controls:before,
 table.full .ui-controlgroup .ui-controlgroup-controls:after {
     display: block;

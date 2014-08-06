@@ -42,6 +42,7 @@
 
 
             <div data-role="fieldcontain">
+
                 <table class="full task-list">
                     <thead>
                         <tr>
@@ -87,7 +88,7 @@
                         width = th.width();
                     $table.addClass('fixed');
                     th.css('width', width);
-                    $table.find('tbody th label').addClass('nowrap');
+                    $table.find('.list-item label').addClass('nowrap');
                 }
 
                 function disableListItems() {
@@ -110,10 +111,22 @@
 
         </div>
         <div data-role="footer" data-position="fixed">
-            <button id="addList" data-role="button" data-icon="plus">New list</button>
-            <button id="addTask" data-role="button" data-icon="plus" data-iconpos="right">New task</button>
+            <table class="full">
+                <tbody>
+                    <tr>
+                        <td>
+                            <button id="addList" data-role="button" data-icon="plus">New list</button>
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Search...">
+                        </td>
+                        <td>
+                            <button id="addTask" data-role="button" data-icon="plus" data-iconpos="right">New task</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <div data-role="page" id="task"></div>
 </body>
 </html>
