@@ -100,37 +100,87 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr data-item-id="T2">
+                            <th>
+                                <div class="list-item list priority-1">
+                                    <input id="T3" type="checkbox">
+                                    <label for="T3">List 2 List 2 List 2</label>
+                                </div>
+                            </th>
+                            <td>
+                                <div data-role="controlgroup" data-type="horizontal">
+                                    <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-item-id="T2">
+                            <th>
+                                <div class="list-item list priority-0">
+                                    <input id="T4" type="checkbox">
+                                    <label for="T4">List 2 List 2 List 2</label>
+                                </div>
+                            </th>
+                            <td>
+                                <div data-role="controlgroup" data-type="horizontal">
+                                    <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-item-id="T2">
+                            <th>
+                                <div class="list-item list priority-1">
+                                    <input id="T5" type="checkbox">
+                                    <label for="T5">List 2 List 2 List 2</label>
+                                </div>
+                            </th>
+                            <td>
+                                <div data-role="controlgroup" data-type="horizontal">
+                                    <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-item-id="T2">
+                            <th>
+                                <div class="list-item list priority-2">
+                                    <input id="T6" type="checkbox">
+                                    <label for="T6">List 2 List 2 List 2</label>
+                                </div>
+                            </th>
+                            <td>
+                                <div data-role="controlgroup" data-type="horizontal">
+                                    <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-item-id="T2">
+                            <th>
+                                <div class="list-item list priority-1">
+                                    <input id="T7" type="checkbox">
+                                    <label for="T7">List 2 List 2 List 2</label>
+                                </div>
+                            </th>
+                            <td>
+                                <div data-role="controlgroup" data-type="horizontal">
+                                    <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-item-id="T2">
+                            <th>
+                                <div class="list-item list priority-0">
+                                    <input id="T8" type="checkbox">
+                                    <label for="T8">List 2 List 2 List 2</label>
+                                </div>
+                            </th>
+                            <td>
+                                <div data-role="controlgroup" data-type="horizontal">
+                                    <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-
-            <script>
-                function refreshTable() {
-                    var $table = $('table.task-list'),
-                        th = $table.find('th:first'),
-                        width = th.width();
-                    $table.addClass('fixed');
-                    th.css('width', width);
-                    $table.find('.list-item label').addClass('nowrap');
-                }
-
-                function disableListItems() {
-                    $('.task-list .list-item.list input').prop('disabled', true);
-                }
-
-                function checkList() {
-                    $('.task-list .list-item.list input').prop('checked', true).checkboxradio('refresh')
-                }
-                function uncheckList() {
-                    $('.task-list .list-item.list input').prop('checked', false).checkboxradio('refresh')
-                }
-
-
-                setTimeout(function() {
-                    refreshTable();
-                    disableListItems();
-                }, 1000);
-            </script>
 
         </div>
         <div data-role="footer" data-position="fixed">
@@ -138,18 +188,63 @@
                 <tbody>
                     <tr>
                         <td>
-                            <button id="addList" data-role="button" data-icon="plus">New list</button>
+                            <button id="addList" class="btn-left" data-role="button" data-icon="plus">New list</button>
                         </td>
                         <td>
                             <input type="text" placeholder="Search...">
                         </td>
                         <td>
-                            <button id="addTask" data-role="button" data-icon="plus" data-iconpos="right">New task</button>
+                            <button id="addTask" class="btn-right" data-role="button" data-icon="plus" data-iconpos="right">New task</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+<script>
+    function refreshTable() {
+        var $table = $('table.task-list'),
+            th = $table.find('th:first'),
+            width = th.width();
+        $table.addClass('fixed');
+        th.css('width', width);
+        $table.find('.list-item label').addClass('nowrap');
+    }
+
+    function disableListItems() {
+        $('.task-list .list-item.list input').prop('disabled', true);
+    }
+
+    function fixFooterTable() {
+        var $table = $('.ui-footer table');
+        var $btns = [
+            $table.find('.btn-left'),
+            $table.find('.btn-right')
+        ];
+        var btnWidths = [
+            $btns[0].outerWidth() + 10,  // (button css value for "left") * 2
+            $btns[1].outerWidth() + 10
+        ];
+
+        $btns[0].parents('td').css('width', btnWidths[0]);
+        $btns[1].parents('td').css('width', btnWidths[1]);
+    }
+
+    setTimeout(function() {
+        refreshTable();
+        disableListItems();
+        fixFooterTable();
+    }, 1000);
+
+
+    // Examples how to programmatically (un)check checkboxes
+    function checkList() {
+        $('.task-list .list-item.list input').prop('checked', true).checkboxradio('refresh')
+    }
+    function uncheckList() {
+        $('.task-list .list-item.list input').prop('checked', false).checkboxradio('refresh')
+    }
+</script>
 </body>
 </html>
