@@ -66,10 +66,24 @@
         </div>
     </div>
     <div data-role="fieldcontain">
+        <label for="start">Start:</label>
+        <input type="date" id="start">
+    </div>
+    <div data-role="fieldcontain">
+        <label for="due">Due:</label>
+        <input type="date" id="due">
+    </div>
+    <div data-role="fieldcontain">
         <textarea id="notes" name="description" placeholder="Notes"></textarea>
     </div>
 </div>
-<div data-role="footer" data-position="fixed"></div>
+<!--<div data-role="footer" data-position="fixed"></div>-->
 
+<script>
+    $('#done').on('change', function() {
+        $(this).toggleClass('ui-checkbox-off');
+        $(this).toggleClass('ui-checkbox-on');
+    });
+</script>
 </body>
 </html>
