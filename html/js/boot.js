@@ -31,7 +31,7 @@ requirejs.config({
         'backbone':         'js/lib/backbone-1.1.2',
         'text':             'js/lib/text-2.0.12',
         'i18n':             'js/lib/i18n-2.0.4',
-        'taskme':           'js/core/TaskMe',
+        "taskonfly":        'js/core/TaskOnFly',
         'aclass':           'js/core/AClass',
         'class':            'js/core/Class',
         'utils':            'js/core/utils',
@@ -67,7 +67,7 @@ requirejs.config({
 });
 
 requirejs([
-    'taskme',
+    'taskonfly',
     'aclass',
     'class',
     'singleton',

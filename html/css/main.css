@@ -102,7 +102,7 @@ table .ui-input-text {
 .task-list .list-item:before {
     display: block;
     content: "";
-    height: 45px;
+    height: 44px;
     width: 5px;
     position: absolute;
     z-index: 3;

@@ -191,7 +191,9 @@
                             <button id="addList" class="btn-left" data-role="button" data-icon="plus">New list</button>
                         </td>
                         <td>
-                            <input type="text" placeholder="Search...">
+                            <div id="searchModule">
+                                <input type="text" placeholder="Search...">
+                            </div>
                         </td>
                         <td>
                             <button id="addTask" class="btn-right" data-role="button" data-icon="plus" data-iconpos="right">New task</button>
@@ -203,7 +205,7 @@
     </div>
 
 <script>
-    function refreshTable() {
+    function fixTaskList() {
         var $table = $('table.task-list'),
             th = $table.find('th:first'),
             width = th.width();
@@ -219,8 +221,8 @@
     function fixFooterTable() {
         var $table = $('.ui-footer table');
         var $btns = [
-            $table.find('.btn-left'),
-            $table.find('.btn-right')
+            $table.find('#addList'),
+            $table.find('#addTask')
         ];
         var btnWidths = [
             $btns[0].outerWidth() + 10,  // (button css value for "left") * 2
@@ -232,7 +234,7 @@
     }
 
     setTimeout(function() {
-        refreshTable();
+        fixTaskList();
         disableListItems();
         fixFooterTable();
     }, 1000);

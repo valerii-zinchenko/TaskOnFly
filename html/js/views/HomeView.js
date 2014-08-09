@@ -26,9 +26,11 @@
 
 define([
     'text!templates/home.html',
-    'text!templates/list.html'
-], function(template, templateList) {
+    'js/views/List'
+], function(template, List) {
     var HomeView = new SingletonClass({
+        _footerBtnsWidth: null,
+
         page: 'home',
         $addTaskBtn: null,
         $addListBtn: null,
@@ -44,28 +46,18 @@ define([
             this.$addTaskBtn.on('click', this.addTask);
             this.$addListBtn.on('click', this.addList);
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
+
+            this.$listModule = this.$content.find('#listModule');
+            this.list = new List(this.$listModule, TaskMe.getRootList());
         },
         render: function() {
-            var list = TaskMe.getCurrentList();
-
-            if (list.public.items.length > 0) {
-                this.$content.find('.list').remove();
-                this.$content.append(_.template(templateList, list));
-            }
-
             this.$el.trigger('create');
+            this._fixFooterTable();
 
-            if (list.public.items.length > 0) {
-                this._attachListEvents();
-            }
+            this.list.render();
+
             return this;
         },
-        _attachListEvents: function() {
-            this.$content.find('table.list td .edit-btn').off('click').on('click', this.editItem);
-            this.$content.find('table.list td .delete-btn').off('click').on('click', this.removeItem);
-            this.$content.find('table.list th .list').off('click').on('click', this.selectList.bind(this));
-        },
-
         addTask: function(ev) {
             ev.preventDefault();
             TaskMe.changeView('add/task');
@@ -74,59 +66,21 @@ define([
             ev.preventDefault();
             TaskMe.changeView('add/list');
         },
-        editItem: function(ev) {
-            ev.preventDefault();
-            var id = $(ev.target).parents('tr').data('item-id');
-
-            TaskMe.changeView('edit/' + id);
-        },
-        removeItem: function(ev) {
-            ev.preventDefault();
-            var $tr = $(ev.target).parents('tr'),
-                id = $tr.data('item-id');
-
-            TaskMe.getCurrentList().removeItem(id);
-            $tr.remove();
-        },
-        selectList: function(ev) {
-            ev.preventDefault();
-            var id = $(ev.target).parents('tr').data('item-id'),
-                list = TaskMe.getCurrentList().selectList(id);
-
-            var $prevList = this.$content.find('.list'),
-                $list = $(_.template(templateList, list));
-
-            if (list.public.items.length > 0) {
-                this.$content.append($list);
-                $list.trigger('create');
-            }
-
-            //todo animate the list changing
-
-            $prevList.remove();
-
-            if (list.public.items.length > 0) {
-                this._attachListEvents()
-            }
-        },
         selectPreviousList: function(ev) {
             ev.preventDefault();
-            var list = TaskMe.getCurrentList().selectParentList(),
-                $prevList = this.$content.find('.list'),
-                $list = $(_.template(templateList, list));
+            this.list.selectParentList();
+        },
 
-            if (list.public.items.length > 0) {
-                this.$content.append($list);
-                $list.trigger('create');
+        _fixFooterTable: function() {
+            if (!this._footerBtnsWidth) {
+                var offset = parseFloat(this.$addTaskBtn.css('left'));
+                this._footerBtnsWidth = {
+                    addTaskBtn: this.$addTaskBtn.outerWidth() + offset*2,
+                    addListBtn: this.$addListBtn.outerWidth() + offset*2
+                };
             }
-
-            //todo animate the list changing
-
-            $prevList.remove();
-
-            if (list.length > 0) {
-                this._attachListEvents()
-            }
+            this.$addTaskBtn.parents('td').css('width', this._footerBtnsWidth.addTaskBtn);
+            this.$addListBtn.parents('td').css('width', this._footerBtnsWidth.addListBtn);
         }
     });
 

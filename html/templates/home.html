@@ -1,11 +1,28 @@
 <div data-role="header">
+    <a href="#" id="prevList" data-role="button" data-icon="carat-l">Previous list</a>
     <h1>Home</h1>
 </div>
+
 <div id="content" class="ui-content">
-    <div data-role="controlgroup">
-        <a href="#" id="addTask" data-role="button">New task</a>
-        <a href="#" id="addList" data-role="button">New list</a>
-        <a href="#" id="prevList" data-role="button">Previous list</a>
-    </div>
+    <div id="fastTaskModule"></div>
+    <div id="listModule"></div>
 </div>
-<div data-role="footer"></div>
+
+<div data-role="footer" data-position="fixed">
+    <table class="full">
+        <tbody>
+        <tr>
+            <td>
+                <button id="addList" class="btn-left" data-role="button" data-icon="plus">New list</button>
+            </td>
+            <td>
+                <div id="searchModule"></div>
+                <!--<input type="text" placeholder="Search...">-->
+            </td>
+            <td>
+                <button id="addTask" class="btn-right" data-role="button" data-icon="plus" data-iconpos="right">New task</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
