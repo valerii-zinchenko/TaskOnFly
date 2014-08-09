@@ -62,6 +62,10 @@ var utils = {
 
             switch (Object.prototype.toString.call(value)) {
                 case '[object Object]':
+                    if (!value) {
+                        target[key] = null;
+                        break;
+                    }
                     if (!target[key]) {
                         target[key] = {};
                     }
