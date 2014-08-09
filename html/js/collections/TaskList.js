@@ -29,6 +29,7 @@ define([
 ], function (Task) {
     var TaskList = new Class(Task, {
         _parent: null,
+        _NDone: 0,
         models: {},
 
         public: {
@@ -42,6 +43,9 @@ define([
             }
 
             this.models[item.public.id] = item;
+            if (item.public.isDone) {
+                this._NDone++;
+            }
 
             TaskMe.saveItem(this);
             return item;
@@ -63,6 +67,25 @@ define([
             delete this.models[id];
 
             TaskMe.saveItem(this);
+        },
+
+        toggleItemStatus: function(id) {
+            var task = this.models[id];
+            task.toggleStatus();
+
+            if (task.public.isDone) {
+                this._NDone++;
+            } else {
+                this._NDone--;
+            }
+
+            var isListDone = (this._NDone === this.public.items.length);
+            if (this.public.isDone !== isListDone) {
+                if (this._parent) {
+                    this._parent.toggleItemStatus(this.public.id);
+                }
+                this.saveData();
+            }
         },
 
         selectList: function(id) {

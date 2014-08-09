@@ -30,7 +30,7 @@ define(function () {
             isDone: false,
             title: '',
             priority: 1,
-            description: '',
+            notes: '',
             timestamp: '',
             id: '',
             parentID: '',
@@ -79,7 +79,7 @@ define(function () {
         toggleStatus: function() {
             this.saveData({
                 isDone: !this.public.isDone
-            })
+            });
         }
     });
 

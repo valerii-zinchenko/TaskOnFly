@@ -96,7 +96,7 @@ define([
             this.$currentList.find('.list-item.list').off('click').on('click', this.selectList.bind(this));
         },
         _toggleTaskStatus: function(ev) {
-            this.list.getItem($(ev.target).prop('id')).toggleStatus();
+            this.list.toggleItemStatus($(ev.target).prop('id'));
         },
         _editItem: function(ev) {
             ev.preventDefault();
