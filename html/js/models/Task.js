@@ -75,6 +75,11 @@ define(function () {
             }
 
             TaskMe.saveItem(this);
+        },
+        toggleStatus: function() {
+            this.saveData({
+                isDone: !this.public.isDone
+            })
         }
     });
 

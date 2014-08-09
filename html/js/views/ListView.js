@@ -26,7 +26,7 @@ define([
     'text!templates/list.html',
     'js/collections/TaskList'
 ], function (template, TaskList) {
-    var List = new Class({
+    var ListView = new Class({
         _width: 0,
 
         list: null,
@@ -58,11 +58,15 @@ define([
             return this.$content;
         },
 
-        selectList: function(id) {
-            this._switchLists(this.list.selectList(id), 'left');
+        selectList: function(ev) {
+            ev.preventDefault();
+            var id = $(ev.target).parents('tr').data('item-id');
+            this.list = this.list.selectList(id);
+            this._switchLists(this.list, 'left');
         },
         selectParentList: function() {
-            this._switchLists(this.list.selectParentList(), 'right');
+            this.list = this.list.selectParentList();
+            this._switchLists(this.list, 'right');
         },
         _switchLists: function(newList, direction) {
             var $newList = $(_.template(template, newList));
@@ -81,14 +85,18 @@ define([
             this.$currentList.remove();
             this.$currentList = $newList;
 
-            if (list.length > 0) {
+            if (this.list.public.items.length > 0) {
                 this._attachEvents()
             }
         },
         _attachEvents: function() {
+            this.$currentList.find('.list-item.task input').off('change').on('change', this._toggleTaskStatus.bind(this));
             this.$currentList.find('.edit-btn').off('click').on('click', this._editItem);
             this.$currentList.find('.delete-btn').off('click').on('click', this._removeItem);
-            this.$currentList.find('.list-item .list').off('click').on('click', this.selectList.bind(this));
+            this.$currentList.find('.list-item.list').off('click').on('click', this.selectList.bind(this));
+        },
+        _toggleTaskStatus: function(ev) {
+            this.list.getItem($(ev.target).prop('id')).toggleStatus();
         },
         _editItem: function(ev) {
             ev.preventDefault();
@@ -122,5 +130,5 @@ define([
         }
     });
 
-    return List;
+    return ListView;
 });

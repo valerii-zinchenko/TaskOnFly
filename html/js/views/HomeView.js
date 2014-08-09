@@ -26,8 +26,8 @@
 
 define([
     'text!templates/home.html',
-    'js/views/List'
-], function(template, List) {
+    'js/views/ListView'
+], function(template, ListView) {
     var HomeView = new SingletonClass({
         _footerBtnsWidth: null,
 
@@ -48,7 +48,7 @@ define([
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
 
             this.$listModule = this.$content.find('#listModule');
-            this.list = new List(this.$listModule, TaskMe.getRootList());
+            this.list = new ListView(this.$listModule, TaskMe.getRootList());
         },
         render: function() {
             this.$el.trigger('create');
