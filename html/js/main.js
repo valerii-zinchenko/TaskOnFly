@@ -40,8 +40,7 @@ define([
 
     }
     return function() {
-        var rooter = new MainRouter(),
-            store = TaskMe.loadAllItems(),
+        var store = TaskMe.loadAllItems(),
             rootList = new TaskList('root', {id:'root'});
 
         if (store && store.root) {
@@ -53,8 +52,6 @@ define([
         TaskMe.getRootList().saveData();
         TaskMe.setCurrentList(TaskMe.getRootList());
 
-        //todo: sync data from device
-
-        rooter.home();
+        new MainRouter();
     }
 });
