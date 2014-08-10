@@ -68,6 +68,7 @@ define([
 
             this.$el.trigger('create');
 
+            this.item = null;
             return this;
         },
 
