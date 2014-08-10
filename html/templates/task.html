@@ -29,6 +29,16 @@
             <input id="2" type="radio" name="priority" value="2" <% if (2 === priority) {%> checked <% } %>>
         </div>
     </div>
+
+    <div data-role="fieldcontain">
+        <label for="start">Start:</label>
+        <input type="date" id="start" value="" placeholder="YYYY-MM-DD">
+    </div>
+    <div data-role="fieldcontain">
+        <label for="due">Due:</label>
+        <input type="date" id="due" value="" placeholder="YYYY-MM-DD">
+    </div>
+
     <div data-role="fieldcontain">
         <textarea id="notes" name="notes" placeholder="Notes"><%= notes %></textarea>
     </div>

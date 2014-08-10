@@ -43,6 +43,8 @@ define([
             this.$title= this.$el.find('#title');
             this.$priority = this.$el.find('#priority');
             this.$notes = this.$el.find('#notes');
+            this.$startDate = this.$el.find('#start');
+            this.$dueDate = this.$el.find('#due');
 
             this.$el.find('#save').on('vclick', this.save.bind(this));
             this.$el.find('form').on('submit', this.save.bind(this));
@@ -62,8 +64,18 @@ define([
         },
         render: function() {
             var data = this.item ?  this.item.public : this._defaults;
+            var startDate = data.startDate || new Date(data.timestamp);
+            var dueDate = data.startDate || '';
+
+            startDate = startDate.toISOString().slice(0,10);
+            if (dueDate) {
+                dueDate = dueDate.toISOString().slice(0,10);
+            }
+
             this.$title.val(data.title);
             this.$priority.find('#' + data.priority).attr('checked', 'checked');
+            this.$startDate.val(startDate);
+            this.$dueDate.val(dueDate);
             this.$notes.val(data.notes);
 
             this.$el.trigger('create');
@@ -75,10 +87,13 @@ define([
         // controls
         save: function(ev) {
             ev.preventDefault();
+            var dueDateVal = this.$dueDate.val();
 
             this._callback({
                 title: this.$title.val(),
                 priority: this.$priority.find(':checked').val(),
+                startDate: new Date(this.$startDate.val()),
+                dueDate: dueDateVal ? new Date(dueDateVal) : null,
                 notes: this.$notes.val(),
                 timestamp: new Date()
             });

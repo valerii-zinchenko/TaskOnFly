@@ -30,8 +30,11 @@ define(function () {
             isDone: false,
             title: '',
             priority: 1,
+            startDate: null,
+            dueDate: null,
             notes: '',
             timestamp: '',
+
             id: '',
             parentID: '',
             type: 'Task'
