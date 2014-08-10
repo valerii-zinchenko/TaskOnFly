@@ -64,12 +64,12 @@ define([
         },
         render: function() {
             var data = this.item ?  this.item.public : this._defaults;
-            var startDate = data.startDate || new Date(data.timestamp);
+            var startDate = data.startDate || new Date(data.timestamp).toISOString();
             var dueDate = data.startDate || '';
 
-            startDate = startDate.toISOString().slice(0,10);
+            startDate = startDate.slice(0,10);
             if (dueDate) {
-                dueDate = dueDate.toISOString().slice(0,10);
+                dueDate = dueDate.slice(0,10);
             }
 
             this.$title.val(data.title);

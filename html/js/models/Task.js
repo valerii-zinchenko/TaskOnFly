@@ -74,6 +74,13 @@ define(function () {
                 if (data.timestamp && typeof data.timestamp !== 'string') {
                     data.timestamp = data.timestamp.toString();
                 }
+                if (data.startDate && typeof data.startDate !== 'string') {
+                    data.startDate = data.startDate.toString();
+                }
+                if (data.dueDate && typeof data.dueDate !== 'string') {
+                    data.dueDate = data.dueDate.toString();
+                }
+
                 utils.deepCopy(this.public, data);
             }
 
