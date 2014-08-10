@@ -26,8 +26,9 @@
 
 define([
     'text!templates/home.html',
+    'js/views/FastTaskView',
     'js/views/ListView'
-], function(template, ListView) {
+], function(template, FastTaskView, ListView) {
     var HomeView = new SingletonClass({
         _footerBtnsWidth: null,
 
@@ -47,13 +48,14 @@ define([
             this.$addListBtn.on('click', this.addList);
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
 
-            this.$listModule = this.$content.find('#listModule');
-            this.list = new ListView(this.$listModule, TaskMe.getRootList());
+            this.fastTask = new FastTaskView(this.$content.find('#fastTaskModule'));
+            this.list = new ListView(this.$content.find('#listModule'), TaskMe.getRootList());
         },
         render: function() {
             this.$el.trigger('create');
             this._fixFooterTable();
 
+            this.fastTask.render();
             this.list.render();
 
             return this;

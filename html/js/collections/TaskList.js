@@ -37,6 +37,10 @@ define([
             items: []
         },
 
+        initialize: function() {
+            this.$ = $(this);
+        },
+
         _add: function(item) {
             if (this.public.items.indexOf(item.public.id) === -1) {
                 this.public.items.push(item.public.id);
@@ -48,6 +52,7 @@ define([
             }
 
             TaskMe.saveItem(this);
+            this.$.trigger('newItem', item);
             return item;
         },
         addTask: function(data) {

@@ -59,10 +59,10 @@ table .ui-input-text {
 }
 
 /* Fast task */
-.fast-item .add-btn {
+.fast-task .add-btn {
     width: 33px;
 }
-.fast-item .add-btn #addFastTask {
+.fast-task .add-btn #addFastTask {
     margin-top: 3px;
     margin-bottom: 3px;
 }

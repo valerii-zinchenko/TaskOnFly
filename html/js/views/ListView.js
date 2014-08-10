@@ -43,6 +43,8 @@ define([
 
             this.list = list;
             this.$content = holder;
+
+            list.$.on('newItem', this._insertItem.bind(this));
         },
         render: function() {
             this.$content.empty();
@@ -97,6 +99,9 @@ define([
         },
         _toggleTaskStatus: function(ev) {
             this.list.toggleItemStatus($(ev.target).prop('id'));
+        },
+        _insertItem: function() {
+            this.render();
         },
         _editItem: function(ev) {
             ev.preventDefault();
