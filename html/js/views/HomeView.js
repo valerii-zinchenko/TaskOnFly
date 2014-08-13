@@ -26,7 +26,7 @@
 
 define([
     'text!templates/home.html',
-    'js/views/FastTaskView',
+    '../modules/FastTask/FastTaskView',
     'js/views/ListView'
 ], function(template, FastTaskView, ListView) {
     var HomeView = new SingletonClass({

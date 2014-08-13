@@ -25,7 +25,7 @@
 'use strict';
 
 define([
-    'text!templates/fastTask.html'
+    'text!js/modules/FastTask/template.html'
 ],function (template) {
     return new SingletonClass({
         initialize: function($holder) {
