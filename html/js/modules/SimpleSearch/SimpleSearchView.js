@@ -40,7 +40,9 @@ define([
             this.$holder = holder;
             this.$listModule = listModule;
 
+            this.currentList = TaskMe.getCurrentList();
             this.filter = new FilterList(TaskMe.getCurrentList());
+            this.listView = new ListView(this.$listModule, this.currentList);
 
             this.$el.on('keyup', this.onType.bind(this));
         },
@@ -54,12 +56,21 @@ define([
 
             return this;
         },
+        showResults: function(list) {
+            if (this.listView.list === this.currentList && list === this.currentList) {
+                return;
+            }
+
+            this.listView.setList(list);
+            this.listView.render();
+        },
         onType: function(ev) {
             ev.preventDefault();
 
             var val = $(ev.target).val();
 
             if (val.length < 2) {
+                this.onClear(ev);
                 return;
             }
 
@@ -67,12 +78,12 @@ define([
                 title: val
             });
 
-            new ListView(this.$listModule, this.filter.run()).render();
+            this.showResults(this.filter.run());
         },
         onClear: function(ev) {
             ev.preventDefault();
 
-            new ListView(this.$listModule, TaskMe.getCurrentList()).render();
+            this.showResults(this.currentList);
         }
     });
 });

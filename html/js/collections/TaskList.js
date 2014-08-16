@@ -41,7 +41,11 @@ define([
             this.$ = $(this);
         },
 
-        _add: function(item) {
+        _add: function(item, toSave) {
+            if (typeof toSave === 'undefined') {
+                toSave = true;
+            }
+
             if (this.public.items.indexOf(item.public.id) === -1) {
                 this.public.items.push(item.public.id);
             }
@@ -51,8 +55,10 @@ define([
                 this._NDone++;
             }
 
-            TaskMe.saveItem(this);
             this.$.trigger('newItem', item);
+            if (toSave) {
+                TaskMe.saveItem(this);
+            }
             return item;
         },
         addTask: function(data) {

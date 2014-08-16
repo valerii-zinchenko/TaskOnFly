@@ -26,7 +26,7 @@ define([
     'text!templates/list.html',
     'js/collections/TaskList'
 ], function (template, TaskList) {
-    var ListView = new Class({
+    return new Class({
         _width: 0,
 
         list: null,
@@ -34,17 +34,19 @@ define([
         $currentList: null,
 
         initialize: function(holder, list) {
-            if (!list) {
-                throw new Error('list is not defined');
+            this.$content = holder;
+
+            if (list) {
+                this.setList(list);
             }
-            if (list.constructor !== TaskList) {
-                throw new Error('Incorrect list type');
+        },
+        setList: function(list) {
+            if (list && list.constructor !== TaskList) {
+                throw new Error('List is incorrect');
             }
 
             this.list = list;
-            this.$content = holder;
-
-            list.$.on('newItem', this._insertItem.bind(this));
+            this.list.$.on('newItem', this._insertItem.bind(this));
         },
         render: function() {
             this.$content.empty();
@@ -134,6 +136,4 @@ define([
             this.$currentList.find('.list-item.list input').prop('disabled', true);
         }
     });
-
-    return ListView;
 });

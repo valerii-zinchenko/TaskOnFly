@@ -56,7 +56,7 @@ define([
 
             this._result = new TaskList(this.list.public.id);
             _.each(result, function(item) {
-                this._result._add(item);
+                this._result._add(item, false);
             }.bind(this));
 
             return this._result;
