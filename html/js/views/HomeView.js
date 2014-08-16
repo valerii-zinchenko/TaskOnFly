@@ -26,9 +26,10 @@
 
 define([
     'text!templates/home.html',
-    '../modules/FastTask/FastTaskView',
-    'js/views/ListView'
-], function(template, FastTaskView, ListView) {
+    'js/modules/FastTask/FastTaskView',
+    'js/views/ListView',
+    'js/modules/SimpleSearch/SimpleSearchView'
+], function(template, FastTaskView, ListView, SimpleSearchView) {
     var HomeView = new SingletonClass({
         _footerBtnsWidth: null,
 
@@ -50,6 +51,7 @@ define([
 
             this.fastTask = new FastTaskView(this.$content.find('#fastTaskModule'));
             this.list = new ListView(this.$content.find('#listModule'), TaskMe.getRootList());
+            this.simpleSearch = new SimpleSearchView(this.$el.find('#searchModule'), this.$content.find('#listModule'));
         },
         render: function() {
             this.$el.trigger('create');
@@ -57,6 +59,7 @@ define([
 
             this.fastTask.render();
             this.list.render();
+            this.simpleSearch.render();
 
             return this;
         },
