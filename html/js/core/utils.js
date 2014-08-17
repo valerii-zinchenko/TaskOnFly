@@ -22,6 +22,8 @@
 */
 
 
+'use strict';
+
 var utils = {
     deepCopy: function(target, source) {
         var key,
@@ -80,7 +82,13 @@ var utils = {
     }
 };
 
+function View(fnTemplate) {
+    return fnTemplate.toString().split('\n').slice(1,-1).join('\n');
+}
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = utils;
+    module.exports = {
+        utils: utils,
+        View: View
+    };
 }

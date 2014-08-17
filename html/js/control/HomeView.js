@@ -25,9 +25,9 @@
 'use strict';
 
 define([
-    'text!templates/home.html',
+    'js/view/home',
     'js/modules/FastTask/FastTaskView',
-    'js/views/ListView',
+    'js/control/ListView',
     'js/modules/SimpleSearch/SimpleSearchView'
 ], function(template, FastTaskView, ListView, SimpleSearchView) {
     var HomeView = new SingletonClass({

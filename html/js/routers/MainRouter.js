@@ -31,7 +31,7 @@ define(function () {
      * @private
      */
     function _openView (viewName, fn) {
-        requirejs(['js/views/' + viewName], function(View) {
+        requirejs(['js/control/' + viewName], function(View) {
             var view = new View();
 
             if (fn) {

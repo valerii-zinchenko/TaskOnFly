@@ -25,7 +25,7 @@
 'use strict';
 
 define([
-    'text!templates/task.html',
+    'js/view/task',
     'js/models/Task',
     'js/collections/TaskList'
 ],function (template, Task, TaskList) {

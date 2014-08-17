@@ -23,7 +23,7 @@
 
 
 define([
-    'text!templates/list.html',
+    'js/view/list',
     'js/collections/TaskList'
 ], function (template, TaskList) {
     return new Class({
