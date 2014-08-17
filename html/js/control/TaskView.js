@@ -25,9 +25,9 @@
 'use strict';
 
 define([
-    'js/view/task',
-    'js/models/Task',
-    'js/collections/TaskList'
+    'view/task',
+    'model/Task',
+    'model/TaskList'
 ],function (template, Task, TaskList) {
     var TaskView = new SingletonClass({
         _callback: null,

@@ -73,7 +73,7 @@ function AClass(Constructor) {
                             break;
                         }
                     default :
-                        Class.prototype._defaults[key] = value;
+                            Class.prototype._defaults[key] = value;
                 }
             }
         }

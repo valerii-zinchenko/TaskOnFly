@@ -23,8 +23,8 @@
 
 
 define([
-    'js/view/list',
-    'js/collections/TaskList'
+    'view/list',
+    'model/TaskList'
 ], function (template, TaskList) {
     return new Class({
         _width: 0,

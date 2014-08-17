@@ -25,7 +25,7 @@
 'use strict';
 
 define([
-    'js/models/Task'
+    'model/Task'
 ], function (Task) {
     var TaskList = new Class(Task, {
         _parent: null,

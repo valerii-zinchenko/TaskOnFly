@@ -25,11 +25,11 @@
 'use strict';
 
 define([
-    'js/view/home',
-    'js/modules/FastTask/FastTaskView',
-    'js/control/ListView',
-    'js/modules/SimpleSearch/SimpleSearchView'
-], function(template, FastTaskView, ListView, SimpleSearchView) {
+    'view/home',
+    'control/ListView',
+    'modules/FastTask/FastTaskView',
+    'modules/SimpleSearch/SimpleSearchView'
+], function(template, ListView, FastTaskView, SimpleSearchView) {
     var HomeView = new SingletonClass({
         _footerBtnsWidth: null,
 

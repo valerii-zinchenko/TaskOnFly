@@ -25,7 +25,7 @@
 'use strict';
 
 define([
-    'js/collections/TaskList'
+    'model/TaskList'
 ] , function(TaskList) {
     return new Class({
         _list: null,

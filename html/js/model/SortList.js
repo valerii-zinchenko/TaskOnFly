@@ -25,33 +25,10 @@
 'use strict';
 
 define([
-    'model/MainRouter',
     'model/TaskList'
-], function(MainRouter, TaskList) {
-    function sync(listRef) {
-        listRef.public.items.forEach(function(itemID) {
-            var itemData = TaskMe.loadItem(itemID),
-                item = listRef['add' + itemData.type](itemData);
+],function(TaskList) {
+    return new Class({
+        list: null,
 
-            if (itemData.type === 'List') {
-                sync(item);
-            }
-        });
-
-    }
-    return function() {
-        var store = TaskMe.loadAllItems(),
-            rootList = new TaskList('root', {id:'root'});
-
-        if (store && store.root) {
-            rootList.saveData(store.root);
-            sync(rootList);
-        }
-
-        TaskMe.setRootList(rootList);
-        TaskMe.getRootList().saveData();
-        TaskMe.setCurrentList(TaskMe.getRootList());
-
-        new MainRouter();
-    }
+    });
 });

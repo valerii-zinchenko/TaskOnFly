@@ -25,7 +25,7 @@
 'use strict';
 
 define([
-    'js/collections/AProcessor'
+    'model/AProcessor'
 ] , function(AProcessor) {
     return new Class(AProcessor, {
         _rules: null,

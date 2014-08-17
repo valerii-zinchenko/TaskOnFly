@@ -23,22 +23,21 @@
 
 
 requirejs.config({
-    baseUrl: '.',
     paths: {
-        'jquery':           'js/lib/jquery-2.1.1',
-        'jquery.mobile':    'js/lib/jquery.mobile-1.4.3',
-        'underscore':       'js/lib/underscore-1.6.0',
-        'backbone':         'js/lib/backbone-1.1.2',
-        'text':             'js/lib/text-2.0.12',
-        'i18n':             'js/lib/i18n-2.0.4',
-        "taskonfly":        'js/core/TaskOnFly',
-        'aclass':           'js/core/AClass',
-        'class':            'js/core/Class',
-        'utils':            'js/core/utils',
-        'singleton':        'js/core/SingletonClass'
+        'jquery':           'lib/jquery-2.1.1',
+        'jquery.mobile':    'lib/jquery.mobile-1.4.3',
+        'underscore':       'lib/underscore-1.6.0',
+        'backbone':         'lib/backbone-1.1.2',
+        'text':             'lib/text-2.0.12',
+        'i18n':             'lib/i18n-2.0.4',
+        'taskonfly':        'model/TaskOnFly',
+        'aclass':           'core/AClass',
+        'class':            'core/Class',
+        'utils':            'core/utils',
+        'singleton':        'core/SingletonClass'
     },
     shim: {
-        jquery: {
+        'jquery': {
             exports: '$'
         },
         'jquery.mobile': {
@@ -84,7 +83,7 @@ requirejs([
     });
 
     requirejs(['jquery.mobile'], function() {
-        requirejs(['js/main'], function(main) {
+        requirejs(['main'], function(main) {
             main();
             Backbone.history.start();
         });

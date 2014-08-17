@@ -25,9 +25,9 @@
 'use strict';
 
 define([
-    'js/modules/SimpleSearch/template',
-    'js/collections/FilterList',
-    'js/control/ListView'
+    'modules/SimpleSearch/template',
+    'model/FilterList',
+    'control/ListView'
 ],function (template, FilterList, ListView) {
     return new SingletonClass({
         $el: $(template),
