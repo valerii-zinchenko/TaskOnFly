@@ -36,13 +36,15 @@ define([
             if (!holder) {
                 new Error('Holder element for module is not defined');
             }
+            if (listModule.constructor !== ListControl) {
+                new Error('Incorrect type for listModule input argument');
+            }
 
             this.$holder = holder;
-            this.$listModule = listModule;
 
             this.currentList = TaskMe.getCurrentList();
             this.filter = new FilterList(TaskMe.getCurrentList());
-            this.listView = new ListControl(this.$listModule, this.currentList);
+            this.listView = listModule;
 
             this.$el.on('keyup', this.onType.bind(this));
         },

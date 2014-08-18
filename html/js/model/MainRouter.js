@@ -52,7 +52,7 @@ define(function () {
         },
 
         home: function() {
-            _openView('HomeView');
+            _openView('HomeControl');
         },
 
         /**
@@ -70,7 +70,7 @@ define(function () {
             }
 
             var fn = 'add' + what[0].toUpperCase() + what.slice(1);
-            _openView('TaskView', function() {
+            _openView('EditItemControl', function() {
                 var list = TaskMe.getCurrentList();
                 this.setSaveCallback(list[fn].bind(list));
             });
@@ -81,7 +81,7 @@ define(function () {
          * @param {string} id Item name in the current list.
          */
         edit: function(id) {
-            _openView('TaskView', function() {
+            _openView('EditItemControl', function() {
                 var list = TaskMe.getCurrentList(),
                     item = list.getItem(id);
 

@@ -30,12 +30,13 @@ define(function() {
             <table class="full task-list">
                 <thead><tr><th></th><th></th></tr></thead>
                 <tbody>
-                <% _.each(models, function(item) { %>
-                    <tr data-item-id="<%= item.public.id %>">
+                <% _.each(public.items, function(item) { %>
+                    <% var modelPublic = models[item].public; %>
+                    <tr data-item-id="<%= modelPublic.id %>">
                         <th>
-                            <div class="list-item <%= item.public.type.toLowerCase() %> priority-<%= item.public.priority %>">
-                                <input id="<%= item.public.id %>" type="checkbox" <% if (item.public.isDone) { %> checked <% } %>>
-                                <label for="<%= item.public.id %>"><%= item.public.title %></label>
+                            <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %>">
+                                <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>>
+                                <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label>
                             </div>
                         </th>
                         <td>

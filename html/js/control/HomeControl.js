@@ -29,7 +29,7 @@ define([
     'control/ListControl',
     '../modules/FastTask/FastTaskControl',
     '../modules/SimpleSearch/SimpleSearchControl'
-], function(template, ListControl, FastTaskView, SimpleSearchView) {
+], function(template, ListControl, FastTaskControl, SimpleSearchControl) {
     return new SingletonClass({
         _footerBtnsWidth: null,
 
@@ -49,9 +49,9 @@ define([
             this.$addListBtn.on('click', this.addList);
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
 
-            this.fastTask = new FastTaskControl(this.$content.find('#fastTaskModule'));
             this.list = new ListControl(this.$content.find('#listModule'), TaskMe.getRootList());
-            this.simpleSearch = new SimpleSearchControl(this.$el.find('#searchModule'), this.$content.find('#listModule'));
+            this.fastTask = new FastTaskControl(this.$content.find('#fastTaskModule'));
+            this.simpleSearch = new SimpleSearchControl(this.$el.find('#searchModule'), this.list);
         },
         render: function() {
             this.$el.trigger('create');
