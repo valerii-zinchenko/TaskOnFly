@@ -29,7 +29,7 @@ define([
     'model/Task',
     'model/TaskList'
 ],function (template, Task, TaskList) {
-    var TaskView = new SingletonClass({
+    return new SingletonClass({
         _callback: null,
         _defaults: Task.prototype._defaults.public,
 
@@ -64,7 +64,7 @@ define([
         },
         render: function() {
             var data = this.item ?  this.item.public : this._defaults;
-            var startDate = data.startDate || new Date(data.timestamp).toISOString();
+            var startDate = data.startDate || (data.timestamp ? new Date(data.timestamp) : new Date()).toISOString();
             var dueDate = data.startDate || '';
 
             startDate = startDate.slice(0,10);
@@ -73,7 +73,7 @@ define([
             }
 
             this.$title.val(data.title);
-            this.$priority.find('#' + data.priority).attr('checked', 'checked');
+            this.$priority.find('#' + data.priority).prop('checked', true);
             this.$startDate.val(startDate);
             this.$dueDate.val(dueDate);
             this.$notes.val(data.notes);
@@ -101,6 +101,4 @@ define([
             TaskMe.changeView('#home');
         }
     });
-
-    return TaskView;
 });

@@ -27,8 +27,8 @@
 define([
     'modules/SimpleSearch/template',
     'model/FilterList',
-    'control/ListView'
-],function (template, FilterList, ListView) {
+    'control/ListControl'
+],function (template, FilterList, ListControl) {
     return new SingletonClass({
         $el: $(template),
 
@@ -42,7 +42,7 @@ define([
 
             this.currentList = TaskMe.getCurrentList();
             this.filter = new FilterList(TaskMe.getCurrentList());
-            this.listView = new ListView(this.$listModule, this.currentList);
+            this.listView = new ListControl(this.$listModule, this.currentList);
 
             this.$el.on('keyup', this.onType.bind(this));
         },

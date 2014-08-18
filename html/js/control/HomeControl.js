@@ -26,11 +26,11 @@
 
 define([
     'view/home',
-    'control/ListView',
-    'modules/FastTask/FastTaskView',
-    'modules/SimpleSearch/SimpleSearchView'
-], function(template, ListView, FastTaskView, SimpleSearchView) {
-    var HomeView = new SingletonClass({
+    'control/ListControl',
+    '../modules/FastTask/FastTaskControl',
+    '../modules/SimpleSearch/SimpleSearchControl'
+], function(template, ListControl, FastTaskView, SimpleSearchView) {
+    return new SingletonClass({
         _footerBtnsWidth: null,
 
         page: 'home',
@@ -49,9 +49,9 @@ define([
             this.$addListBtn.on('click', this.addList);
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
 
-            this.fastTask = new FastTaskView(this.$content.find('#fastTaskModule'));
-            this.list = new ListView(this.$content.find('#listModule'), TaskMe.getRootList());
-            this.simpleSearch = new SimpleSearchView(this.$el.find('#searchModule'), this.$content.find('#listModule'));
+            this.fastTask = new FastTaskControl(this.$content.find('#fastTaskModule'));
+            this.list = new ListControl(this.$content.find('#listModule'), TaskMe.getRootList());
+            this.simpleSearch = new SimpleSearchControl(this.$el.find('#searchModule'), this.$content.find('#listModule'));
         },
         render: function() {
             this.$el.trigger('create');
@@ -88,6 +88,4 @@ define([
             this.$addListBtn.parents('td').css('width', this._footerBtnsWidth.addListBtn);
         }
     });
-
-    return HomeView;
 });
