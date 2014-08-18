@@ -73,7 +73,9 @@ define([
         },
         selectPreviousList: function(ev) {
             ev.preventDefault();
-            this.list.selectParentList();
+            if (this.list.list.public.id !== 'root') {
+                this.list.selectParentList();
+            }
         },
 
         _fixFooterTable: function() {

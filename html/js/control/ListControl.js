@@ -54,14 +54,16 @@ define([
             this.$content.empty();
             this.$content.append(_.template(template, this.list));
             this.$currentList = this.$content.find('.task-list');
-            this._attachEvents();
 
             this.$content.trigger('create');
 
+            this._postRender();
+            return this;
+        },
+        _postRender: function() {
+            this._attachEvents();
             this._fixWidth();
             this._disableListCheckbox();
-
-            return this.$content;
         },
 
         selectList: function(ev) {
@@ -92,8 +94,10 @@ define([
             this.$currentList = $newList;
 
             if (this.list.public.items.length > 0) {
-                this._attachEvents()
+                this._postRender();
             }
+
+            this.setList(newList);
         },
         _attachEvents: function() {
             this.$currentList.find('.list-item.task input').off('change').on('change', this._toggleTaskStatus.bind(this));
