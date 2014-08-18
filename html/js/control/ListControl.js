@@ -130,12 +130,11 @@ define([
             var th = this.$currentList.find('th:first');
             if (!this._width) {
                 this._width = th.width();
-
-                this.$currentList.addClass('fixed');
-                this.$currentList.find('.list-item label').addClass('nowrap');
             }
-
             th.css('width', this._width);
+
+            this.$currentList.addClass('fixed');
+            this.$currentList.find('.list-item label').addClass('nowrap');
         },
 
         _disableListCheckbox: function () {
