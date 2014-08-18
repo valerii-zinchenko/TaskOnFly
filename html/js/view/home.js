@@ -32,8 +32,8 @@ define(function() {
         </div>
 
         <div id="content" class="ui-content">
-            <div id="fastTaskModule"></div>
-            <div id="listModule"></div>
+            <div id="fastTaskModule" data-role="fieldcontain"></div>
+            <div id="listModule" data-role="fieldcontain"></div>
         </div>
 
         <div data-role="footer" data-position="fixed">
