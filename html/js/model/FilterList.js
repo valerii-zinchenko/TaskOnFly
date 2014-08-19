@@ -49,15 +49,17 @@ define([
             }
         },
 
-        _processor: function(item) {
-            var match = 0;
-            for (var rule in this._rules) {
-                if (this._rules.hasOwnProperty(rule) && new RegExp(this._rules[rule], 'gi').test(item.public[rule])) {
-                    match++;
+        _processor: function() {
+            return _.filter(this._list.models, function(item) {
+                var match = 0;
+                for (var rule in this._rules) {
+                    if (this._rules.hasOwnProperty(rule) && new RegExp(this._rules[rule], 'gi').test(item.public[rule])) {
+                        match++;
+                    }
                 }
-            }
 
-            return match === this._NRules;
+                return match === this._NRules;
+            });
         }
     });
 });

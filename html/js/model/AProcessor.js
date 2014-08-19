@@ -43,18 +43,18 @@ define([
                 throw new Error('List is incorrect');
             }
 
-            this.list = list;
+            this._list = list;
         },
 
         run: function() {
-            if (!this.list || this.list.constructor !== TaskList) {
+            if (!this._list || this._list.constructor !== TaskList) {
                 throw new Error('List object is incorrect');
             }
 
             // Processing result.
-            var result = _.filter(this.list.models, this._processor.bind(this));
+            var result = this._processor();
 
-            this._result = new TaskList(this.list.public.id);
+            this._result = new TaskList(this._list.public.id);
             _.each(result, function(item) {
                 this._result._add(item, false);
             }.bind(this));
