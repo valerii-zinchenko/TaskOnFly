@@ -30,7 +30,7 @@ define([
 ], function(MainRouter, TaskList) {
     function sync(listRef) {
         listRef.public.items.forEach(function(itemID) {
-            var itemData = TaskMe.loadItem(itemID),
+            var itemData = TaskOnFly.loadItem(itemID),
                 item = listRef['add' + itemData.type](itemData);
 
             if (itemData.type === 'List') {
@@ -40,7 +40,7 @@ define([
 
     }
     return function() {
-        var store = TaskMe.loadAllItems(),
+        var store = TaskOnFly.loadAllItems(),
             rootList = new TaskList('root', {id:'root'});
 
         if (store && store.root) {
@@ -48,9 +48,9 @@ define([
             sync(rootList);
         }
 
-        TaskMe.setRootList(rootList);
-        TaskMe.getRootList().saveData();
-        TaskMe.setCurrentList(TaskMe.getRootList());
+        TaskOnFly.setRootList(rootList);
+        TaskOnFly.getRootList().saveData();
+        TaskOnFly.setCurrentList(TaskOnFly.getRootList());
 
         new MainRouter();
     }

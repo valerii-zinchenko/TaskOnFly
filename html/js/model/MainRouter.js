@@ -71,7 +71,7 @@ define(function () {
 
             var fn = 'add' + what[0].toUpperCase() + what.slice(1);
             _openView('EditItemControl', function() {
-                var list = TaskMe.getCurrentList();
+                var list = TaskOnFly.getCurrentList();
                 this.setSaveCallback(list[fn].bind(list));
             });
         },
@@ -82,7 +82,7 @@ define(function () {
          */
         edit: function(id) {
             _openView('EditItemControl', function() {
-                var list = TaskMe.getCurrentList(),
+                var list = TaskOnFly.getCurrentList(),
                     item = list.getItem(id);
 
                 if (!item) {

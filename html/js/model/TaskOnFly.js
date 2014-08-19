@@ -24,7 +24,7 @@
 
 'use strict';
 
-var TaskMe;
+var TaskOnFly;
 (function() {
     function saveLocal(key, data) {
         window.localStorage.setItem(key, JSON.stringify(data));
@@ -39,26 +39,26 @@ var TaskMe;
         window.localStorage.removeItem(key);
     }
 
-    TaskMe = {
+    TaskOnFly = {
         ROOT_TASK_LIST: null,
         CURRENT_TASK_LIST: null,
         setRootList: function(list) {
             if (!list) {
                 throw new Error('Invalid list');
             }
-            TaskMe.ROOT_TASK_LIST = list;
+            TaskOnFly.ROOT_TASK_LIST = list;
         },
         getRootList: function() {
-            return TaskMe.ROOT_TASK_LIST;
+            return TaskOnFly.ROOT_TASK_LIST;
         },
         setCurrentList: function(list) {
             if (!list) {
                 throw new Error('Invalid list');
             }
-            TaskMe.CURRENT_TASK_LIST = list;
+            TaskOnFly.CURRENT_TASK_LIST = list;
         },
         getCurrentList: function() {
-            return TaskMe.CURRENT_TASK_LIST;
+            return TaskOnFly.CURRENT_TASK_LIST;
         },
         changeView: function(page) {
             if (page[0] !== '#') {
@@ -129,5 +129,5 @@ var TaskMe;
 })();
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = TaskMe;
+    module.exports = TaskOnFly;
 }

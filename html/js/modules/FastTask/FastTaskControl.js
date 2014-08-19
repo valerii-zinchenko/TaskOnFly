@@ -62,7 +62,7 @@ define([
                 return;
             }
 
-            TaskMe.getCurrentList().addTask({
+            TaskOnFly.getCurrentList().addTask({
                 title: title,
                 priority: this.$priority.find(':checked').val(),
                 timestamp: new Date()

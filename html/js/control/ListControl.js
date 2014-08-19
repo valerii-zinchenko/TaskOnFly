@@ -115,14 +115,14 @@ define([
             ev.preventDefault();
             var id = $(ev.target).parents('tr').data('item-id');
 
-            TaskMe.changeView('edit/' + id);
+            TaskOnFly.changeView('edit/' + id);
         },
         _removeItem: function(ev) {
             ev.preventDefault();
             var $tr = $(ev.target).parents('tr'),
                 id = $tr.data('item-id');
 
-            TaskMe.getCurrentList().removeItem(id);
+            TaskOnFly.getCurrentList().removeItem(id);
             $tr.remove();
         },
 

@@ -84,7 +84,7 @@ define(function () {
                 utils.deepCopy(this.public, data);
             }
 
-            TaskMe.saveItem(this);
+            TaskOnFly.saveItem(this);
         },
         toggleStatus: function() {
             this.saveData({

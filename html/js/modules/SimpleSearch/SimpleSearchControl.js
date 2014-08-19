@@ -42,8 +42,8 @@ define([
 
             this.$holder = holder;
 
-            this.currentList = TaskMe.getCurrentList();
-            this.filter = new FilterList(TaskMe.getCurrentList());
+            this.currentList = TaskOnFly.getCurrentList();
+            this.filter = new FilterList(TaskOnFly.getCurrentList());
             this.listView = listModule;
 
             this.$el.on('keyup', this.onType.bind(this));

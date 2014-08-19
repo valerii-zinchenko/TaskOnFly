@@ -98,7 +98,7 @@ define([
                 timestamp: new Date()
             });
 
-            TaskMe.changeView('#home');
+            TaskOnFly.changeView('#home');
         }
     });
 });

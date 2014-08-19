@@ -49,7 +49,7 @@ define([
             this.$addListBtn.on('click', this.addList);
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
 
-            this.list = new ListControl(this.$content.find('#listModule'), TaskMe.getRootList());
+            this.list = new ListControl(this.$content.find('#listModule'), TaskOnFly.getRootList());
             this.fastTask = new FastTaskControl(this.$content.find('#fastTaskModule'));
             this.simpleSearch = new SimpleSearchControl(this.$el.find('#searchModule'), this.list);
         },
@@ -65,11 +65,11 @@ define([
         },
         addTask: function(ev) {
             ev.preventDefault();
-            TaskMe.changeView('add/task');
+            TaskOnFly.changeView('add/task');
         },
         addList: function(ev) {
             ev.preventDefault();
-            TaskMe.changeView('add/list');
+            TaskOnFly.changeView('add/list');
         },
         selectPreviousList: function(ev) {
             ev.preventDefault();

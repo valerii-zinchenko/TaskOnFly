@@ -57,7 +57,7 @@ define([
 
             this.$.trigger('newItem', item);
             if (toSave) {
-                TaskMe.saveItem(this);
+                TaskOnFly.saveItem(this);
             }
             return item;
         },
@@ -73,11 +73,11 @@ define([
         },
 
         removeItem: function(id) {
-            TaskMe.removeItem(id);
+            TaskOnFly.removeItem(id);
             this.public.items.splice(this.public.items.indexOf(id), 1);
             delete this.models[id];
 
-            TaskMe.saveItem(this);
+            TaskOnFly.saveItem(this);
         },
 
         toggleItemStatus: function(id) {
@@ -101,13 +101,13 @@ define([
 
         selectList: function(id) {
             var list = this.getItem(id);
-            TaskMe.setCurrentList(list);
-            TaskMe.getCurrentList()._parent = this;
+            TaskOnFly.setCurrentList(list);
+            TaskOnFly.getCurrentList()._parent = this;
 
             return list;
         },
         selectParentList: function() {
-            TaskMe.setCurrentList(this._parent);
+            TaskOnFly.setCurrentList(this._parent);
 
             return this._parent;
         }
