@@ -26,9 +26,8 @@
 
 define([
     'modules/SimpleSearch/template',
-    'model/FilterList',
     'control/ListControl'
-],function (template, FilterList, ListControl) {
+],function (template, ListControl) {
     return new SingletonClass({
         $el: $(template),
 
@@ -43,7 +42,6 @@ define([
             this.$holder = holder;
 
             this.currentList = TaskOnFly.getCurrentList();
-            this.filter = new FilterList(TaskOnFly.getCurrentList());
             this.listView = listModule;
 
             this.$el.on('keyup', this.onType.bind(this));
@@ -76,11 +74,9 @@ define([
                 return;
             }
 
-            this.filter.setRules({
+            this.showResults(this.currentList.filter({
                 title: val
-            });
-
-            this.showResults(this.filter.run());
+            }));
         },
         onClear: function(ev) {
             ev.preventDefault();

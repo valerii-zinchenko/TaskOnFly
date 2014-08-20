@@ -104,12 +104,110 @@ define([
             TaskOnFly.setCurrentList(list);
             TaskOnFly.getCurrentList()._parent = this;
 
+            this.sort();
+
             return list;
         },
         selectParentList: function() {
             TaskOnFly.setCurrentList(this._parent);
 
             return this._parent;
+        },
+
+        sort: function() {
+            var structuredList = {
+                    // collect by completeness
+                    open: {
+                        // collect by due date or none (for tasks without due date property)
+                        none: {
+                            // collect by priority: 0 = low; 1 = normal; 2 = high
+                            0: [],
+                            1: [],
+                            2: []
+                        }
+                    },
+                    done: {
+                        none: {
+                            0: [],
+                            1: [],
+                            2: []
+                        }
+                    }
+                },
+                dueDates = ['none'];
+
+            _.each(this.models, function(item) {
+                var sort1 = structuredList[item.public.isDone ? 'done' : 'open'],
+                    sort2 = item.public.dueDate || 'none',
+                    sort3 = item.public.priority;
+
+                sort1[sort2][sort3].unshift(item.public.id);
+
+                if (dueDates.indexOf(sort2) === -1) {
+                    dueDates.push(sort2);
+                }
+            });
+
+            dueDates.sort();
+            dueDates.reverse();
+
+            for (var n = 0; n < 2; n++) {
+                var comp = n ? 'done' : 'open';
+                for (var m = 0, M = dueDates.length; m < M; m++) {
+                    if (structuredList[comp][dueDates[m]]) {
+                        structuredList[comp][dueDates[m]] = this._object2Array(structuredList[comp][dueDates[m]], [2,1,0]);
+                    }
+                }
+
+                if (structuredList[comp]) {
+                    structuredList[comp] = this._object2Array(structuredList[comp], dueDates);
+                }
+            }
+            structuredList = this._object2Array(structuredList, ['open', 'done']);
+
+            return structuredList;
+        },
+
+        filter: function(rules) {
+            var NRules = 0,
+                filterResult,
+                result;
+
+            for (var key in rules) {
+                if (rules.hasOwnProperty(key)) {
+                    NRules++;
+                }
+            }
+
+            filterResult = _.filter(this.models, function(item) {
+                var match = 0;
+                for (var rule in rules) {
+                    if (rules.hasOwnProperty(rule) && new RegExp(rules[rule], 'gi').test(item.public[rule])) {
+                        match++;
+                    }
+                }
+
+                return match === NRules;
+            });
+
+            result = new TaskList(this.public.id);
+            for (var n = 0, N = filterResult.length; n < N; n++) {
+                result._add(filterResult[n], false);
+            }
+
+            return result;
+        },
+
+        _object2Array: function(obj, sortedKeys) {
+            var result = [];
+
+            for (var n = 0, N = sortedKeys.length; n < N; n++) {
+                if (obj[sortedKeys[n]]) {
+                    result = result.concat(obj[sortedKeys[n]]);
+                }
+            }
+
+            return result;
         }
     });
 

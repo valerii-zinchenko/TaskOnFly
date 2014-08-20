@@ -27,8 +27,8 @@
 define([
     'view/home',
     'control/ListControl',
-    '../modules/FastTask/FastTaskControl',
-    '../modules/SimpleSearch/SimpleSearchControl'
+    'modules/FastTask/FastTaskControl',
+    'modules/SimpleSearch/SimpleSearchControl'
 ], function(template, ListControl, FastTaskControl, SimpleSearchControl) {
     return new SingletonClass({
         _footerBtnsWidth: null,
