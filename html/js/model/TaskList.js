@@ -115,37 +115,28 @@ define([
         },
 
         sort: function() {
-            var structuredList = {
-                    // collect by completeness
-                    open: {
-                        // collect by due date or none (for tasks without due date property)
-                        none: {
-                            // collect by priority: 0 = low; 1 = normal; 2 = high
-                            0: [],
-                            1: [],
-                            2: []
-                        }
-                    },
-                    done: {
-                        none: {
-                            0: [],
-                            1: [],
-                            2: []
-                        }
-                    }
-                },
-                dueDates = ['none'];
+            var structuredList = {},
+                dueDates = [];
 
             _.each(this.models, function(item) {
-                var sort1 = structuredList[item.public.isDone ? 'done' : 'open'],
-                    sort2 = item.public.dueDate || 'none',
-                    sort3 = item.public.priority;
+                var sort1 = item.public.isDone ? 'done' : 'open',   // collect by completeness
+                    sort2 = item.public.dueDate || 'none',          // collect by due date or none (for tasks without due date property)
+                    sort3 = item.public.priority;                   // collect by priority: 0 = low; 1 = normal; 2 = high
 
-                sort1[sort2][sort3].unshift(item.public.id);
-
-                if (dueDates.indexOf(sort2) === -1) {
-                    dueDates.push(sort2);
+                if (!structuredList[sort1]) {
+                    structuredList[sort1] = {};
                 }
+                if (!structuredList[sort1][sort2]) {
+                    structuredList[sort1][sort2] = {};
+                    if (dueDates.indexOf(sort2) === -1) {
+                        dueDates.push(sort2);
+                    }
+                }
+                if (!structuredList[sort1][sort2][sort3]) {
+                    structuredList[sort1][sort2][sort3] = [];
+                }
+
+                structuredList[sort1][sort2][sort3].unshift(item.public.id);
             });
 
             dueDates.sort();
@@ -154,7 +145,7 @@ define([
             for (var n = 0; n < 2; n++) {
                 var comp = n ? 'done' : 'open';
                 for (var m = 0, M = dueDates.length; m < M; m++) {
-                    if (structuredList[comp][dueDates[m]]) {
+                    if (structuredList[comp] && structuredList[comp][dueDates[m]]) {
                         structuredList[comp][dueDates[m]] = this._object2Array(structuredList[comp][dueDates[m]], [2,1,0]);
                     }
                 }
