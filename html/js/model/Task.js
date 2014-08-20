@@ -60,6 +60,7 @@ define(function () {
             this.public.parentID = parentID;
 
             this.public.id = this._genID();
+            this.public.timestamp = new Date().toISOString();
 
             if (typeof data !== 'undefined') {
                 if (typeof data === 'object') {
@@ -71,14 +72,11 @@ define(function () {
         },
         saveData: function(data) {
             if (data) {
-                if (data.timestamp && typeof data.timestamp !== 'string') {
-                    data.timestamp = data.timestamp.toString();
-                }
                 if (data.startDate && typeof data.startDate !== 'string') {
-                    data.startDate = data.startDate.toString();
+                    data.startDate = data.startDate.toISOString();
                 }
                 if (data.dueDate && typeof data.dueDate !== 'string') {
-                    data.dueDate = data.dueDate.toString();
+                    data.dueDate = data.dueDate.toISOString();
                 }
 
                 utils.deepCopy(this.public, data);

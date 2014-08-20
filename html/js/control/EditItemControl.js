@@ -65,7 +65,7 @@ define([
         render: function() {
             var data = this.item ?  this.item.public : this._defaults;
             var startDate = data.startDate || (data.timestamp ? new Date(data.timestamp) : new Date()).toISOString();
-            var dueDate = data.startDate || '';
+            var dueDate = data.dueDate || '';
 
             startDate = startDate.slice(0,10);
             if (dueDate) {
@@ -94,8 +94,7 @@ define([
                 priority: this.$priority.find(':checked').val(),
                 startDate: new Date(this.$startDate.val()),
                 dueDate: dueDateVal ? new Date(dueDateVal) : null,
-                notes: this.$notes.val(),
-                timestamp: new Date()
+                notes: this.$notes.val()
             });
 
             TaskOnFly.changeView('#home');
