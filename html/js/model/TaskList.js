@@ -55,6 +55,8 @@ define([
                 this._NDone++;
             }
 
+//            this.sort();
+
             this.$.trigger('newItem', item);
             if (toSave) {
                 TaskOnFly.saveItem(this);
@@ -104,8 +106,6 @@ define([
             TaskOnFly.setCurrentList(list);
             TaskOnFly.getCurrentList()._parent = this;
 
-            this.sort();
-
             return list;
         },
         selectParentList: function() {
@@ -115,48 +115,57 @@ define([
         },
 
         sort: function() {
-            var structuredList = {},
-                dueDates = [];
+            var that = this;
 
-            _.each(this.models, function(item) {
-                var sort1 = item.public.isDone ? 'done' : 'open',   // collect by completeness
-                    sort2 = item.public.dueDate || 'none',          // collect by due date or none (for tasks without due date property)
-                    sort3 = item.public.priority;                   // collect by priority: 0 = low; 1 = normal; 2 = high
+            // Level I: group by completeness and sort
+            this.public.items.sort(function(a,b) {
+                var ap = that.models[a].public,
+                    bp = that.models[b].public;
 
-                if (!structuredList[sort1]) {
-                    structuredList[sort1] = {};
+                if (ap.isDone < bp.isDone) {
+                    return -1;
                 }
-                if (!structuredList[sort1][sort2]) {
-                    structuredList[sort1][sort2] = {};
-                    if (dueDates.indexOf(sort2) === -1) {
-                        dueDates.push(sort2);
-                    }
+                if (ap.isDone > bp.isDone) {
+                    return 1;
                 }
-                if (!structuredList[sort1][sort2][sort3]) {
-                    structuredList[sort1][sort2][sort3] = [];
-                }
-
-                structuredList[sort1][sort2][sort3].unshift(item.public.id);
+                return 0;
             });
 
-            dueDates.sort();
-            dueDates.reverse();
+            // Level II: group by due date in completeness group and sort
+            this.public.items.sort(function(a,b) {
+                var ap = that.models[a].public,
+                    bp = that.models[b].public;
 
-            for (var n = 0; n < 2; n++) {
-                var comp = n ? 'done' : 'open';
-                for (var m = 0, M = dueDates.length; m < M; m++) {
-                    if (structuredList[comp] && structuredList[comp][dueDates[m]]) {
-                        structuredList[comp][dueDates[m]] = this._object2Array(structuredList[comp][dueDates[m]], [2,1,0]);
-                    }
+                if (ap.isDone !== bp.isDone) {
+                    return 0;
                 }
 
-                if (structuredList[comp]) {
-                    structuredList[comp] = this._object2Array(structuredList[comp], dueDates);
+                if (ap.dueDate < bp.dueDate) {
+                    return -1;
                 }
-            }
-            structuredList = this._object2Array(structuredList, ['open', 'done']);
+                if (ap.dueDate > bp.dueDate || ap.dueDate === null) {
+                    return 1;
+                }
+                return 0;
+            });
 
-            return structuredList;
+            // Level III: group by priority in due date group and sort
+            this.public.items.sort(function(a,b) {
+                var ap = that.models[a].public,
+                    bp = that.models[b].public;
+
+                if (ap.isDone !== bp.isDone || ap.dueDate !== bp.dueDate) {
+                    return 0;
+                }
+
+                if (ap.priority > bp.priority) {
+                    return -1;
+                }
+                if (ap.priority < bp.priority) {
+                    return 1;
+                }
+                return 0;
+            });
         },
 
         filter: function(rules) {
@@ -184,18 +193,6 @@ define([
             result = new TaskList(this.public.id);
             for (var n = 0, N = filterResult.length; n < N; n++) {
                 result._add(filterResult[n], false);
-            }
-
-            return result;
-        },
-
-        _object2Array: function(obj, sortedKeys) {
-            var result = [];
-
-            for (var n = 0, N = sortedKeys.length; n < N; n++) {
-                if (obj[sortedKeys[n]]) {
-                    result = result.concat(obj[sortedKeys[n]]);
-                }
             }
 
             return result;
