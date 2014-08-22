@@ -56,12 +56,29 @@ define([
             }
 
             this.sort();
+            this._checkListCompleteness();
 
             this.$.trigger('newItem', item);
             if (toSave) {
                 TaskOnFly.saveItem(this);
             }
             return item;
+        },
+        _checkListCompleteness: function() {
+            var isListDone = (this._NDone === this.public.items.length);
+
+            if (this.public.isDone === isListDone) {
+                return;
+            }
+
+            if (this._parent) {
+                this._parent.toggleItemStatus(this.public.id);
+                this._parent.sort();
+            } else {
+                this.public.isDone = isListDone;
+            }
+
+            this.saveData();
         },
         addTask: function(data) {
             return this._add(new Task(this.public.id, data));
@@ -79,6 +96,9 @@ define([
             this.public.items.splice(this.public.items.indexOf(id), 1);
             delete this.models[id];
 
+            this.sort();
+            this._checkListCompleteness();
+
             TaskOnFly.saveItem(this);
         },
 
@@ -92,13 +112,8 @@ define([
                 this._NDone--;
             }
 
-            var isListDone = (this._NDone === this.public.items.length);
-            if (this.public.isDone !== isListDone) {
-                if (this._parent) {
-                    this._parent.toggleItemStatus(this.public.id);
-                }
-                this.saveData();
-            }
+            this.sort();
+            this._checkListCompleteness();
         },
 
         selectList: function(id) {
