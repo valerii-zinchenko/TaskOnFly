@@ -40,7 +40,8 @@ define([
             this.$el = $('#' + this.page);
             this.$el.html(_.template(template, this._defaults));
 
-            this.$title= this.$el.find('#title');
+            this.$isDone = this.$el.find('#done');
+            this.$title = this.$el.find('#title');
             this.$priority = this.$el.find('#priority');
             this.$notes = this.$el.find('#notes');
             this.$startDate = this.$el.find('#start');
@@ -72,6 +73,7 @@ define([
                 dueDate = dueDate.slice(0,10);
             }
 
+            this.$isDone.prop('checked', data.isDone);
             this.$title.val(data.title);
             this.$priority.find('#' + data.priority).prop('checked', true);
             this.$startDate.val(startDate);
@@ -79,6 +81,14 @@ define([
             this.$notes.val(data.notes);
 
             this.$el.trigger('create');
+
+            if (data.isDone) {
+                this.$isDone.removeClass('ui-checkbox-off');
+                this.$isDone.addClass('ui-checkbox-on');
+            } else {
+                this.$isDone.removeClass('ui-checkbox-on');
+                this.$isDone.addClass('ui-checkbox-off');
+            }
 
             this.item = null;
             return this;
