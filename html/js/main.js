@@ -28,24 +28,28 @@ define([
     'model/MainRouter',
     'model/TaskList'
 ], function(MainRouter, TaskList) {
-    function sync(listRef) {
-        listRef.public.items.forEach(function(itemID) {
-            var itemData = TaskOnFly.loadItem(itemID),
-                item = listRef['add' + itemData.type](itemData);
+    function sync(listRef, ids) {
+        ids.forEach(function(itemID) {
+            var itemData = TaskOnFly.loadItem(itemID);
+            var item = listRef['add' + itemData.type](itemData);
 
             if (itemData.type === 'List') {
-                sync(item);
+                var ids = item.public.items;
+                item.public.items = [];
+                sync(item, ids);
             }
         });
 
     }
     return function() {
-        var store = TaskOnFly.loadAllItems(),
+        var store = TaskOnFly.loadItem('root'),
             rootList = new TaskList('root', {id:'root'});
 
-        if (store && store.root) {
-            rootList.saveData(store.root);
-            sync(rootList);
+        if (store) {
+            var ids = store.items;
+            store.items = [];
+            rootList.saveData(store);
+            sync(rootList, ids);
         }
 
         TaskOnFly.setRootList(rootList);

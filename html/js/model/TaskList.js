@@ -55,7 +55,7 @@ define([
                 this._NDone++;
             }
 
-//            this.sort();
+            this.sort();
 
             this.$.trigger('newItem', item);
             if (toSave) {
