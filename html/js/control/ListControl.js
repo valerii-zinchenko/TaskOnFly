@@ -51,7 +51,10 @@ define([
             this.list.$.on('newItem', this._insertItem.bind(this));
         },
         render: function() {
-            this.$content.empty();
+            if (this.$currentList) {
+                this.$currentList.remove();
+            }
+
             this.$content.append(_.template(template, this.list));
             this.$currentList = this.$content.find('.task-list');
 
@@ -100,13 +103,40 @@ define([
             this.setList(newList);
         },
         _attachEvents: function() {
-            this.$currentList.find('.list-item.task input').off('change').on('change', this._toggleTaskStatus.bind(this));
-            this.$currentList.find('.edit-btn').off('click').on('click', this._editItem);
-            this.$currentList.find('.delete-btn').off('click').on('click', this._removeItem);
-            this.$currentList.find('.list-item.list').off('vclick').on('vclick', this.selectList.bind(this));
+            this.$currentList.find('.list-item.task input').on('change', this._toggleTaskStatus.bind(this));
+            this.$currentList.find('.list-item.list').on('vclick', this.selectList.bind(this));
+            this.$currentList.find('.edit-btn').on('click', this._editItem);
+            this.$currentList.find('.delete-btn').on('click', this._removeItem);
         },
         _toggleTaskStatus: function(ev) {
-            this.list.toggleItemStatus($(ev.target).prop('id'));
+            ev.preventDefault();
+
+            var $target = $(ev.target);
+            var $el = $target.parents('tr');
+            var id = $target.prop('id');
+            var indexBefore = this.list.public.items.indexOf(id),
+                indexAfter,
+                siblingID,
+                $sibling;
+
+            this.list.toggleItemStatus(id);
+
+            indexAfter = this.list.public.items.indexOf(id);
+
+            if (indexAfter === indexBefore) {
+                return;
+            }
+
+            $el.detach();
+            if (indexAfter+1 === this.list.public.items.length) {
+                siblingID = this.list.public.items[indexAfter - 1];
+                $sibling = this.$currentList.find('tr[data-item-id=' + siblingID + ']');
+                $el.insertAfter($sibling);
+            } else {
+                siblingID = this.list.public.items[indexAfter + 1];
+                $sibling = this.$currentList.find('tr[data-item-id=' + siblingID + ']');
+                $el.insertBefore($sibling);
+            }
         },
         _insertItem: function() {
             this.render();
