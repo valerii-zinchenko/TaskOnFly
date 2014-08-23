@@ -36,7 +36,7 @@ define(function() {
             <div id="listModule" data-role="fieldcontain"></div>
         </div>
 
-        <div data-role="footer" data-position="fixed">
+        <div data-role="footer" data-position="fixed" data-tap-toggle="false">
             <table class="full">
                 <tbody>
                 <tr>
