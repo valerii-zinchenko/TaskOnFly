@@ -37,11 +37,21 @@ destPrefix = './test/_jsTestFiles/js/';
     'model/TaskList.js',
     'model/MainRouter.js',
 
+    'view/home.js',
+    'view/list.js',
+    'view/task.js',
+
     'control/HomeControl.js',
     'control/ListControl.js',
     'control/EditItemControl.js',
 
-    'main.js'
+    'main.js',
+
+    'modules/FastTask/FastTaskControl.js',
+    'modules/FastTask/template.js',
+
+    'modules/SimpleSearch/SimpleSearchControl.js',
+    'modules/SimpleSearch/template.js'
 ].forEach(function(file) {
     jscoverage.processFile(srcPrefix + file, destPrefix + file);
 });
