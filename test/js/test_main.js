@@ -24,7 +24,7 @@
 suite('Test main file', function() {
     var Module;
     setup(function(done) {
-        requirejs(['js/main'], function(Task) {
+        requirejs(['main'], function(Task) {
             Module = Task;
             done();
         })

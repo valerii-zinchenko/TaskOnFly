@@ -25,7 +25,7 @@
 suite('Test Task model', function() {
     var Module;
     setup(function(done) {
-        requirejs(['js/models/Task'], function(Task) {
+        requirejs(['model/Task'], function(Task) {
             Module = Task;
             done();
         })

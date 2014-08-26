@@ -26,7 +26,7 @@ suite('Test TaskList', function() {
     var Module,
         List;
     setup(function(done) {
-        requirejs(['js/collections/TaskList'], function(TaskList) {
+        requirejs(['model/TaskList'], function(TaskList) {
             Module = TaskList;
             List = new Module('root');
             done();
@@ -35,7 +35,12 @@ suite('Test TaskList', function() {
 
     test('_add()', function() {
         var item = {
-            public: {id: '11'}
+            public: {
+                id: '11',
+                isDone: true,
+                dueDate: null,
+                priority: 0
+            }
         };
 
         assert.equal(List._add(item), item);
@@ -66,7 +71,7 @@ suite('Test TaskList', function() {
         var List2 = List.addList();
         List.selectList(List2.public.id);
 
-        assert.equal(TaskMe.getCurrentList(), List2);
+        assert.equal(TaskOnFly.getCurrentList(), List2);
     });
 
     test('selectParentList()', function() {
@@ -74,6 +79,6 @@ suite('Test TaskList', function() {
         List.selectList(List2.public.id);
         List2.selectParentList();
 
-        assert.equal(TaskMe.getCurrentList(), List);
+        assert.equal(TaskOnFly.getCurrentList(), List);
     });
 });

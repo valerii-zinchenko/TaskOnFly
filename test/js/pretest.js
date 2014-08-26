@@ -30,17 +30,16 @@ destPrefix = './test/_jsTestFiles/js/';
     'core/AClass.js',
     'core/Class.js',
     'core/SingletonClass.js',
-    'core/TaskMe.js',
     'core/utils.js',
 
-    'collections/TaskList.js',
+    'model/TaskOnFly.js',
+    'model/Task.js',
+    'model/TaskList.js',
+    'model/MainRouter.js',
 
-    'models/Task.js',
-
-    'routers/MainRouter.js',
-
-    'views/HomeView.js',
-    'views/TaskView.js',
+    'control/HomeControl.js',
+    'control/ListControl.js',
+    'control/EditItemControl.js',
 
     'main.js'
 ].forEach(function(file) {

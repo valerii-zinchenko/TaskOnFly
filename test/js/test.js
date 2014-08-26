@@ -24,13 +24,14 @@
 if (process.env.npm_lifecycle_event === 'test') {
     reporter = 'spec';
     srcPrefix = '../../html/js/';
-    baseUrl = './html';
+    baseUrl = './html/js';
     libUrl = 'js/lib/';
     templatesUrl = '';
 } else {
+//    reporter = 'spec';
     reporter = 'html-cov';
     srcPrefix = '../_jsTestFiles/js/';
-    baseUrl = 'test' + srcPrefix.slice(2,-3);
+    baseUrl = 'test' + srcPrefix.slice(2);
     libUrl = '../../html/js/lib/';
     templatesUrl = '../../html/templates';
 }
@@ -56,11 +57,12 @@ requirejs.config({
     nodeRequire: require
 });
 
-TaskMe = require(srcPrefix + 'core/TaskMe');
-utils = require(srcPrefix + 'core/utils');
 AClass = require(srcPrefix + 'core/AClass');
 Class = require(srcPrefix + 'core/Class');
 SingletonClass = require(srcPrefix + 'core/SingletonClass');
+TaskOnFly = require(srcPrefix + 'model/TaskOnFly');
+utils = require(srcPrefix + 'core/utils').utils;
+View = require(srcPrefix + 'core/utils').View;
 
 testRunner = new Mocha({
     ui: 'tdd',
@@ -72,11 +74,11 @@ testPrefix = './test/js/';
     'core/testAClass',
     'core/testClass',
     'core/testSingletonClass',
-    'core/testTaskMe',
     'core/test_utils',
     'test_main',
-    'models/testTask',
-    'collections/testTaskList'
+    'model/testTaskOnFly',
+    'model/testTask',
+    'model/testTaskList'
 ].forEach(function(file) {
     testRunner.addFile(testPrefix + file);
 });

@@ -21,65 +21,65 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
-suite('Test TaskMe', function() {
+suite('Test TaskOnFly', function() {
     setup(function() {
-        TaskMe.ROOT_TASK_LIST = null;
-        TaskMe.CURRENT_TASK_LIST = null;
+        TaskOnFly.ROOT_TASK_LIST = null;
+        TaskOnFly.CURRENT_TASK_LIST = null;
     });
 
     test('setRootList()', function() {
         assert.throw(function() {
-            TaskMe.setRootList()
+            TaskOnFly.setRootList()
         }, Error, 'Invalid list');
         assert.doesNotThrow(function() {
-            TaskMe.setRootList({})
+            TaskOnFly.setRootList({})
         });
     });
     test('getRootList()', function() {
-        assert.isNull(TaskMe.getRootList());
+        assert.isNull(TaskOnFly.getRootList());
         var obj = {};
-        TaskMe.setRootList(obj);
-        assert.equal(TaskMe.getRootList(), obj);
+        TaskOnFly.setRootList(obj);
+        assert.equal(TaskOnFly.getRootList(), obj);
     });
 
     test('setCurrentList()', function() {
         assert.throw(function() {
-            TaskMe.setCurrentList()
+            TaskOnFly.setCurrentList()
         }, Error, 'Invalid list');
         assert.doesNotThrow(function() {
-            TaskMe.setCurrentList({})
+            TaskOnFly.setCurrentList({})
         });
     });
     test('getCurrentList()', function() {
-        assert.isNull(TaskMe.getCurrentList());
+        assert.isNull(TaskOnFly.getCurrentList());
         var obj = {};
-        TaskMe.setCurrentList(obj);
-        assert.equal(TaskMe.getCurrentList(), obj);
+        TaskOnFly.setCurrentList(obj);
+        assert.equal(TaskOnFly.getCurrentList(), obj);
     });
 
     test('changeView()', function() {
         var hash = '';
-        TaskMe.changeView(hash);
+        TaskOnFly.changeView(hash);
         assert.equal(window.location.hash, '#');
 
         hash = 'view';
-        TaskMe.changeView(hash);
+        TaskOnFly.changeView(hash);
         assert.equal(window.location.hash, '#view');
     });
 
     test('saveItem() with incorrect input arguments', function() {
         assert.throw(function() {
-            TaskMe.saveItem();
+            TaskOnFly.saveItem();
         }, Error, 'item is not defined');
         assert.throw(function() {
-            TaskMe.saveItem({});
+            TaskOnFly.saveItem({});
         }, Error, 'Item object does not contain public object');
 
         assert.throw(function() {
-            TaskMe.saveItem({public: 5});
+            TaskOnFly.saveItem({public: 5});
         }, Error, 'Item object does not contain public object');
         assert.throw(function() {
-            TaskMe.saveItem({public: {}});
+            TaskOnFly.saveItem({public: {}});
         }, Error, 'Item id is not defined');
     });
     test('saveItem() with correct input arguments', function() {
@@ -90,18 +90,18 @@ suite('Test TaskMe', function() {
             }
         };
         assert.doesNotThrow(function() {
-            TaskMe.saveItem(item);
+            TaskOnFly.saveItem(item);
         });
     });
 
     test('loadItem() with incorrect input arguments', function() {
         assert.throw(function() {
-            TaskMe.loadItem();
+            TaskOnFly.loadItem();
         }, Error, 'Item id is not defined');
     });
 });
 
-suite('Test TaskMe IO', function() {
+suite('Test TaskOnFly IO', function() {
     var item = {
             public: {
                 id: '04',
@@ -115,29 +115,29 @@ suite('Test TaskMe IO', function() {
     });
 
     test('saveItem() Check localStorage', function() {
-        TaskMe.saveItem(item);
+        TaskOnFly.saveItem(item);
         assert.equal(window.localStorage.getItem(id), JSON.stringify(item.public));
         assert.ok(window.localStorage.getItem('items'));
     });
 
     test('loadItem()', function() {
-        TaskMe.saveItem(item);
+        TaskOnFly.saveItem(item);
 
-        var storedItem = TaskMe.loadItem(item.public.id);
+        var storedItem = TaskOnFly.loadItem(item.public.id);
         assert.equal(storedItem.id, item.public.id);
         assert.equal(storedItem.value, item.public.value);
     });
 
     test('removeItem()', function() {
         assert.doesNotThrow(function() {
-            TaskMe.removeItem();
+            TaskOnFly.removeItem();
         });
 
-        TaskMe.saveItem(item);
+        TaskOnFly.saveItem(item);
         assert.doesNotThrow(function() {
-            TaskMe.removeItem(item);
+            TaskOnFly.removeItem(item.public.id);
         });
 
-        assert.isNull(TaskMe.loadItem(item.public.id));
+        assert.isNull(TaskOnFly.loadItem(item.public.id));
     });
 });
