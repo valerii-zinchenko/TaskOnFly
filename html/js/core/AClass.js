@@ -68,7 +68,9 @@ function AClass(Constructor) {
                         break;
                     case 'object':
                         if (value) {
-                            Class.prototype._defaults[key] = {};
+                            if (!Class.prototype._defaults[key]) {
+                                Class.prototype._defaults[key] = {};
+                            }
                             utils.deepExtend(Class.prototype._defaults[key], value);
                             break;
                         }
