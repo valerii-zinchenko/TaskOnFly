@@ -23,17 +23,18 @@
 
 if (process.env.npm_lifecycle_event === 'test') {
     reporter = 'spec';
-    srcPrefix = '../../html/js/';
-    baseUrl = './html/js';
+    srcPrefix = '../js/';
+    baseUrl = './js';
     libUrl = 'js/lib/';
-    templatesUrl = '';
 } else {
 //    reporter = 'spec';
     reporter = 'html-cov';
-    srcPrefix = '../_jsTestFiles/js/';
-    baseUrl = 'test' + srcPrefix.slice(2);
-    libUrl = '../../html/js/lib/';
-    templatesUrl = '../../html/templates';
+    srcPrefix = './_jsTestFiles/';
+    baseUrl = './test' + srcPrefix.slice(1);
+    libUrl = './js/lib/';
+
+    // be quite
+    console.log = function(){};
 }
 
 
@@ -49,9 +50,7 @@ define = requirejs.define;
 requirejs.config({
     baseUrl: baseUrl,
     paths: {
-        'text': libUrl + 'text-2.0.12',
-        'i18n': libUrl + 'i18n-2.0.4',
-        'templates': templatesUrl
+        'i18n': libUrl + 'i18n-2.0.4'
     },
 
     nodeRequire: require
@@ -69,7 +68,7 @@ testRunner = new Mocha({
     reporter: reporter
 });
 
-testPrefix = './test/js/';
+testPrefix = './test/';
 [
     'core/testAClass',
     'core/testClass',
@@ -83,6 +82,6 @@ testPrefix = './test/js/';
     testRunner.addFile(testPrefix + file);
 });
 
-requirejs('./test/js/moks.js');
+requirejs('./test/moks.js');
 
 testRunner.run();

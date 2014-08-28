@@ -23,8 +23,8 @@
 
 jscoverage = require('jscoverage');
 
-srcPrefix =  './html/js/';
-destPrefix = './test/_jsTestFiles/js/';
+srcPrefix =  './js/';
+destPrefix = './test/_jsTestFiles/';
 
 [
     'core/AClass.js',

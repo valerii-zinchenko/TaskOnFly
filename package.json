@@ -18,10 +18,10 @@
         "requirejs":""
     },
     "scripts": {
-        "prestart": "node test/js/pretest",
-        "start": "node test/js/test > reports/js.html",
-        "poststart": "node test/js/posttest",
-        "test": "node test/js/test"
+        "prestart": "node test/pretest",
+        "start": "node test/test > reports/js.html",
+        "poststart": "node test/posttest",
+        "test": "node test/test"
     },
     "author": "Valerii Zinchenko",
     "license": "GPLv3"
