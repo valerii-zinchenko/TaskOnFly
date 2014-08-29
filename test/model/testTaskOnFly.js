@@ -140,4 +140,29 @@ suite('Test TaskOnFly IO', function() {
 
         assert.isNull(TaskOnFly.loadItem(item.public.id));
     });
+
+    suite('Load all items.', function() {
+        var item2 = {
+            public: {
+                id: '19',
+                value: 90
+            }
+        };
+
+        test('No items', function() {
+            assert.isNull(TaskOnFly.loadAllItems());
+        });
+
+        test('Two items', function() {
+            TaskOnFly.saveItem(item);
+            TaskOnFly.saveItem(item2);
+
+            var items = TaskOnFly.loadAllItems();
+
+            assert.equal(items['04'].id, '04');
+            assert.equal(items['04'].value, 11);
+            assert.equal(items['19'].id, '19');
+            assert.equal(items['19'].value, 90);
+        })
+    });
 });
