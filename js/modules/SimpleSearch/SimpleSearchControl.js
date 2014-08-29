@@ -29,7 +29,7 @@ define([
     'control/ListControl'
 ],function (template, ListControl) {
     return new SingletonClass({
-        $el: $(template),
+        $el: null,
 
         initialize: function(holder, listModule) {
             if (!holder) {
@@ -44,6 +44,7 @@ define([
             this.currentList = TaskOnFly.getCurrentList();
             this.listView = listModule;
 
+            this.$el = $(template);
             this.$el.on('keyup', this.onType.bind(this));
         },
         render: function() {

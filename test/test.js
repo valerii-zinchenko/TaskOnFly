@@ -21,12 +21,7 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
-if (process.env.npm_lifecycle_event === 'test') {
-    reporter = 'spec';
-    srcPrefix = '../js/';
-    baseUrl = './js';
-    libUrl = 'js/lib/';
-} else {
+if (process.env.npm_lifecycle_event === 'start') {
 //    reporter = 'spec';
     reporter = 'html-cov';
     srcPrefix = './_jsTestFiles/';
@@ -35,6 +30,11 @@ if (process.env.npm_lifecycle_event === 'test') {
 
     // be quite
     console.log = function(){};
+} else {
+    reporter = 'spec';
+    srcPrefix = '../js/';
+    baseUrl = './js';
+    libUrl = 'js/lib/';
 }
 
 

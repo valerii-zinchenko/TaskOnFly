@@ -33,6 +33,14 @@ suite('Test TaskList', function() {
         })
     });
 
+    test('_defaults.public', function() {
+        var pub = Module.prototype._defaults.public;
+
+        assert.equal(pub.type, 'List');
+        assert.isArray(pub.items);
+        assert.equal(pub.items.length, 0);
+    });
+
     test('_add()', function() {
         var item = {
             public: {

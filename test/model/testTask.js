@@ -31,6 +31,21 @@ suite('Test Task model', function() {
         })
     });
 
+    test('_defaults.public', function() {
+        var pub = Module.prototype._defaults.public;
+
+        assert.equal(pub.isDone, false);
+        assert.equal(pub.title, '');
+        assert.equal(pub.priority, 1);
+        assert.equal(pub.startDate, null);
+        assert.equal(pub.dueDate, null);
+        assert.equal(pub.notes, '');
+        assert.equal(pub.timestamp, '');
+        assert.equal(pub.id, '');
+        assert.equal(pub.parentID, '');
+        assert.equal(pub.type, 'Task');
+    });
+
     test('Constructor without arguments', function() {
         assert.throw(function() {
             new Module();
