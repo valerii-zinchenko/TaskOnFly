@@ -74,14 +74,18 @@ suite('Test Task model', function() {
             title = 'test task',
             priority = 3,
             description = 'task description',
-            timestamp = new Date();
+            timestamp = new Date(),
+            startDate = new Date('2014-08-25'),
+            dueDate = new Date('2014-08-31');
 
         var task = new Module(parentID, {
             isDone: isDone,
             title: title,
             priority: priority,
             description: description,
-            timestamp: timestamp
+            timestamp: timestamp,
+            startDate: startDate,
+            dueDate: dueDate
         });
 
         assert.equal(task.public.parentID, parentID);
@@ -90,6 +94,8 @@ suite('Test Task model', function() {
         assert.equal(task.public.priority, priority);
         assert.equal(task.public.description, description);
         assert.equal(task.public.timestamp, timestamp);
+        assert.equal(task.public.startDate, startDate.toISOString());
+        assert.equal(task.public.dueDate, dueDate.toISOString());
     });
 
     test('saveData()', function() {
@@ -98,7 +104,9 @@ suite('Test Task model', function() {
             title = 'test task',
             priority = 3,
             description = 'task description',
-            timestamp = new Date();
+            timestamp = new Date(),
+            startDate = new Date('2014-08-25'),
+            dueDate = new Date('2014-08-31');
 
         var task = new Module(parenID);
         task.saveData({
@@ -106,7 +114,9 @@ suite('Test Task model', function() {
             title: title,
             priority: priority,
             description: description,
-            timestamp: timestamp
+            timestamp: timestamp,
+            startDate: startDate,
+            dueDate: dueDate
         });
 
         assert.equal(task.public.isDone, isDone);
@@ -114,6 +124,8 @@ suite('Test Task model', function() {
         assert.equal(task.public.priority, priority);
         assert.equal(task.public.description, description);
         assert.equal(task.public.timestamp, timestamp);
+        assert.equal(task.public.startDate, startDate.toISOString());
+        assert.equal(task.public.dueDate, dueDate.toISOString());
     });
 
     test('Is Module a singleton?', function() {
@@ -160,5 +172,12 @@ suite('Test Task model', function() {
         assert.equal(task2.public.priority, priority1);
         assert.equal(task2.public.description, description1);
         assert.equal(task2.public.timestamp, timestamp);
+    });
+
+    test('toggleStatus()', function() {
+        var task = new Module('parentID');
+        task.toggleStatus();
+
+        assert.equal(task.public.isDone, true);
     });
 });
