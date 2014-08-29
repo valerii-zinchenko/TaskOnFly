@@ -25,7 +25,8 @@
 suite('Test utility functions', function() {
     var v1 = 11,
         v2 = 4,
-        v3 = 19;
+        v3 = 19,
+        v4 = 90;
     var obj1, obj2;
 
     setup(function() {
@@ -34,10 +35,18 @@ suite('Test utility functions', function() {
             innObj: {
                 innValue: v2
             },
+            innObj2: {
+                innInnObj: {
+                    innInnVal: v4
+                }
+            },
             empty: null
         };
         obj2 = {
-            value: v3
+            value: v3,
+            innObj2: {
+                innInnObj: {}
+            }
         };
     });
 
@@ -47,7 +56,8 @@ suite('Test utility functions', function() {
         assert.equal(obj2.value, v3);
         assert.equal(obj2.innObj.innValue, v2);
         assert.notEqual(obj2.innObj, obj1.innObj);
-        assert.isNull(obj2.empty);
+        assert.isObject(obj2.innObj2.innInnObj);
+        assert.equal(obj2.innObj2.innInnObj.innInnVal, v4);
     });
     test('deepCopy()', function() {
         utils.deepCopy(obj2, obj1);
@@ -55,6 +65,22 @@ suite('Test utility functions', function() {
         assert.equal(obj2.value, v1);
         assert.equal(obj2.innObj.innValue, v2);
         assert.notEqual(obj2.innObj, obj1.innObj);
-        assert.isNull(obj2.empty);
+        assert.isObject(obj2.innObj2.innInnObj);
+        assert.equal(obj2.innObj2.innInnObj.innInnVal, v4);
     })
+});
+
+
+suite('Test View', function() {
+    test('Simple template', function() {
+        assert.equal(View(function() {/**
+template text
+         **/}), 'template text');
+    });
+
+    test('Template text with spaces at begin', function() {
+        assert.equal(View(function() {/**
+    template text
+         **/}), '    template text');
+    });
 });
