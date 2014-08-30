@@ -58,12 +58,11 @@ suite('Test TaskList', function() {
 
     test('addList()', function() {
         assert.doesNotThrow(function() {
-            var item = List.addList();
-            assert.equal(item.constructor, Module);
+            assert.equal(List.addList().constructor, Module);
         })
     });
 
-    test('addList()', function() {
+    test('addTask()', function() {
         assert.doesNotThrow(function() {
             var value = 11;
             assert.equal(List.addTask({value: value}).public.value, value);
@@ -73,6 +72,38 @@ suite('Test TaskList', function() {
     test('getItem()', function() {
         var item = List.addList();
         assert.equal(List.getItem(item.public.id), item);
+    });
+
+    test('removeItem()', function() {
+        var task = List.addTask();
+
+        assert.equal(List.public.items.length, 1);
+        assert.doesNotThrow(function() {
+            List.removeItem(task.public.id);
+        });
+        assert.equal(List.public.items.length, 0);
+        assert.isUndefined(List.models[task.public.id]);
+    });
+
+    test('toggleItemStatus() & _checkListCompleteness()', function() {
+        var list = List.addList();
+        var task = list.addTask();
+
+        list.toggleItemStatus(task.public.id);
+
+        assert.isTrue(list.public.isDone, 'inner list completeness status was not changed to true');
+        assert.isTrue(List.public.isDone, 'root list completeness status was not changed to true');
+
+        list.toggleItemStatus(task.public.id);
+
+        assert.isFalse(list.public.isDone, 'inner list completeness status was not changed to false');
+        assert.isFalse(List.public.isDone, 'root list completeness status was not changed to false');
+
+        list.toggleItemStatus(task.public.id);
+        list.addTask();
+
+        assert.isFalse(list.public.isDone, 'inner list completeness status was not changed to false after adding new task');
+        assert.isFalse(List.public.isDone, 'root list completeness status was not changed to false after adding new task');
     });
 
     test('selectList()', function() {
@@ -89,4 +120,10 @@ suite('Test TaskList', function() {
 
         assert.equal(TaskOnFly.getCurrentList(), List);
     });
+
+    test('_object2Array()', function() {});
+
+    test('sort()', function() {});
+
+    test('filter()', function() {});
 });

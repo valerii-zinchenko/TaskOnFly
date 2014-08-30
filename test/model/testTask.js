@@ -132,48 +132,6 @@ suite('Test Task model', function() {
         assert.notEqual(new Module('id'), new Module('id'));
     });
 
-    test('Two instances', function() {
-        var parentID = 'parentID',
-            isDone = true,
-            title = 'test task',
-            title1 = 'test task1',
-            priority = 3,
-            priority1 = 4,
-            description = 'task description',
-            description1 = 'task description1',
-            timestamp = new Date().toString();
-
-        var task1 = new Module(parentID);
-        task1.saveData({
-            isDone: isDone,
-            title: title,
-            priority: priority,
-            description: description,
-            timestamp: timestamp
-        });
-
-        var task2 = new Module(parentID);
-        task2.saveData({
-            isDone: isDone,
-            title: title1,
-            priority: priority1,
-            description: description1,
-            timestamp: timestamp
-        });
-
-        assert.equal(task1.public.isDone, isDone);
-        assert.equal(task1.public.title, title);
-        assert.equal(task1.public.priority, priority);
-        assert.equal(task1.public.description, description);
-        assert.equal(task1.public.timestamp, timestamp);
-
-        assert.equal(task2.public.isDone, isDone);
-        assert.equal(task2.public.title, title1);
-        assert.equal(task2.public.priority, priority1);
-        assert.equal(task2.public.description, description1);
-        assert.equal(task2.public.timestamp, timestamp);
-    });
-
     test('toggleStatus()', function() {
         var task = new Module('parentID');
         task.toggleStatus();

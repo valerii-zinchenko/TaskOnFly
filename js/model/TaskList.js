@@ -84,7 +84,9 @@ define([
             return this._add(new Task(this.public.id, data));
         },
         addList: function(data) {
-            return this._add(new TaskList(this.public.id, data));
+            var list = new TaskList(this.public.id, data);
+            list._parent = this;
+            return this._add(list);
         },
 
         getItem: function(id) {
@@ -92,7 +94,6 @@ define([
         },
 
         removeItem: function(id) {
-            TaskOnFly.removeItem(id);
             this.public.items.splice(this.public.items.indexOf(id), 1);
             delete this.models[id];
 
@@ -100,6 +101,7 @@ define([
             this._checkListCompleteness();
 
             TaskOnFly.saveItem(this);
+            TaskOnFly.removeItem(id);
         },
 
         toggleItemStatus: function(id) {
@@ -119,7 +121,6 @@ define([
         selectList: function(id) {
             var list = this.getItem(id);
             TaskOnFly.setCurrentList(list);
-            TaskOnFly.getCurrentList()._parent = this;
 
             return list;
         },
