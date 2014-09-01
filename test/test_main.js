@@ -34,5 +34,62 @@ suite('Test main file', function() {
         assert.doesNotThrow(function() {
             Module();
         });
+    });
+
+    test('Application start with stored root/task', function() {
+        window.localStorage.storage = {
+            root: JSON.stringify({
+                isDone: false,
+                items: ['0'],
+                type: 'List',
+                parentID: 'root'
+            }),
+            '0': JSON.stringify({
+                id: '0',
+                title: 'title',
+                isDone: false,
+                type: 'Task',
+                parentID: 'root'
+            })
+        };
+
+        assert.doesNotThrow(function() {
+            Module();
+        });
+
+        assert.equal(TaskOnFly.getRootList().public.items.length, 1);
+    });
+
+    test('Application start with stored root/list/task', function() {
+        window.localStorage.storage = {
+            root: JSON.stringify({
+                isDone: false,
+                items: ['0'],
+                type: 'List',
+                parentID: 'root'
+            }),
+            '0': JSON.stringify({
+                id: '0',
+                title: 'list title',
+                isDone: false,
+                items: ['1'],
+                type: 'List',
+                parentID: 'root'
+            }),
+            '1': JSON.stringify({
+                id: '1',
+                title: 'title',
+                isDone: false,
+                type: 'Task',
+                parentID: '0'
+            })
+        };
+
+        assert.doesNotThrow(function() {
+            Module();
+        });
+
+        assert.equal(TaskOnFly.getRootList().public.items.length, 1);
+        assert.equal(TaskOnFly.getRootList().models['0'].public.items.length, 1);
     })
 });
