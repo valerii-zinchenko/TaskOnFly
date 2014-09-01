@@ -19,7 +19,7 @@
     },
     "scripts": {
         "prestart": "node test/pretest",
-        "start": "node test/test > reports/js.html",
+        "start": "node test/test > reports/Coverage.html",
         "poststart": "node test/posttest",
         "test": "node test/test"
     },

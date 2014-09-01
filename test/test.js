@@ -74,10 +74,20 @@ testPrefix = './test/';
     'core/testClass',
     'core/testSingletonClass',
     'core/test_utils',
-    'test_main',
+
     'model/testTaskOnFly',
     'model/testTask',
-    'model/testTaskList'
+    'model/testTaskList',
+    'model/testMainRouter',
+
+    'control/testListControl',
+    'control/testHomeControl',
+    'control/testEditItemControl',
+
+    'test_main',
+
+    'modules/FastTask/testFastTaskControl',
+    'modules/SimpleSearch/testSimpleSearchControl'
 ].forEach(function(file) {
     testRunner.addFile(testPrefix + file);
 });
