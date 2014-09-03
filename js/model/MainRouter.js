@@ -31,7 +31,7 @@ define(function () {
      * @private
      */
     function _openView (viewName, fn) {
-        requirejs(['control/' + viewName], function(View) {
+        requirejs(['view/' + viewName], function(View) {
             var view = new View();
 
             if (fn) {
@@ -43,7 +43,7 @@ define(function () {
         });
     }
 
-    var MainRooter = Backbone.Router.extend({
+    return Backbone.Router.extend({
         routes: {
             '': 'home',
             'home': 'home',
@@ -70,9 +70,9 @@ define(function () {
             }
 
             var fn = 'add' + what[0].toUpperCase() + what.slice(1);
-            _openView('EditItemControl', function() {
+            _openView('EditItemView', function() {
                 var list = TaskOnFly.getCurrentList();
-                this.setSaveCallback(list[fn].bind(list));
+                this.control.setSaveCallback(list[fn].bind(list));
             });
         },
 
@@ -81,7 +81,7 @@ define(function () {
          * @param {string} id Item name in the current list.
          */
         edit: function(id) {
-            _openView('EditItemControl', function() {
+            _openView('EditItemView', function() {
                 var list = TaskOnFly.getCurrentList(),
                     item = list.getItem(id);
 
@@ -89,11 +89,9 @@ define(function () {
                     throw new Error('Item with id: "' + id + '" was not found');
                 }
 
-                this.setItem(item);
-                this.setSaveCallback(list.saveData.bind(item));
+                this.control.setItem(item);
+                this.control.setSaveCallback(list.saveData.bind(item));
             });
         }
     });
-
-    return MainRooter;
 });

@@ -39,7 +39,7 @@ destPrefix = './test/_jsTestFiles/';
 
     'view/home.js',
     'view/list.js',
-    'view/task.js',
+    'view/EditItemView.js',
 
     'control/HomeControl.js',
     'control/ListControl.js',

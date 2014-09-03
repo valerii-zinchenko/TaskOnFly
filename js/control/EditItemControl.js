@@ -25,31 +25,14 @@
 'use strict';
 
 define([
-    'view/task',
     'model/Task',
     'model/TaskList'
-],function (template, Task, TaskList) {
+],function (Task, TaskList) {
     return new SingletonClass({
         _callback: null,
         _defaults: Task.prototype._defaults.public,
 
         item: null,
-        page: 'task',
-
-        initialize: function() {
-            this.$el = $('#' + this.page);
-            this.$el.html(_.template(template, this._defaults));
-
-            this.$isDone = this.$el.find('#done');
-            this.$title = this.$el.find('#title');
-            this.$priority = this.$el.find('#priority');
-            this.$notes = this.$el.find('#notes');
-            this.$startDate = this.$el.find('#start');
-            this.$dueDate = this.$el.find('#due');
-
-            this.$el.find('#save').on('vclick', this.save.bind(this));
-            this.$el.find('form').on('submit', this.save.bind(this));
-        },
 
         setItem: function(item) {
             if (item && item.constructor !== Task && item.constructor !== TaskList) {
@@ -57,14 +40,16 @@ define([
             }
             this.item = item;
         },
+
         setSaveCallback: function(callback) {
             if (typeof callback !== 'function') {
                 throw new Error('Incorrect input arguments');
             }
             this._callback = callback;
         },
-        render: function() {
-            var data = this.item ?  this.item.public : this._defaults;
+
+        getData: function() {
+            var data = this.item ? this.item.public : this._defaults;
             var startDate = data.startDate || (data.timestamp ? new Date(data.timestamp) : new Date()).toISOString();
             var dueDate = data.dueDate || '';
 
@@ -73,41 +58,24 @@ define([
                 dueDate = dueDate.slice(0,10);
             }
 
-            this.$isDone.prop('checked', data.isDone);
-            this.$title.val(data.title);
-            this.$priority.find('#' + data.priority).prop('checked', true);
-            this.$startDate.val(startDate);
-            this.$dueDate.val(dueDate);
-            this.$notes.val(data.notes);
+            data.startDate = startDate;
+            data.dueDate = dueDate;
 
-            this.$el.trigger('create');
-
-            if (data.isDone) {
-                this.$isDone.removeClass('ui-checkbox-off');
-                this.$isDone.addClass('ui-checkbox-on');
-            } else {
-                this.$isDone.removeClass('ui-checkbox-on');
-                this.$isDone.addClass('ui-checkbox-off');
-            }
-
-            this.item = null;
-            return this;
+            return data;
         },
 
-        // controls
-        save: function(ev) {
-            ev.preventDefault();
-            var dueDateVal = this.$dueDate.val();
-
+        save: function(data) {
             this._callback({
-                title: this.$title.val(),
-                priority: this.$priority.find(':checked').val(),
-                startDate: new Date(this.$startDate.val()),
-                dueDate: dueDateVal ? new Date(dueDateVal) : null,
-                notes: this.$notes.val()
+                title: data.title,
+                priority: data.priority,
+                startDate: data.startDate,
+                dueDate: data.dueDate,
+                notes: data.notes
             });
+        },
 
-            TaskOnFly.changeView('#home');
+        resetItem: function() {
+            this.item = null;
         }
     });
 });
