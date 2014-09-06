@@ -50,6 +50,17 @@ $.html = function(){};
 $.find = $;
 $.on = function(){};
 $.trigger = function(){};
+$.empty = function(){};
+$.append = function(){};
+$.css = function(){};
+$.outerWidth = function(){};
+$.parents = function(){return $};
+$.val = function(){};
+$.width = function(){};
+$.addClass = function(){};
+$.removeClass = function(){};
+$.prop = function(){return $};
+$.checkboxradio = function(){return $};
 
 $.mobile = {
     changePage: function() {}

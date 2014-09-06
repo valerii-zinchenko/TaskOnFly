@@ -37,8 +37,8 @@ destPrefix = './test/_jsTestFiles/';
     'model/TaskList.js',
     'model/MainRouter.js',
 
-    'view/home.js',
-    'view/list.js',
+    'view/HomeView.js',
+    'view/ListView.js',
     'view/EditItemView.js',
 
     'control/HomeControl.js',

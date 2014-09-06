@@ -52,7 +52,7 @@ define(function () {
         },
 
         home: function() {
-            _openView('HomeControl');
+            _openView('HomeView');
         },
 
         /**

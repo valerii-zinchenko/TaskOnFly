@@ -33,5 +33,12 @@ suite('SimpleSearch', function() {
         })
     });
 
-    test('', function() {});
+    test('initialise', function() {
+        var m;
+        assert.doesNotThrow(function() {
+            m = new Module();
+        });
+
+        m.home();
+    });
 });

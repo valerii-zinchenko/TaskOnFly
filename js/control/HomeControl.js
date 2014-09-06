@@ -25,69 +25,23 @@
 'use strict';
 
 define([
-    'view/home',
-    'control/ListControl',
-    'modules/FastTask/FastTaskControl',
-    'modules/SimpleSearch/SimpleSearchControl'
-], function(template, ListControl, FastTaskControl, SimpleSearchControl) {
+    'control/ListControl'
+], function(ListControl) {
     return new SingletonClass({
-        _footerBtnsWidth: null,
-
-        page: 'home',
-        $addTaskBtn: null,
-        $addListBtn: null,
-
-        initialize: function() {
-            this.$el = $('#' + this.page);
-            this.$el.html(_.template(template));
-            this.$content = this.$el.find('#content');
-            this.$addTaskBtn = this.$el.find('#addTask');
-            this.$addListBtn = this.$el.find('#addList');
-            this.$prevListBtn = this.$el.find('#prevList');
-
-            this.$addTaskBtn.on('click', this.addTask);
-            this.$addListBtn.on('click', this.addList);
-            this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
-
-            this.list = new ListControl(this.$content.find('#listModule'), TaskOnFly.getRootList());
-            this.fastTask = new FastTaskControl(this.$content.find('#fastTaskModule'));
-            this.simpleSearch = new SimpleSearchControl(this.$el.find('#searchModule'), this.list);
-        },
-        render: function() {
-            this.$el.trigger('create');
-            this._fixFooterTable();
-
-            this.fastTask.render();
-            this.list.render();
-            this.simpleSearch.render();
-
-            return this;
-        },
-        addTask: function(ev) {
-            ev.preventDefault();
+        addTask: function() {
             TaskOnFly.changeView('add/task');
         },
-        addList: function(ev) {
-            ev.preventDefault();
+        addList: function() {
             TaskOnFly.changeView('add/list');
         },
-        selectPreviousList: function(ev) {
-            ev.preventDefault();
-            if (this.list.list.public.id !== 'root') {
-                this.list.selectParentList();
+        setList: function(list) {
+            if (list.constructor !== ListControl) {
+                throw new Error('Invalid list');
             }
+            this.list = list;
         },
-
-        _fixFooterTable: function() {
-            if (!this._footerBtnsWidth) {
-                var offset = parseFloat(this.$addTaskBtn.css('left'));
-                this._footerBtnsWidth = {
-                    addTaskBtn: this.$addTaskBtn.outerWidth() + offset*2,
-                    addListBtn: this.$addListBtn.outerWidth() + offset*2
-                };
-            }
-            this.$addTaskBtn.parents('td').css('width', this._footerBtnsWidth.addTaskBtn);
-            this.$addListBtn.parents('td').css('width', this._footerBtnsWidth.addListBtn);
+        selectPreviousList: function() {
+            this.list.selectParentList();
         }
     });
 });

@@ -125,6 +125,10 @@ define([
             return list;
         },
         selectParentList: function() {
+            if (this.list.public.id === 'root') {
+                return this;
+            }
+
             TaskOnFly.setCurrentList(this._parent);
 
             return this._parent;
