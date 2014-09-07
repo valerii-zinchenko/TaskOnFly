@@ -50,7 +50,7 @@ destPrefix = './test/_jsTestFiles/';
     'modules/FastTask/Control.js',
     'modules/FastTask/View.js',
 
-    'modules/SimpleSearch/SimpleSearchControl.js',
+    'modules/SimpleSearch/Control.js',
     'modules/SimpleSearch/View.js'
 ].forEach(function(file) {
     jscoverage.processFile(srcPrefix + file, destPrefix + file);

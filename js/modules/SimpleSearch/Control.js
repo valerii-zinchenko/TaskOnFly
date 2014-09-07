@@ -25,64 +25,35 @@
 'use strict';
 
 define([
-    'modules/SimpleSearch/template',
     'control/ListControl'
-],function (template, ListControl) {
+],function (ListControl) {
     return new SingletonClass({
-        $el: null,
-
-        initialize: function(holder, listModule) {
-            if (!holder) {
-                new Error('Holder element for module is not defined');
-            }
+        initialize: function(listModule) {
             if (listModule.constructor !== ListControl) {
                 new Error('Incorrect type for listModule input argument');
             }
 
-            this.$holder = holder;
-
-            this.currentList = TaskOnFly.getCurrentList();
             this.listView = listModule;
-
-            this.$el = $(template);
-            this.$el.on('keyup', this.onType.bind(this));
+            this.update();
         },
-        render: function() {
-            this.$holder.empty();
-            this.$holder.append(this.$el);
-
-            this.$holder.trigger('create');
-
-            this.$holder.find('.ui-input-clear').on('click', this.onClear.bind(this));
-
-            return this;
+        update: function() {
+            this.list = TaskOnFly.getCurrentList();
         },
         showResults: function(list) {
-            if (this.listView.list === this.currentList && list === this.currentList) {
+            if (this.listView.list === this.list && list === this.list) {
                 return;
             }
 
-            this.listView.setList(list);
+            this.listView.control.setList(list);
             this.listView.render();
         },
-        onType: function(ev) {
-            ev.preventDefault();
-
-            var val = $(ev.target).val();
-
-            if (val.length < 2) {
-                this.onClear(ev);
-                return;
-            }
-
-            this.showResults(this.currentList.filter({
+        search: function(val) {
+            this.showResults(this.list.filter({
                 title: val
             }));
         },
-        onClear: function(ev) {
-            ev.preventDefault();
-
-            this.showResults(this.currentList);
+        reset: function() {
+            this.showResults(this.list);
         }
     });
 });
