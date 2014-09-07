@@ -30,15 +30,65 @@ suite('SimpleSearch', function() {
         requirejs(['model/MainRouter'], function(MainRouter) {
             Module = MainRouter;
             done();
-        })
+        });
     });
 
     test('initialise', function() {
-        var m;
         assert.doesNotThrow(function() {
-            m = new Module();
+            new Module();
+        });
+    });
+
+    test('#home', function() {
+        assert.doesNotThrow(function() {
+            new Module().home();
+        });
+    });
+
+    test('#add/task', function() {
+        assert.doesNotThrow(function() {
+            new Module().add('task');
+        });
+    });
+
+    test('#add/list', function() {
+        assert.doesNotThrow(function() {
+            new Module().add('list');
+        });
+    });
+
+    test('#add/unhandled', function() {
+        assert.doesNotThrow(function() {
+            new Module().add('unhandled');
+        });
+    });
+
+    suite('#edit/', function() {
+        var List;
+        setup(function(done) {
+            requirejs(['model/MainRouter', 'model/TaskList'], function(MainRouter, TaskList) {
+                Module = MainRouter;
+                List = new TaskList('root', {
+                    id: 'root'
+                });
+                List.addTask({
+                    id: 'ok'
+                });
+                TaskOnFly.setCurrentList(List);
+                done();
+            });
         });
 
-        m.home();
+        test('ok', function() {
+            assert.doesNotThrow(function() {
+                new Module().edit('ok');
+            });
+        });
+
+        test('badID', function() {
+            assert.throw(function() {
+                new Module().edit('badID');
+            }, Error, 'Item with id: "badID" was not found');
+        });
     });
 });

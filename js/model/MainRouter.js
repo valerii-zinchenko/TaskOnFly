@@ -81,14 +81,14 @@ define(function () {
          * @param {string} id Item name in the current list.
          */
         edit: function(id) {
+            var list = TaskOnFly.getCurrentList(),
+                item = list.getItem(id);
+
+            if (!item) {
+                throw new Error('Item with id: "' + id + '" was not found');
+            }
+
             _openView('EditItemView', function() {
-                var list = TaskOnFly.getCurrentList(),
-                    item = list.getItem(id);
-
-                if (!item) {
-                    throw new Error('Item with id: "' + id + '" was not found');
-                }
-
                 this.control.setItem(item);
                 this.control.setSaveCallback(list.saveData.bind(item));
             });
