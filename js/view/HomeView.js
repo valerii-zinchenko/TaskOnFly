@@ -78,11 +78,12 @@ define([
 
             this.$addTaskBtn.on('click', this.addTask);
             this.$addListBtn.on('click', this.addList);
+            // todo: Move this button and event handler into the ListView
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
 
-//            this.list = new ListView(this.$content.find('#listModule'), TaskOnFly.getRootList());
-//            this.fastTask = new FastTaskView(this.$content.find('#fastTaskModule'));
-//            this.simpleSearch = new SimpleSearchView(this.$el.find('#searchModule'), this.list);
+            this.list = new ListView(this.$content.find('#listModule'), TaskOnFly.getRootList());
+            this.fastTask = new FastTaskView(this.$content.find('#fastTaskModule'));
+            this.simpleSearch = new SimpleSearchView(this.$el.find('#searchModule'), this.list);
 
             this.control = new Control();
         },
@@ -90,8 +91,8 @@ define([
             this.$el.trigger('create');
             this._fixFooterTable();
 
-            this.fastTask.render();
             this.list.render();
+            this.fastTask.render();
             this.simpleSearch.render();
 
             return this;
@@ -106,8 +107,7 @@ define([
         },
         selectPreviousList: function(ev) {
             ev.preventDefault();
-            this.control.setList(this.list.list);
-            this.control.selectPreviousList();
+            this.list.selectParentList();
         },
 
         _fixFooterTable: function() {

@@ -24,24 +24,13 @@
 
 'use strict';
 
-define([
-    'control/ListControl'
-], function(ListControl) {
+define(function() {
     return new SingletonClass({
         addTask: function() {
             TaskOnFly.changeView('add/task');
         },
         addList: function() {
             TaskOnFly.changeView('add/list');
-        },
-        setList: function(list) {
-            if (list.constructor !== ListControl) {
-                throw new Error('Invalid list');
-            }
-            this.list = list;
-        },
-        selectPreviousList: function() {
-            this.list.selectParentList();
         }
     });
 });

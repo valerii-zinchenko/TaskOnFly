@@ -125,7 +125,7 @@ define([
             return list;
         },
         selectParentList: function() {
-            if (this.list.public.id === 'root') {
+            if (this.public.id === 'root') {
                 return this;
             }
 
