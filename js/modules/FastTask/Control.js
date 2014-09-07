@@ -21,37 +21,21 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
-jscoverage = require('jscoverage');
 
-srcPrefix =  './js/';
-destPrefix = './test/_jsTestFiles/';
+'use strict';
 
-[
-    'core/AClass.js',
-    'core/Class.js',
-    'core/SingletonClass.js',
-    'core/utils.js',
+define(function () {
+    return new SingletonClass({
+        _addTask: function(title, priority) {
+            if (!title) {
+                return;
+            }
 
-    'model/TaskOnFly.js',
-    'model/Task.js',
-    'model/TaskList.js',
-    'model/MainRouter.js',
-
-    'view/HomeView.js',
-    'view/ListView.js',
-    'view/EditItemView.js',
-
-    'control/HomeControl.js',
-    'control/ListControl.js',
-    'control/EditItemControl.js',
-
-    'main.js',
-
-    'modules/FastTask/Control.js',
-    'modules/FastTask/View.js',
-
-    'modules/SimpleSearch/SimpleSearchControl.js',
-    'modules/SimpleSearch/View.js'
-].forEach(function(file) {
-    jscoverage.processFile(srcPrefix + file, destPrefix + file);
+            TaskOnFly.getCurrentList().addTask({
+                title: title,
+                priority: priority,
+                timestamp: new Date()
+            });
+        }
+    });
 });

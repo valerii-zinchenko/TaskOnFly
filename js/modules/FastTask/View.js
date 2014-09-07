@@ -25,15 +25,40 @@
 'use strict';
 
 define([
-    'modules/FastTask/template'
-],function (template) {
+    'modules/FastTask/Control'
+], function(Control) {
     return new SingletonClass({
+        template: View(function(){/**
+<table class="full fast-task">
+    <tbody>
+    <tr>
+        <td>
+            <input id="fastTitle" type="text" placeholder="Fast task">
+        </td>
+        <td class="select-priority">
+            <div id="priority" class="full-width ui-controlgroup-grid-b" data-role="controlgroup" data-type="horizontal" data-mini="true">
+                <label for="low" class="low ui-icon-arrow-d ui-btn-icon-notext">Low</label>
+                <input id="low" type="radio" name="priority" value="0">
+                <label for="normal" class="normal ui-icon-circle ui-btn-icon-notext">Normal</label>
+                <input id="normal" type="radio" name="priority" value="1" checked>
+                <label for="high" class="high ui-icon-arrow-u ui-btn-icon-notext">High</label>
+                <input id="high" type="radio" name="priority" value="2">
+            </div>
+        </td>
+        <td class="add-btn">
+            <button id="addFastTask" data-role="button" data-icon="plus" data-iconpos="notext">add</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+        **/}),
+
         initialize: function($holder) {
             if (!$holder) {
                 throw new Error('Holder element of FastTask module is not defined.');
             }
 
-            this.$el = $(template);
+            this.$el = $(this.template);
             this.$fastTilte = this.$el.find('#fastTitle');
             this.$priority = this.$el.find('#priority');
             this.$add = this.$el.find('#addFastTask');
@@ -45,6 +70,8 @@ define([
             this.$content.append(this.$el);
 
             this.$content.trigger('create');
+
+            this.control = new Control();
         },
         render: function() {
             this.$fastTilte.val('');
@@ -52,21 +79,12 @@ define([
             this.$priority.find(':checked').prop('checked', false).checkboxradio("refresh");
             this.$priority.find('#normal').prop('checked', true).checkboxradio("refresh");
 
-            return this.$content;
+            return this;
         },
         _addTask: function(ev) {
             ev.preventDefault();
-            var title = this.$fastTilte.val();
 
-            if (!title) {
-                return;
-            }
-
-            TaskOnFly.getCurrentList().addTask({
-                title: title,
-                priority: this.$priority.find(':checked').val(),
-                timestamp: new Date()
-            });
+            this.control._addTask(this.$fastTilte.val(), this.$priority.find(':checked').val());
 
             this.render();
         }
