@@ -25,13 +25,36 @@
 'use strict';
 
 suite('HomeControl', function() {
-    var Module;
+    var Module,
+        module;
     setup(function(done) {
         requirejs(['control/HomeControl'], function(HomeControl) {
             Module = HomeControl;
+            module = new Module();
             done();
-        })
+        });
+
+        sinon.spy(TaskOnFly,'changeView');
+    });
+    teardown(function() {
+        TaskOnFly.changeView.restore();
     });
 
-    test('', function() {});
+    test('module should be a singleton', function() {
+        assert.equal(new Module(), module, 'Module is not a singleton');
+    });
+
+    test('addTask()', function() {
+        module.addTask();
+
+        assert.equal(TaskOnFly.changeView.callCount, 1, 'TaskOnFly.changeView() was not called');
+        assert.equal(TaskOnFly.changeView.args[0][0], 'add/task', 'TaskOnFly.changeView() was called with incorrect argument');
+    });
+
+    test('addTask()', function() {
+        module.addList();
+
+        assert.equal(TaskOnFly.changeView.callCount, 1, 'TaskOnFly.changeView() was not called');
+        assert.equal(TaskOnFly.changeView.args[0][0], 'add/list', 'TaskOnFly.changeView() was called with incorrect argument');
+    });
 });

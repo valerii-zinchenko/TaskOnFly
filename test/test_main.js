@@ -29,6 +29,9 @@ suite('Test main file', function() {
             done();
         })
     });
+    teardown(function() {
+        window.localStorage.storage = {};
+    });
 
     test('Application start', function() {
         assert.doesNotThrow(function() {

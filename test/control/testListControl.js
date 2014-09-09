@@ -27,12 +27,14 @@
 suite('ListControl', function() {
     var Module, TaskListModule;
     setup(function(done) {
-        window.localStorage.storage = {};
         requirejs(['control/ListControl', 'model/TaskList'], function(ListControl, TaskList) {
             Module = ListControl;
             TaskListModule = TaskList;
             done();
         })
+    });
+    teardown(function() {
+        window.localStorage.storage = {};
     });
 
     test('initialize()', function() {
@@ -58,6 +60,13 @@ suite('ListControl', function() {
             window.localStorage.storage = {};
             module = new Module();
             list = new TaskListModule('root');
+
+            sinon.spy(list.$, 'trigger');
+            sinon.spy(list, 'removeItem');
+        });
+        teardown(function() {
+            list.$.trigger.restore();
+            list.removeItem.restore();
         });
 
         test('setList(undefined)', function() {
@@ -110,7 +119,6 @@ suite('ListControl', function() {
         });
 
         test('_insertItem()', function() {
-            sinon.spy(list.$, 'trigger');
             module._insertItem();
 
             assert.equal(list.$.trigger.callCount, 1, 'Event was not triggered');
@@ -124,7 +132,6 @@ suite('ListControl', function() {
         });
 
         test('_removeItem()', function() {
-            sinon.spy(list, 'removeItem');
             module.setList(list);
             module._removeItem('ok');
 

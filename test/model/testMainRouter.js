@@ -78,6 +78,9 @@ suite('MainRouter', function() {
                 done();
             });
         });
+        teardown(function() {
+            window.localStorage.storage = {};
+        });
 
         test('ok', function() {
             assert.doesNotThrow(function() {
