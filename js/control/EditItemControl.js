@@ -35,7 +35,7 @@ define([
         item: null,
 
         setItem: function(item) {
-            if (item && item.constructor !== Task && item.constructor !== TaskList) {
+            if (!item || (item.constructor !== Task && item.constructor !== TaskList)) {
                 throw new Error('Incorrect input arguments');
             }
             this.item = item;
@@ -49,8 +49,11 @@ define([
         },
 
         getData: function() {
-            var data = this.item ? this.item.public : this._defaults;
-            var startDate = data.startDate || (data.timestamp ? new Date(data.timestamp) : new Date()).toISOString();
+            var data = this.item ? this.item.public : this._defaults._defaults;
+            var startDate = data.startDate
+                || (data.timestamp ?
+                    new Date(data.timestamp) :
+                    new Date()).toISOString();
             var dueDate = data.dueDate || '';
 
             startDate = startDate.slice(0,10);
