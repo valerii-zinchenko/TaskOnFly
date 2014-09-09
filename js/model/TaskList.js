@@ -94,6 +94,11 @@ define([
         },
 
         removeItem: function(id) {
+            if (!id || !this.models[id]) {
+                console.warn('removeItem(id): item id "' + id + '" was not found');
+                return;
+            }
+
             this.public.items.splice(this.public.items.indexOf(id), 1);
             delete this.models[id];
 
@@ -120,7 +125,10 @@ define([
 
         selectList: function(id) {
             var list = this.getItem(id);
-            TaskOnFly.setCurrentList(list);
+
+            if (list) {
+                TaskOnFly.setCurrentList(list);
+            }
 
             return list;
         },

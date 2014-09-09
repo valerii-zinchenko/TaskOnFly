@@ -39,6 +39,7 @@ if (process.env.npm_lifecycle_event === 'start') {
 
 
 assert = require('chai').assert;
+sinon = require('sinon');
 dom = require('dom-lite');
 Mocha = require('mocha');
 _ = require('underscore');

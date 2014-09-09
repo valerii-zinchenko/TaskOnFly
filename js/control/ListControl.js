@@ -28,11 +28,7 @@ define([
     'model/TaskList'
 ], function (TaskList) {
     return new Class({
-        _width: 0,
-
         list: null,
-        $content: null,
-        $currentList: null,
 
         initialize: function(list) {
             this.$ = $(this);
@@ -42,7 +38,7 @@ define([
             }
         },
         setList: function(list) {
-            if (list && list.constructor !== TaskList) {
+            if (!list || list.constructor !== TaskList) {
                 throw new Error('List is incorrect');
             }
 
@@ -72,7 +68,7 @@ define([
             TaskOnFly.changeView('edit/' + id);
         },
         _removeItem: function(id) {
-            TaskOnFly.getCurrentList().removeItem(id);
+            this.list.removeItem(id);
         }
     });
 });

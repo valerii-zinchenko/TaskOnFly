@@ -26,6 +26,7 @@ suite('Test TaskList', function() {
     var Module,
         List;
     setup(function(done) {
+        window.localStorage.storage = {};
         requirejs(['model/TaskList'], function(TaskList) {
             Module = TaskList;
             List = new Module('root');
@@ -83,6 +84,12 @@ suite('Test TaskList', function() {
         });
         assert.equal(List.public.items.length, 0);
         assert.isUndefined(List.models[task.public.id]);
+    });
+    test('removeItem(badID)', function() {
+        sinon.spy(TaskOnFly, 'removeItem');
+        List.removeItem('ok');
+
+        assert.equal(TaskOnFly.removeItem.callCount, 0, 'Non-existed item id should not be removed globally');
     });
 
     test('toggleItemStatus() & _checkListCompleteness()', function() {
