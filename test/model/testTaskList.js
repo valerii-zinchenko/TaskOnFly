@@ -132,6 +132,10 @@ suite('Test TaskList', function() {
 
         assert.equal(TaskOnFly.getCurrentList(), List);
     });
+    test('selectParentList() of root list', function() {
+        var list = new Module('root', {id: 'root'});
+        assert.equal(list.selectParentList(), list);
+    });
 
     test('_object2Array()', function() {
         var obj = {
