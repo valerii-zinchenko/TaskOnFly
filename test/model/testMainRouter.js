@@ -24,7 +24,7 @@
 
 'use strict';
 
-suite('SimpleSearch', function() {
+suite('MainRouter', function() {
     var Module;
     setup(function(done) {
         requirejs(['model/MainRouter'], function(MainRouter) {
