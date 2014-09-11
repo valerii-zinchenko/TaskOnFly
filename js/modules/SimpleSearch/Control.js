@@ -25,35 +25,56 @@
 'use strict';
 
 define([
-    'control/ListControl'
-],function (ListControl) {
-    return new SingletonClass({
+    'view/ListView'
+],function (ListModule) {
+    return new Class({
+        list: null,
+        listModule: null,
+
         initialize: function(listModule) {
-            if (listModule.constructor !== ListControl) {
-                new Error('Incorrect type for listModule input argument');
+            this.update();
+
+            if (listModule) {
+                this.setListModule(listModule);
+            }
+        },
+        setListModule: function(listModule) {
+            if (!listModule || listModule.constructor !== ListModule) {
+                throw new Error('Incorrect type for listModule input argument');
             }
 
-            this.listView = listModule;
-            this.update();
+            this.listModule = listModule;
         },
         update: function() {
             this.list = TaskOnFly.getCurrentList();
         },
-        showResults: function(list) {
-            if (this.listView.list === this.list && list === this.list) {
+        _showResults: function(list) {
+            if (this.listModule.control.getList() === this.list && list === this.list) {
                 return;
             }
 
-            this.listView.control.setList(list);
-            this.listView.render();
+            this.listModule.control.setList(list);
+            this.listModule.render();
         },
         search: function(val) {
-            this.showResults(this.list.filter({
+            if (!val) {
+                return;
+            }
+
+            if (!this.listModule) {
+                throw new Error('listModule is not defined');
+            }
+
+            this._showResults(this.list.filter({
                 title: val
             }));
         },
         reset: function() {
-            this.showResults(this.list);
+            if (!this.listModule) {
+                throw new Error('listModule is not defined');
+            }
+
+            this._showResults(this.list);
         }
     });
 });
