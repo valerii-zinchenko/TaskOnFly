@@ -25,13 +25,47 @@
 'use strict';
 
 suite('FastTask', function() {
-    var Module;
+    var Module,
+        module,
+        list;
     setup(function(done) {
-        requirejs(['modules/FastTask/FastTaskControl'], function(FastTaskControl) {
+        requirejs(['modules/FastTask/Control'], function(FastTaskControl) {
             Module = FastTaskControl;
+            module = new Module();
+
+            list = TaskOnFly.getCurrentList();
+            sinon.spy(list, 'addTask');
+
             done();
-        })
+        });
+    });
+    teardown(function() {
+        list.addTask.restore();
     });
 
-    test('', function() {});
+    test('_addTask(undefined, undefined)', function() {
+        module._addTask();
+
+        assert.equal(list.addTask.callCount, 0, 'TaskOnFly.getCurrentList().addTask() was called');
+    });
+
+    test('_addTask(title, undefined)', function() {
+        var title = 'title';
+        module._addTask(title);
+
+        assert.equal(list.addTask.callCount, 1, 'TaskOnFly.getCurrentList().addTask() was called incorrect times');
+        assert.equal(list.addTask.args[0][0].title, title, 'Incorrect first argument');
+        assert.isUndefined(list.addTask.args[0][0].priority, 'Second argument should be undefined');
+    });
+
+    test('_addTask(title, undefined)', function() {
+        var title = 'title',
+            priority = 3;
+
+        module._addTask(title, priority);
+
+        assert.equal(list.addTask.callCount, 1, 'TaskOnFly.getCurrentList().addTask() was called incorrect times');
+        assert.equal(list.addTask.args[0][0].title, title, 'Incorrect first argument');
+        assert.equal(list.addTask.args[0][0].priority, priority, 'Incorrect second argument');
+    });
 });
