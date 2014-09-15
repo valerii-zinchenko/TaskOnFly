@@ -76,8 +76,8 @@ define([
             this.$addListBtn = this.$el.find('#addList');
             this.$prevListBtn = this.$el.find('#prevList');
 
-            this.$addTaskBtn.on('click', this.addTask);
-            this.$addListBtn.on('click', this.addList);
+            this.$addTaskBtn.on('click', this.addTask.bind(this));
+            this.$addListBtn.on('click', this.addList.bind(this));
             // todo: Move this button and event handler into the ListView
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
 
