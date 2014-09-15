@@ -27,7 +27,7 @@
 define([
     'model/TaskList'
 ], function (TaskList) {
-    return new Class({
+    var ListControl = new Class({
         list: null,
 
         initialize: function(list) {
@@ -71,4 +71,7 @@ define([
             this.list.removeItem(id);
         }
     });
+
+    TaskManager.ListControl = ListControl;
+    return ListControl;
 });

@@ -28,7 +28,7 @@ define([
     'model/Task',
     'model/TaskList'
 ],function (Task, TaskList) {
-    return new SingletonClass({
+    var EditItemControl = new SingletonClass({
         _callback: null,
         _defaults: Task.prototype._defaults.public,
 
@@ -81,4 +81,7 @@ define([
             this.item = null;
         }
     });
+
+    TaskManager.EditItemControl = EditItemControl;
+    return TaskManager.EditItemControl;
 });

@@ -232,5 +232,6 @@ define([
 
     TaskList._counter = 0;
 
+    TaskManager.TaskList = TaskList;
     return TaskList;
 });

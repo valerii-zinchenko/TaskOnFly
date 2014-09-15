@@ -24,7 +24,6 @@
 
 'use strict';
 
-var TaskOnFly;
 (function() {
     function saveLocal(key, data) {
         window.localStorage.setItem(key, JSON.stringify(data));
@@ -39,7 +38,7 @@ var TaskOnFly;
         window.localStorage.removeItem(key);
     }
 
-    TaskOnFly = {
+    var TaskOnFly = {
         ROOT_TASK_LIST: null,
         CURRENT_TASK_LIST: null,
         setRootList: function(list) {
@@ -126,8 +125,6 @@ var TaskOnFly;
             return items;
         }
     };
-})();
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = TaskOnFly;
-}
+    (this || (1,eval)('this'))['TaskOnFly'] = TaskOnFly;
+})();

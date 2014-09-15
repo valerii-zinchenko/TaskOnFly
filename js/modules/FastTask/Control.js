@@ -24,8 +24,12 @@
 
 'use strict';
 
+if (!TaskManager.FastTask) {
+    TaskManager.FastTask = {Control: null};
+}
+
 define(function () {
-    return new SingletonClass({
+    var Control = new SingletonClass({
         _addTask: function(title, priority) {
             if (!title) {
                 return;
@@ -38,4 +42,7 @@ define(function () {
             });
         }
     });
+
+    TaskManager.FastTask.Control = Control;
+    return Control;
 });

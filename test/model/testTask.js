@@ -25,8 +25,8 @@
 suite('Test Task model', function() {
     var Module;
     setup(function(done) {
-        requirejs(['model/Task'], function(Task) {
-            Module = Task;
+        requirejs(['model/Task'], function() {
+            Module = TaskManager.Task;
             done();
         })
     });

@@ -43,7 +43,7 @@ define(function () {
         });
     }
 
-    return Backbone.Router.extend({
+    var MainRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
             'home': 'home',
@@ -94,4 +94,7 @@ define(function () {
             });
         }
     });
+
+    TaskManager.MainRouter = MainRouter;
+    return MainRouter;
 });

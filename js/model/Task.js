@@ -93,5 +93,7 @@ define(function () {
 
     Task._counter = 0;
 
+    TaskManager.Task = Task;
+
     return Task;
 });

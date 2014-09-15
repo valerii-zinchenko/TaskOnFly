@@ -26,8 +26,8 @@ suite('Test TaskList', function() {
     var Module,
         List;
     setup(function(done) {
-        requirejs(['model/TaskList'], function(TaskList) {
-            Module = TaskList;
+        requirejs(['model/TaskList'], function() {
+            Module = TaskManager.TaskList;
             List = new Module('root');
             done();
         });

@@ -25,7 +25,7 @@
 'use strict';
 
 define(function() {
-    return new SingletonClass({
+    var HomeControl = new SingletonClass({
         addTask: function() {
             TaskOnFly.changeView('add/task');
         },
@@ -33,4 +33,7 @@ define(function() {
             TaskOnFly.changeView('add/list');
         }
     });
+
+    TaskManager.HomeControl = HomeControl;
+    return HomeControl;
 });

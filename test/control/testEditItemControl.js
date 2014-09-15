@@ -29,11 +29,11 @@ suite('EditItemControl', function() {
         module;
     var taskList;
     setup(function(done) {
-        requirejs(['control/EditItemControl', 'model/TaskList'], function(EditItemControl, TaskList) {
-            Module = EditItemControl;
+        requirejs(['control/EditItemControl'], function() {
+            Module = TaskManager.EditItemControl;
             module = new Module();
 
-            taskList = new TaskList('root', {id: 'root'});
+            taskList = new TaskManager.TaskList('root', {id: 'root'});
             done();
         })
     });

@@ -37,7 +37,7 @@ if (process.env.npm_lifecycle_event === 'start') {
     libUrl = 'js/lib/';
 }
 
-
+TaskManager = {};
 assert = require('chai').assert;
 sinon = require('sinon');
 dom = require('dom-lite');
@@ -60,9 +60,9 @@ requirejs.config({
 AClass = require(srcPrefix + 'core/AClass');
 Class = require(srcPrefix + 'core/Class');
 SingletonClass = require(srcPrefix + 'core/SingletonClass');
-TaskOnFly = require(srcPrefix + 'model/TaskOnFly');
+require(srcPrefix + 'model/TaskOnFly');
 utils = require(srcPrefix + 'core/utils').utils;
-View = require(srcPrefix + 'core/utils').View;
+Template = require(srcPrefix + 'core/utils').Template;
 
 testRunner = new Mocha({
     ui: 'tdd',

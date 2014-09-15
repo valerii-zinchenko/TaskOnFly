@@ -27,7 +27,7 @@
 define([
     'model/MainRouter',
     'model/TaskList'
-], function(MainRouter, TaskList) {
+], function() {
     function sync(listRef, ids) {
         ids.forEach(function(itemID) {
             var itemData = TaskOnFly.loadItem(itemID);
@@ -43,7 +43,7 @@ define([
     }
     return function() {
         var store = TaskOnFly.loadItem('root'),
-            rootList = new TaskList('root', {id:'root'});
+            rootList = new TaskManager.TaskList('root', {id:'root'});
 
         if (store) {
             var ids = store.items;
@@ -56,6 +56,6 @@ define([
         TaskOnFly.getRootList().saveData();
         TaskOnFly.setCurrentList(TaskOnFly.getRootList());
 
-        new MainRouter();
+        new TaskManager.MainRouter();
     }
 });

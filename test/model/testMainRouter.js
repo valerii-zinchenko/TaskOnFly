@@ -66,9 +66,9 @@ suite('MainRouter', function() {
     suite('#edit/', function() {
         var List;
         setup(function(done) {
-            requirejs(['model/MainRouter', 'model/TaskList'], function(MainRouter, TaskList) {
-                Module = MainRouter;
-                List = new TaskList('root', {
+            requirejs(['model/MainRouter', 'model/TaskList'], function() {
+                Module = TaskManager.MainRouter;
+                List = new TaskManager.TaskList('root', {
                     id: 'root'
                 });
                 List.addTask({

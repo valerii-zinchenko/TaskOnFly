@@ -24,11 +24,16 @@
 
 'use strict';
 
+TaskManager.SimpleSearch = {
+    Control: null,
+    View: null
+};
+
 define([
     'modules/SimpleSearch/Control'
 ], function(Control) {
-    return new SingletonClass({
-        template: View(function(){/**
+    var View = new SingletonClass({
+        template: Template(function(){/**
 <input data-type="search" id="simpleSearch" placeholder="Search...">
         **/}),
 
@@ -74,4 +79,7 @@ define([
             this.control.reset();
         }
     });
+
+    TaskManager.SimpleSearch.View = View;
+    return View;
 });

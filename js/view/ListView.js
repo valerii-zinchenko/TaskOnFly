@@ -27,8 +27,8 @@
 define([
     'control/ListControl'
 ], function(Control) {
-    return new Class({
-        template: View(function(){/**
+    var ListView = new Class({
+        template: Template(function(){/**
 <table class="full task-list">
     <thead><tr><th></th><th></th></tr></thead>
     <tbody>
@@ -181,4 +181,7 @@ define([
             this.$currentList.find('.list-item.list input').prop('disabled', true);
         }
     });
+
+    TaskManager.ListView = ListView;
+    return ListView;
 });

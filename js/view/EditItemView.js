@@ -27,10 +27,10 @@
 define([
     'control/EditItemControl'
 ], function(Control) {
-    return new SingletonClass({
+    var EditItemView = new SingletonClass({
         page: 'task',
 
-        template: View(function(){/**
+        template: Template(function(){/**
 <div data-role="header">
     <a href="#home" data-role="back" data-icon="carat-l">Back</a>
     <h1>Item</h1>
@@ -139,4 +139,7 @@ define([
             TaskOnFly.changeView('#home');
         }
     });
+
+    TaskManager.EditItemView = EditItemView;
+    return EditItemView;
 });

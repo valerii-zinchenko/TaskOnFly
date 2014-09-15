@@ -71,15 +71,15 @@ suite('Test utility functions', function() {
 });
 
 
-suite('Test View', function() {
+suite('Test Template', function() {
     test('Simple template', function() {
-        assert.equal(View(function() {/**
+        assert.equal(Template(function() {/**
 template text
          **/}), 'template text');
     });
 
     test('Template text with spaces at begin', function() {
-        assert.equal(View(function() {/**
+        assert.equal(Template(function() {/**
     template text
          **/}), '    template text');
     });

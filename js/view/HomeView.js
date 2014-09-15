@@ -30,10 +30,10 @@ define([
     'modules/FastTask/View',
     'modules/SimpleSearch/View'
 ], function(Control, ListView, FastTaskView, SimpleSearchView) {
-    return new SingletonClass({
+    var HomeView = new SingletonClass({
         page: 'home',
 
-        template: View(function(){/**
+        template: Template(function(){/**
 <div data-role="header">
     <a href="#" id="prevList" data-role="button" data-icon="carat-l">Previous list</a>
     <h1>Home</h1>
@@ -122,4 +122,8 @@ define([
             this.$addListBtn.parents('td').css('width', this._footerBtnsWidth.addListBtn);
         }
     });
+
+    TaskManager.HomeView = HomeView;
+
+    return HomeView;
 });
