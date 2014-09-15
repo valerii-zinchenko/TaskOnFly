@@ -51,10 +51,14 @@ define([
         selectList: function(id) {
             this.list = this.list.selectList(id);
 
+            this.$.trigger('select', this.list);
+
             return this.list;
         },
         selectParentList: function() {
             this.list = this.list.selectParentList();
+
+            this.$.trigger('select', this.list);
 
             return this.list;
         },

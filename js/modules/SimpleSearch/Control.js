@@ -48,6 +48,8 @@ define([
             }
 
             this.listModule = listModule;
+
+            this.listModule.control.$.on('select', this.update.bind(this));
         },
         update: function() {
             this.list = TaskOnFly.getCurrentList();
