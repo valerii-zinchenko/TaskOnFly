@@ -129,11 +129,11 @@ define([
             var dueDateVal = this.$dueDate.val();
 
             this.control.save({
-                title: this.$title.val(),
+                title: this.$title.val().trim(),
                 priority: this.$priority.find(':checked').val(),
                 startDate: new Date(this.$startDate.val()),
                 dueDate: dueDateVal ? new Date(dueDateVal) : null,
-                notes: this.$notes.val()
+                notes: this.$notes.val().trim()
             });
 
             TaskOnFly.changeView('#home');
