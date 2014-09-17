@@ -52,8 +52,6 @@ define([
 </table>
         **/}),
 
-        _width: 0,
-
         $content: null,
         $currentList: null,
 
@@ -62,6 +60,8 @@ define([
 
             this.control = new Control(list);
             this.control.$.on('newItem', this._insertItem.bind(this));
+
+            $(window).on('orientationchange', this._fixWidth.bind(this));
         },
         render: function() {
             if (this.$currentList) {
@@ -168,13 +168,15 @@ define([
 
         _fixWidth: function () {
             var th = this.$currentList.find('th:first');
-            if (!this._width) {
-                this._width = th.width();
-            }
-            th.css('width', this._width);
+            var lists = this.$currentList.find('.list-item label');
+
+            this.$currentList.removeClass('fixed');
+            lists.removeClass('nowrap');
+
+            th.css('width', th.width());
 
             this.$currentList.addClass('fixed');
-            this.$currentList.find('.list-item label').addClass('nowrap');
+            lists.addClass('nowrap');
         },
 
         _disableListCheckbox: function () {
