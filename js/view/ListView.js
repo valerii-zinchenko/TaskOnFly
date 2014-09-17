@@ -116,8 +116,8 @@ define([
         _attachEvents: function() {
             this.$currentList.find('.list-item.task input').on('change', this._toggleTaskStatus.bind(this));
             this.$currentList.find('.list-item.list').on('vclick', this.selectList.bind(this));
-            this.$currentList.find('.edit-btn').on('click', this._editItem);
-            this.$currentList.find('.delete-btn').on('click', this._removeItem);
+            this.$currentList.find('.edit-btn').on('click', this._editItem.bind(this));
+            this.$currentList.find('.delete-btn').on('click', this._removeItem.bind(this));
         },
         _toggleTaskStatus: function(ev) {
             ev.preventDefault();
