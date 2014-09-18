@@ -24,25 +24,6 @@
 'use strict';
 
 define(function () {
-    /**
-     *
-     * @param {string} viewName View name, that should be opened
-     * @param {Function} [fn] Function that calls before rendering of view.
-     * @private
-     */
-    function _openView (viewName, fn) {
-        requirejs(['view/' + viewName], function(View) {
-            var view = new View();
-
-            if (fn) {
-                fn.call(view);
-            }
-
-            $.mobile.changePage('#' + view.page);
-            view.render();
-        });
-    }
-
     var MainRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -51,8 +32,36 @@ define(function () {
             'edit/:name': 'edit'
         },
 
+        _view: null,
+
+        /**
+         *
+         * @param {string} viewName View name, that should be opened
+         * @param {Function} [fn] Function that calls before rendering of view.
+         * @private
+         */
+        _openView: function(viewName, fn) {
+            requirejs(['view/' + viewName], function(View) {
+                this._view = new View();
+
+                if (fn) {
+                    fn.call(this._view);
+                }
+
+                $.mobile.pageContainer.pagecontainer('change', '#' + this._view.page);
+            }.bind(this));
+        },
+
+        initialize: function() {
+            $.mobile.pageContainer.pagecontainer({
+                change: function() {
+                    this._view.render();
+                }.bind(this)
+            });
+        },
+
         home: function() {
-            _openView('HomeView');
+            this._openView('HomeView');
         },
 
         /**
@@ -70,7 +79,7 @@ define(function () {
             }
 
             var fn = 'add' + what[0].toUpperCase() + what.slice(1);
-            _openView('EditItemView', function() {
+            this._openView('EditItemView', function() {
                 var list = TaskOnFly.getCurrentList();
                 this.control.setSaveCallback(list[fn].bind(list));
             });
@@ -88,7 +97,7 @@ define(function () {
                 throw new Error('Item with id: "' + id + '" was not found');
             }
 
-            _openView('EditItemView', function() {
+            this._openView('EditItemView', function() {
                 this.control.setItem(item);
                 this.control.setSaveCallback(list.saveData.bind(item));
             });
