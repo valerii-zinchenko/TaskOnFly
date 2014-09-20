@@ -67,26 +67,29 @@ requirejs.config({
 });
 
 requirejs([
-    'taskonfly',
-    'aclass',
-    'class',
-    'singleton',
-    'utils',
     'jquery',
-    'backbone'
+    'backbone',
+    'taskonfly',
+    'utils',
+    'aclass'
 ], function() {
-    $(document).on('mobileinit', function() {
-        $.extend($.mobile, {
-            ajaxEnabled: false,
-            linkBindingEnabled: false,
-            hashListeningEnabled: false
+    requirejs([
+        'class',
+        'singleton'
+    ], function() {
+        $(document).on('mobileinit', function() {
+            $.extend($.mobile, {
+                ajaxEnabled: false,
+                linkBindingEnabled: false,
+                hashListeningEnabled: false
+            });
         });
-    });
 
-    requirejs(['jquery.mobile'], function() {
-        requirejs(['main'], function(main) {
-            main();
-            Backbone.history.start();
+        requirejs(['jquery.mobile'], function() {
+            requirejs(['main'], function(main) {
+                main();
+                Backbone.history.start();
+            });
         });
     });
 });
