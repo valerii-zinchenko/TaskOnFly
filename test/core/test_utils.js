@@ -75,12 +75,12 @@ suite('Test Template', function() {
     test('Simple template', function() {
         assert.equal(Template(function() {/**
 template text
-         **/}), 'template text');
+         **/}), '\ntemplate text\n         ');
     });
 
     test('Template text with spaces at begin', function() {
         assert.equal(Template(function() {/**
     template text
-         **/}), '    template text');
+         **/}), '\n    template text\n         ');
     });
 });

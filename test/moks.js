@@ -63,5 +63,8 @@ $.prop = function(){return $};
 $.checkboxradio = function(){return $};
 
 $.mobile = {
-    changePage: function() {}
+    changePage: function() {},
+    pageContainer: {
+        pagecontainer: function(){}
+    }
 };

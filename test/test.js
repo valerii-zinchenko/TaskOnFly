@@ -57,6 +57,8 @@ requirejs.config({
     nodeRequire: require
 });
 
+requirejs('./test/moks.js');
+
 AClass = require(srcPrefix + 'core/AClass');
 Class = require(srcPrefix + 'core/Class');
 SingletonClass = require(srcPrefix + 'core/SingletonClass');
@@ -92,7 +94,5 @@ testPrefix = './test/';
 ].forEach(function(file) {
     testRunner.addFile(testPrefix + file);
 });
-
-requirejs('./test/moks.js');
 
 testRunner.run();
