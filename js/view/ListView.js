@@ -61,6 +61,7 @@ define([
             this.control = new Control(list);
             this.control.$.on('newItem', this._insertItem.bind(this));
 
+            TaskOnFly.$.on('showList', this.onShowList.bind(this));
             $(window).on('orientationchange', this._fixWidth.bind(this));
         },
         render: function() {
@@ -85,29 +86,33 @@ define([
         selectList: function(ev) {
             ev.preventDefault();
             var id = $(ev.target).parents('tr').data('item-id');
-            this._switchLists(this.control.selectList(id), 'left');
+            TaskOnFly.changeView(['#path', this.control.getList().getLocation(), id, '/'].join(''));
         },
         selectParentList: function() {
-            this._switchLists(this.control.selectParentList(), 'right');
+            TaskOnFly.changeView('#path' + this.control.getList().getParentLocation());
         },
-        _switchLists: function(newList, direction) {
+        onShowList: function(ev, list) {
+            this._switchLists(list);
+        },
+        _switchLists: function(newList) {
             var $newList = $(_.template(this.template, newList));
+            var list = this.control.getList();
 
             if (newList.public.items.length > 0) {
                 this.$content.append($newList);
                 $newList.trigger('create');
             }
 
-            if (direction === 'left') {
-                //todo Position new list to the right side and move both lists from right to the left
-            } else {
+            if (list._parent && list._parent.public.id === newList.public.id) {
                 //todo Position new list to the left side and move both lists from left to the right
+            } else {
+                //todo Position new list to the right side and move both lists from right to the left
             }
 
             this.$currentList.remove();
             this.$currentList = $newList;
 
-            if (this.control.getList().public.items.length > 0) {
+            if (list.public.items.length > 0) {
                 this._postRender();
             }
 

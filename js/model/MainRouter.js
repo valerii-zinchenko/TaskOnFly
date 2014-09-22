@@ -29,7 +29,9 @@ define(function () {
             '': 'home',
             'home': 'home',
             'add/:what': 'add',
-            'edit/:name': 'edit'
+            'edit/:name': 'edit',
+            'path': 'path',
+            'path/*path': 'path'
         },
 
         _view: null,
@@ -101,6 +103,24 @@ define(function () {
                 this.control.setItem(item);
                 this.control.setSaveCallback(list.saveData.bind(item));
             });
+        },
+
+        path: function(path) {
+            var list = TaskOnFly.getRootList(),
+                pathStack;
+
+            if (path) {
+                pathStack = path.split('/');
+                pathStack.pop();
+                list = list.findList(pathStack);
+            }
+
+            if (!list) {
+                console.warn('Incorrect list path:' + path);
+                return;
+            }
+
+            TaskOnFly.$.trigger('showList', list);
         }
     });
 

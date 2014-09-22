@@ -69,13 +69,13 @@ requirejs.config({
 requirejs([
     'jquery',
     'backbone',
-    'taskonfly',
     'utils',
     'aclass'
 ], function() {
     requirejs([
         'class',
-        'singleton'
+        'singleton',
+        'taskonfly'
     ], function() {
         $(document).on('mobileinit', function() {
             $.extend($.mobile, {

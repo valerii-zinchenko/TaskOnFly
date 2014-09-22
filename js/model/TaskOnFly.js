@@ -126,5 +126,7 @@
         }
     };
 
+    TaskOnFly.$ = $(TaskOnFly);
+
     (this || (1,eval)('this'))['TaskOnFly'] = TaskOnFly;
 })();

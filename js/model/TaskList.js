@@ -30,6 +30,7 @@ define([
     var TaskList = new Class(Task, {
         _parent: null,
         _NDone: 0,
+        _path: '/',
         models: {},
 
         public: {
@@ -86,6 +87,7 @@ define([
         addList: function(data) {
             var list = new TaskList(this.public.id, data);
             list._parent = this;
+            list._path = [this._path, list.public.id, '/'].join('');
             return this._add(list);
         },
 
@@ -140,6 +142,31 @@ define([
             TaskOnFly.setCurrentList(this._parent);
 
             return this._parent;
+        },
+
+        getLocation: function() {
+            return this._path;
+        },
+        getParentLocation: function() {
+            return this._parent.getLocation();
+        },
+
+        findList: function(path, list) {
+            if (!list) {
+                list = this;
+            }
+
+            if (path.length === 0) {
+                return list;
+            }
+
+            var subList = list.models[path.shift()];
+
+            if (!subList) {
+                return null;
+            }
+
+            return this.findList(path, subList);
         },
 
         sort: function() {
