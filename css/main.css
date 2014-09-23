@@ -126,6 +126,11 @@ table .ui-input-text {
     color: gray;
 }
 
+.due-date {
+    text-align: right;
+    margin-top: 10px;
+}
+
 /* Edit page */
 table.task-title td:first-child {
     width: 33px;
