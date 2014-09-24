@@ -32,8 +32,36 @@ define([
 <table class="full task-list">
     <thead><tr><th></th><th></th></tr></thead>
     <tbody>
+    <% var displayedDate = ''; %>
     <% _.each(public.items, function(item) { %>
         <% var modelPublic = models[item].public; %>
+        <% var date = modelPublic.isDone ? modelPublic.doneDate : modelPublic.dueDate; %>
+
+        <% if (displayedDate !== date) { %>
+            <% displayedDate = date; %>
+        <tr>
+            <td colspan="2">
+                <div class="due-date ui-corner-all">
+                    <span>
+                    <% if (modelPublic.isDone) { %>
+                        done
+                        <% if (displayedDate) { %>
+                            at
+                        <% } %>
+                    <% } else { %>
+                        <% if (displayedDate) { %>
+                            till
+                        <% } else { %>
+                            to do
+                        <% } %>
+                    <% } %>
+                    <%= displayedDate %>
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <% } %>
+
         <tr data-item-id="<%= modelPublic.id %>">
             <th>
                 <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %>">

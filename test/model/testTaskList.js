@@ -191,12 +191,14 @@ suite('Test TaskList', function() {
                 id: '6',
                 isDone: true,
                 dueDate: '2014-09-01',
+                doneDate: '2014-09-05',
                 priority: 0
             },
             {
                 id: '7',
                 isDone: true,
                 dueDate: '2014-09-02',
+                doneDate: '2014-09-08',
                 priority: 1
             }
         ];
