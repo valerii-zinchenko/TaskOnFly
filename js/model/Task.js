@@ -30,9 +30,9 @@ define(function () {
             isDone: false,
             title: '',
             priority: 1,
-            startDate: '',
-            dueDate: '',
-            doneDate: '',
+            startDate: null,
+            dueDate: null,
+            doneDate: null,
             notes: '',
             timestamp: '',
 

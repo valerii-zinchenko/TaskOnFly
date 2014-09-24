@@ -175,7 +175,7 @@ define([
 
             _.each(this.models, function(item) {
                 var sort1 = item.public.isDone,     // collect by completeness
-                    sort2 = item.public.dueDate,    // collect by due date or none (for tasks without due date property)
+                    sort2 = sort1 ? item.public.doneDate : item.public.dueDate,    // collect by date or none (for tasks without due date property)
                     sort3 = item.public.priority;   // collect by priority: 0 = low; 1 = normal; 2 = high
 
                 if (!structuredList[sort1]) {
