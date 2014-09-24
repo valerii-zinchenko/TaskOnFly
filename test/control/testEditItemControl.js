@@ -86,13 +86,13 @@ suite('EditItemControl', function() {
 
     test('getData() from _defaults', function() {
         var itemData = module._defaults._defaults;
-        itemData.timestamp = new Date().toISOString().slice(0,10);
+        itemData.timestamp = new Date().toISOString();
         assert.deepEqual(module.getData(), itemData);
     });
     test('getData() from item without startDate and dueDate', function() {
         var item = taskList.addTask({
             id: 'ok',
-            timestamp: new Date().toISOString().slice(0,10)
+            timestamp: new Date().toISOString()
         });
         module.setItem(item);
 

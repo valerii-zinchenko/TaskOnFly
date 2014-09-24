@@ -50,19 +50,7 @@ define([
 
         getData: function() {
             var data = this.item ? this.item.public : this._defaults._defaults;
-            var startDate = data.startDate
-                || (data.timestamp ?
-                    new Date(data.timestamp) :
-                    new Date()).toISOString();
-            var dueDate = data.dueDate || '';
-
-            startDate = startDate.slice(0,10);
-            if (dueDate) {
-                dueDate = dueDate.slice(0,10);
-            }
-
-            data.startDate = startDate;
-            data.dueDate = dueDate;
+            data.startDate = data.startDate || data.timestamp;
 
             return data;
         },

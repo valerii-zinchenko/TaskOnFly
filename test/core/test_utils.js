@@ -23,50 +23,77 @@
 
 
 suite('Test utility functions', function() {
-    var v1 = 11,
-        v2 = 4,
-        v3 = 19,
-        v4 = 90;
-    var obj1, obj2;
+    suite('Object manipulations.', function() {
+        var v1 = 11,
+            v2 = 4,
+            v3 = 19,
+            v4 = 90;
+        var obj1, obj2;
 
-    setup(function() {
-        obj1 = {
-            value: v1,
-            innObj: {
-                innValue: v2
-            },
-            innObj2: {
-                innInnObj: {
-                    innInnVal: v4
+        setup(function() {
+            obj1 = {
+                value: v1,
+                innObj: {
+                    innValue: v2
+                },
+                innObj2: {
+                    innInnObj: {
+                        innInnVal: v4
+                    }
+                },
+                empty: null
+            };
+            obj2 = {
+                value: v3,
+                innObj2: {
+                    innInnObj: {}
                 }
-            },
-            empty: null
-        };
-        obj2 = {
-            value: v3,
-            innObj2: {
-                innInnObj: {}
-            }
-        };
+            };
+        });
+
+        test('deepExtend()', function() {
+            utils.deepExtend(obj2, obj1);
+
+            assert.equal(obj2.value, v3);
+            assert.equal(obj2.innObj.innValue, v2);
+            assert.notEqual(obj2.innObj, obj1.innObj);
+            assert.isObject(obj2.innObj2.innInnObj);
+            assert.equal(obj2.innObj2.innInnObj.innInnVal, v4);
+        });
+        test('deepCopy()', function() {
+            utils.deepCopy(obj2, obj1);
+
+            assert.equal(obj2.value, v1);
+            assert.equal(obj2.innObj.innValue, v2);
+            assert.notEqual(obj2.innObj, obj1.innObj);
+            assert.isObject(obj2.innObj2.innInnObj);
+            assert.equal(obj2.innObj2.innInnObj.innInnVal, v4);
+        })
     });
 
-    test('deepExtend()', function() {
-        utils.deepExtend(obj2, obj1);
+    suite('date method', function() {
+        test('date()', function() {
+            assert.doesNotThrow(function() {
+                utils.date();
+            });
 
-        assert.equal(obj2.value, v3);
-        assert.equal(obj2.innObj.innValue, v2);
-        assert.notEqual(obj2.innObj, obj1.innObj);
-        assert.isObject(obj2.innObj2.innInnObj);
-        assert.equal(obj2.innObj2.innInnObj.innInnVal, v4);
-    });
-    test('deepCopy()', function() {
-        utils.deepCopy(obj2, obj1);
+            assert.doesNotThrow(function() {
+                utils.date(new Date());
+            });
+        });
 
-        assert.equal(obj2.value, v1);
-        assert.equal(obj2.innObj.innValue, v2);
-        assert.notEqual(obj2.innObj, obj1.innObj);
-        assert.isObject(obj2.innObj2.innInnObj);
-        assert.equal(obj2.innObj2.innInnObj.innInnVal, v4);
+        test('date(incorrect type)', function() {
+            assert.throw(function() {
+                utils.date('str');
+            }, Error, 'Incorrect input argument type');
+        });
+
+        test('date() result', function() {
+            var date = new Date().toISOString().slice(0,10);
+
+            assert.equal(utils.date(), date, 'Incorrect date was returned from the method without input argument');
+            assert.equal(utils.date(new Date()), date, 'Incorrect date was returned from the method with input argument');
+        })
     })
 });
 

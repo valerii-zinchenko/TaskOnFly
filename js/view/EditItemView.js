@@ -126,13 +126,12 @@ define([
 
         save: function(ev) {
             ev.preventDefault();
-            var dueDateVal = this.$dueDate.val();
 
             this.control.save({
                 title: this.$title.val().trim(),
                 priority: this.$priority.find(':checked').val(),
-                startDate: new Date(this.$startDate.val()),
-                dueDate: dueDateVal ? new Date(dueDateVal) : null,
+                startDate: this.$startDate.val(),
+                dueDate: this.$dueDate.val(),
                 notes: this.$notes.val().trim()
             });
 

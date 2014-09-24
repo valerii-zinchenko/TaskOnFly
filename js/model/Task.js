@@ -30,8 +30,9 @@ define(function () {
             isDone: false,
             title: '',
             priority: 1,
-            startDate: null,
-            dueDate: null,
+            startDate: '',
+            dueDate: '',
+            doneDate: '',
             notes: '',
             timestamp: '',
 
@@ -72,13 +73,6 @@ define(function () {
         },
         saveData: function(data) {
             if (data) {
-                if (data.startDate && typeof data.startDate !== 'string') {
-                    data.startDate = data.startDate.toISOString();
-                }
-                if (data.dueDate && typeof data.dueDate !== 'string') {
-                    data.dueDate = data.dueDate.toISOString();
-                }
-
                 utils.deepCopy(this.public, data);
             }
 
@@ -86,7 +80,8 @@ define(function () {
         },
         toggleStatus: function() {
             this.saveData({
-                isDone: !this.public.isDone
+                isDone: !this.public.isDone,
+                doneDate: utils.date()
             });
         }
     });

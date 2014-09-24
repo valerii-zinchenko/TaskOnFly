@@ -38,8 +38,7 @@ define(function () {
             TaskOnFly.getCurrentList().addTask({
                 title: title,
                 priority: priority,
-                dueDate: new Date(Date.now() + 86400000),   // + 1 day
-                timestamp: new Date()
+                dueDate: utils.date(new Date(Date.now() + 86400000))   // + 1 day
             });
         }
     });
