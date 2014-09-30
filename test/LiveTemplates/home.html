@@ -66,17 +66,16 @@
 
             <div data-role="fieldcontain">
 
-                <table class="full task-list">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
+                <!--<table class="full task-list">-->
+                    <!--<thead><tr><th></th><th></th></tr></thead>-->
+                    <!--<tbody>-->
+                        <!--<tr>-->
+                            <table class="full task-list">
+                                <thead><tr><th></th><th></th></tr></thead>
+                                <tbody>
+                                    <tr>
                             <td colspan="2">
-                                <div class="due-date ui-corner-all">
+                                <div class="group-title ui-corner-all">
                                     till
                                     25.09.2014
                                 </div>
@@ -133,10 +132,18 @@
                                     <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
                                 </div>
                             </td>
-                        </tr>
-                        <tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <div class="group-title ui-corner-all">till 23.09.2014</div>
+                            <table class="full task-list">
+                                <thead><tr><th></th><th></th></tr></thead>
+                                <tbody>
+                                <tr>
                             <td colspan="2">
-                                <div class="due-date ui-corner-all">till 23.09.2014</div>
+                                <div class="group-title ui-corner-all">till 23.09.2014</div>
                             </td>
                         </tr>
                         <tr data-item-id="T2">
@@ -190,9 +197,12 @@
                                     <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
                                 </div>
                             </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </tr>
+                                </tbody>
+                            </table>
+                        <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
             </div>
 
         </div>

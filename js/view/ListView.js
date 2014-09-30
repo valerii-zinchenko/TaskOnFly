@@ -41,7 +41,7 @@ define([
             <% displayedDate = date; %>
         <tr>
             <td colspan="2">
-                <div class="due-date ui-corner-all">
+                <div class="group-title ui-corner-all">
                     <span>
                     <% if (modelPublic.isDone) { %>
                         done
@@ -79,6 +79,32 @@ define([
     </tbody>
 </table>
         **/}),
+        groupTemplate: Template(function() {/**
+<div id="<%= groupID %>">
+    <div class="group-title ui-corner-all"><%= title %></div>
+    <table class="full task-list">
+        <thead><tr><th></th><th></th></tr></thead>
+        <tbody>
+        <% _.each(items, function(item) { %>
+        <% var modelPublic = models[item].public; %>
+            <tr data-item-id="<%= modelPublic.id %>">
+                <th>
+                    <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %>">
+                        <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>>
+                        <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label>
+                    </div>
+                </th>
+                <td>
+                    <div data-role="controlgroup" data-type="horizontal">
+                        <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                    </div>
+                </td>
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+</div>
+        **/}),
 
         $content: null,
         $currentList: null,
@@ -97,7 +123,25 @@ define([
                 this.$currentList.remove();
             }
 
-            this.$content.append(_.template(this.template, this.control.getList()));
+            var list = this.control.getList();
+            if (this.control.useGroups) {
+                var groups = list.getGroups();
+
+                for (var n=0; n < 2; n++) {
+                    var dates = Object.keys(groups[!!n]);
+                    for (var m = 0, M = dates.length; m < M; m++) {
+                        var itemIDs = list._object2Array(groups[!!n][dates[m]], [2,1,0]);
+                        this.$content.append(_.template(this.groupTemplate, {
+                            groupID: this._getGroupID(itemIDs[0]),
+                            title: this._getGroupTitle(itemIDs[0]),
+                            items: itemIDs,
+                            models: list.models
+                        }));
+                    }
+                }
+            } else {
+                this.$content.append(_.template(this.template, list));
+            }
             this.$currentList = this.$content.find('.task-list');
 
             this.$content.trigger('create');
@@ -162,6 +206,10 @@ define([
             var siblingID,
                 $sibling;
 
+            if (this.control.useGroups) {
+                var oldGroupID = this._getGroupID(id);
+            }
+
             var indexBefore = list.public.items.indexOf(id);
             this.control._toggleTaskStatus(id);
             var indexAfter = list.public.items.indexOf(id);
@@ -171,15 +219,96 @@ define([
             }
 
             $el.detach();
+
             if (indexAfter+1 === list.public.items.length) {
                 siblingID = list.public.items[indexAfter - 1];
-                $sibling = this.$currentList.find('tr[data-item-id=' + siblingID + ']');
-                $el.insertAfter($sibling);
             } else {
                 siblingID = list.public.items[indexAfter + 1];
-                $sibling = this.$currentList.find('tr[data-item-id=' + siblingID + ']');
-                $el.insertBefore($sibling);
             }
+
+            if (this.control.useGroups) {
+                var newGroupID = this._getGroupID(id);
+                var siblingGroupID = this._getGroupID(siblingID);
+
+                var $group = this.$content.find('#' + newGroupID);
+
+                if ($group.length === 0) {
+                    $group = $(_.template(this.groupTemplate, {
+                        groupID: newGroupID,
+                        title: this._getGroupTitle(id),
+                        items: [],
+                        models: list.models
+                    }));
+                    var $siblingGroup = this.$content.find('#' + siblingGroupID);
+
+                    if (indexAfter+1 === list.public.items.length) {
+                        $group.insertAfter($siblingGroup);
+                    } else {
+                        $group.insertBefore($siblingGroup);
+                    }
+
+                    $group.find('tbody').append($el);
+                } else {
+                    $sibling = $group.find('tr[data-item-id=' + siblingID + ']');
+                    if ($sibling.length === 0) {
+                        siblingID = list.public.items[indexAfter - 1];
+                        $sibling = $group.find('tr[data-item-id=' + siblingID + ']');
+                        $el.insertAfter($sibling);
+                    } else {
+                        $el.insertBefore($sibling);
+                    }
+                }
+
+                var $oldGroup = this.$content.find('#' + oldGroupID);
+                if ($oldGroup.find('.list-item').length === 0) {
+                    $oldGroup.remove();
+                }
+            } else {
+                $sibling = this.$content.find('tr[data-item-id=' + siblingID + ']');
+
+                if (indexAfter+1 === list.public.items.length) {
+                    $el.insertAfter($sibling);
+                } else {
+                    $el.insertBefore($sibling);
+                }
+            }
+        },
+        _getGroupTitle: function(id) {
+            var item = this.control.getList().models[id];
+            var title;
+
+            if (item.public.isDone) {
+                title = 'done';
+                if (item.public.doneDate) {
+                    title = 'at ' + item.public.doneDate;
+                }
+            } else {
+                if (item.public.dueDate) {
+                    title = 'till ' + item.public.dueDate;
+                } else {
+                    title = 'to do';
+                }
+            }
+
+            return title;
+        },
+        _getGroupID: function(id) {
+            var item = this.control.getList().models[id];
+            var groupID;
+
+            if (item.public.isDone) {
+                groupID = 'true';
+                if (item.public.doneDate) {
+                    groupID += item.public.doneDate;
+                }
+            } else {
+                groupID = 'false';
+                if (item.public.dueDate) {
+                    groupID += item.public.dueDate;
+                }
+            }
+
+            return groupID;
         },
         _insertItem: function() {
             this.render();

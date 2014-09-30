@@ -29,6 +29,7 @@ define([
 ], function (TaskList) {
     var ListControl = new Class({
         list: null,
+        useGroups: true,
 
         initialize: function(list) {
             this.$ = $(this);

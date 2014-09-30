@@ -31,6 +31,7 @@ define([
         _parent: null,
         _NDone: 0,
         _path: '/',
+        groups: {},
         models: {},
 
         public: {
@@ -151,6 +152,10 @@ define([
             return this._parent.getLocation();
         },
 
+        getGroups: function() {
+            return this.groups;
+        },
+
         findList: function(path, list) {
             if (!list) {
                 list = this;
@@ -170,48 +175,57 @@ define([
         },
 
         sort: function() {
-            var structuredList = {},
-                dueDates = [];
+            var dueDates = {
+                    'false': [],
+                    'true': []
+                };
+            this.groups = {};
 
             _.each(this.models, function(item) {
                 var sort1 = item.public.isDone,     // collect by completeness
-                    sort2 = sort1 ? item.public.doneDate : item.public.dueDate,    // collect by date or none (for tasks without due date property)
+                    sort2 = sort1 ? item.public.doneDate : item.public.dueDate,    // collect by dateGroup or none (for tasks without due dateGroup property)
                     sort3 = item.public.priority;   // collect by priority: 0 = low; 1 = normal; 2 = high
 
-                if (!structuredList[sort1]) {
-                    structuredList[sort1] = {};
+                if (!this.groups[sort1]) {
+                    this.groups[sort1] = {};
                 }
-                if (!structuredList[sort1][sort2]) {
-                    structuredList[sort1][sort2] = {};
-                    if (dueDates.indexOf(sort2) === -1) {
-                        dueDates.push(sort2);
+                if (!this.groups[sort1][sort2]) {
+                    this.groups[sort1][sort2] = {};
+                    if (dueDates[sort1].indexOf(sort2) === -1) {
+                        dueDates[sort1].push(sort2);
                     }
                 }
-                if (!structuredList[sort1][sort2][sort3]) {
-                    structuredList[sort1][sort2][sort3] = [];
+                if (!this.groups[sort1][sort2][sort3]) {
+                    this.groups[sort1][sort2][sort3] = [];
                 }
 
-                if (structuredList[sort1][sort2][sort3].indexOf(item.public.id) === -1) {
-                    structuredList[sort1][sort2][sort3].push(item.public.id);
+                if (this.groups[sort1][sort2][sort3].indexOf(item.public.id) === -1) {
+                    this.groups[sort1][sort2][sort3].push(item.public.id);
                 }
             }, this);
 
-            dueDates.sort();
+            dueDates.false.sort();
+            dueDates.true.sort().reverse();
 
+            var arr = {};
             for (var n = 0; n < 2; n++) {
                 var comp = !!n;
-                for (var m = 0, M = dueDates.length; m < M; m++) {
-                    if (structuredList[comp] && structuredList[comp][dueDates[m]]) {
-                        structuredList[comp][dueDates[m]] = this._object2Array(structuredList[comp][dueDates[m]], [2,1,0]);
+                var dateGroup = dueDates[comp];
+
+                arr[comp] = {};
+                for (var m = 0, M = dateGroup.length; m < M; m++) {
+                    var dueDate = dateGroup[m];
+                    if (this.groups[comp] && this.groups[comp][dueDate]) {
+                        arr[comp][dueDate] = this._object2Array(this.groups[comp][dueDate], [2,1,0]);
                     }
                 }
 
-                if (structuredList[comp]) {
-                    structuredList[comp] = this._object2Array(structuredList[comp], dueDates);
+                if (arr[comp]) {
+                    arr[comp] = this._object2Array(arr[comp], dateGroup);
                 }
             }
 
-            this.public.items = this._object2Array(structuredList, [false, true]);
+            this.public.items = this._object2Array(arr, [false, true]);
         },
 
         filter: function(rules) {

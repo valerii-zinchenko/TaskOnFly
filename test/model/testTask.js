@@ -36,9 +36,9 @@ suite('Test Task model', function() {
             isDone: false,
             title: '',
             priority: 1,
-            startDate: '',
-            dueDate: '',
-            doneDate: '',
+            startDate: null,
+            dueDate: null,
+            doneDate: null,
             notes: '',
             timestamp: '',
             id: '',
@@ -97,7 +97,7 @@ suite('Test Task model', function() {
         assert.equal(task.public.timestamp, timestamp);
         assert.equal(task.public.startDate, startDate);
         assert.equal(task.public.dueDate, dueDate);
-        assert.equal(task.public.doneDate, '');
+        assert.equal(task.public.doneDate, null);
     });
 
     test('saveData()', function() {
@@ -128,7 +128,7 @@ suite('Test Task model', function() {
         assert.equal(task.public.timestamp, timestamp);
         assert.equal(task.public.startDate, startDate);
         assert.equal(task.public.dueDate, dueDate);
-        assert.equal(task.public.doneDate, '');
+        assert.equal(task.public.doneDate, null);
     });
 
     test('Is Module a singleton?', function() {
