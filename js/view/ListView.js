@@ -120,7 +120,7 @@ define([
         },
         render: function() {
             if (this.$currentList) {
-                this.$currentList.remove();
+                this.$content.empty();
             }
 
             var list = this.control.getList();
