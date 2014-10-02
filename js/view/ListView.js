@@ -124,6 +124,7 @@ define([
             }
 
             var list = this.control.getList();
+            list.sort();
             if (this.control.useGroups) {
                 var groups = list.getGroups();
 

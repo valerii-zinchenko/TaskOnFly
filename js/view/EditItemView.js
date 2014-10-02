@@ -90,10 +90,15 @@ define([
             this.$startDate = this.$el.find('#start');
             this.$dueDate = this.$el.find('#due');
 
+            this.control = new Control();
+
+            this._attachEvents();
+        },
+
+        _attachEvents: function() {
             this.$el.find('#save').on('vclick', this.save.bind(this));
             this.$el.find('form').on('submit', this.save.bind(this));
-
-            this.control = new Control();
+            this.$isDone.on('vclick', this.onToggleStatus.bind(this));
         },
 
         render: function() {
@@ -131,6 +136,7 @@ define([
 
             this.control.save({
                 title: this.$title.val().trim(),
+                isDone: this.$isDone.prop('checked'),
                 priority: this.$priority.find(':checked').val(),
                 startDate: this.$startDate.val(),
                 dueDate: this.$dueDate.val(),
@@ -138,6 +144,11 @@ define([
             });
 
             TaskOnFly.changeView('#home');
+        },
+
+        onToggleStatus: function(ev) {
+            this.$isDone.toggleClass('ui-checkbox-on');
+            this.$isDone.toggleClass('ui-checkbox-off');
         }
     });
 

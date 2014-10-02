@@ -58,6 +58,7 @@ define([
         save: function(data) {
             this._callback({
                 title: data.title,
+                isDone: data.isDone,
                 priority: data.priority,
                 startDate: data.startDate,
                 dueDate: data.dueDate,
