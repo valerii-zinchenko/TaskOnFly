@@ -35,36 +35,9 @@ define([
     <% var displayedDate = ''; %>
     <% _.each(public.items, function(item) { %>
         <% var modelPublic = models[item].public; %>
-        <% var date = modelPublic.isDone ? modelPublic.doneDate : modelPublic.dueDate; %>
-
-        <% if (displayedDate !== date) { %>
-            <% displayedDate = date; %>
-        <tr>
-            <td colspan="2">
-                <div class="group-title ui-corner-all">
-                    <span>
-                    <% if (modelPublic.isDone) { %>
-                        done
-                        <% if (displayedDate) { %>
-                            at
-                        <% } %>
-                    <% } else { %>
-                        <% if (displayedDate) { %>
-                            till
-                        <% } else { %>
-                            to do
-                        <% } %>
-                    <% } %>
-                    <%= displayedDate %>
-                    </span>
-                </div>
-            </td>
-        </tr>
-        <% } %>
-
         <tr data-item-id="<%= modelPublic.id %>">
             <th>
-                <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %>">
+                <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>">
                     <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>>
                     <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label>
                 </div>
@@ -89,7 +62,7 @@ define([
         <% var modelPublic = models[item].public; %>
             <tr data-item-id="<%= modelPublic.id %>">
                 <th>
-                    <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %>">
+                    <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>">
                         <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>>
                         <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label>
                     </div>
@@ -273,6 +246,8 @@ define([
                     $el.insertBefore($sibling);
                 }
             }
+
+            $el.find('.list-item').toggleClass('done');
         },
         _getGroupTitle: function(id) {
             var item = this.control.getList().models[id];
