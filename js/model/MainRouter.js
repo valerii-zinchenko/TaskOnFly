@@ -82,6 +82,7 @@ define(function () {
 
             var fn = 'add' + what[0].toUpperCase() + what.slice(1);
             this._openView('EditItemView', function() {
+                this.header = 'Add ' + what;
                 var list = TaskOnFly.getCurrentList();
                 this.control.setSaveCallback(list[fn].bind(list));
             });
@@ -100,6 +101,7 @@ define(function () {
             }
 
             this._openView('EditItemView', function() {
+                this.header = item.public.type;
                 this.control.setItem(item);
                 this.control.setSaveCallback(list.saveData.bind(item));
             });

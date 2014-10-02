@@ -28,12 +28,10 @@ define([
     'control/EditItemControl'
 ], function(Control) {
     var EditItemView = new SingletonClass({
-        page: 'task',
-
         template: Template(function(){/**
 <div data-role="header">
     <a href="#home" data-role="back" data-icon="carat-l">Back</a>
-    <h1>Item</h1>
+    <h1 id="headerTitle">Item</h1>
     <a id="save" data-role="button" data-icon="plus" data-iconpos="right">Save</a>
 </div>
 <div data-role="content">
@@ -77,11 +75,14 @@ define([
     </div>
 </div>
         **/}),
+        page: 'task',
+        header: 'Item',
 
         initialize: function() {
             this.$el = $('#' + this.page);
             this.$el.html(_.template(this.template));
 
+            this.$header = this.$el.find('#headerTitle');
             this.$isDone = this.$el.find('#done');
             this.$title = this.$el.find('#title');
             this.$priority = this.$el.find('#priority');
@@ -98,6 +99,7 @@ define([
         render: function() {
             this.setData();
 
+            this.$header.html(this.header);
             this.$isDone.prop('checked', this.data.isDone);
             this.$title.val(this.data.title);
             this.$priority.find('#' + this.data.priority).prop('checked', true);
