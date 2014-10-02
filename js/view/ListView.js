@@ -278,7 +278,7 @@ define([
             var title;
 
             if (item.public.isDone) {
-                title = 'done';
+                title = 'done ';
                 if (item.public.doneDate) {
                     title += 'at ' + item.public.doneDate;
                 }
