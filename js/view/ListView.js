@@ -280,7 +280,7 @@ define([
             if (item.public.isDone) {
                 title = 'done';
                 if (item.public.doneDate) {
-                    title = 'at ' + item.public.doneDate;
+                    title += 'at ' + item.public.doneDate;
                 }
             } else {
                 if (item.public.dueDate) {
