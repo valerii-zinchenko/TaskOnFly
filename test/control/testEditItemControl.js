@@ -120,6 +120,7 @@ suite('EditItemControl', function() {
         var saveFN = sinon.spy();
         var data = {
             title: 'title',
+            isDone: 'isDone',
             priority: 'priority',
             startDate: 'startDate',
             dueDate: 'dueDate',
