@@ -25,7 +25,8 @@
 'use strict';
 
 define([
-    'control/ListControl'
+    'control/ListControl',
+    'view/PopupDialog'
 ], function(Control) {
     var ListView = new Class({
         template: Template(function(){/**
@@ -297,11 +298,36 @@ define([
         },
         _removeItem: function(ev) {
             ev.preventDefault();
-            var $tr = $(ev.target).parents('tr'),
-                id = $tr.data('item-id');
+            var $tr = $(ev.target).parents('tr'), id = $tr.data('item-id');
+
+            if ($tr.find('.list').length > 0) {
+                new TaskManager.PopupDialog({
+                    messages: ['Are you sure you want to delete the list of tasks?', 'This action cannot be undone.'],
+                    controls: [
+                        {
+                            title:    'Yes',
+                            callback: this._continueRemoving.bind(this, $tr, id)
+                        },
+                        {
+                            title: 'Cancel'
+                        }
+                    ]
+                }).show();
+            } else {
+                this._continueRemoving($tr, id);
+            }
+        },
+        _continueRemoving: function($el, id) {
+            $el.remove();
+            if (this.control.useGroups) {
+                var groupID = this._getGroupID(id);
+                var $group = this.$content.find('#' + groupID);
+                if ($group.find('.list-item').length === 0) {
+                    $group.remove();
+                }
+            }
 
             this.control._removeItem(id);
-            $tr.remove();
         },
 
         _fixWidth: function () {
