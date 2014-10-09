@@ -57,13 +57,15 @@ define([
                 this._NDone++;
             }
 
-            this.sort();
             this._checkListCompleteness();
+
+            this.sort();
 
             this.$.trigger('newItem', item);
             if (toSave) {
                 TaskOnFly.saveItem(this);
             }
+
             return item;
         },
         _checkListCompleteness: function() {
