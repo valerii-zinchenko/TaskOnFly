@@ -38,6 +38,7 @@
         <div data-role="header" data-position="fixed">
             <a href="#" id="prevList" data-role="button" data-icon="carat-l">Previous list</a>
             <h1>Home</h1>
+            <a href="#settingsPanel" id="openSettings" data-role="button" data-icon="gear" data-iconpos="notext"></a>
         </div>
         <div id="content" class="ui-content">
             <table class="full fast-task">
@@ -224,6 +225,14 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div id="settingsPanel" data-role="panel" data-position="right" data-display="overlay">
+            <ul data-role="listview">
+                <li>
+                    <a href="#about">About</a>
+                </li>
+            </ul>
         </div>
     </div>
 
