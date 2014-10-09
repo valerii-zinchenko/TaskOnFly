@@ -30,7 +30,10 @@ define([
 ], function(Control) {
     var ListView = new Class({
         template: Template(function(){/**
-<table class="full task-list">
+<div class="task-list"></div>
+        **/}),
+        simpleListTemplate: Template(function(){/**
+<table class="full">
     <thead><tr><th></th><th></th></tr></thead>
     <tbody>
     <% var displayedDate = ''; %>
@@ -94,35 +97,42 @@ define([
         },
         render: function() {
             if (this.$currentList) {
-                this.$content.empty();
+                this.$currentList.remove();
             }
 
-            var list = this.control.getList();
+            this.$currentList = this._prepareListElement(this.control.getList());
+
+            this.$content.append(this.$currentList);
+            this.$content.trigger('create');
+
+            this._postRender();
+            return this;
+        },
+        _prepareListElement: function(list) {
+            var $el = $(_.template(this.template, this));
             list.sort();
+
             if (this.control.useGroups) {
                 var groups = list.getGroups();
 
-                for (var n=0; n < 2; n++) {
-                    var dates = Object.keys(groups[!!n]);
+                var firstGroupLevel = Object.keys(groups);
+                for (var n = 0, N = firstGroupLevel.length; n < N; n++) {
+                    var dates = Object.keys(groups[firstGroupLevel[n]]);
                     for (var m = 0, M = dates.length; m < M; m++) {
-                        var itemIDs = list._object2Array(groups[!!n][dates[m]], [2,1,0]);
-                        this.$content.append(_.template(this.groupTemplate, {
-                            groupID: this._getGroupID(itemIDs[0]),
-                            title: this._getGroupTitle(itemIDs[0]),
+                        var itemIDs = list._object2Array(groups[firstGroupLevel[n]][dates[m]], [2,1,0]);
+                        $el.append(_.template(this.groupTemplate, {
+                            groupID: this._getGroupID(list, itemIDs[0]),
+                            title: this._getGroupTitle(list, itemIDs[0]),
                             items: itemIDs,
                             models: list.models
                         }));
                     }
                 }
             } else {
-                this.$content.append(_.template(this.template, list));
+                $el.append(_.template(this.simpleListTemplate, list));
             }
-            this.$currentList = this.$content.find('.task-list');
 
-            this.$content.trigger('create');
-
-            this._postRender();
-            return this;
+            return $el;
         },
         _postRender: function() {
             this._attachEvents();
@@ -142,7 +152,7 @@ define([
             this._switchLists(list);
         },
         _switchLists: function(newList) {
-            var $newList = $(_.template(this.template, newList));
+            var $newList = this._prepareListElement(newList);
             var list = this.control.getList();
 
             if (newList.public.items.length > 0) {
@@ -159,7 +169,7 @@ define([
             this.$currentList.remove();
             this.$currentList = $newList;
 
-            if (list.public.items.length > 0) {
+            if (newList.public.items.length > 0) {
                 this._postRender();
             }
 
@@ -182,7 +192,7 @@ define([
                 $sibling;
 
             if (this.control.useGroups) {
-                var oldGroupID = this._getGroupID(id);
+                var oldGroupID = this._getGroupID(list, id);
             }
 
             var indexBefore = list.public.items.indexOf(id);
@@ -202,19 +212,19 @@ define([
             }
 
             if (this.control.useGroups) {
-                var newGroupID = this._getGroupID(id);
-                var siblingGroupID = this._getGroupID(siblingID);
+                var newGroupID = this._getGroupID(list, id);
+                var siblingGroupID = this._getGroupID(list, siblingID);
 
-                var $group = this.$content.find('#' + newGroupID);
+                var $group = this.$currentList.find('#' + newGroupID);
 
                 if ($group.length === 0) {
                     $group = $(_.template(this.groupTemplate, {
                         groupID: newGroupID,
-                        title: this._getGroupTitle(id),
+                        title: this._getGroupTitle(list, id),
                         items: [],
                         models: list.models
                     }));
-                    var $siblingGroup = this.$content.find('#' + siblingGroupID);
+                    var $siblingGroup = this.$currentList.find('#' + siblingGroupID);
 
                     if (indexAfter+1 === list.public.items.length) {
                         $group.insertAfter($siblingGroup);
@@ -234,12 +244,12 @@ define([
                     }
                 }
 
-                var $oldGroup = this.$content.find('#' + oldGroupID);
+                var $oldGroup = this.$currentList.find('#' + oldGroupID);
                 if ($oldGroup.find('.list-item').length === 0) {
                     $oldGroup.remove();
                 }
             } else {
-                $sibling = this.$content.find('tr[data-item-id=' + siblingID + ']');
+                $sibling = this.$currentList.find('tr[data-item-id=' + siblingID + ']');
 
                 if (indexAfter+1 === list.public.items.length) {
                     $el.insertAfter($sibling);
@@ -250,8 +260,8 @@ define([
 
             $el.find('.list-item').toggleClass('done');
         },
-        _getGroupTitle: function(id) {
-            var item = this.control.getList().models[id];
+        _getGroupTitle: function(list, id) {
+            var item = list.models[id];
             var title;
 
             if (item.public.isDone) {
@@ -269,8 +279,8 @@ define([
 
             return title;
         },
-        _getGroupID: function(id) {
-            var item = this.control.getList().models[id];
+        _getGroupID: function(list, id) {
+            var item = list.models[id];
             var groupID;
 
             if (item.public.isDone) {
@@ -320,8 +330,8 @@ define([
         _continueRemoving: function($el, id) {
             $el.remove();
             if (this.control.useGroups) {
-                var groupID = this._getGroupID(id);
-                var $group = this.$content.find('#' + groupID);
+                var groupID = this._getGroupID(this.control.getList(), id);
+                var $group = this.$currentList.find('#' + groupID);
                 if ($group.find('.list-item').length === 0) {
                     $group.remove();
                 }
@@ -331,15 +341,16 @@ define([
         },
 
         _fixWidth: function () {
-            var th = this.$currentList.find('th:first');
-            var lists = this.$currentList.find('.list-item label');
+            var $tables = this.$currentList.find('table');
+            var th = $tables.find('th:first');
+            var lists = $tables.find('.list-item label');
 
-            this.$currentList.removeClass('fixed');
+            $tables.removeClass('fixed');
             lists.removeClass('nowrap');
 
             th.css('width', th.width());
 
-            this.$currentList.addClass('fixed');
+            $tables.addClass('fixed');
             lists.addClass('nowrap');
         },
 
