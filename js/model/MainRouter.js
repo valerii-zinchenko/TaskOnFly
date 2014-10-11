@@ -127,6 +127,7 @@ define(function () {
             }
 
             TaskOnFly.$.trigger('showList', list);
+            TaskOnFly.setCurrentList(list);
         }
     });
 
