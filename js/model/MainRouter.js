@@ -28,6 +28,7 @@ define(function () {
         routes: {
             '': 'home',
             'home': 'home',
+            'about': 'about',
             'add/:what': 'add',
             'edit/:name': 'edit',
             'path': 'path',
@@ -64,6 +65,9 @@ define(function () {
 
         home: function() {
             this._openView('HomeView');
+        },
+        about: function() {
+            this._openView('About');
         },
 
         /**
