@@ -117,7 +117,7 @@ define([
 
                 var firstGroupLevel = Object.keys(groups).sort();
                 for (var n = 0, N = firstGroupLevel.length; n < N; n++) {
-                    var dates = Object.keys(groups[firstGroupLevel[n]]).sort();
+                    var dates = Object.keys(groups[firstGroupLevel[n]]);
                     for (var m = 0, M = dates.length; m < M; m++) {
                         var itemIDs = list._object2Array(groups[firstGroupLevel[n]][dates[m]], [2,1,0]);
                         $el.append(_.template(this.groupTemplate, {

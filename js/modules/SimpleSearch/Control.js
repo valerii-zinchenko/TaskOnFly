@@ -36,7 +36,7 @@ define([
         listModule: null,
 
         initialize: function(listModule) {
-            this.update();
+            this.list = TaskOnFly.getCurrentList();
 
             if (listModule) {
                 this.setListModule(listModule);
@@ -49,10 +49,10 @@ define([
 
             this.listModule = listModule;
 
-            this.listModule.control.$.on('select', this.update.bind(this));
+            TaskOnFly.$.on('showList', this.update.bind(this));
         },
-        update: function() {
-            this.list = TaskOnFly.getCurrentList();
+        update: function(ev, list) {
+            this.list = list;
         },
         _showResults: function(list) {
             if (this.listModule.control.getList() === this.list && list === this.list) {
