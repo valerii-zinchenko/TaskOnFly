@@ -82,8 +82,6 @@
 
             if (items.indexOf(id) === -1) {
                 items.push(id);
-            } else {
-                console.log('update ' + id);
             }
 
             saveLocal('items', items);
