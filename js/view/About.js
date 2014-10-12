@@ -34,6 +34,8 @@ define(function () {
 </div>
 <div data-role="content">
     <div class="ui-body ui-body-a ui-corner-all">
+        <p>Version 1.0</p>
+
         <p>TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.</p>
 
         <p>Copyright (C) 2014  Valerii Zinchenko</p>
