@@ -2,7 +2,7 @@
 <html>
 <head>
     <!--
-        TaskOnFly. Manage your tasks and task lists on the fly.
+        TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.
          Copyright (C) 2014  Valerii Zinchenko
 
          This file is part of TaskOnFly.
@@ -38,6 +38,7 @@
         <div data-role="header" data-position="fixed">
             <a href="#" id="prevList" data-role="button" data-icon="carat-l">Previous list</a>
             <h1>Home</h1>
+            <a href="#settingsPanel" id="openSettings" data-role="button" data-icon="gear" data-iconpos="notext"></a>
         </div>
         <div id="content" class="ui-content">
             <table class="full fast-task">
@@ -66,14 +67,21 @@
 
             <div data-role="fieldcontain">
 
-                <table class="full task-list">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
+                <!--<table class="full task-list">-->
+                    <!--<thead><tr><th></th><th></th></tr></thead>-->
+                    <!--<tbody>-->
+                        <!--<tr>-->
+                            <table class="full task-list">
+                                <thead><tr><th></th><th></th></tr></thead>
+                                <tbody>
+                                    <tr>
+                            <td colspan="2">
+                                <div class="group-title ui-corner-all">
+                                    till
+                                    25.09.2014
+                                </div>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
                         <tr data-item-id="T1">
                             <th>
                                 <div class="list-item task priority-2">
@@ -124,6 +132,19 @@
                                 <div data-role="controlgroup" data-type="horizontal">
                                     <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
                                 </div>
+                            </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <div class="group-title ui-corner-all">till 23.09.2014</div>
+                            <table class="full task-list">
+                                <thead><tr><th></th><th></th></tr></thead>
+                                <tbody>
+                                <tr>
+                            <td colspan="2">
+                                <div class="group-title ui-corner-all">till 23.09.2014</div>
                             </td>
                         </tr>
                         <tr data-item-id="T2">
@@ -177,9 +198,12 @@
                                     <button class="custom" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
                                 </div>
                             </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </tr>
+                                </tbody>
+                            </table>
+                        <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
             </div>
 
         </div>
@@ -201,6 +225,14 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div id="settingsPanel" data-role="panel" data-position="right" data-display="overlay">
+            <ul data-role="listview">
+                <li>
+                    <a href="#about">About</a>
+                </li>
+            </ul>
         </div>
     </div>
 

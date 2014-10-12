@@ -1,5 +1,5 @@
 /*
- TaskOnFly. Manage your tasks and task lists on the fly.
+ TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.
  Copyright (C) 2014  Valerii Zinchenko
 
  This file is part of TaskOnFly.
@@ -57,6 +57,8 @@ requirejs.config({
     nodeRequire: require
 });
 
+requirejs('./test/moks.js');
+
 AClass = require(srcPrefix + 'core/AClass');
 Class = require(srcPrefix + 'core/Class');
 SingletonClass = require(srcPrefix + 'core/SingletonClass');
@@ -92,7 +94,5 @@ testPrefix = './test/';
 ].forEach(function(file) {
     testRunner.addFile(testPrefix + file);
 });
-
-requirejs('./test/moks.js');
 
 testRunner.run();

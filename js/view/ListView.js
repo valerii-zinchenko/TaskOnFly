@@ -1,5 +1,5 @@
 /*
- TaskOnFly. Manage your tasks and task lists on the fly.
+ TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.
  Copyright (C) 2014  Valerii Zinchenko
 
  This file is part of TaskOnFly.
@@ -25,18 +25,23 @@
 'use strict';
 
 define([
-    'control/ListControl'
+    'control/ListControl',
+    'view/PopupDialog'
 ], function(Control) {
     var ListView = new Class({
         template: Template(function(){/**
-<table class="full task-list">
+<div class="task-list"></div>
+        **/}),
+        simpleListTemplate: Template(function(){/**
+<table class="full">
     <thead><tr><th></th><th></th></tr></thead>
     <tbody>
+    <% var displayedDate = ''; %>
     <% _.each(public.items, function(item) { %>
         <% var modelPublic = models[item].public; %>
         <tr data-item-id="<%= modelPublic.id %>">
             <th>
-                <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %>">
+                <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>">
                     <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>>
                     <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label>
                 </div>
@@ -51,8 +56,32 @@ define([
     </tbody>
 </table>
         **/}),
-
-        _width: 0,
+        groupTemplate: Template(function() {/**
+<div id="<%= groupID %>">
+    <div class="group-title ui-corner-all"><%= title %></div>
+    <table class="full task-list">
+        <thead><tr><th></th><th></th></tr></thead>
+        <tbody>
+        <% _.each(items, function(item) { %>
+        <% var modelPublic = models[item].public; %>
+            <tr data-item-id="<%= modelPublic.id %>">
+                <th>
+                    <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>">
+                        <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>>
+                        <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label>
+                    </div>
+                </th>
+                <td>
+                    <div data-role="controlgroup" data-type="horizontal">
+                        <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
+                    </div>
+                </td>
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+</div>
+        **/}),
 
         $content: null,
         $currentList: null,
@@ -62,19 +91,48 @@ define([
 
             this.control = new Control(list);
             this.control.$.on('newItem', this._insertItem.bind(this));
+
+            TaskOnFly.$.on('showList', this.onShowList.bind(this));
+            $(window).on('orientationchange', this._fixWidth.bind(this));
         },
         render: function() {
             if (this.$currentList) {
                 this.$currentList.remove();
             }
 
-            this.$content.append(_.template(this.template, this.control.getList()));
-            this.$currentList = this.$content.find('.task-list');
+            this.$currentList = this._prepareListElement(this.control.getList());
 
+            this.$content.append(this.$currentList);
             this.$content.trigger('create');
 
             this._postRender();
             return this;
+        },
+        _prepareListElement: function(list) {
+            var $el = $(_.template(this.template, this));
+            list.sort();
+
+            if (this.control.useGroups) {
+                var groups = list.getGroups();
+
+                var firstGroupLevel = Object.keys(groups).sort();
+                for (var n = 0, N = firstGroupLevel.length; n < N; n++) {
+                    var dates = Object.keys(groups[firstGroupLevel[n]]).sort();
+                    for (var m = 0, M = dates.length; m < M; m++) {
+                        var itemIDs = list._object2Array(groups[firstGroupLevel[n]][dates[m]], [2,1,0]);
+                        $el.append(_.template(this.groupTemplate, {
+                            groupID: this._getGroupID(list, itemIDs[0]),
+                            title: this._getGroupTitle(list, itemIDs[0]),
+                            items: itemIDs,
+                            models: list.models
+                        }));
+                    }
+                }
+            } else {
+                $el.append(_.template(this.simpleListTemplate, list));
+            }
+
+            return $el;
         },
         _postRender: function() {
             this._attachEvents();
@@ -85,29 +143,33 @@ define([
         selectList: function(ev) {
             ev.preventDefault();
             var id = $(ev.target).parents('tr').data('item-id');
-            this._switchLists(this.control.selectList(id), 'left');
+            TaskOnFly.changeView(['#path', this.control.getList().getLocation(), id, '/'].join(''));
         },
         selectParentList: function() {
-            this._switchLists(this.control.selectParentList(), 'right');
+            TaskOnFly.changeView('#path' + this.control.getList().getParentLocation());
         },
-        _switchLists: function(newList, direction) {
-            var $newList = $(_.template(this.template, newList));
+        onShowList: function(ev, list) {
+            this._switchLists(list);
+        },
+        _switchLists: function(newList) {
+            var $newList = this._prepareListElement(newList);
+            var list = this.control.getList();
 
             if (newList.public.items.length > 0) {
                 this.$content.append($newList);
                 $newList.trigger('create');
             }
 
-            if (direction === 'left') {
-                //todo Position new list to the right side and move both lists from right to the left
-            } else {
+            if (list._parent && list._parent.public.id === newList.public.id) {
                 //todo Position new list to the left side and move both lists from left to the right
+            } else {
+                //todo Position new list to the right side and move both lists from right to the left
             }
 
             this.$currentList.remove();
             this.$currentList = $newList;
 
-            if (this.control.getList().public.items.length > 0) {
+            if (newList.public.items.length > 0) {
                 this._postRender();
             }
 
@@ -116,8 +178,8 @@ define([
         _attachEvents: function() {
             this.$currentList.find('.list-item.task input').on('change', this._toggleTaskStatus.bind(this));
             this.$currentList.find('.list-item.list').on('vclick', this.selectList.bind(this));
-            this.$currentList.find('.edit-btn').on('click', this._editItem);
-            this.$currentList.find('.delete-btn').on('click', this._removeItem);
+            this.$currentList.find('.edit-btn').on('click', this._editItem.bind(this));
+            this.$currentList.find('.delete-btn').on('click', this._removeItem.bind(this));
         },
         _toggleTaskStatus: function(ev) {
             ev.preventDefault();
@@ -129,6 +191,10 @@ define([
             var siblingID,
                 $sibling;
 
+            if (this.control.useGroups) {
+                var oldGroupID = this._getGroupID(list, id);
+            }
+
             var indexBefore = list.public.items.indexOf(id);
             this.control._toggleTaskStatus(id);
             var indexAfter = list.public.items.indexOf(id);
@@ -138,15 +204,98 @@ define([
             }
 
             $el.detach();
+
             if (indexAfter+1 === list.public.items.length) {
                 siblingID = list.public.items[indexAfter - 1];
-                $sibling = this.$currentList.find('tr[data-item-id=' + siblingID + ']');
-                $el.insertAfter($sibling);
             } else {
                 siblingID = list.public.items[indexAfter + 1];
-                $sibling = this.$currentList.find('tr[data-item-id=' + siblingID + ']');
-                $el.insertBefore($sibling);
             }
+
+            if (this.control.useGroups) {
+                var newGroupID = this._getGroupID(list, id);
+                var siblingGroupID = this._getGroupID(list, siblingID);
+
+                var $group = this.$currentList.find('#' + newGroupID);
+
+                if ($group.length === 0) {
+                    $group = $(_.template(this.groupTemplate, {
+                        groupID: newGroupID,
+                        title: this._getGroupTitle(list, id),
+                        items: [],
+                        models: list.models
+                    }));
+                    var $siblingGroup = this.$currentList.find('#' + siblingGroupID);
+
+                    if (indexAfter+1 === list.public.items.length) {
+                        $group.insertAfter($siblingGroup);
+                    } else {
+                        $group.insertBefore($siblingGroup);
+                    }
+
+                    $group.find('tbody').append($el);
+                } else {
+                    $sibling = $group.find('tr[data-item-id=' + siblingID + ']');
+                    if ($sibling.length === 0) {
+                        siblingID = list.public.items[indexAfter - 1];
+                        $sibling = $group.find('tr[data-item-id=' + siblingID + ']');
+                        $el.insertAfter($sibling);
+                    } else {
+                        $el.insertBefore($sibling);
+                    }
+                }
+
+                var $oldGroup = this.$currentList.find('#' + oldGroupID);
+                if ($oldGroup.find('.list-item').length === 0) {
+                    $oldGroup.remove();
+                }
+            } else {
+                $sibling = this.$currentList.find('tr[data-item-id=' + siblingID + ']');
+
+                if (indexAfter+1 === list.public.items.length) {
+                    $el.insertAfter($sibling);
+                } else {
+                    $el.insertBefore($sibling);
+                }
+            }
+
+            $el.find('.list-item').toggleClass('done');
+        },
+        _getGroupTitle: function(list, id) {
+            var item = list.models[id];
+            var title;
+
+            if (item.public.isDone) {
+                title = 'done ';
+                if (item.public.doneDate) {
+                    title += 'at ' + item.public.doneDate;
+                }
+            } else {
+                if (item.public.dueDate) {
+                    title = 'till ' + item.public.dueDate;
+                } else {
+                    title = 'to do';
+                }
+            }
+
+            return title;
+        },
+        _getGroupID: function(list, id) {
+            var item = list.models[id];
+            var groupID;
+
+            if (item.public.isDone) {
+                groupID = 'true';
+                if (item.public.doneDate) {
+                    groupID += item.public.doneDate;
+                }
+            } else {
+                groupID = 'false';
+                if (item.public.dueDate) {
+                    groupID += item.public.dueDate;
+                }
+            }
+
+            return groupID;
         },
         _insertItem: function() {
             this.render();
@@ -159,22 +308,50 @@ define([
         },
         _removeItem: function(ev) {
             ev.preventDefault();
-            var $tr = $(ev.target).parents('tr'),
-                id = $tr.data('item-id');
+            var $tr = $(ev.target).parents('tr'), id = $tr.data('item-id');
+
+            if ($tr.find('.list').length > 0) {
+                new TaskManager.PopupDialog({
+                    messages: ['Are you sure you want to delete the list of tasks?', 'This action cannot be undone.'],
+                    controls: [
+                        {
+                            title:    'Yes',
+                            callback: this._continueRemoving.bind(this, $tr, id)
+                        },
+                        {
+                            title: 'Cancel'
+                        }
+                    ]
+                }).show();
+            } else {
+                this._continueRemoving($tr, id);
+            }
+        },
+        _continueRemoving: function($el, id) {
+            $el.remove();
+            if (this.control.useGroups) {
+                var groupID = this._getGroupID(this.control.getList(), id);
+                var $group = this.$currentList.find('#' + groupID);
+                if ($group.find('.list-item').length === 0) {
+                    $group.remove();
+                }
+            }
 
             this.control._removeItem(id);
-            $tr.remove();
         },
 
         _fixWidth: function () {
-            var th = this.$currentList.find('th:first');
-            if (!this._width) {
-                this._width = th.width();
-            }
-            th.css('width', this._width);
+            var $tables = this.$currentList.find('table');
+            var th = $tables.find('th:first');
+            var lists = $tables.find('.list-item label');
 
-            this.$currentList.addClass('fixed');
-            this.$currentList.find('.list-item label').addClass('nowrap');
+            $tables.removeClass('fixed');
+            lists.removeClass('nowrap');
+
+            th.css('width', th.width());
+
+            $tables.addClass('fixed');
+            lists.addClass('nowrap');
         },
 
         _disableListCheckbox: function () {

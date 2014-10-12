@@ -1,5 +1,5 @@
 /*
- TaskOnFly. Manage your tasks and task lists on the fly.
+ TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.
  Copyright (C) 2014  Valerii Zinchenko
 
  This file is part of TaskOnFly.
@@ -50,19 +50,7 @@ define([
 
         getData: function() {
             var data = this.item ? this.item.public : this._defaults._defaults;
-            var startDate = data.startDate
-                || (data.timestamp ?
-                    new Date(data.timestamp) :
-                    new Date()).toISOString();
-            var dueDate = data.dueDate || '';
-
-            startDate = startDate.slice(0,10);
-            if (dueDate) {
-                dueDate = dueDate.slice(0,10);
-            }
-
-            data.startDate = startDate;
-            data.dueDate = dueDate;
+            data.startDate = data.startDate || data.timestamp;
 
             return data;
         },
@@ -70,6 +58,7 @@ define([
         save: function(data) {
             this._callback({
                 title: data.title,
+                isDone: data.isDone,
                 priority: data.priority,
                 startDate: data.startDate,
                 dueDate: data.dueDate,

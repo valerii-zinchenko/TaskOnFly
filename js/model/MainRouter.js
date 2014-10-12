@@ -1,5 +1,5 @@
 /*
- TaskOnFly. Manage your tasks and task lists on the fly.
+ TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.
  Copyright (C) 2014  Valerii Zinchenko
 
  This file is part of TaskOnFly.
@@ -24,35 +24,50 @@
 'use strict';
 
 define(function () {
-    /**
-     *
-     * @param {string} viewName View name, that should be opened
-     * @param {Function} [fn] Function that calls before rendering of view.
-     * @private
-     */
-    function _openView (viewName, fn) {
-        requirejs(['view/' + viewName], function(View) {
-            var view = new View();
-
-            if (fn) {
-                fn.call(view);
-            }
-
-            $.mobile.changePage('#' + view.page);
-            view.render();
-        });
-    }
-
     var MainRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
             'home': 'home',
+            'about': 'about',
             'add/:what': 'add',
-            'edit/:name': 'edit'
+            'edit/:name': 'edit',
+            'path': 'path',
+            'path/*path': 'path'
+        },
+
+        _view: null,
+
+        /**
+         *
+         * @param {string} viewName View name, that should be opened
+         * @param {Function} [fn] Function that calls before rendering of view.
+         * @private
+         */
+        _openView: function(viewName, fn) {
+            requirejs(['view/' + viewName], function(View) {
+                this._view = new View();
+
+                if (fn) {
+                    fn.call(this._view);
+                }
+
+                $.mobile.pageContainer.pagecontainer('change', '#' + this._view.page);
+            }.bind(this));
+        },
+
+        initialize: function() {
+            $.mobile.pageContainer.pagecontainer({
+                change: function() {
+                    this._view.render();
+                }.bind(this)
+            });
         },
 
         home: function() {
-            _openView('HomeView');
+            this._openView('HomeView');
+        },
+        about: function() {
+            this._openView('About');
         },
 
         /**
@@ -70,7 +85,8 @@ define(function () {
             }
 
             var fn = 'add' + what[0].toUpperCase() + what.slice(1);
-            _openView('EditItemView', function() {
+            this._openView('EditItemView', function() {
+                this.header = 'Add ' + what;
                 var list = TaskOnFly.getCurrentList();
                 this.control.setSaveCallback(list[fn].bind(list));
             });
@@ -88,10 +104,36 @@ define(function () {
                 throw new Error('Item with id: "' + id + '" was not found');
             }
 
-            _openView('EditItemView', function() {
+            this._openView('EditItemView', function() {
+                this.header = item.public.type;
                 this.control.setItem(item);
                 this.control.setSaveCallback(list.saveData.bind(item));
             });
+        },
+
+        path: function(path) {
+            var list = TaskOnFly.getRootList(),
+                pathStack;
+
+            if (path) {
+                pathStack = path.split('/');
+                pathStack.pop();
+                list = list.findList(pathStack);
+            }
+
+            if (!list) {
+                console.warn('Incorrect list path:' + path);
+                TaskOnFly.changeView('#home');
+
+                return;
+            }
+
+            TaskOnFly.$.trigger('showList', list);
+            TaskOnFly.setCurrentList(list);
+
+            if (!this._view) {
+                this.home();
+            }
         }
     });
 

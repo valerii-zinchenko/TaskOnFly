@@ -1,5 +1,5 @@
 /*
- TaskOnFly. Manage your tasks and task lists on the fly.
+ TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.
  Copyright (C) 2014  Valerii Zinchenko
 
  This file is part of TaskOnFly.
@@ -29,6 +29,7 @@ define([
 ], function (TaskList) {
     var ListControl = new Class({
         list: null,
+        useGroups: true,
 
         initialize: function(list) {
             this.$ = $(this);

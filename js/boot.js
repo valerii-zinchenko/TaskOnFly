@@ -1,5 +1,5 @@
 /*
- TaskOnFly. Manage your tasks and task lists on the fly.
+ TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.
  Copyright (C) 2014  Valerii Zinchenko
 
  This file is part of TaskOnFly.
@@ -67,26 +67,29 @@ requirejs.config({
 });
 
 requirejs([
-    'taskonfly',
-    'aclass',
-    'class',
-    'singleton',
-    'utils',
     'jquery',
-    'backbone'
+    'backbone',
+    'utils',
+    'aclass'
 ], function() {
-    $(document).on('mobileinit', function() {
-        $.extend($.mobile, {
-            ajaxEnabled: false,
-            linkBindingEnabled: false,
-            hashListeningEnabled: false
+    requirejs([
+        'class',
+        'singleton',
+        'taskonfly'
+    ], function() {
+        $(document).on('mobileinit', function() {
+            $.extend($.mobile, {
+                ajaxEnabled: false,
+                linkBindingEnabled: false,
+                hashListeningEnabled: false
+            });
         });
-    });
 
-    requirejs(['jquery.mobile'], function() {
-        requirejs(['main'], function(main) {
-            main();
-            Backbone.history.start();
+        requirejs(['jquery.mobile'], function() {
+            requirejs(['main'], function(main) {
+                main();
+                Backbone.history.start();
+            });
         });
     });
 });

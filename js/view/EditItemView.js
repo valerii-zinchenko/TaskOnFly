@@ -1,5 +1,5 @@
 /*
- TaskOnFly. Manage your tasks and task lists on the fly.
+ TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.
  Copyright (C) 2014  Valerii Zinchenko
 
  This file is part of TaskOnFly.
@@ -28,12 +28,10 @@ define([
     'control/EditItemControl'
 ], function(Control) {
     var EditItemView = new SingletonClass({
-        page: 'task',
-
         template: Template(function(){/**
 <div data-role="header">
     <a href="#home" data-role="back" data-icon="carat-l">Back</a>
-    <h1>Item</h1>
+    <h1 id="headerTitle">Item</h1>
     <a id="save" data-role="button" data-icon="plus" data-iconpos="right">Save</a>
 </div>
 <div data-role="content">
@@ -77,11 +75,14 @@ define([
     </div>
 </div>
         **/}),
+        page: 'task',
+        header: 'Item',
 
         initialize: function() {
             this.$el = $('#' + this.page);
             this.$el.html(_.template(this.template));
 
+            this.$header = this.$el.find('#headerTitle');
             this.$isDone = this.$el.find('#done');
             this.$title = this.$el.find('#title');
             this.$priority = this.$el.find('#priority');
@@ -89,15 +90,21 @@ define([
             this.$startDate = this.$el.find('#start');
             this.$dueDate = this.$el.find('#due');
 
+            this.control = new Control();
+
+            this._attachEvents();
+        },
+
+        _attachEvents: function() {
             this.$el.find('#save').on('vclick', this.save.bind(this));
             this.$el.find('form').on('submit', this.save.bind(this));
-
-            this.control = new Control();
+            this.$isDone.on('vclick', this.onToggleStatus.bind(this));
         },
 
         render: function() {
             this.setData();
 
+            this.$header.html(this.header);
             this.$isDone.prop('checked', this.data.isDone);
             this.$title.val(this.data.title);
             this.$priority.find('#' + this.data.priority).prop('checked', true);
@@ -126,17 +133,22 @@ define([
 
         save: function(ev) {
             ev.preventDefault();
-            var dueDateVal = this.$dueDate.val();
 
             this.control.save({
-                title: this.$title.val(),
+                title: this.$title.val().trim(),
+                isDone: this.$isDone.prop('checked'),
                 priority: this.$priority.find(':checked').val(),
-                startDate: new Date(this.$startDate.val()),
-                dueDate: dueDateVal ? new Date(dueDateVal) : null,
-                notes: this.$notes.val()
+                startDate: this.$startDate.val(),
+                dueDate: this.$dueDate.val(),
+                notes: this.$notes.val().trim()
             });
 
             TaskOnFly.changeView('#home');
+        },
+
+        onToggleStatus: function(ev) {
+            this.$isDone.toggleClass('ui-checkbox-on');
+            this.$isDone.toggleClass('ui-checkbox-off');
         }
     });
 

@@ -1,5 +1,5 @@
 /*
- TaskOnFly. Manage your tasks and task lists on the fly.
+ TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.
  Copyright (C) 2014  Valerii Zinchenko
 
  This file is part of TaskOnFly.
@@ -32,18 +32,19 @@ suite('Test Task model', function() {
     });
 
     test('_defaults.public', function() {
-        var pub = Module.prototype._defaults.public;
-
-        assert.equal(pub.isDone, false);
-        assert.equal(pub.title, '');
-        assert.equal(pub.priority, 1);
-        assert.equal(pub.startDate, null);
-        assert.equal(pub.dueDate, null);
-        assert.equal(pub.notes, '');
-        assert.equal(pub.timestamp, '');
-        assert.equal(pub.id, '');
-        assert.equal(pub.parentID, '');
-        assert.equal(pub.type, 'Task');
+        assert.deepEqual(Module.prototype._defaults.public, {
+            isDone: false,
+            title: '',
+            priority: 1,
+            startDate: null,
+            dueDate: null,
+            doneDate: null,
+            notes: '',
+            timestamp: '',
+            id: '',
+            parentID: '',
+            type: 'Task'
+        });
     });
 
     test('Constructor without arguments', function() {
@@ -74,9 +75,9 @@ suite('Test Task model', function() {
             title = 'test task',
             priority = 3,
             description = 'task description',
-            timestamp = new Date(),
-            startDate = new Date('2014-08-25'),
-            dueDate = new Date('2014-08-31');
+            timestamp = new Date().toISOString(),
+            startDate = '2014-08-25',
+            dueDate = '2014-08-31';
 
         var task = new Module(parentID, {
             isDone: isDone,
@@ -94,8 +95,9 @@ suite('Test Task model', function() {
         assert.equal(task.public.priority, priority);
         assert.equal(task.public.description, description);
         assert.equal(task.public.timestamp, timestamp);
-        assert.equal(task.public.startDate, startDate.toISOString());
-        assert.equal(task.public.dueDate, dueDate.toISOString());
+        assert.equal(task.public.startDate, startDate);
+        assert.equal(task.public.dueDate, dueDate);
+        assert.equal(task.public.doneDate, null);
     });
 
     test('saveData()', function() {
@@ -104,9 +106,9 @@ suite('Test Task model', function() {
             title = 'test task',
             priority = 3,
             description = 'task description',
-            timestamp = new Date(),
-            startDate = new Date('2014-08-25'),
-            dueDate = new Date('2014-08-31');
+            timestamp = new Date().toISOString(),
+            startDate = '2014-08-25',
+            dueDate = '2014-08-31';
 
         var task = new Module(parenID);
         task.saveData({
@@ -124,12 +126,13 @@ suite('Test Task model', function() {
         assert.equal(task.public.priority, priority);
         assert.equal(task.public.description, description);
         assert.equal(task.public.timestamp, timestamp);
-        assert.equal(task.public.startDate, startDate.toISOString());
-        assert.equal(task.public.dueDate, dueDate.toISOString());
+        assert.equal(task.public.startDate, startDate);
+        assert.equal(task.public.dueDate, dueDate);
+        assert.equal(task.public.doneDate, null);
     });
 
     test('Is Module a singleton?', function() {
-        assert.notEqual(new Module('id'), new Module('id'));
+        assert.notEqual(new Module('id'), new Module('id'), 'Module should not be a singleton');
     });
 
     test('toggleStatus()', function() {
@@ -137,5 +140,6 @@ suite('Test Task model', function() {
         task.toggleStatus();
 
         assert.equal(task.public.isDone, true);
+        assert.equal(task.public.doneDate, new Date().toISOString().slice(0,10));
     });
 });
