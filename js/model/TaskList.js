@@ -151,6 +151,10 @@ define([
             return this._path;
         },
         getParentLocation: function() {
+            if (!this._parent) {
+                return '/';
+            }
+
             return this._parent.getLocation();
         },
 

@@ -83,7 +83,7 @@ define([
             // todo: Move this button and event handler into the ListView
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
 
-            this.list = new ListView(this.$content.find('#listModule'), TaskOnFly.getRootList());
+            this.list = new ListView(this.$content.find('#listModule'), TaskOnFly.getCurrentList());
             this.fastTask = new FastTaskView(this.$content.find('#fastTaskModule'));
             this.simpleSearch = new SimpleSearchView(this.$el.find('#searchModule'), this.list);
             this.panel = new Panel({

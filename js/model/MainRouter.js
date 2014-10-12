@@ -123,11 +123,17 @@ define(function () {
 
             if (!list) {
                 console.warn('Incorrect list path:' + path);
+                TaskOnFly.changeView('#home');
+
                 return;
             }
 
             TaskOnFly.$.trigger('showList', list);
             TaskOnFly.setCurrentList(list);
+
+            if (!this._view) {
+                this.home();
+            }
         }
     });
 
