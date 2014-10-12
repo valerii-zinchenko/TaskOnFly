@@ -57,7 +57,5 @@ define([
         TaskOnFly.setCurrentList(TaskOnFly.getRootList());
 
         new TaskManager.MainRouter();
-
-        console.info('run');
     }
 });
