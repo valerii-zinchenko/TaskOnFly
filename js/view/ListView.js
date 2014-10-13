@@ -121,8 +121,8 @@ define([
                     for (var m = 0, M = dates.length; m < M; m++) {
                         var itemIDs = list._object2Array(groups[firstGroupLevel[n]][dates[m]], [2,1,0]);
                         $el.append(_.template(this.groupTemplate, {
-                            groupID: this._getGroupID(list, itemIDs[0]),
-                            title: this._getGroupTitle(list, itemIDs[0]),
+                            groupID: this.control.getGroupID(list, itemIDs[0]),
+                            title: this.control.getGroupTitle(list, itemIDs[0]),
                             items: itemIDs,
                             models: list.models
                         }));
@@ -192,15 +192,23 @@ define([
                 $sibling;
 
             if (this.control.useGroups) {
-                var oldGroupID = this._getGroupID(list, id);
+                var oldGroupID = this.control.getGroupID(list, id);
+            } else {
+                var indexBefore = list.public.items.indexOf(id);
             }
 
-            var indexBefore = list.public.items.indexOf(id);
             this.control._toggleTaskStatus(id);
-            var indexAfter = list.public.items.indexOf(id);
 
-            if (indexAfter === indexBefore) {
-                return;
+            if (this.control.useGroups) {
+                var newGroupID = this.control.getGroupID(list, id);
+                if (newGroupID === oldGroupID) {
+                    return;
+                }
+            } else {
+                var indexAfter = list.public.items.indexOf(id);
+                if (indexAfter === indexBefore) {
+                    return;
+                }
             }
 
             $el.detach();
@@ -212,15 +220,14 @@ define([
             }
 
             if (this.control.useGroups) {
-                var newGroupID = this._getGroupID(list, id);
-                var siblingGroupID = this._getGroupID(list, siblingID);
+                var siblingGroupID = this.control.getGroupID(list, siblingID);
 
                 var $group = this.$currentList.find('#' + newGroupID);
 
                 if ($group.length === 0) {
                     $group = $(_.template(this.groupTemplate, {
                         groupID: newGroupID,
-                        title: this._getGroupTitle(list, id),
+                        title: this.control.getGroupTitle(list, id),
                         items: [],
                         models: list.models
                     }));
@@ -260,43 +267,6 @@ define([
 
             $el.find('.list-item').toggleClass('done');
         },
-        _getGroupTitle: function(list, id) {
-            var item = list.models[id];
-            var title;
-
-            if (item.public.isDone) {
-                title = 'done ';
-                if (item.public.doneDate) {
-                    title += 'at ' + item.public.doneDate;
-                }
-            } else {
-                if (item.public.dueDate) {
-                    title = 'till ' + item.public.dueDate;
-                } else {
-                    title = 'to do';
-                }
-            }
-
-            return title;
-        },
-        _getGroupID: function(list, id) {
-            var item = list.models[id];
-            var groupID;
-
-            if (item.public.isDone) {
-                groupID = 'true';
-                if (item.public.doneDate) {
-                    groupID += item.public.doneDate;
-                }
-            } else {
-                groupID = 'false';
-                if (item.public.dueDate) {
-                    groupID += item.public.dueDate;
-                }
-            }
-
-            return groupID;
-        },
         _insertItem: function() {
             this.render();
         },
@@ -330,7 +300,7 @@ define([
         _continueRemoving: function($el, id) {
             $el.remove();
             if (this.control.useGroups) {
-                var groupID = this._getGroupID(this.control.getList(), id);
+                var groupID = this.control.getGroupID(this.control.getList(), id);
                 var $group = this.$currentList.find('#' + groupID);
                 if ($group.find('.list-item').length === 0) {
                     $group.remove();

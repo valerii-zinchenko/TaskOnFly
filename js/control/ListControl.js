@@ -63,6 +63,43 @@ define([
 
             return this.list;
         },
+        getGroupTitle: function(list, id) {
+            var item = list.models[id];
+            var title;
+
+            if (item.public.isDone) {
+                title = 'done ';
+                if (item.public.doneDate) {
+                    title += 'at ' + item.public.doneDate;
+                }
+            } else {
+                if (item.public.dueDate) {
+                    title = 'till ' + item.public.dueDate;
+                } else {
+                    title = 'to do';
+                }
+            }
+
+            return title;
+        },
+        getGroupID: function(list, id) {
+            var item = list.models[id];
+            var groupID;
+
+            if (item.public.isDone) {
+                groupID = 'true';
+                if (item.public.doneDate) {
+                    groupID += item.public.doneDate;
+                }
+            } else {
+                groupID = 'false';
+                if (item.public.dueDate) {
+                    groupID += item.public.dueDate;
+                }
+            }
+
+            return groupID;
+        },
         _toggleTaskStatus: function(id) {
             this.list.toggleItemStatus(id);
         },
