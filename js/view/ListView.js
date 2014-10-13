@@ -199,13 +199,13 @@ define([
 
             this.control._toggleTaskStatus(id);
 
+            var indexAfter = list.public.items.indexOf(id);
             if (this.control.useGroups) {
                 var newGroupID = this.control.getGroupID(list, id);
                 if (newGroupID === oldGroupID) {
                     return;
                 }
             } else {
-                var indexAfter = list.public.items.indexOf(id);
                 if (indexAfter === indexBefore) {
                     return;
                 }
@@ -220,8 +220,6 @@ define([
             }
 
             if (this.control.useGroups) {
-                var siblingGroupID = this.control.getGroupID(list, siblingID);
-
                 var $group = this.$currentList.find('#' + newGroupID);
 
                 if ($group.length === 0) {
@@ -231,6 +229,7 @@ define([
                         items: [],
                         models: list.models
                     }));
+                    var siblingGroupID = this.control.getGroupID(list, siblingID);
                     var $siblingGroup = this.$currentList.find('#' + siblingGroupID);
 
                     if (indexAfter+1 === list.public.items.length) {
@@ -242,9 +241,8 @@ define([
                     $group.find('tbody').append($el);
                 } else {
                     $sibling = $group.find('tr[data-item-id=' + siblingID + ']');
-                    if ($sibling.length === 0) {
-                        siblingID = list.public.items[indexAfter - 1];
-                        $sibling = $group.find('tr[data-item-id=' + siblingID + ']');
+
+                    if (indexAfter+1 === list.public.items.length) {
                         $el.insertAfter($sibling);
                     } else {
                         $el.insertBefore($sibling);
