@@ -26,17 +26,16 @@
 
 define(function () {
     var Panel = new Class({
-        template: Template(function() {/**
-<div id="<%= panelID %>" data-role="panel" data-position="right" data-display="overlay">
-    <ul data-role="listview">
-    <% _.each(items, function(item) { %>
-        <li>
-            <a href="#<%= item.link %>"><%= item.title %></a>
-        </li>
-    <% }); %>
-    </ul>
-</div>
-        **/}),
+        template:
+'<div id="<%= panelID %>" data-role="panel" data-position="right" data-display="overlay"> \
+    <ul data-role="listview"> \
+    <% _.each(items, function(item) { %> \
+        <li> \
+            <a href="#<%= item.link %>"><%= item.title %></a> \
+        </li> \
+    <% }); %> \
+    </ul> \
+</div>',
 
         panelID: '',
         items: [],

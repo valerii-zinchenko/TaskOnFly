@@ -33,30 +33,29 @@ define([
     'modules/FastTask/Control'
 ], function(Control) {
     var View = new SingletonClass({
-        template: Template(function(){/**
-<table class="full fast-task">
-    <tbody>
-    <tr>
-        <td>
-            <input id="fastTitle" type="text" placeholder="Fast task">
-        </td>
-        <td class="select-priority">
-            <div id="priority" class="full-width ui-controlgroup-grid-b" data-role="controlgroup" data-type="horizontal" data-mini="true">
-                <label for="low" class="low ui-icon-arrow-d ui-btn-icon-notext">Low</label>
-                <input id="low" type="radio" name="priority" value="0">
-                <label for="normal" class="normal ui-icon-circle ui-btn-icon-notext">Normal</label>
-                <input id="normal" type="radio" name="priority" value="1" checked>
-                <label for="high" class="high ui-icon-arrow-u ui-btn-icon-notext">High</label>
-                <input id="high" type="radio" name="priority" value="2">
-            </div>
-        </td>
-        <td class="add-btn">
-            <button id="addFastTask" data-role="button" data-icon="plus" data-iconpos="notext">add</button>
-        </td>
-    </tr>
-    </tbody>
-</table>
-        **/}),
+        template:
+'<table class="full fast-task"> \
+    <tbody> \
+    <tr> \
+        <td> \
+            <input id="fastTitle" type="text" placeholder="Fast task"> \
+        </td> \
+        <td class="select-priority"> \
+            <div id="priority" class="full-width ui-controlgroup-grid-b" data-role="controlgroup" data-type="horizontal" data-mini="true"> \
+                <label for="low" class="low ui-icon-arrow-d ui-btn-icon-notext">Low</label> \
+                <input id="low" type="radio" name="priority" value="0"> \
+                <label for="normal" class="normal ui-icon-circle ui-btn-icon-notext">Normal</label> \
+                <input id="normal" type="radio" name="priority" value="1" checked> \
+                <label for="high" class="high ui-icon-arrow-u ui-btn-icon-notext">High</label> \
+                <input id="high" type="radio" name="priority" value="2"> \
+            </div> \
+        </td> \
+        <td class="add-btn"> \
+            <button id="addFastTask" data-role="button" data-icon="plus" data-iconpos="notext">add</button> \
+        </td> \
+    </tr> \
+    </tbody> \
+</table>',
 
         initialize: function($holder) {
             if (!$holder) {

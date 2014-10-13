@@ -34,36 +34,35 @@ define([
     var HomeView = new SingletonClass({
         page: 'home',
 
-        template: Template(function(){/**
-<div data-role="header">
-    <a href="#" id="prevList" data-role="button" data-icon="carat-l">Previous list</a>
-    <h1>Home</h1>
-    <a href="#settingsPanel" data-role="button" data-icon="gear" data-iconpos="notext"></a>
-</div>
-
-<div id="content" class="ui-content">
-    <div id="fastTaskModule" data-role="fieldcontain"></div>
-    <div id="listModule" data-role="fieldcontain"></div>
-</div>
-
-<div data-role="footer" data-position="fixed" data-tap-toggle="false">
-    <table class="full">
-        <tbody>
-        <tr>
-            <td>
-                <button id="addList" class="btn-left" data-role="button" data-icon="plus">New list</button>
-            </td>
-            <td>
-                <div id="searchModule"></div>
-            </td>
-            <td>
-                <button id="addTask" class="btn-right" data-role="button" data-icon="plus" data-iconpos="right">New task</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-         **/}),
+        template:
+'<div data-role="header"> \
+    <a href="#" id="prevList" data-role="button" data-icon="carat-l">Previous list</a> \
+    <h1>Home</h1> \
+    <a href="#settingsPanel" data-role="button" data-icon="gear" data-iconpos="notext"></a> \
+</div> \
+\
+<div id="content" class="ui-content"> \
+    <div id="fastTaskModule" data-role="fieldcontain"></div> \
+    <div id="listModule" data-role="fieldcontain"></div> \
+</div> \
+\
+<div data-role="footer" data-position="fixed" data-tap-toggle="false"> \
+    <table class="full"> \
+        <tbody> \
+        <tr> \
+            <td> \
+                <button id="addList" class="btn-left" data-role="button" data-icon="plus">New list</button> \
+            </td> \
+            <td> \
+                <div id="searchModule"></div> \
+            </td> \
+            <td> \
+                <button id="addTask" class="btn-right" data-role="button" data-icon="plus" data-iconpos="right">New task</button> \
+            </td> \
+        </tr> \
+        </tbody> \
+    </table> \
+</div>',
 
         _footerBtnsWidth: null,
         $addTaskBtn: null,

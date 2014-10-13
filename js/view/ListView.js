@@ -29,59 +29,57 @@ define([
     'view/PopupDialog'
 ], function(Control) {
     var ListView = new Class({
-        template: Template(function(){/**
-<div class="task-list"></div>
-        **/}),
-        simpleListTemplate: Template(function(){/**
-<table class="full">
-    <thead><tr><th></th><th></th></tr></thead>
-    <tbody>
-    <% var displayedDate = ''; %>
-    <% _.each(public.items, function(item) { %>
-        <% var modelPublic = models[item].public; %>
-        <tr data-item-id="<%= modelPublic.id %>">
-            <th>
-                <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>">
-                    <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>>
-                    <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label>
-                </div>
-            </th>
-            <td>
-                <div data-role="controlgroup" data-type="horizontal">
-                    <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
-                </div>
-            </td>
-        </tr>
-    <% }) %>
-    </tbody>
-</table>
-        **/}),
-        groupTemplate: Template(function() {/**
-<div id="<%= groupID %>">
-    <div class="group-title ui-corner-all"><%= title %></div>
-    <table class="full task-list">
-        <thead><tr><th></th><th></th></tr></thead>
-        <tbody>
-        <% _.each(items, function(item) { %>
-        <% var modelPublic = models[item].public; %>
-            <tr data-item-id="<%= modelPublic.id %>">
-                <th>
-                    <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>">
-                        <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>>
-                        <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label>
-                    </div>
-                </th>
-                <td>
-                    <div data-role="controlgroup" data-type="horizontal">
-                        <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>
-                    </div>
-                </td>
-            </tr>
-        <% }); %>
-        </tbody>
-    </table>
-</div>
-        **/}),
+        template: '<div class="task-list"></div>',
+        simpleListTemplate:
+'<table class="full"> \
+    <thead>\
+        <tr><th></th><th></th></tr> \
+    </thead> \
+    <tbody> \
+    <% var displayedDate = ""; %> \
+    <% _.each(public.items, function(item) { %> \
+        <% var modelPublic = models[item].public; %> \
+        <tr data-item-id="<%= modelPublic.id %>"> \
+            <th> \
+                <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>"> \
+                    <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>> \
+                    <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label> \
+                </div> \
+            </th> \
+            <td> \
+                <div data-role="controlgroup" data-type="horizontal"> \
+                    <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button> \
+                </div> \
+            </td> \
+        </tr> \
+    <% }) %> \
+    </tbody> \
+</table>',
+        groupTemplate:
+'<div id="<%= groupID %>"> \
+    <div class="group-title ui-corner-all"><%= title %></div> \
+    <table class="full task-list"> \
+        <thead><tr><th></th><th></th></tr></thead> \
+        <tbody>\
+        <% _.each(items, function(item) { %>\
+        <% var modelPublic = models[item].public; %>\
+            <tr data-item-id="<%= modelPublic.id %>">\
+                <th>\
+                    <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>">\
+                        <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>>\
+                        <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label>\
+                    </div>\
+                </th>\
+                <td>\
+                    <div data-role="controlgroup" data-type="horizontal">\
+                        <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>\
+                    </div>\
+                </td>\
+            </tr>\
+        <% }); %>\
+        </tbody>\
+    </table>\
+</div>',
 
         $content: null,
         $currentList: null,

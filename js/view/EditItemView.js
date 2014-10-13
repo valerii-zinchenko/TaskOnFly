@@ -28,53 +28,53 @@ define([
     'control/EditItemControl'
 ], function(Control) {
     var EditItemView = new SingletonClass({
-        template: Template(function(){/**
-<div data-role="header">
-    <a href="#home" data-role="back" data-icon="carat-l">Back</a>
-    <h1 id="headerTitle">Item</h1>
-    <a id="save" data-role="button" data-icon="plus" data-iconpos="right">Save</a>
-</div>
-<div data-role="content">
-    <div data-role="fieldcontain">
-        <table class="task-title" style="width: 100%">
-        <tbody>
-            <tr>
-                <td>
-                    <input type="checkbox" id="done" class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-checkbox-off"/>
-                </td>
-                <td>
-                    <input type="text" id="title" name="title" placeholder="Title" value=""/>
-                </td>
-            </tr>
-        </tbody>
-        </table>
-    </div>
+        template:
+'<div data-role="header"> \
+    <a href="#home" data-role="back" data-icon="carat-l">Back</a> \
+    <h1 id="headerTitle">Item</h1> \
+    <a id="save" data-role="button" data-icon="plus" data-iconpos="right">Save</a> \
+</div> \
+<div data-role="content"> \
+    <div data-role="fieldcontain"> \
+        <table class="task-title" style="width: 100%"> \
+        <tbody> \
+            <tr> \
+                <td> \
+                    <input type="checkbox" id="done" class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-checkbox-off"/> \
+                </td> \
+                <td> \
+                    <input type="text" id="title" name="title" placeholder="Title" value=""/> \
+                </td> \
+            </tr> \
+        </tbody> \
+        </table> \
+    </div> \
+\
+    <div data-role="fieldcontain"> \
+        <div id="priority" data-role="controlgroup" data-type="horizontal" class="full-width ui-controlgroup-grid-b"> \
+            <label for="0">Low</label> \
+            <input id="0" type="radio" name="priority" value="0"> \
+            <label for="1">Normal</label> \
+            <input id="1" type="radio" name="priority" value="1"> \
+            <label for="2">High</label> \
+            <input id="2" type="radio" name="priority" value="2"> \
+        </div> \
+    </div> \
+\
+    <div data-role="fieldcontain"> \
+        <label for="start">Start:</label> \
+        <input type="date" id="start" value="" placeholder="YYYY-MM-DD"> \
+    </div> \
+    <div data-role="fieldcontain"> \
+        <label for="due">Due:</label> \
+        <input type="date" id="due" value="" placeholder="YYYY-MM-DD"> \
+    </div> \
+\
+    <div data-role="fieldcontain"> \
+        <textarea id="notes" name="notes" placeholder="Notes"></textarea> \
+    </div> \
+</div>',
 
-    <div data-role="fieldcontain">
-        <div id="priority" data-role="controlgroup" data-type="horizontal" class="full-width ui-controlgroup-grid-b">
-            <label for="0">Low</label>
-            <input id="0" type="radio" name="priority" value="0">
-            <label for="1">Normal</label>
-            <input id="1" type="radio" name="priority" value="1">
-            <label for="2">High</label>
-            <input id="2" type="radio" name="priority" value="2">
-        </div>
-    </div>
-
-    <div data-role="fieldcontain">
-        <label for="start">Start:</label>
-        <input type="date" id="start" value="" placeholder="YYYY-MM-DD">
-    </div>
-    <div data-role="fieldcontain">
-        <label for="due">Due:</label>
-        <input type="date" id="due" value="" placeholder="YYYY-MM-DD">
-    </div>
-
-    <div data-role="fieldcontain">
-        <textarea id="notes" name="notes" placeholder="Notes"></textarea>
-    </div>
-</div>
-        **/}),
         page: 'task',
         header: 'Item',
 

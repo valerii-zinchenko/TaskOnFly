@@ -33,9 +33,7 @@ define([
     'modules/SimpleSearch/Control'
 ], function(Control) {
     var View = new SingletonClass({
-        template: Template(function(){/**
-<input data-type="search" id="simpleSearch" placeholder="Search...">
-        **/}),
+        template: '<input data-type="search" id="simpleSearch" placeholder="Search...">',
 
         $el: null,
 

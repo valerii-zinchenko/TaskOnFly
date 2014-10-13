@@ -26,26 +26,26 @@
 
 define(function () {
     var PopupDialog = new Class({
-        template: Template(function(){/**
-<div data-role="popup" id="popupDialog" data-overlay-theme="b" data-theme="a" data-dismissible="false" data-position-to="window" style="max-width:400px;">
-<% if (false) { %>
-    <div data-role="header" data-theme="a">
-        <h1><%= title %></h1>
-    </div>
-<% } %>
-    <div role="main" class="ui-content">
-    <% _.each(messages, function(msg) { %>
-        <h3 class="ui-title"><%= msg %></h3>
-    <% }); %>
+        template:
+'<div data-role="popup" id="popupDialog" data-overlay-theme="b" data-theme="a" data-dismissible="false" data-position-to="window" style="max-width:400px;">\
+<% if (false) { %>\
+    <div data-role="header" data-theme="a">\
+        <h1><%= title %></h1>\
+    </div>\
+<% } %>\
+    <div role="main" class="ui-content">\
+    <% _.each(messages, function(msg) { %>\
+        <h3 class="ui-title"><%= msg %></h3>\
+    <% }); %>\
+\
+        <div class="buttons">\
+        <% _.each(controls, function(control, indx) { %>\
+            <button id="btn<%= indx %>" data-inline="true"><%= control.title %></button>\
+        <% }); %>\
+        </div>\
+    </div>\
+</div>',
 
-        <div class="buttons">
-        <% _.each(controls, function(control, indx) { %>
-            <button id="btn<%= indx %>" data-inline="true"><%= control.title %></button>
-        <% }); %>
-        </div>
-    </div>
-</div>
-        **/}),
         title: '',
         messages: [],
         controls: [],
