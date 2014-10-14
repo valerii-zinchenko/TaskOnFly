@@ -21,7 +21,9 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
-var TaskManager = {};
+var TaskManager = {
+    version: '1.0.5'
+};
 
 requirejs.config({
     paths: {
