@@ -213,6 +213,11 @@ define([
             dueDates.false.sort();
             dueDates.true.sort().reverse();
 
+            // Move the group without end date to the end of the list
+            if (dueDates.false[0] === '') {
+                dueDates.false.push(dueDates.false.shift());
+            }
+
             var arr = {};
             for (var n = 0; n < 2; n++) {
                 var comp = !!n;
