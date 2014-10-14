@@ -237,13 +237,19 @@ define([
                     }
 
                     $group.find('tbody').append($el);
+                    this._fixWidth();
                 } else {
                     $sibling = $group.find('tr[data-item-id=' + siblingID + ']');
 
-                    if (indexAfter+1 === list.public.items.length) {
-                        $el.insertAfter($sibling);
+                    // if siblingID is placed in other group, then simply append the element to the end of the group
+                    if ($sibling[0]) {
+                        if (indexAfter+1 === list.public.items.length) {
+                            $el.insertAfter($sibling);
+                        } else {
+                            $el.insertBefore($sibling);
+                        }
                     } else {
-                        $el.insertBefore($sibling);
+                        $group.find('tbody').append($el);
                     }
                 }
 
@@ -262,8 +268,6 @@ define([
             }
 
             $el.find('.list-item').toggleClass('done');
-
-            this._fixWidth();
         },
         _insertItem: function() {
             this.render();
