@@ -262,6 +262,8 @@ define([
             }
 
             $el.find('.list-item').toggleClass('done');
+
+            this._fixWidth();
         },
         _insertItem: function() {
             this.render();

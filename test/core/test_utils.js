@@ -96,18 +96,3 @@ suite('Test utility functions', function() {
         })
     })
 });
-
-
-suite('Test Template', function() {
-    test('Simple template', function() {
-        assert.equal(Template(function() {/**
-template text
-         **/}), '\ntemplate text\n         ');
-    });
-
-    test('Template text with spaces at begin', function() {
-        assert.equal(Template(function() {/**
-    template text
-         **/}), '\n    template text\n         ');
-    });
-});
