@@ -36,6 +36,7 @@ define(function () {
         },
 
         _view: null,
+        _pages: {},
 
         /**
          *
@@ -45,7 +46,11 @@ define(function () {
          */
         _openView: function(viewName, fn) {
             requirejs(['view/' + viewName], function(View) {
-                this._view = new View();
+                if (!this._pages[viewName]) {
+                    this._pages[viewName] = new View();
+                }
+
+                this._view = this._pages[viewName];
 
                 if (fn) {
                     fn.call(this._view);
@@ -131,7 +136,7 @@ define(function () {
             TaskOnFly.$.trigger('showList', list);
             TaskOnFly.setCurrentList(list);
 
-            if (!this._view) {
+            if (!this._pages.HomeView) {
                 this.home();
             }
         }

@@ -47,7 +47,6 @@ define([
             this.$holder = holder;
 
             this.$el = $(this.template);
-            this.$el.on('keyup', this.onType.bind(this));
         },
         render: function() {
             this.$holder.empty();
@@ -55,9 +54,13 @@ define([
 
             this.$holder.trigger('create');
 
-            this.$holder.find('.ui-input-clear').on('click', this.onClear.bind(this));
+            this._attachEvents();
 
             return this;
+        },
+        _attachEvents: function() {
+            this.$el.on('keyup', this.onType.bind(this));
+            this.$holder.find('.ui-input-clear').on('click', this.onClear.bind(this));
         },
         onType: function(ev) {
             ev.preventDefault();
