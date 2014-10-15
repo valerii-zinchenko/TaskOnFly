@@ -91,7 +91,15 @@ define([
             this.control.$.on('newItem', this._insertItem.bind(this));
 
             TaskOnFly.$.on('showList', this.onShowList.bind(this));
-            $(window).on('orientationchange', this._fixWidth.bind(this));
+
+            var that = this;
+            $(window).on('orientationchange', function() {
+                // Timeout is used here because at this moment there is no guaranties
+                // that the new window dimensions are already applied.
+                setTimeout(function(){
+                    that._fixWidth();
+                }, 300);
+            });
         },
         render: function() {
             if (this.$currentList) {
