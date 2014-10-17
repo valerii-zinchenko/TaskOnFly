@@ -25,13 +25,13 @@
 'use strict';
 
 define(function () {
-    var Panel = new Class({
+    var APanel = new Class({
         template:
 '<div id="<%= panelID %>" data-role="panel" data-position="right" data-display="overlay"> \
     <ul data-role="listview"> \
     <% _.each(items, function(item) { %> \
         <li> \
-            <a href="#<%= item.link %>"><%= item.title %></a> \
+            <a href="<%= item.link %>"><%= item.title %></a> \
         </li> \
     <% }); %> \
     </ul> \
@@ -47,17 +47,29 @@ define(function () {
                 return;
             }
 
-            this.setPanelPage(options.page);
-            this.setPanelID(options.id);
-            this.setPanelItems(options.items);
+            if (options.page) {
+                this.setPanelPage(options.page);
+            }
+
+            if (options.id) {
+                this.setPanelID(options.id);
+            }
+
+            if (options.items && options.items.length > 0) {
+                this.setPanelItems(options.items);
+            }
         },
         render: function() {
+            if (this.$el) {
+                return this.$el;
+            }
+
             if (this.items.length === 0) {
                 console.warn('No items for panel. Panel will be disabled.');
                 return
             }
             if (!this._$holder) {
-                throw new Error('Page element is not defined');
+                throw new Error('Page element is not defined for panel');
             }
             if (!this.panelID) {
                 throw new Error('Panel ID is not defined');
@@ -83,7 +95,7 @@ define(function () {
         }
     });
 
-    TaskManager.Panel = Panel;
+    TaskManager.APanel = APanel;
 
-    return Panel;
+    return APanel;
 });
