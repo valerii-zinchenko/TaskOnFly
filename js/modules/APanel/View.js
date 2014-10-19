@@ -82,6 +82,8 @@ define(function () {
 
             this.$el.panel();
 
+            this._attachEvents();
+
             return this.$el;
         },
         setPanelPage: function(page) {
@@ -92,6 +94,12 @@ define(function () {
         },
         setPanelItems: function(items) {
             this.items = items;
+        },
+        close: function() {
+            this.$el.panel('close');
+        },
+        _attachEvents: function() {
+            this.$el.find('a').on('vclick', this.close.bind(this));
         }
     });
 
