@@ -121,11 +121,11 @@ define([
             if (this.control.useGroups) {
                 var groups = list.getGroups();
 
-                var firstGroupLevel = Object.keys(groups).sort();
+                var firstGroupLevel = groups.sortingOrder['0'];
                 for (var n = 0, N = firstGroupLevel.length; n < N; n++) {
-                    var dates = Object.keys(groups[firstGroupLevel[n]]);
+                    var dates = groups.sortingOrder['1'][firstGroupLevel[n]];
                     for (var m = 0, M = dates.length; m < M; m++) {
-                        var itemIDs = list._object2Array(groups[firstGroupLevel[n]][dates[m]], [2,1,0]);
+                        var itemIDs = list._object2Array(groups[firstGroupLevel[n]][dates[m]], groups.sortingOrder['2']);
                         $el.append(_.template(this.groupTemplate, {
                             groupID: this.control.getGroupID(list, itemIDs[0]),
                             title: this.control.getGroupTitle(list, itemIDs[0]),

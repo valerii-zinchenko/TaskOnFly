@@ -218,16 +218,22 @@ define([
                 dueDates.false.push(dueDates.false.shift());
             }
 
+            this.groups.sortingOrder = {
+                0: ['false', 'true'],
+                1: dueDates,
+                2: ['2', '1', '0']
+            };
+
             var arr = {};
-            for (var n = 0; n < 2; n++) {
-                var comp = !!n;
-                var dateGroup = dueDates[comp];
+            for (var n = 0, N = this.groups.sortingOrder['0'].length; n < N; n++) {
+                var comp = this.groups.sortingOrder['0'][n];
+                var dateGroup = this.groups.sortingOrder['1'][comp];
 
                 arr[comp] = {};
                 for (var m = 0, M = dateGroup.length; m < M; m++) {
                     var dueDate = dateGroup[m];
                     if (this.groups[comp] && this.groups[comp][dueDate]) {
-                        arr[comp][dueDate] = this._object2Array(this.groups[comp][dueDate], [2,1,0]);
+                        arr[comp][dueDate] = this._object2Array(this.groups[comp][dueDate], this.groups.sortingOrder['2']);
                     }
                 }
 
@@ -236,7 +242,7 @@ define([
                 }
             }
 
-            this.public.items = this._object2Array(arr, [false, true]);
+            this.public.items = this._object2Array(arr, this.groups.sortingOrder['0']);
         },
 
         filter: function(rules) {
