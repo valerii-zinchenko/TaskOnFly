@@ -245,7 +245,6 @@ define([
                     }
 
                     $group.find('tbody').append($el);
-                    this._fixWidth();
                 } else {
                     $sibling = $group.find('tr[data-item-id=' + siblingID + ']');
 
@@ -265,6 +264,8 @@ define([
                 if ($oldGroup.find('.list-item').length === 0) {
                     $oldGroup.remove();
                 }
+
+                this._fixWidth();
             } else {
                 $sibling = this.$currentList.find('tr[data-item-id=' + siblingID + ']');
 
