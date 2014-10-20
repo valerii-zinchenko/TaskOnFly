@@ -40,6 +40,7 @@ destPrefix = './test/_jsTestFiles/';
     'view/HomeView.js',
     'view/ListView.js',
     'view/EditItemView.js',
+    'view/PopupDialog.js',
 
     'control/HomeControl.js',
     'control/ListControl.js',
@@ -51,7 +52,10 @@ destPrefix = './test/_jsTestFiles/';
     'modules/FastTask/View.js',
 
     'modules/SimpleSearch/Control.js',
-    'modules/SimpleSearch/View.js'
+    'modules/SimpleSearch/View.js',
+
+    'modules/APanel/View.js',
+    'modules/MainPanel/View.js'
 ].forEach(function(file) {
     jscoverage.processFile(srcPrefix + file, destPrefix + file);
 });

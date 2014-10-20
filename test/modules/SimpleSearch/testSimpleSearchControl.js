@@ -78,13 +78,6 @@ suite('SimpleSearch', function() {
             assert.equal(module.listModule, listView, 'listModule has incorrect reference');
         });
 
-        test('update()', function() {
-            module.list = null;
-            module.update();
-
-            assert.equal(module.list, TaskOnFly.getCurrentList(), 'taskList has incorrect reference');
-        });
-
         suite('Test _showResults method', function() {
             setup(function() {
                 module.setListModule(listView);
