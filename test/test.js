@@ -26,7 +26,6 @@ if (process.env.npm_lifecycle_event === 'start') {
     reporter = 'html-cov';
     srcPrefix = './_jsTestFiles/';
     baseUrl = './test' + srcPrefix.slice(1);
-    libUrl = './js/lib/';
 
     // be quite
     console.log = function(){};
@@ -34,13 +33,11 @@ if (process.env.npm_lifecycle_event === 'start') {
     reporter = 'spec';
     srcPrefix = '../js/';
     baseUrl = './js';
-    libUrl = 'js/lib/';
 }
 
 TaskManager = {};
 assert = require('chai').assert;
 sinon = require('sinon');
-dom = require('dom-lite');
 Mocha = require('mocha');
 _ = require('underscore');
 Backbone = require('backbone');
@@ -50,9 +47,6 @@ define = requirejs.define;
 
 requirejs.config({
     baseUrl: baseUrl,
-    paths: {
-        'i18n': libUrl + 'i18n-2.0.4'
-    },
 
     nodeRequire: require
 });
@@ -64,7 +58,6 @@ Class = require(srcPrefix + 'core/Class');
 SingletonClass = require(srcPrefix + 'core/SingletonClass');
 require(srcPrefix + 'model/TaskOnFly');
 utils = require(srcPrefix + 'core/utils').utils;
-Template = require(srcPrefix + 'core/utils').Template;
 
 testRunner = new Mocha({
     ui: 'tdd',

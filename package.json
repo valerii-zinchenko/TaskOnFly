@@ -1,6 +1,6 @@
 {
     "name": "TaskOnFly",
-    "version": "0.0.1",
+    "version": "1.0.5",
     "description": "",
     "main": "index.js",
     "directories": {
@@ -14,7 +14,6 @@
         "sinon":"",
         "underscore":"",
         "backbone":"",
-        "dom-lite":"",
         "requirejs":""
     },
     "scripts": {
