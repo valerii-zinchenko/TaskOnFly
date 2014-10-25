@@ -22,7 +22,8 @@
 */
 
 var TaskManager = {
-    version: '1.0.5'
+    version: '1.0.5',
+    Modules: {}
 };
 
 requirejs.config({
@@ -37,7 +38,8 @@ requirejs.config({
         'aclass':           'core/AClass',
         'class':            'core/Class',
         'utils':            'core/utils',
-        'singleton':        'core/SingletonClass'
+        'singleton':        'core/SingletonClass',
+        'mvcmodule':        'core/MVCModule'
     },
     shim: {
         'jquery': {
@@ -64,6 +66,9 @@ requirejs.config({
         },
         'singleton': {
             exports: 'Singleton'
+        },
+        'mvcmodule': {
+            epxorts: 'MVCModule'
         }
     }
 });
@@ -77,6 +82,7 @@ requirejs([
     requirejs([
         'class',
         'singleton',
+        'mvcmodule',
         'taskonfly'
     ], function() {
         $(document).on('mobileinit', function() {
