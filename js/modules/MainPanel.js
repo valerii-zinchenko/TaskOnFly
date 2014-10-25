@@ -19,21 +19,17 @@
 
 
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
-*/
-
+ */
 
 'use strict';
 
 define([
-    'modules/APanel/View'
-], function (APanel) {
-    return new SingletonClass(APanel, {
-        panelID: 'mainPanel',
-        items: [
-            {
-                title: 'About',
-                link: '#about'
-            }
-        ]
+    'modules/MainPanel/View'
+], function(View) {
+    var MainPanel = new MVCModule({
+        View: View
     });
+
+    TaskManager.Modules.MainPanel = MainPanel;
+    return MainPanel;
 });

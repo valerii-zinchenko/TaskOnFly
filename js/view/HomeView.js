@@ -29,8 +29,8 @@ define([
     'view/ListView',
     'modules/FastTask/View',
     'modules/SimpleSearch/View',
-    'modules/MainPanel/View'
-], function(Control, ListView, FastTaskView, SimpleSearchView, Panel) {
+    'modules/MainPanel'
+], function(Control, ListView, FastTaskView, SimpleSearchView, MainPanel) {
     var HomeView = new SingletonClass({
         page: 'home',
 
@@ -85,7 +85,9 @@ define([
             this.list = new ListView(this.$content.find('#listModule'), TaskOnFly.getCurrentList());
             this.fastTask = new FastTaskView(this.$content.find('#fastTaskModule'));
             this.simpleSearch = new SimpleSearchView(this.$el.find('#searchModule'), this.list);
-            this.panel = new Panel({ page: this.$el });
+            this.panel = new MainPanel({
+                view: { page: this.$el }
+            });
 
             this.control = new Control();
         },
@@ -96,7 +98,7 @@ define([
             this.list.render();
             this.fastTask.render();
             this.simpleSearch.render();
-            this.panel.render();
+            this.panel.view.render();
 
             return this;
         },
