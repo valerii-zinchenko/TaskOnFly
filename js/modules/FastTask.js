@@ -19,23 +19,19 @@
 
 
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
-*/
-
+ */
 
 'use strict';
 
-define(function () {
-    return new SingletonClass({
-        _addTask: function(title, priority) {
-            if (!title) {
-                return;
-            }
-
-            TaskOnFly.getCurrentList().addTask({
-                title: title,
-                priority: priority,
-                dueDate: utils.date(new Date(Date.now() + 86400000))   // + 1 day
-            });
-        }
+define([
+    'modules/FastTask/View',
+    'modules/FastTask/Control'
+], function (View, Control) {
+    var FastTask = new MVCModule({
+        View: View,
+        Control: Control
     });
+
+    TaskManager.Modules.FastTask = FastTask;
+    return FastTask;
 });

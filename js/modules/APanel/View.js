@@ -25,7 +25,7 @@
 'use strict';
 
 define(function () {
-    var APanel = new Class({
+    return new Class({
         template:
 '<div id="<%= panelID %>" data-role="panel" data-position="right" data-display="overlay"> \
     <ul data-role="listview"> \
@@ -102,8 +102,4 @@ define(function () {
             this.$el.find('a').on('vclick', this.close.bind(this));
         }
     });
-
-    TaskManager.APanel = APanel;
-
-    return APanel;
 });

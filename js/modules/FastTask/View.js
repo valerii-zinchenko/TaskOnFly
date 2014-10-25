@@ -24,15 +24,8 @@
 
 'use strict';
 
-TaskManager.FastTask = {
-    Control: null,
-    View: null
-};
-
-define([
-    'modules/FastTask/Control'
-], function(Control) {
-    var View = new SingletonClass({
+define(function() {
+    return new SingletonClass({
         template:
 '<table class="full fast-task"> \
     <tbody> \
@@ -74,8 +67,6 @@ define([
             this.$content.append(this.$el);
 
             this.$content.trigger('create');
-
-            this.control = new Control();
         },
         render: function() {
             this.$fastTilte.val('');
@@ -93,7 +84,4 @@ define([
             this.render();
         }
     });
-
-    TaskManager.FastTask.View = View;
-    return View;
 });

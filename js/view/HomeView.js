@@ -27,10 +27,10 @@
 define([
     'control/HomeControl',
     'view/ListView',
-    'modules/FastTask/View',
+    'modules/FastTask',
     'modules/SimpleSearch/View',
     'modules/MainPanel'
-], function(Control, ListView, FastTaskView, SimpleSearchView, MainPanel) {
+], function(Control, ListView, FastTask, SimpleSearchView, MainPanel) {
     var HomeView = new SingletonClass({
         page: 'home',
 
@@ -83,10 +83,14 @@ define([
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
 
             this.list = new ListView(this.$content.find('#listModule'), TaskOnFly.getCurrentList());
-            this.fastTask = new FastTaskView(this.$content.find('#fastTaskModule'));
+            this.fastTask = new FastTask({
+                view: this.$content.find('#fastTaskModule')
+            });
             this.simpleSearch = new SimpleSearchView(this.$el.find('#searchModule'), this.list);
             this.panel = new MainPanel({
-                view: { page: this.$el }
+                view: {
+                    page: this.$el
+                }
             });
 
             this.control = new Control();
@@ -96,7 +100,7 @@ define([
             this._fixFooterTable();
 
             this.list.render();
-            this.fastTask.render();
+            this.fastTask.view.render();
             this.simpleSearch.render();
             this.panel.view.render();
 
