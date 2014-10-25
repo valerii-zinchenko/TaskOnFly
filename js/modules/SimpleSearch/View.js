@@ -24,25 +24,16 @@
 
 'use strict';
 
-TaskManager.SimpleSearch = {
-    Control: null,
-    View: null
-};
-
-define([
-    'modules/SimpleSearch/Control'
-], function(Control) {
-    var View = new SingletonClass({
+define(function() {
+    return new SingletonClass({
         template: '<input data-type="search" id="simpleSearch" placeholder="Search...">',
 
         $el: null,
 
-        initialize: function(holder, listModule) {
+        initialize: function(holder) {
             if (!holder) {
                 new Error('Holder element for module is not defined');
             }
-
-            this.control = new Control(listModule);
 
             this.$holder = holder;
 
@@ -80,7 +71,4 @@ define([
             this.control.reset();
         }
     });
-
-    TaskManager.SimpleSearch.View = View;
-    return View;
 });

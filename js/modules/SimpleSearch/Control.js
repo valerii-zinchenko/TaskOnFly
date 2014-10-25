@@ -24,14 +24,10 @@
 
 'use strict';
 
-if (!TaskManager.SimpleSearch) {
-    TaskManager.SimpleSearch = {Control: null};
-}
-
 define([
     'view/ListView'
 ],function (ListModule) {
-    var Control = new Class({
+    return new Class({
         list: null,
         listModule: null,
 
@@ -83,7 +79,4 @@ define([
             this._showResults(this.list);
         }
     });
-
-    TaskManager.SimpleSearch.Control = Control;
-    return Control;
 });

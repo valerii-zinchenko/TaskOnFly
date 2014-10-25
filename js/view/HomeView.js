@@ -28,9 +28,9 @@ define([
     'control/HomeControl',
     'view/ListView',
     'modules/FastTask',
-    'modules/SimpleSearch/View',
+    'modules/SimpleSearch',
     'modules/MainPanel'
-], function(Control, ListView, FastTask, SimpleSearchView, MainPanel) {
+], function(Control, ListView, FastTask, SimpleSearch, MainPanel) {
     var HomeView = new SingletonClass({
         page: 'home',
 
@@ -86,7 +86,10 @@ define([
             this.fastTask = new FastTask({
                 view: this.$content.find('#fastTaskModule')
             });
-            this.simpleSearch = new SimpleSearchView(this.$el.find('#searchModule'), this.list);
+            this.simpleSearch = new SimpleSearch({
+                view: this.$el.find('#searchModule'),
+                control: this.list
+            });
             this.panel = new MainPanel({
                 view: {
                     page: this.$el
@@ -99,12 +102,15 @@ define([
             this.$el.trigger('create');
             this._fixFooterTable();
 
-            this.list.render();
-            this.fastTask.view.render();
-            this.simpleSearch.render();
-            this.panel.view.render();
+            this._renderModules();
 
             return this;
+        },
+        _renderModules: function() {
+            this.list.render();
+            this.fastTask.view.render();
+            this.simpleSearch.view.render();
+            this.panel.view.render();
         },
         addTask: function(ev) {
             ev.preventDefault();
