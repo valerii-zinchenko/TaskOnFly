@@ -235,13 +235,18 @@ define([
                         items: [],
                         models: list.models
                     }));
-                    var siblingGroupID = this.control.getGroupID(list, siblingID);
-                    var $siblingGroup = this.$currentList.find('#' + siblingGroupID);
 
-                    if (indexAfter+1 === list.public.items.length) {
-                        $group.insertAfter($siblingGroup);
+                    if (siblingID) {
+                        var siblingGroupID = this.control.getGroupID(list, siblingID);
+                        var $siblingGroup = this.$currentList.find('#' + siblingGroupID);
+
+                        if (indexAfter+1 === list.public.items.length) {
+                            $group.insertAfter($siblingGroup);
+                        } else {
+                            $group.insertBefore($siblingGroup);
+                        }
                     } else {
-                        $group.insertBefore($siblingGroup);
+                        this.$currentList.append($group);
                     }
 
                     $group.find('tbody').append($el);
