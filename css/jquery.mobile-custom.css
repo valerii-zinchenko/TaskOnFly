@@ -65,3 +65,7 @@ table.task-title .ui-checkbox input.ui-btn.ui-checkbox-off:after {
 .ui-controlgroup-horizontal.full-width.ui-controlgroup-grid-b .ui-controlgroup-controls > div {
     width: 33.333%
 }
+
+.ui-btn {
+    text-overflow: clip;
+}
