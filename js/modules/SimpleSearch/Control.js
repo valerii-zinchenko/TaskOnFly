@@ -24,9 +24,7 @@
 
 'use strict';
 
-define([
-    'view/ListView'
-],function (ListModule) {
+define(function () {
     return new Class({
         list: null,
         listModule: null,
@@ -39,7 +37,7 @@ define([
             }
         },
         setListModule: function(listModule) {
-            if (!listModule || listModule.constructor !== ListModule) {
+            if (!listModule || listModule.constructor !== TaskManager.Modules.ListView) {
                 throw new Error('Incorrect type for listModule input argument');
             }
 
