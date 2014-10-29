@@ -84,7 +84,7 @@ define(function () {
         },
 
         home: function() {
-            this._openView('HomeView');
+            this._openPage('Home');
         },
         about: function() {
             this._openPage('About');
@@ -151,7 +151,7 @@ define(function () {
             TaskOnFly.$.trigger('showList', list);
             TaskOnFly.setCurrentList(list);
 
-            if (!this._pages.HomeView || this._view.page !== 'home') {
+            if (!this._pages.Home || this._view.page !== 'home') {
                 this.home();
             }
         }

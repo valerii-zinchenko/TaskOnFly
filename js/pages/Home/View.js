@@ -25,13 +25,12 @@
 'use strict';
 
 define([
-    'control/HomeControl',
     'view/ListView',
     'modules/FastTask',
     'modules/SimpleSearch',
     'modules/MainPanel'
-], function(Control, ListView, FastTask, SimpleSearch, MainPanel) {
-    var HomeView = new SingletonClass({
+], function(ListView, FastTask, SimpleSearch, MainPanel) {
+    return new SingletonClass({
         page: 'home',
 
         template:
@@ -95,8 +94,6 @@ define([
                     page: this.$el
                 }
             });
-
-            this.control = new Control();
         },
         render: function() {
             this.$el.trigger('create');
@@ -137,8 +134,4 @@ define([
             this.$addListBtn.parents('td').css('width', this._footerBtnsWidth.addListBtn);
         }
     });
-
-    TaskManager.HomeView = HomeView;
-
-    return HomeView;
 });
