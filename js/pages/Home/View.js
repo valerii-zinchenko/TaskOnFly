@@ -25,7 +25,7 @@
 'use strict';
 
 define([
-    'view/ListView',
+    'modules/ListView',
     'modules/FastTask',
     'modules/SimpleSearch',
     'modules/MainPanel'
@@ -81,7 +81,10 @@ define([
             // todo: Move this button and event handler into the ListView
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
 
-            this.list = new ListView(this.$content.find('#listModule'), TaskOnFly.getCurrentList());
+            this.list = new ListView({
+                view: this.$content.find('#listModule'),
+                control: TaskOnFly.getCurrentList()
+            });
             this.fastTask = new FastTask({
                 view: this.$content.find('#fastTaskModule')
             });
@@ -104,7 +107,7 @@ define([
             return this;
         },
         _renderModules: function() {
-            this.list.render();
+            this.list.view.render();
             this.fastTask.view.render();
             this.simpleSearch.view.render();
             this.panel.view.render();

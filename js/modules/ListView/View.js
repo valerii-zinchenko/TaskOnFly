@@ -25,10 +25,9 @@
 'use strict';
 
 define([
-    'control/ListControl',
     'view/PopupDialog'
-], function(Control) {
-    var ListView = new Class({
+], function() {
+    return new Class({
         template: '<div class="task-list"></div>',
         simpleListTemplate:
 '<table class="full"> \
@@ -86,9 +85,6 @@ define([
 
         initialize: function(holder, list) {
             this.$content = holder;
-
-            this.control = new Control(list);
-            this.control.$.on('newItem', this._insertItem.bind(this));
 
             TaskOnFly.$.on('showList', this.onShowList.bind(this));
 
@@ -344,7 +340,4 @@ define([
             this.$currentList.find('.list-item.list input').prop('disabled', true);
         }
     });
-
-    TaskManager.ListView = ListView;
-    return ListView;
 });

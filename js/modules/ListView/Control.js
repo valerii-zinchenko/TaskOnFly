@@ -27,7 +27,7 @@
 define([
     'model/TaskList'
 ], function (TaskList) {
-    var ListControl = new Class({
+    return new Class({
         list: null,
         useGroups: true,
 
@@ -113,7 +113,4 @@ define([
             this.list.removeItem(id);
         }
     });
-
-    TaskManager.ListControl = ListControl;
-    return ListControl;
 });
