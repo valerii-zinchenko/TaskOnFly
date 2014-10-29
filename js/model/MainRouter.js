@@ -87,7 +87,7 @@ define(function () {
             this._openView('HomeView');
         },
         about: function() {
-            this._openView('About');
+            this._openPage('About');
         },
 
         /**
