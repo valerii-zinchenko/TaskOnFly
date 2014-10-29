@@ -22,6 +22,10 @@
 */
 
 /* Commons */
+.justify {
+    text-align: justify;
+}
+
 table.full,
 table.full th {
     width: 100%;
