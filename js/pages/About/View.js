@@ -25,7 +25,7 @@
 'use strict';
 
 define(function () {
-    var About = new Class({
+    return new Class({
         page: 'about',
         template:
 '<div data-role="header" data-position="fixed"> \
@@ -56,8 +56,4 @@ define(function () {
             return this;
         }
     });
-
-    TaskManager.About = About;
-
-    return About;
 });

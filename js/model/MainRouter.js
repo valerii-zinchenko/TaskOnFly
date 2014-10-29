@@ -40,25 +40,10 @@ define(function () {
 
         /**
          *
-         * @param {string} viewName View name, that should be opened
+         * @param {string} pageName Page name, that should be opened.
          * @param {Function} [fn] Function that calls before rendering of view.
          * @private
          */
-        _openView: function(viewName, fn) {
-            requirejs(['view/' + viewName], function(View) {
-                if (!this._pages[viewName]) {
-                    this._pages[viewName] = new View();
-                }
-
-                this._view = this._pages[viewName];
-
-                if (fn) {
-                    fn.call(this._view);
-                }
-
-                $.mobile.pageContainer.pagecontainer('change', '#' + this._view.page);
-            }.bind(this));
-        },
         _openPage: function(pageName, fn) {
             requirejs(['pages/' + pageName], function(View) {
                 if (!this._pages[pageName]) {
@@ -105,7 +90,7 @@ define(function () {
             }
 
             var fn = 'add' + what[0].toUpperCase() + what.slice(1);
-            this._openView('EditItemView', function() {
+            this._openPage('ItemEditor', function() {
                 this.header = 'Add ' + what;
                 var list = TaskOnFly.getCurrentList();
                 this.control.setSaveCallback(list[fn].bind(list));

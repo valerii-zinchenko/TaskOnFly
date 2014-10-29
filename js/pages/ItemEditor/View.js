@@ -24,7 +24,7 @@
 
 'use strict';
 
-define(function(Control) {
+define(function() {
     return new SingletonClass({
         template:
 '<div data-role="header"> \
@@ -87,8 +87,6 @@ define(function(Control) {
             this.$notes = this.$el.find('#notes');
             this.$startDate = this.$el.find('#start');
             this.$dueDate = this.$el.find('#due');
-
-            this.control = new Control();
 
             this._attachEvents();
         },

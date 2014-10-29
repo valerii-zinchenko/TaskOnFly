@@ -23,6 +23,7 @@
 
 var TaskManager = {
     version: '1.0.6',
+    Pages: {},
     Modules: {}
 };
 
@@ -97,6 +98,13 @@ requirejs([
             requirejs(['main'], function(main) {
                 main();
                 Backbone.history.start();
+
+                requirejs([
+                    'model/Task',
+                    'model/TaskList',
+                    'model/MainRouter'
+//                    'model/',
+                ]);
             });
         });
     });
