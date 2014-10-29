@@ -24,10 +24,8 @@
 
 'use strict';
 
-define([
-    'control/EditItemControl'
-], function(Control) {
-    var EditItemView = new SingletonClass({
+define(function(Control) {
+    return new SingletonClass({
         template:
 '<div data-role="header"> \
     <a href="#home" data-role="back" data-icon="carat-l">Back</a> \
@@ -151,7 +149,4 @@ define([
             this.$isDone.toggleClass('ui-checkbox-off');
         }
     });
-
-    TaskManager.EditItemView = EditItemView;
-    return EditItemView;
 });

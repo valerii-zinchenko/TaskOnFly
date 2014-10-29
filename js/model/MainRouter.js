@@ -59,6 +59,21 @@ define(function () {
                 $.mobile.pageContainer.pagecontainer('change', '#' + this._view.page);
             }.bind(this));
         },
+        _openPage: function(pageName, fn) {
+            requirejs(['pages/' + pageName], function(View) {
+                if (!this._pages[pageName]) {
+                    this._pages[pageName] = new View();
+                }
+
+                this._view = this._pages[pageName].view;
+
+                if (fn) {
+                    fn.call(this._view);
+                }
+
+                $.mobile.pageContainer.pagecontainer('change', '#' + this._view.page);
+            }.bind(this));
+        },
 
         initialize: function() {
             $.mobile.pageContainer.pagecontainer({
@@ -109,7 +124,7 @@ define(function () {
                 throw new Error('Item with id: "' + id + '" was not found');
             }
 
-            this._openView('EditItemView', function() {
+            this._openPage('ItemEditor', function() {
                 this.header = item.public.type;
                 this.control.setItem(item);
                 this.control.setSaveCallback(list.saveData.bind(item));

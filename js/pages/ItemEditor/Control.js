@@ -25,10 +25,10 @@
 'use strict';
 
 define([
-    'model/Task',
+    '../../model/Task',
     'model/TaskList'
 ],function (Task, TaskList) {
-    var EditItemControl = new SingletonClass({
+    return new SingletonClass({
         _callback: null,
         _defaults: Task.prototype._defaults.public,
 
@@ -70,7 +70,4 @@ define([
             this.item = null;
         }
     });
-
-    TaskManager.EditItemControl = EditItemControl;
-    return TaskManager.EditItemControl;
 });
