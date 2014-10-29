@@ -102,8 +102,18 @@ requirejs([
                 requirejs([
                     'model/Task',
                     'model/TaskList',
-                    'model/MainRouter'
-//                    'model/',
+                    'model/MainRouter',
+
+                    'modules/FastTask',
+                    'modules/ListView',
+                    'modules/MainPanel',
+                    'modules/SimpleSearch',
+
+                    'pages/About',
+                    'pages/Home',
+                    'pages/ItemEditor',
+
+                    'view/PopupDialog'
                 ]);
             });
         });
