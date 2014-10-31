@@ -25,12 +25,13 @@
 'use strict';
 
 define([
+    '../APage/View',
     'modules/ListView',
     'modules/FastTask',
     'modules/SimpleSearch',
     'modules/MainPanel'
-], function(ListView, FastTask, SimpleSearch, MainPanel) {
-    return new SingletonClass({
+], function(Parent, ListView, FastTask, SimpleSearch, MainPanel) {
+    return new SingletonClass(Parent, {
         page: 'home',
 
         template:
@@ -68,9 +69,6 @@ define([
         $addListBtn: null,
 
         initialize: function() {
-            this.$el = $('#' + this.page);
-            this.$el.html(_.template(this.template));
-
             this.$content = this.$el.find('#content');
             this.$addTaskBtn = this.$el.find('#addTask');
             this.$addListBtn = this.$el.find('#addList');
@@ -81,6 +79,16 @@ define([
             // todo: Move this button and event handler into the ListView
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
 
+            this._buildModules();
+        },
+        render: function() {
+            this.parent.render();
+
+            this._fixFooterTable();
+
+            this._renderModules();
+        },
+        _buildModules: function() {
             this.list = new ListView({
                 view: this.$content.find('#listModule'),
                 control: TaskOnFly.getCurrentList()
@@ -97,14 +105,6 @@ define([
                     page: this.$el
                 }
             });
-        },
-        render: function() {
-            this.$el.trigger('create');
-            this._fixFooterTable();
-
-            this._renderModules();
-
-            return this;
         },
         _renderModules: function() {
             this.list.view.render();

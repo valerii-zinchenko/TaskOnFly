@@ -24,8 +24,10 @@
 
 'use strict';
 
-define(function () {
-    return new Class({
+define([
+    '../APage/View'
+],function (Parent) {
+    return new Class(Parent, {
         page: 'about',
         template:
 '<div data-role="header" data-position="fixed"> \
@@ -42,18 +44,6 @@ define(function () {
         <p class="justify">You should have received a copy of the GNU General Public License along with TaskOnFly.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p> \
         <p class="justify">All source files are available at: <a href="http://github.com/valerii-zinchenko/TaskOnFly">http://github.com/valerii-zinchenko/TaskOnFly</a></p> \
     </div> \
-</div>',
-
-        $el: null,
-
-        initialize: function() {
-            this.$el = $('#' + this.page);
-            this.$el.html(_.template(this.template, this));
-        },
-        render: function() {
-            this.$el.trigger('create');
-
-            return this;
-        }
+</div>'
     });
 });

@@ -24,8 +24,10 @@
 
 'use strict';
 
-define(function() {
-    return new SingletonClass({
+define([
+    '../APage/View'
+], function(Parent) {
+    return new SingletonClass(Parent, {
         template:
 '<div data-role="header"> \
     <a href="#home" data-role="back" data-icon="carat-l">Back</a> \
@@ -73,13 +75,10 @@ define(function() {
     </div> \
 </div>',
 
-        page: 'task',
+        page: 'editor',
         header: 'Item',
 
         initialize: function() {
-            this.$el = $('#' + this.page);
-            this.$el.html(_.template(this.template));
-
             this.$header = this.$el.find('#headerTitle');
             this.$isDone = this.$el.find('#done');
             this.$title = this.$el.find('#title');
@@ -108,7 +107,7 @@ define(function() {
             this.$dueDate.val(this.data.dueDate);
             this.$notes.val(this.data.notes);
 
-            this.$el.trigger('create');
+            this.parent.render();
 
             if (this.data.isDone) {
                 this.$isDone.removeClass('ui-checkbox-off');
