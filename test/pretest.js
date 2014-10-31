@@ -29,6 +29,7 @@ destPrefix = './test/_jsTestFiles/';
 [
     'core/AClass.js',
     'core/Class.js',
+    'core/MVCModule.js',
     'core/SingletonClass.js',
     'core/utils.js',
 
@@ -37,25 +38,32 @@ destPrefix = './test/_jsTestFiles/';
     'model/TaskList.js',
     'model/MainRouter.js',
 
-    'view/HomeView.js',
-    'view/ListView.js',
-    'view/EditItemView.js',
+    'pages/About/View.js',
+    'pages/About.js',
+    'pages/APage/View.js',
+    'pages/Home/Control.js',
+    'pages/Home/View.js',
+    'pages/Home.js',
+    'pages/ItemEditor/Control.js',
+    'pages/ItemEditor/View.js',
+    'pages/ItemEditor.js',
+
     'view/PopupDialog.js',
 
-    'control/HomeControl.js',
-    'control/ListControl.js',
-    'control/EditItemControl.js',
-
-    'main.js',
-
+    'modules/APanel/View.js',
     'modules/FastTask/Control.js',
     'modules/FastTask/View.js',
-
+    'modules/FastTask.js',
+    'modules/ListView/Control.js',
+    'modules/ListView/View.js',
+    'modules/ListView.js',
+    'modules/MainPanel/View.js',
+    'modules/MainPanel.js',
     'modules/SimpleSearch/Control.js',
     'modules/SimpleSearch/View.js',
+    'modules/SimpleSearch.js',
 
-    'modules/APanel/View.js',
-    'modules/MainPanel/View.js'
+    'main.js'
 ].forEach(function(file) {
     jscoverage.processFile(srcPrefix + file, destPrefix + file);
 });

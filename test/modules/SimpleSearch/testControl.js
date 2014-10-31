@@ -29,7 +29,11 @@ suite('SimpleSearch', function() {
         listView,
         TaskList;
     setup(function(done) {
-        requirejs(['modules/SimpleSearch/Control', 'view/ListView', 'model/TaskList'], function(SimpleSearchControl, ListView, List) {
+        requirejs([
+            'modules/SimpleSearch/Control',
+            'modules/ListView',
+            'model/TaskList'
+        ], function(SimpleSearchControl, ListView, List) {
             Module = SimpleSearchControl;
             listView = new ListView();
             TaskList = List;
@@ -83,11 +87,11 @@ suite('SimpleSearch', function() {
                 module.setListModule(listView);
 
                 sinon.stub(module.listModule.control, 'setList', function() {});
-                sinon.stub(module.listModule, 'render', function() {});
+                sinon.stub(module.listModule.view, 'render', function() {});
             });
             teardown(function() {
                 module.listModule.control.setList.restore();
-                module.listModule.render.restore();
+                module.listModule.view.render.restore();
             });
 
             test('_showResults(list)', function() {
@@ -96,7 +100,7 @@ suite('SimpleSearch', function() {
 
                 assert.equal(module.listModule.control.setList.callCount, 1, 'list was not set to the ListModule');
                 assert.equal(module.listModule.control.setList.args[0][0], list, 'Incorrect list was set to the ListModule');
-                assert.equal(module.listModule.render.callCount, 1, 'ListModule was not rendered');
+                assert.equal(module.listModule.view.render.callCount, 1, 'ListModule was not rendered');
             });
 
             test('_showResults(this.list) && this.list === this.listModule.control.getList()', function() {

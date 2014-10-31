@@ -24,13 +24,13 @@
 
 'use strict';
 
-suite('EditItemControl', function() {
+suite('ItemEditor.Control', function() {
     var Module,
         module;
     var taskList;
     setup(function(done) {
-        requirejs(['control/EditItemControl'], function() {
-            Module = TaskManager.EditItemControl;
+        requirejs(['pages/ItemEditor/Control'], function(Control) {
+            Module = Control;
             module = new Module();
 
             taskList = new TaskManager.TaskList('root', {id: 'root'});

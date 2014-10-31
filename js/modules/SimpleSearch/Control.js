@@ -54,7 +54,7 @@ define(function () {
             }
 
             this.listModule.control.setList(list);
-            this.listModule.render();
+            this.listModule.view.render();
         },
         search: function(val) {
             if (!val) {

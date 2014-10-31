@@ -35,7 +35,10 @@ if (process.env.npm_lifecycle_event === 'start') {
     baseUrl = './js';
 }
 
-TaskManager = {};
+TaskManager = {
+    Pages: {},
+    Modules: {}
+};
 assert = require('chai').assert;
 sinon = require('sinon');
 Mocha = require('mocha');
@@ -47,7 +50,6 @@ define = requirejs.define;
 
 requirejs.config({
     baseUrl: baseUrl,
-
     nodeRequire: require
 });
 
@@ -56,8 +58,9 @@ requirejs('./test/moks.js');
 AClass = require(srcPrefix + 'core/AClass');
 Class = require(srcPrefix + 'core/Class');
 SingletonClass = require(srcPrefix + 'core/SingletonClass');
+MVCModule = require(srcPrefix + 'core/MVCModule');
+utils = require(srcPrefix + 'core/utils');
 require(srcPrefix + 'model/TaskOnFly');
-utils = require(srcPrefix + 'core/utils').utils;
 
 testRunner = new Mocha({
     ui: 'tdd',
@@ -76,14 +79,14 @@ testPrefix = './test/';
     'model/testTaskList',
     'model/testMainRouter',
 
-    'control/testListControl',
-    'control/testHomeControl',
-    'control/testEditItemControl',
+    'modules/FastTask/testControl',
+    'modules/ListView/testControl',
+    'modules/SimpleSearch/testControl',
 
-    'test_main',
+    'pages/Home/testControl',
+    'pages/ItemEditor/testControl',
 
-    'modules/FastTask/testFastTaskControl',
-    'modules/SimpleSearch/testSimpleSearchControl'
+    'test_main'
 ].forEach(function(file) {
     testRunner.addFile(testPrefix + file);
 });

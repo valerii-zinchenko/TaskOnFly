@@ -27,8 +27,8 @@
 suite('ListControl', function() {
     var Module, TaskListModule;
     setup(function(done) {
-        requirejs(['control/ListControl'], function() {
-            Module = TaskManager.ListControl;
+        requirejs(['modules/ListView/Control'], function(Control) {
+            Module = Control;
             TaskListModule = TaskManager.TaskList;
             done();
         })

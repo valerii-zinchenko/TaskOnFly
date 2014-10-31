@@ -28,8 +28,8 @@ suite('HomeControl', function() {
     var Module,
         module;
     setup(function(done) {
-        requirejs(['control/HomeControl'], function() {
-            Module = TaskManager.HomeControl;
+        requirejs(['pages/Home/Control'], function(Control) {
+            Module = Control;
             module = new Module();
             done();
         });
