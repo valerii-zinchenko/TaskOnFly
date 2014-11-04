@@ -122,7 +122,7 @@ define([
         },
         selectPreviousList: function(ev) {
             ev.preventDefault();
-            this.list.selectParentList();
+            this.list.view.selectParentList();
         },
 
         _fixFooterTable: function() {
