@@ -73,6 +73,7 @@ testPrefix = './test/';
     'core/testClass',
     'core/testSingletonClass',
     'core/test_utils',
+    'core/testMVCModule',
 
     'model/testTaskOnFly',
     'model/testTask',
