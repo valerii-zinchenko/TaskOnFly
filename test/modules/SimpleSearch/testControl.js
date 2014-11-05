@@ -81,6 +81,12 @@ suite('SimpleSearch', function() {
             });
             assert.equal(module.listModule, listView, 'listModule has incorrect reference');
         });
+        test('update(ev, list)', function() {
+            var someList = {};
+            module.update({}, someList);
+
+            assert.equal(module.list, someList, 'list property was not updated');
+        });
 
         suite('Test _showResults method', function() {
             setup(function() {

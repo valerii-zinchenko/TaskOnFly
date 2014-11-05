@@ -133,4 +133,12 @@ suite('ItemEditor.Control', function() {
         assert.equal(saveFN.callCount, 1, 'Save callback function was not called');
         assert.deepEqual(saveFN.args[0][0], data, 'Incorrect data was send to the save callback function');
     });
+
+    test('resetItem()', function() {
+        module.setItem(taskList.addTask());
+        assert.isNotNull(module.item);
+
+        module.resetItem();
+        assert.isNull(module.item, 'Item was not reset');
+    });
 });
