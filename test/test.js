@@ -84,6 +84,7 @@ testPrefix = './test/';
     'modules/ListView/testControl',
     'modules/SimpleSearch/testControl',
 
+    'pages/APage/testView',
     'pages/Home/testControl',
     'pages/ItemEditor/testControl',
 
