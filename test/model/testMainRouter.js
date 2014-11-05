@@ -45,6 +45,12 @@ suite('MainRouter', function() {
         });
     });
 
+    test('#about', function() {
+        assert.doesNotThrow(function() {
+            new Module().about();
+        });
+    });
+
     test('#add/task', function() {
         assert.doesNotThrow(function() {
             new Module().add('task');
@@ -63,7 +69,7 @@ suite('MainRouter', function() {
         });
     });
 
-    suite('#edit/', function() {
+    suite('test MainRouter with list item and task', function() {
         var List;
         setup(function(done) {
             requirejs(['model/MainRouter', 'model/TaskList'], function() {
@@ -74,7 +80,13 @@ suite('MainRouter', function() {
                 List.addTask({
                     id: 'ok'
                 });
+                List.addList({
+                    id: 'list'
+                });
+
+                TaskOnFly.setRootList(List);
                 TaskOnFly.setCurrentList(List);
+
                 done();
             });
         });
@@ -82,16 +94,70 @@ suite('MainRouter', function() {
             window.localStorage.storage = {};
         });
 
-        test('ok', function() {
-            assert.doesNotThrow(function() {
-                new Module().edit('ok');
+        suite('#edit/', function() {
+            test('ok', function() {
+                assert.doesNotThrow(function() {
+                    new Module().edit('ok');
+                });
+            });
+
+            test('badID', function() {
+                assert.throw(function() {
+                    new Module().edit('badID');
+                }, Error, 'Item with id: "badID" was not found');
             });
         });
 
-        test('badID', function() {
-            assert.throw(function() {
-                new Module().edit('badID');
-            }, Error, 'Item with id: "badID" was not found');
+
+        suite('#path/', function() {
+            test('no path; set root list as current', function() {
+                var module = new Module();
+
+                assert.doesNotThrow(function() {
+                    module.path();
+                });
+
+                assert.equal(TaskOnFly.getCurrentList(), TaskOnFly.getRootList(), 'Root list was not set as current for #path/');
+            });
+            test('list', function() {
+                var module = new Module();
+
+                assert.doesNotThrow(function() {
+                    module.path('list/');
+                });
+
+                assert.equal(TaskOnFly.getCurrentList(), List.models.list, 'Incorrect list was set as current for #path/list/');
+            });
+            test('nonexistent list', function() {
+                var module = new Module();
+                sinon.spy(TaskOnFly, 'changeView');
+                sinon.spy(TaskOnFly, 'setCurrentList');
+
+                assert.doesNotThrow(function() {
+                    module.path('nolist/');
+                });
+
+                assert.equal(TaskOnFly.changeView.callCount, 1, 'TaskOnFly.changeView() should be called if list is not found');
+                assert.equal(TaskOnFly.changeView.args[0], '#home', 'If list is not found user should be redirected to the home page');
+                assert.equal(TaskOnFly.setCurrentList.callCount, 0, 'TaskOnFly.setCurrentList() should not be called if list is not found');
+
+                TaskOnFly.changeView.restore();
+                TaskOnFly.setCurrentList.restore();
+            });
+
+            test('list', function() {
+                var module = new Module();
+
+                sinon.spy(module, 'home');
+
+                assert.doesNotThrow(function() {
+                    module.path('list/');
+                });
+
+                assert.equal(module.home.callCount, 1, 'home() should be called if home page was not created before');
+
+                module.home.restore();
+            });
         });
     });
 });

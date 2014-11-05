@@ -136,7 +136,7 @@ define(function () {
             TaskOnFly.$.trigger('showList', list);
             TaskOnFly.setCurrentList(list);
 
-            if (!this._pages.Home || this._view.page !== 'home') {
+            if (!this._pages.Home || !this._view || this._view.page !== 'home') {
                 this.home();
             }
         }
