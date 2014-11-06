@@ -21,6 +21,7 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
+'use strict';
 
 suite('Test TaskList', function() {
     var Module,
@@ -137,6 +138,42 @@ suite('Test TaskList', function() {
         assert.equal(list.selectParentList(), list);
     });
 
+    test('getLocation()', function() {
+        var list = new Module('root', {id: 'root'});
+        var l1 = list.addList({id: 'list'});
+
+        assert.equal(list.getLocation(), '/', 'Incorrect root list location address');
+        assert.equal(l1.getLocation(), '/list/', 'Incorrect list location address');
+    });
+
+    test('getParentLocation()', function() {
+        var list = new Module('root', {id: 'root'});
+        var l1 = list.addList({id: 'list'});
+
+        assert.equal(list.getParentLocation(), '/', 'Incorrect parent location address of the root list');
+        assert.equal(l1.getParentLocation(), '/', 'Incorrect parent location address of the list');
+    });
+
+    suite('findList()', function() {
+        var list, searchedList;
+
+        setup(function() {
+            list = new Module('root', {id: 'root'});
+            list.addList({id: 'l1'});
+            searchedList = list.addList({id: 'l2'}).addList({id: 'l3'}).addList({id: 'l4'});
+        });
+        teardown(function() {
+            window.localStorage.data = {};
+        });
+
+        test('non existing list', function() {
+            assert.isNull(list.findList(['l1', 'l8']), 'null should be returned if list does not exist under defined path');
+        });
+        test('existing list', function() {
+            assert.equal(list.findList(['l2', 'l3', 'l4']), searchedList, 'Incorrect list was found by defined path');
+        });
+    });
+
     test('_object2Array()', function() {
         var obj = {
             1: 1,
@@ -175,7 +212,8 @@ suite('Test TaskList', function() {
                 isDone: false,
                 dueDate: '2014-08-31',
                 priority: 0
-            },            {
+            },
+            {
                 id: '4',
                 isDone: false,
                 dueDate: '2014-08-31',
@@ -183,19 +221,26 @@ suite('Test TaskList', function() {
             },
             {
                 id: '5',
+                isDone: false,
+                dueDate: '',
+                doneDate: '2014-09-05',
+                priority: 1
+            },
+            {
+                id: '6',
                 isDone: true,
                 dueDate: '2014-09-01',
                 priority: 2
             },
             {
-                id: '6',
+                id: '7',
                 isDone: true,
                 dueDate: '2014-09-01',
                 doneDate: '2014-09-08',
                 priority: 0
             },
             {
-                id: '7',
+                id: '8',
                 isDone: true,
                 dueDate: '2014-09-02',
                 doneDate: '2014-09-05',
@@ -205,6 +250,7 @@ suite('Test TaskList', function() {
 
         List.addTask(objs[7]);
         List.addTask(objs[1]);
+        List.addTask(objs[8]);
         List.addTask(objs[5]);
         List.addTask(objs[2]);
         List.addTask(objs[6]);
@@ -215,12 +261,17 @@ suite('Test TaskList', function() {
         var items = List.public.items;
 
         assert.equal(items.length, objs.length, 'Count of expected task is not equal to the count of added tasks');
+        assert.isDefined(List.groups, '"groups" property should be already defined');
+        assert.equal(List.getGroups(), List.groups, 'Incorrect object is returned');
 
         for (var n = 0, N = objs.length; n < N; n++) {
             assert.equal(List.models[items[n]].public.id, objs[n].id, n + ': incorrect id property');
             assert.equal(List.models[items[n]].public.isDone, objs[n].isDone, n + ': incorrect isDone property');
             assert.equal(List.models[items[n]].public.dueDate, objs[n].dueDate, n + ': incorrect dueDate property');
+            assert.equal(List.models[items[n]].public.doneDate, objs[n].doneDate, n + ': incorrect dueDate property');
             assert.equal(List.models[items[n]].public.priority, objs[n].priority, n + ': incorrect priority property');
+
+            assert.notEqual(List.groups[objs[n].isDone][objs[n].isDone ? (objs[n].doneDate || "null") : objs[n].dueDate][objs[n].priority].indexOf(objs[n].id), -1, 'List item is assigned to the incorrect group');
         }
     });
 
