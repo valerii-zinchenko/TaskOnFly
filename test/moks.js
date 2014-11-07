@@ -61,6 +61,7 @@ $.addClass = function(){};
 $.removeClass = function(){};
 $.prop = function(){return $};
 $.checkboxradio = function(){return $};
+$.panel = function(){return $};
 
 $.mobile = {
     changePage: function() {},
