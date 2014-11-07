@@ -76,6 +76,8 @@ define(function () {
             }
 
             this.$el = $(_.template(this.template, this));
+
+            //todo Thing about some connection method instead of such thing
             this._$holder.append(this.$el);
 
             this.$el.trigger('create');

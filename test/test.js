@@ -80,6 +80,7 @@ testPrefix = './test/';
     'model/testTaskList',
     'model/testMainRouter',
 
+    'modules/APanel/testView',
     'modules/FastTask/testControl',
     'modules/ListView/testControl',
     'modules/SimpleSearch/testControl',

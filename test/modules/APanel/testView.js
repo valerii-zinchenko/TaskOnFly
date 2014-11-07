@@ -202,9 +202,13 @@ suite('Test APanel.View', function() {
         });
 
         test('close()', function() {
+            module.$el = $;
+
             assert.doesNotThrow(function() {
                 module.close();
             });
+
+            module.$el = null;
         });
 
         suite('render()', function() {
