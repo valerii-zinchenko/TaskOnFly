@@ -46,7 +46,7 @@ suite('Test APanel.View', function() {
             });
 
             assert.isNull(module._$holder, '_$holder should not be changed');
-            assert.equal(module.panelID, 'panelID should not be changed');
+            assert.equal(module.panelID, '', 'panelID should not be changed');
             assert.equal(module.items.length, 0, 'items should not be changed');
         });
         test('input arguments validation', function() {
@@ -256,7 +256,7 @@ suite('Test APanel.View', function() {
                         link: ':D'
                     }
                 ]);
-                module.setPanelPage({});
+                module.setPanelPage($);
                 module.setPanelID('id');
 
                 assert.doesNotThrow(function() {
