@@ -22,7 +22,7 @@
 */
 
 
-suite('Class. General.', function() {
+suite('Test Class.', function() {
     suite('Input arguments', function() {
         test('No arguments', function() {
             assert.doesNotThrow(function() {
@@ -73,24 +73,6 @@ suite('Class. General.', function() {
         assert.notEqual(new Obj(), new Obj());
     });
 
-    test('Property', function() {
-        var value = 11;
-        var Obj = new Class({
-            value: value
-        });
-
-        assert.equal((new Obj()).value, value);
-    });
-    test('Method', function() {
-        var value = 11;
-        var Obj = new Class({
-            fn: function() {
-                return value;
-            }
-        });
-
-        assert.equal((new Obj()).fn(), value);
-    });
     test('Cloning of property', function() {
         var value = 11;
         var Obj = new Class({
@@ -115,39 +97,39 @@ suite('Class. General.', function() {
             new Obj();
         }, 'OK');
     });
-});
 
-suite('Class. Inheritance.', function() {
-    var Parent,
-        prop = 4,
-        value = 11;
-    setup(function() {
-        Parent = new Class({
-            prop: prop,
-            initialize: function() {
-                this.value = value;
-            }
-        });
-    });
-
-    test('Check constructor', function() {
-        var Child = new Class(Parent);
-
-        assert.equal((new Child()).constructor, Child);
-        assert.notEqual((new Child()).constructor, Parent);
-    });
-    test('Public property', function() {
-        var Child = new Class(Parent);
-        assert.equal((new Child()).prop, prop);
-    });
-    test('Calling of parent initialize()', function() {
-        var k = 2;
-        var Child = new Class(Parent, {
-            initialize: function() {
-                this.value *= k;
-            }
+    suite('Inheritance.', function() {
+        var Parent,
+            prop = 4,
+            value = 11;
+        setup(function() {
+            Parent = new Class({
+                prop: prop,
+                initialize: function() {
+                    this.value = value;
+                }
+            });
         });
 
-        assert.equal((new Child()).value, value*k);
+        test('Check constructor', function() {
+            var Child = new Class(Parent);
+
+            assert.equal((new Child()).constructor, Child);
+            assert.notEqual((new Child()).constructor, Parent);
+        });
+        test('Public property', function() {
+            var Child = new Class(Parent);
+            assert.equal((new Child()).prop, prop);
+        });
+        test('Calling of parent initialize()', function() {
+            var k = 2;
+            var Child = new Class(Parent, {
+                initialize: function() {
+                    this.value *= k;
+                }
+            });
+
+            assert.equal((new Child()).value, value*k);
+        });
     });
 });

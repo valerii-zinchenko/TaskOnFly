@@ -21,8 +21,9 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
+'use strict';
 
-suite('Class. General.', function() {
+suite('Test AClass', function() {
     suite('Input arguments', function() {
         test('No arguments', function() {
             assert.throw(function() {
@@ -36,6 +37,41 @@ suite('Class. General.', function() {
             assert.throw(function() {
                 new AClass(2);
             }, Error, 'Constructor should be an function');
+        });
+    });
+
+    suite('Test returning class constructor', function() {
+        var SomeClassBuilder;
+        setup(function() {
+            SomeClassBuilder = new AClass(function(){});
+        });
+
+        test('Test types and values of the properties', function() {
+            var obj = new (new SomeClassBuilder({
+                number: 1,
+                string: ':)',
+                bool: true,
+                nullValue: null,
+                array: [0,1],
+                obj: {
+                    v: 11
+                },
+                fn: function() {return this.number;}
+            }))();
+
+            assert.isNumber(obj._defaults.number, 'Number type was not saved');
+            assert.isString(obj._defaults.string, 'String type was not saved');
+            assert.isBoolean(obj._defaults.bool, 'Boolean type was not saved');
+            assert.isNull(obj._defaults.nullValue, 'Null type was not saved');
+            assert.isArray(obj._defaults.array, 'Array type was not saved');
+            assert.isObject(obj._defaults.obj, 'Object type was not saved');
+            assert.isFunction(obj.fn, 'Function type was not saved');
+
+            assert.equal(obj._defaults.number, 1);
+            assert.equal(obj._defaults.string, ':)');
+            assert.equal(obj._defaults.bool, true);
+            assert.isTrue(obj._defaults.array[0] === 0 && obj._defaults.array[1] === 1);
+            assert.equal(obj._defaults.obj.v, 11);
         });
     });
 });
