@@ -7,6 +7,9 @@
         "test": "test"
     },
     "dependencies": {
+        "grunt": "",
+        "grunt-contrib-uglify": "",
+        "grunt-mocha-test":"",
         "rimraf":"",
         "jscoverage":"",
         "mocha":"",
