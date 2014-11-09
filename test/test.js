@@ -82,6 +82,7 @@ testPrefix = './test/';
 
     'modules/APanel/testView',
     'modules/FastTask/testControl',
+    'modules/FastTask/testView',
     'modules/ListView/testControl',
     'modules/SimpleSearch/testControl',
 
