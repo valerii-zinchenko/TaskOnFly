@@ -51,24 +51,6 @@ suite('MainRouter', function() {
         });
     });
 
-    test('#add/task', function() {
-        assert.doesNotThrow(function() {
-            new Module().add('task');
-        });
-    });
-
-    test('#add/list', function() {
-        assert.doesNotThrow(function() {
-            new Module().add('list');
-        });
-    });
-
-    test('#add/unhandled', function() {
-        assert.doesNotThrow(function() {
-            new Module().add('unhandled');
-        });
-    });
-
     suite('test MainRouter with list item and task', function() {
         var List;
         setup(function(done) {
@@ -92,6 +74,24 @@ suite('MainRouter', function() {
         });
         teardown(function() {
             window.localStorage.storage = {};
+        });
+
+        test('#add/task', function() {
+            assert.doesNotThrow(function() {
+                new Module().add('task');
+            });
+        });
+
+        test('#add/list', function() {
+            assert.doesNotThrow(function() {
+                new Module().add('list');
+            });
+        });
+
+        test('#add/unhandled', function() {
+            assert.doesNotThrow(function() {
+                new Module().add('unhandled');
+            });
         });
 
         suite('#edit/', function() {

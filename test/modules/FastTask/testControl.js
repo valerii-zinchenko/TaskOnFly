@@ -29,10 +29,16 @@ suite('FastTask', function() {
         module,
         list;
     setup(function(done) {
-        requirejs(['modules/FastTask/Control'], function(FastTaskControl) {
+        requirejs(['modules/FastTask/Control', 'model/TaskList'], function(FastTaskControl) {
             Module = FastTaskControl;
             module = new Module();
 
+            var List = new TaskManager.TaskList('root', {
+                id: 'root'
+            });
+
+            TaskOnFly.setRootList(List);
+            TaskOnFly.setCurrentList(List);
             list = TaskOnFly.getCurrentList();
             sinon.spy(list, 'addTask');
 

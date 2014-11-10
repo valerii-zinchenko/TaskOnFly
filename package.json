@@ -10,6 +10,8 @@
         "grunt": "",
         "grunt-contrib-uglify": "",
         "grunt-mocha-test":"",
+        "grunt-jscoverage":"",
+        "grunt-contrib-clean":"",
         "rimraf":"",
         "jscoverage":"",
         "mocha":"",

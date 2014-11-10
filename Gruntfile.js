@@ -1,9 +1,20 @@
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-jscoverage');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        jscoverage: {
+            src: {
+                expand: true,
+                cwd: 'js/',
+                src: ['**/*.js', '!lib/**/*.js', '!tmp/**/*.js'],
+                dest: 'js-cov',
+                ext: '.js'
+            }
+        },
         mochaTest: {
             test: {
                 options: {
@@ -23,7 +34,7 @@ module.exports = function(grunt) {
 
 
                             requirejs.config({
-                                baseUrl: './_js/',
+                                baseUrl: './js-cov/',
                                 nodeRequire: require
                             });
 
@@ -41,7 +52,7 @@ module.exports = function(grunt) {
                         }
                     ]
                 },
-                src: ['test/core/*.js', 'test/model/testT*.js']
+                src: ['test/**/*.js', '!test/moks.js']
             },
             coverage: {
                 options: {
@@ -49,64 +60,16 @@ module.exports = function(grunt) {
                     quiet: true,
                     captureFile: 'coverage.html'
                 },
-                src: ['test/core/*.js', 'test/model/testT*.js']
+                src: ['test/**/*.js', '!test/moks.js']
             }
-        }
+        },
+        clean: ['js-cov']
     });
 
-    grunt.registerTask('pretest', function() {
-        jscoverage = require('jscoverage');
-
-        srcPrefix =  './js/';
-        destPrefix = './_js/';
-
-        [
-            'core/AClass.js',
-            'core/Class.js',
-            'core/MVCModule.js',
-            'core/SingletonClass.js',
-            'core/utils.js',
-
-            'model/TaskOnFly.js',
-            'model/Task.js',
-            'model/TaskList.js',
-            'model/MainRouter.js',
-
-            'pages/About/View.js',
-            'pages/About.js',
-            'pages/APage/View.js',
-            'pages/Home/Control.js',
-            'pages/Home/View.js',
-            'pages/Home.js',
-            'pages/ItemEditor/Control.js',
-            'pages/ItemEditor/View.js',
-            'pages/ItemEditor.js',
-
-            'view/PopupDialog.js',
-
-            'modules/APanel/View.js',
-            'modules/FastTask/Control.js',
-            'modules/FastTask/View.js',
-            'modules/FastTask.js',
-            'modules/ListView/Control.js',
-            'modules/ListView/View.js',
-            'modules/ListView.js',
-            'modules/MainPanel/View.js',
-            'modules/MainPanel.js',
-            'modules/SimpleSearch/Control.js',
-            'modules/SimpleSearch/View.js',
-            'modules/SimpleSearch.js',
-
-            'main.js'
-        ].forEach(function(file) {
-            jscoverage.processFile(srcPrefix + file, destPrefix + file);
-        });
+    grunt.registerTask('default', 'test');
+    grunt.registerTask('test', 'mochaTest:test');
+    grunt.registerTask('coverage', function(){
+        grunt.option('force', true);
+        grunt.task.run(['jscoverage', 'mochaTest', 'clean']);
     });
-    grunt.registerTask('posttest', function() {
-        var rim = require('rimraf');
-        rim('./_js', function() {console.log(arguments)});
-    });
-
-    grunt.registerTask('default', 'mochaTest');
-    grunt.registerTask('coverage', ['pretest', 'mochaTest', 'posttest']);
 };
