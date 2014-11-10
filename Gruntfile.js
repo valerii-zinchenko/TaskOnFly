@@ -34,6 +34,44 @@ module.exports = function(grunt) {
 
 
                             requirejs.config({
+                                baseUrl: 'js/',
+                                nodeRequire: require
+                            });
+
+                            var src = './js/';
+                            AClass = require(src + 'core/AClass');
+                            Class = require(src + 'core/Class');
+                            SingletonClass = require(src + 'core/SingletonClass');
+                            MVCModule = require(src + 'core/MVCModule');
+                            utils = require(src + 'core/utils');
+
+                            TaskManager = {
+                                Pages: {},
+                                Modules: {}
+                            };
+                        }
+                    ]
+                },
+                src: ['test/**/*.js', '!test/moks.js']
+            },
+            testWithCoverage: {
+                options: {
+                    ui: 'tdd',
+                    reporter: 'spec',
+                    quite: true,
+                    require: [
+                        './test/moks',
+                        './js/model/TaskOnFly',
+                        function() {
+                            assert = require('chai').assert;
+                            sinon = require('sinon');
+                            _ = require('underscore');
+                            Backbone = require('backbone');
+                            requirejs = require('requirejs');
+                            define = requirejs.define;
+
+
+                            requirejs.config({
                                 baseUrl: './js-cov/',
                                 nodeRequire: require
                             });
@@ -58,7 +96,7 @@ module.exports = function(grunt) {
                 options: {
                     reporter: 'html-cov',
                     quiet: true,
-                    captureFile: 'coverage.html'
+                    captureFile: 'reports/Coverage.html'
                 },
                 src: ['test/**/*.js', '!test/moks.js']
             }
@@ -70,6 +108,6 @@ module.exports = function(grunt) {
     grunt.registerTask('test', 'mochaTest:test');
     grunt.registerTask('coverage', function(){
         grunt.option('force', true);
-        grunt.task.run(['jscoverage', 'mochaTest', 'clean']);
+        grunt.task.run(['jscoverage', 'mochaTest:testWithCoverage', 'mochaTest:coverage', 'clean']);
     });
 };
