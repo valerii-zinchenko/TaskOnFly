@@ -3,6 +3,33 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-jscoverage');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
+    function SET_GLOBALS(path) {
+        assert = require('chai').assert;
+        sinon = require('sinon');
+        _ = require('underscore');
+        Backbone = require('backbone');
+        requirejs = require('requirejs');
+        define = requirejs.define;
+
+
+        requirejs.config({
+            baseUrl: path,
+            nodeRequire: require
+        });
+
+        var src = './js/';
+        AClass = require(src + 'core/AClass');
+        Class = require(src + 'core/Class');
+        SingletonClass = require(src + 'core/SingletonClass');
+        MVCModule = require(src + 'core/MVCModule');
+        utils = require(src + 'core/utils');
+
+        TaskManager = {
+            Pages: {},
+            Modules: {}
+        };
+    }
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -24,32 +51,7 @@ module.exports = function(grunt) {
                     require: [
                         './test/mocks',
                         './js/model/TaskOnFly',
-                        function() {
-                            assert = require('chai').assert;
-                            sinon = require('sinon');
-                            _ = require('underscore');
-                            Backbone = require('backbone');
-                            requirejs = require('requirejs');
-                            define = requirejs.define;
-
-
-                            requirejs.config({
-                                baseUrl: 'js/',
-                                nodeRequire: require
-                            });
-
-                            var src = './js/';
-                            AClass = require(src + 'core/AClass');
-                            Class = require(src + 'core/Class');
-                            SingletonClass = require(src + 'core/SingletonClass');
-                            MVCModule = require(src + 'core/MVCModule');
-                            utils = require(src + 'core/utils');
-
-                            TaskManager = {
-                                Pages: {},
-                                Modules: {}
-                            };
-                        }
+                        SET_GLOBALS.bind(null, 'js/')
                     ]
                 },
                 src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js']
@@ -62,32 +64,7 @@ module.exports = function(grunt) {
                     require: [
                         './test/mocks',
                         './js/model/TaskOnFly',
-                        function() {
-                            assert = require('chai').assert;
-                            sinon = require('sinon');
-                            _ = require('underscore');
-                            Backbone = require('backbone');
-                            requirejs = require('requirejs');
-                            define = requirejs.define;
-
-
-                            requirejs.config({
-                                baseUrl: './js-cov/',
-                                nodeRequire: require
-                            });
-
-                            var src = './js/';
-                            AClass = require(src + 'core/AClass');
-                            Class = require(src + 'core/Class');
-                            SingletonClass = require(src + 'core/SingletonClass');
-                            MVCModule = require(src + 'core/MVCModule');
-                            utils = require(src + 'core/utils');
-
-                            TaskManager = {
-                                Pages: {},
-                                Modules: {}
-                            };
-                        }
+                        SET_GLOBALS.bind(null, './js-cov/')
                     ]
                 },
                 src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js']
