@@ -32,7 +32,7 @@ define(function() {
 
         initialize: function(holder) {
             if (!holder) {
-                new Error('Holder element for module is not defined');
+                throw new Error('Holder element for module is not defined');
             }
 
             this.$holder = holder;
