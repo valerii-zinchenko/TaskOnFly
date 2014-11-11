@@ -1,8 +1,8 @@
 {
     "name": "TaskOnFly",
     "version": "1.0.8",
-    "description": "",
-    "main": "index.js",
+    "description": "TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.",
+    "main": "index.html",
     "directories": {
         "test": "test"
     },
@@ -12,7 +12,6 @@
         "grunt-mocha-test":"",
         "grunt-jscoverage":"",
         "grunt-contrib-clean":"",
-        "rimraf":"",
         "jscoverage":"",
         "mocha":"",
         "chai":"",
@@ -20,12 +19,6 @@
         "underscore":"",
         "backbone":"",
         "requirejs":""
-    },
-    "scripts": {
-        "prestart": "node test/pretest",
-        "start": "node test/test > reports/Coverage.html",
-        "poststart": "node test/posttest",
-        "test": "node test/test"
     },
     "author": "Valerii Zinchenko",
     "license": "GPLv3"
