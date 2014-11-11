@@ -24,7 +24,7 @@
 
 'use strict';
 
-suite('ListControl', function() {
+suite('Test ListView.Control', function() {
     var Module, TaskListModule;
     setup(function(done) {
         requirejs(['modules/ListView/Control'], function(Control) {
@@ -37,27 +37,28 @@ suite('ListControl', function() {
         window.localStorage.storage = {};
     });
 
-    test('initialize()', function() {
-        assert.doesNotThrow(function() {
-            new Module();
-        })
-    });
-    test('initialize(badList)', function() {
-        assert.throw(function() {
-            new Module('badList');
-        }, Error, 'List is incorrect');
-    });
-    test('initialize(goodList)', function() {
-        assert.doesNotThrow(function() {
-            new Module(new TaskListModule('root'));
+    suite('initialize()', function() {
+        test('no arguments', function() {
+            assert.doesNotThrow(function() {
+                new Module();
+            })
+        });
+        test('incorrect argument type', function() {
+            assert.throw(function() {
+                new Module('badList');
+            }, Error, 'List is incorrect');
+        });
+        test('correct input argument', function() {
+            assert.doesNotThrow(function() {
+                new Module(new TaskListModule('root'));
+            });
         });
     });
 
-    suite('Initialised.', function() {
+    suite('Test methods', function() {
         var module,
             list;
         setup(function() {
-            window.localStorage.storage = {};
             module = new Module();
             list = new TaskListModule('root');
 
@@ -65,24 +66,28 @@ suite('ListControl', function() {
             sinon.spy(list, 'removeItem');
         });
         teardown(function() {
+            window.localStorage.storage = {};
+
             list.$.trigger.restore();
             list.removeItem.restore();
         });
 
-        test('setList(undefined)', function() {
-            assert.throw(function() {
-                module.setList();
-            }, Error, 'List is incorrect');
-        });
-        test('setList([string])', function() {
-            assert.throw(function() {
-                module.setList('string');
-            }, Error, 'List is incorrect');
-        });
-        test('setList(list)', function() {
-            assert.doesNotThrow(function() {
-                module.setList(list);
-            }, Error, 'List is incorrect');
+        suite('setList()', function() {
+            test('no arguments', function() {
+                assert.throw(function() {
+                    module.setList();
+                }, Error, 'List is incorrect');
+            });
+            test('incorrect argument type', function() {
+                assert.throw(function() {
+                    module.setList('string');
+                }, Error, 'List is incorrect');
+            });
+            test('correct input argument', function() {
+                assert.doesNotThrow(function() {
+                    module.setList(list);
+                }, Error, 'List is incorrect');
+            });
         });
 
         test('getList()', function() {
@@ -91,16 +96,18 @@ suite('ListControl', function() {
             assert.equal(module.getList(), list, 'Lists have different references');
         });
 
-        test('selectList(non-existed ID)', function() {
-            module.setList(list);
+        suite('selectList()', function() {
+            test('non-existed ID', function() {
+                module.setList(list);
 
-            assert.isUndefined(module.selectList('bad'));
-        });
-        test('selectList(id)', function() {
-            var ok = list.addList({id: 'ok'});
-            module.setList(list);
+                assert.isUndefined(module.selectList('bad'));
+            });
+            test('existed ID', function() {
+                var ok = list.addList({id: 'ok'});
+                module.setList(list);
 
-            assert.equal(module.selectList('ok'), ok, 'Selected list is pointed to other list');
+                assert.equal(module.selectList('ok'), ok, 'Selected list is pointed to other list');
+            });
         });
 
         test('selectParentList()', function() {
@@ -108,6 +115,168 @@ suite('ListControl', function() {
             module.setList(ok);
 
             assert.equal(module.selectParentList(), list, 'Parent list is pointed to other list');
+        });
+
+        suite('getGroupTitle()', function() {
+            test('isDone: true; doneDate: undefined', function() {
+                var id = 'taskid';
+                var list = {
+                    models: {
+                        taskid: {
+                            'public': {
+                                isDone: true
+                            }
+                        }
+                    }
+                };
+                var title;
+
+                assert.doesNotThrow(function() {
+                    title = module.getGroupTitle(list, id);
+                });
+
+                assert.equal(title, 'done ', 'Incorrect group title was generated');
+            });
+            test('isDone: true; doneDate: 2014.11.11', function() {
+                var id = 'taskid';
+                var list = {
+                    models: {
+                        taskid: {
+                            'public': {
+                                isDone: true,
+                                doneDate: '2014.11.11'
+                            }
+                        }
+                    }
+                };
+                var title;
+
+                assert.doesNotThrow(function() {
+                    title = module.getGroupTitle(list, id);
+                });
+
+                assert.equal(title, 'done at 2014.11.11', 'Incorrect group title was generated');
+            });
+            test('isDone: false; dueDate: undefined', function() {
+                var id = 'taskid';
+                var list = {
+                    models: {
+                        taskid: {
+                            'public': {
+                                isDone: false
+                            }
+                        }
+                    }
+                };
+                var title;
+
+                assert.doesNotThrow(function() {
+                    title = module.getGroupTitle(list, id);
+                });
+
+                assert.equal(title, 'to do', 'Incorrect group title was generated');
+            });
+            test('isDone: false; dueDate: 2014.11.12', function() {
+                var id = 'taskid';
+                var list = {
+                    models: {
+                        taskid: {
+                            'public': {
+                                isDone: false,
+                                dueDate: '2014.11.12'
+                            }
+                        }
+                    }
+                };
+                var title;
+
+                assert.doesNotThrow(function() {
+                    title = module.getGroupTitle(list, id);
+                });
+
+                assert.equal(title, 'till 2014.11.12', 'Incorrect group title was generated');
+            });
+        });
+
+        suite('getGroupID()', function() {
+            test('isDone: true; doneDate: undefined', function() {
+                var id = 'taskid';
+                var list = {
+                    models: {
+                        taskid: {
+                            'public': {
+                                isDone: true
+                            }
+                        }
+                    }
+                };
+                var groupID;
+
+                assert.doesNotThrow(function() {
+                    groupID = module.getGroupID(list, id);
+                });
+
+                assert.equal(groupID, 'true', 'Incorrect group title was generated');
+            });
+            test('isDone: true; doneDate: 2014.11.11', function() {
+                var id = 'taskid';
+                var list = {
+                    models: {
+                        taskid: {
+                            'public': {
+                                isDone: true,
+                                doneDate: '2014.11.11'
+                            }
+                        }
+                    }
+                };
+                var groupID;
+
+                assert.doesNotThrow(function() {
+                    groupID = module.getGroupID(list, id);
+                });
+
+                assert.equal(groupID, 'true2014.11.11', 'Incorrect group title was generated');
+            });
+            test('isDone: false; dueDate: undefined', function() {
+                var id = 'taskid';
+                var list = {
+                    models: {
+                        taskid: {
+                            'public': {
+                                isDone: false
+                            }
+                        }
+                    }
+                };
+                var groupID;
+
+                assert.doesNotThrow(function() {
+                    groupID = module.getGroupID(list, id);
+                });
+
+                assert.equal(groupID, 'false', 'Incorrect group title was generated');
+            });
+            test('isDone: false; dueDate: 2014.11.12', function() {
+                var id = 'taskid';
+                var list = {
+                    models: {
+                        taskid: {
+                            'public': {
+                                isDone: false,
+                                dueDate: '2014.11.12'
+                            }
+                        }
+                    }
+                };
+                var groupID;
+
+                assert.doesNotThrow(function() {
+                    groupID = module.getGroupID(list, id);
+                });
+
+                assert.equal(groupID, 'false2014.11.12', 'Incorrect group title was generated');
+            });
         });
 
         test('_toggleTaskStatus()', function() {
