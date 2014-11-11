@@ -22,7 +22,7 @@ module.exports = function(grunt) {
                     reporter: 'spec',
                     quite: true,
                     require: [
-                        './test/moks',
+                        './test/mocks',
                         './js/model/TaskOnFly',
                         function() {
                             assert = require('chai').assert;
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
                         }
                     ]
                 },
-                src: ['test/**/*.js', '!test/moks.js']
+                src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js']
             },
             testWithCoverage: {
                 options: {
@@ -60,7 +60,7 @@ module.exports = function(grunt) {
                     reporter: 'spec',
                     quite: true,
                     require: [
-                        './test/moks',
+                        './test/mocks',
                         './js/model/TaskOnFly',
                         function() {
                             assert = require('chai').assert;
@@ -90,7 +90,7 @@ module.exports = function(grunt) {
                         }
                     ]
                 },
-                src: ['test/**/*.js', '!test/moks.js']
+                src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js']
             },
             coverage: {
                 options: {
@@ -98,7 +98,7 @@ module.exports = function(grunt) {
                     quiet: true,
                     captureFile: 'reports/Coverage.html'
                 },
-                src: ['test/**/*.js', '!test/moks.js']
+                src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js']
             }
         },
         clean: ['js-cov']
