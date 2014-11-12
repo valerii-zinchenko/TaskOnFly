@@ -41,7 +41,8 @@ suite('Test utility functions', function() {
                         innInnVal: v4
                     }
                 },
-                empty: null
+                empty: null,
+                array: []
             };
             obj2 = {
                 value: v3,
@@ -49,6 +50,10 @@ suite('Test utility functions', function() {
                     innInnObj: {}
                 }
             };
+        });
+        teardown(function() {
+            obj1 = null;
+            obj2 = null;
         });
 
         test('deepExtend()', function() {
@@ -59,6 +64,9 @@ suite('Test utility functions', function() {
             assert.notEqual(obj2.innObj, obj1.innObj);
             assert.isObject(obj2.innObj2.innInnObj);
             assert.equal(obj2.innObj2.innInnObj.innInnVal, v4);
+            assert.property(obj2, 'empty', 'Extended object was not extended with property "empty"');
+            assert.property(obj2, 'array', 'Extended object was not extended with property "array"');
+            assert.notEqual(obj2.array, obj1.array, 'Array should be copied into the extended object');
         });
         test('deepCopy()', function() {
             utils.deepCopy(obj2, obj1);
@@ -71,8 +79,8 @@ suite('Test utility functions', function() {
         })
     });
 
-    suite('date method', function() {
-        test('date()', function() {
+    suite('date()', function() {
+        test('no arguments', function() {
             assert.doesNotThrow(function() {
                 utils.date();
             });
@@ -82,13 +90,13 @@ suite('Test utility functions', function() {
             });
         });
 
-        test('date(incorrect type)', function() {
+        test('incorrect input argument type', function() {
             assert.throw(function() {
                 utils.date('str');
             }, Error, 'Incorrect input argument type');
         });
 
-        test('date() result', function() {
+        test('correct argument', function() {
             var date = new Date().toISOString().slice(0,10);
 
             assert.equal(utils.date(), date, 'Incorrect date was returned from the method without input argument');
