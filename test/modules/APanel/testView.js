@@ -27,15 +27,19 @@
 suite('Test APanel.View', function() {
     var Module;
     setup(function(done) {
+        requirejs.undef('modules/APanel/View');
         requirejs(['modules/APanel/View'], function(View) {
             Module = View;
 
             done();
         });
     });
+    teardown(function() {
+        Module = null;
+    });
 
-    test('Not singleton?', function() {
-        assert.notEqual(new Module(), new Module());
+    test('Is singleton?', function() {
+        assert.notEqual(new Module(), new Module(), 'The abstract view sub-module should not be a singleton');
     });
 
     suite('initialize()', function() {
@@ -87,6 +91,9 @@ suite('Test APanel.View', function() {
         var module;
         setup(function() {
             module = new Module();
+        });
+        teardown(function() {
+            module = null;
         });
 
         test('setPanelPage()', function() {

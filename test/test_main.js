@@ -31,6 +31,9 @@ suite('Test main file', function() {
     });
     teardown(function() {
         window.localStorage.storage = {};
+        Object.keys(requirejs.s.contexts._.defined).forEach(function(module) {
+            requirejs.undef(module);
+        });
     });
 
     test('Application start', function() {

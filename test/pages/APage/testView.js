@@ -27,10 +27,14 @@ suite('Test View of APage page', function() {
     var Module;
 
     setup(function(done) {
+        requirejs.undef('pages/APage/View');
         requirejs(['pages/APage/View'], function(View) {
             Module = View;
             done();
         });
+    });
+    teardown(function() {
+        Module = null;
     });
 
     test('Constructor', function() {
@@ -53,7 +57,7 @@ suite('Test View of APage page', function() {
         //$.restore();
     });
 
-    test('View of APage should be a Singleton', function() {
+    test('Is Singleton?', function() {
         assert.equal(new Module(), new Module(), 'View of the page should be an singleton');
     });
 

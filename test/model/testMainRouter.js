@@ -24,13 +24,17 @@
 
 'use strict';
 
-suite('MainRouter', function() {
+suite('Test MainRouter', function() {
     var Module;
     setup(function(done) {
+        requirejs.undef('model/MainRouter');
         requirejs(['model/MainRouter'], function(MainRouter) {
             Module = MainRouter;
             done();
         });
+    });
+    teardown(function() {
+        Module = null;
     });
 
     test('initialise', function() {
@@ -54,9 +58,9 @@ suite('MainRouter', function() {
     suite('test MainRouter with list item and task', function() {
         var List;
         setup(function(done) {
-            requirejs(['model/MainRouter', 'model/TaskList'], function() {
-                Module = TaskManager.MainRouter;
-                List = new TaskManager.TaskList('root', {
+            requirejs(['model/MainRouter', 'model/TaskList'], function(MainRouter, TaskList) {
+                Module = MainRouter;
+                List = new TaskList('root', {
                     id: 'root'
                 });
                 List.addTask({

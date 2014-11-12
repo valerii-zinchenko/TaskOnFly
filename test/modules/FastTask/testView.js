@@ -26,13 +26,14 @@
 suite('Test FastTask.View', function() {
     var Module;
     setup(function(done) {
+        requirejs.undef('modules/FastTask/View');
         requirejs(['modules/FastTask/View'], function(View) {
             Module = View;
             done();
         });
     });
     teardown(function() {
-        requirejs.undef('modules/FastTask/View');
+        Module = null;
     });
 
     suite('initialize()', function() {
@@ -56,13 +57,16 @@ suite('Test FastTask.View', function() {
     });
 
     test('Is Singleton?', function() {
-        assert.equal(new Module(), new Module(), 'View of FastTask should be an singleton class');
+        assert.equal(new Module($), new Module($), 'View of FastTask should be an singleton class');
     });
 
     suite('Test class methods', function() {
         var module;
         setup(function() {
             module = new Module($);
+        });
+        teardown(function() {
+            module = null;
         });
 
         test('render()', function() {

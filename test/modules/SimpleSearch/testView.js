@@ -24,18 +24,19 @@
 'use strict';
 
 suite('Test SimpleSearch.View', function() {
-    var Module;
-    setup(function(done) {
-        requirejs(['modules/SimpleSearch/View'], function(View) {
-            Module = View;
-            done();
-        })
-    });
-    teardown(function() {
-        requirejs.undef('modules/SimpleSearch/View');
-    });
-
     suite('initialize()', function() {
+        var Module;
+        setup(function(done) {
+            requirejs.undef('modules/SimpleSearch/View');
+            requirejs(['modules/SimpleSearch/View'], function(View) {
+                Module = View;
+                done();
+            })
+        });
+        teardown(function() {
+            Module = null;
+        });
+
         test('no arguments', function() {
             assert.throw(function() {
                 new Module();
@@ -46,7 +47,7 @@ suite('Test SimpleSearch.View', function() {
                 new Module(':)');
             }, Error, 'Incorrect input argument type');
         });
-        test('no arguments', function() {
+        test('correct argument', function() {
             assert.doesNotThrow(function() {
                 new Module($);
             });
@@ -59,14 +60,17 @@ suite('Test SimpleSearch.View', function() {
 
     suite('Test methods', function() {
         var module;
-        setup(function() {
-            module = new Module($);
+        setup(function(done) {
+            requirejs(['modules/SimpleSearch/View'], function(View) {
+                module = new View($);
 
-            // mock control sub-module
-            module.control = {
-                search: function(){},
-                reset: function(){}
-            };
+                // mock control sub-module
+                module.control = {
+                    search: function(){},
+                    reset: function(){}
+                };
+                done();
+            })
         });
         teardown(function() {
             module = null;

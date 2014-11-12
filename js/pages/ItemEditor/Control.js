@@ -25,7 +25,7 @@
 'use strict';
 
 define([
-    '../../model/Task',
+    'model/Task',
     'model/TaskList'
 ],function (Task, TaskList) {
     return new SingletonClass({
