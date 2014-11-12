@@ -79,25 +79,25 @@ suite('Test SimpleSearch.View', function() {
         });
 
         test('render()', function() {
-            //sinon.spy(module.$holder, 'empty');
-            //sinon.spy(module.$holder, 'append');
-            //sinon.spy(module.$holder, 'trigger');
+            sinon.spy(module.$holder, 'empty');
+            sinon.spy(module.$holder, 'append');
+            sinon.spy(module.$holder, 'trigger');
             sinon.spy(module, '_attachEvents');
 
             assert.doesNotThrow(function() {
                 module.render();
             });
 
-            //assert.equal(module.$holder.empty.callCount, 1, 'The content of holder element should be removed first');
-            //assert.equal(module.$holder.append.callCount, 1, 'append() should be called in order to add new content');
-            //assert.equal(module.$holder.append.callCount.args[0][0], module.$el, 'The new content should be appended into the holder element');
-            //assert.equal(module.$holder.trigger.callCount, 1, 'trigger() should be called');
-            //assert.equal(module.$holder.trigger.callCount.args[0][0], 'create', 'trigger("create") should be called to run jQuery creation wrappers');
+            assert.equal(module.$holder.empty.callCount, 1, 'The content of holder element should be removed first');
+            assert.equal(module.$holder.append.callCount, 1, 'append() should be called in order to add new content');
+            assert.equal(module.$holder.append.args[0][0], module.$el, 'The new content should be appended into the holder element');
+            assert.equal(module.$holder.trigger.callCount, 1, 'trigger() should be called');
+            assert.equal(module.$holder.trigger.args[0][0], 'create', 'trigger("create") should be called to run jQuery creation wrappers');
             assert.equal(module._attachEvents.callCount, 1, 'Event handlers should be attached to the new content');
 
-            //module.$holder.empty.restore();
-            //module.$holder.append.restore();
-            //module.$holder.trigger.restore();
+            module.$holder.empty.restore();
+            module.$holder.append.restore();
+            module.$holder.trigger.restore();
             module._attachEvents.restore();
         });
 

@@ -138,7 +138,7 @@ suite('MainRouter', function() {
                 });
 
                 assert.equal(TaskOnFly.changeView.callCount, 1, 'TaskOnFly.changeView() should be called if list is not found');
-                assert.equal(TaskOnFly.changeView.args[0], '#home', 'If list is not found user should be redirected to the home page');
+                assert.equal(TaskOnFly.changeView.args[0][0], '#home', 'If list is not found user should be redirected to the home page');
                 assert.equal(TaskOnFly.setCurrentList.callCount, 0, 'TaskOnFly.setCurrentList() should not be called if list is not found');
 
                 TaskOnFly.changeView.restore();
