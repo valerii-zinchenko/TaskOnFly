@@ -24,7 +24,7 @@
 
 'use strict';
 
-suite('HomeControl', function() {
+suite('Test Home.Control', function() {
     var Module,
         module;
     setup(function(done) {
@@ -40,19 +40,23 @@ suite('HomeControl', function() {
         TaskOnFly.changeView.restore();
     });
 
-    test('module should be a singleton', function() {
-        assert.equal(new Module(), module, 'Module is not a singleton');
+    test('Is singleton?', function() {
+        assert.equal(new Module(), new Module(), 'Module is not a singleton');
     });
 
     test('addTask()', function() {
-        module.addTask();
+        assert.doesNotThrow(function() {
+            module.addTask();
+        });
 
         assert.equal(TaskOnFly.changeView.callCount, 1, 'TaskOnFly.changeView() was not called');
         assert.equal(TaskOnFly.changeView.args[0][0], 'add/task', 'TaskOnFly.changeView() was called with incorrect argument');
     });
 
-    test('addTask()', function() {
-        module.addList();
+    test('addList()', function() {
+        assert.doesNotThrow(function() {
+            module.addList();
+        });
 
         assert.equal(TaskOnFly.changeView.callCount, 1, 'TaskOnFly.changeView() was not called');
         assert.equal(TaskOnFly.changeView.args[0][0], 'add/list', 'TaskOnFly.changeView() was called with incorrect argument');
