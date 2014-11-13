@@ -44,37 +44,42 @@ suite('ItemEditor.Control', function() {
         window.localStorage.storage = {};
     });
 
-    test('setItem(no item)', function() {
-        assert.throw(function() {
-            module.setItem();
-        }, Error, 'Incorrect input arguments');
-    });
-    test('setItem(incorrect item type)', function() {
-        assert.throw(function() {
-            module.setItem('string');
-        }, Error, 'Incorrect input arguments');
-    });
-    test('setItem(Task)', function() {
-        assert.doesNotThrow(function() {
-            module.setItem(taskList.addTask());
+    suite('setItem()' ,function() {
+        test('no args', function() {
+            assert.throw(function() {
+                module.setItem();
+            }, Error, 'Incorrect input arguments');
         });
-    });
-    test('setItem(TaskList)', function() {
-        assert.doesNotThrow(function() {
-            module.setItem(taskList.addList());
+        test('incorrect item type', function() {
+            assert.throw(function() {
+                module.setItem('string');
+            }, Error, 'Incorrect input arguments');
+        });
+        test('Task input argument', function() {
+            assert.doesNotThrow(function() {
+                module.setItem(taskList.addTask());
+            });
+        });
+        test('TaskList input argument', function() {
+            assert.doesNotThrow(function() {
+                module.setItem(taskList.addList());
+            });
         });
     });
 
-    test('setSaveCallback()', function() {
-        assert.throw(function() {
-            module.setSaveCallback();
-        }, Error, 'Incorrect input arguments');
+    suite('setSaveCallback()', function() {
+        test('ao arguments', function() {
+            assert.throw(function() {
+                module.setSaveCallback();
+            }, Error, 'Incorrect input arguments');
+        });
+        test('not function', function() {
+            assert.throw(function() {
+                module.setSaveCallback('I am not a function');
+            }, Error, 'Incorrect input arguments');
+        });
     });
-    test('setSaveCallback(not function)', function() {
-        assert.throw(function() {
-            module.setSaveCallback('I am function');
-        }, Error, 'Incorrect input arguments');
-    });
+
     test('setSaveCallback()', function() {
         function fn() {}
 
@@ -84,36 +89,38 @@ suite('ItemEditor.Control', function() {
         assert.equal(module._callback, fn);
     });
 
-    test('getData() from _defaults', function() {
-        var itemData = module._defaults._defaults;
-        itemData.timestamp = new Date().toISOString();
-        assert.deepEqual(module.getData(), itemData);
-    });
-    test('getData() from item without startDate and dueDate', function() {
-        var item = taskList.addTask({
-            id: 'ok',
-            timestamp: new Date().toISOString()
+    suite('getData()' , function() {
+        test('from _defaults', function() {
+            var itemData = module._defaults._defaults;
+            itemData.timestamp = new Date().toISOString();
+            assert.deepEqual(module.getData(), itemData);
         });
-        module.setItem(item);
+        test('from item without startDate and dueDate', function() {
+            var item = taskList.addTask({
+                id: 'ok',
+                timestamp: new Date().toISOString()
+            });
+            module.setItem(item);
 
-        assert.deepEqual(module.getData(), item.public);
-    });
-    test('getData() from item with all data', function() {
-        var item = taskList.addTask({
-            title: 'all ok',
-            isDone: false,
-            priority: 2,
-            startDate: '2014-09-10',
-            dueDate: '2014-10-01',
-            notes: 'note',
-            timestamp: '2014-09-09T20:30:17.572Z',
-            id: 'ok',
-            parentID: 'root',
-            type: 'Task'
+            assert.deepEqual(module.getData(), item.public);
         });
-        module.setItem(item);
+        test('from item with all data', function() {
+            var item = taskList.addTask({
+                title: 'all ok',
+                isDone: false,
+                priority: 2,
+                startDate: '2014-09-10',
+                dueDate: '2014-10-01',
+                notes: 'note',
+                timestamp: '2014-09-09T20:30:17.572Z',
+                id: 'ok',
+                parentID: 'root',
+                type: 'Task'
+            });
+            module.setItem(item);
 
-        assert.deepEqual(module.getData(), item.public);
+            assert.deepEqual(module.getData(), item.public);
+        });
     });
 
     test('save()', function() {
