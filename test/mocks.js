@@ -63,6 +63,7 @@ $.toggleClass = function(){return $};
 $.prop = function(){return $};
 $.checkboxradio = function(){return $};
 $.panel = function(){return $};
+$.popup = function(){return $};
 
 $.mobile = {
     changePage: function() {},

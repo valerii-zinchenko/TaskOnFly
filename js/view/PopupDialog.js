@@ -63,10 +63,10 @@ define(function () {
             }
 
             if (properties.controls && !(properties.controls instanceof Array)) {
-                throw new Error('Incompatible "controls" type');
+                throw new Error('Incorrect type of "controls" property');
             }
             if (_.any(properties.controls, function(control) { return !control.title; })) {
-                throw new Error('Not all controls have a title');
+                throw new Error('All controls should have a "title" property');
             }
 
             if (properties.title) {
@@ -108,6 +108,10 @@ define(function () {
 
         _attachEvents: function() {
             _.each(this.controls, function(control, indx) {
+                if (!control.callback) {
+                    return ;
+                }
+
                 var $control = this.$el.find('#btn' + indx);
                 $control.on('vclick', this.hide.bind(this, control.callback));
             }, this);
