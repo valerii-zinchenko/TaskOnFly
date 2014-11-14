@@ -59,6 +59,7 @@ $.val = function(){};
 $.width = function(){};
 $.addClass = function(){};
 $.removeClass = function(){};
+$.toggleClass = function(){return $};
 $.prop = function(){return $};
 $.checkboxradio = function(){return $};
 $.panel = function(){return $};
