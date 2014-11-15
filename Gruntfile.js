@@ -8,6 +8,8 @@ module.exports = function(grunt) {
         sinon = require('sinon');
         _ = require('underscore');
         Backbone = require('backbone');
+        require('./test/mocks');
+        require('./js/model/TaskOnFly');
         requirejs = require('requirejs');
         define = requirejs.define;
 
@@ -49,8 +51,6 @@ module.exports = function(grunt) {
                     reporter: 'spec',
                     quite: true,
                     require: [
-                        './test/mocks',
-                        './js/model/TaskOnFly',
                         SET_GLOBALS.bind(null, 'js/')
                     ]
                 },
@@ -62,8 +62,6 @@ module.exports = function(grunt) {
                     reporter: 'spec',
                     quite: true,
                     require: [
-                        './test/mocks',
-                        './js/model/TaskOnFly',
                         SET_GLOBALS.bind(null, './js-cov/')
                     ]
                 },

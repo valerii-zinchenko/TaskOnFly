@@ -112,21 +112,37 @@ suite('PopupDialog', function() {
                 });
             }, Error, 'All control\'s "callback" properties should be have function type');
         });
-        test('{message: "msg", controls: [{title: "title", callback: function(){}}]}', function(){
+        test('{title: "title", message: "msg", controls: [{title: "title"}]}', function(){
             var module;
             var controls = [{
-                title: 'title',
-                callback: function(){}
+                title: 'title'
             }];
 
             assert.doesNotThrow(function(){
                 module = new Module({
+                    title: 'title',
                     messages: 'msg',
                     controls: controls
                 });
             });
+            assert.equal(module.title, 'title', '"title" property was incorrectly set');
             assert.isArray(module.messages, 'Property "messages" should be an array');
             assert.equal(module.controls, controls, '"controls" property was incorrectly created');
+        });
+        test('{message: ["msg"], controls: [{title: "title"}]}', function(){
+            var module;
+            var msg = ['msg'];
+
+            assert.doesNotThrow(function(){
+                module = new Module({
+                    messages: msg,
+                    controls: [{
+                        title: 'title'
+                    }]
+                });
+            });
+
+            assert.equal(module.messages, msg, 'Property "messages" was incorrectly set');
         });
     });
 
@@ -229,7 +245,6 @@ suite('PopupDialog', function() {
                 );
 
                 spyPopup.restore();
-                spyCallback.restore();
             });
         });
 

@@ -71,5 +71,7 @@ suite('Test View of APage page', function() {
 
         assert.equal(module.$el.trigger.callCount, 1, 'trigger() should be called once by calling render() method');
         assert.equal(module.$el.trigger.args[0][0], 'create', 'trigger() should be called with "create" input argument');
+
+        module.$el.trigger.restore();
     });
 });

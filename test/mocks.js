@@ -71,3 +71,5 @@ $.mobile = {
         pagecontainer: function(){}
     }
 };
+
+document = {body: {}};
