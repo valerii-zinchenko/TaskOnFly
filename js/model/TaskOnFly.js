@@ -24,7 +24,7 @@
 
 'use strict';
 
-(function() {
+(function(GLOBAL) {
     function saveLocal(key, data) {
         window.localStorage.setItem(key, JSON.stringify(data));
     }
@@ -38,7 +38,7 @@
         window.localStorage.removeItem(key);
     }
 
-    var TaskOnFly = {
+    var TaskOnFly = GLOBAL.TaskOnFly = {
         ROOT_TASK_LIST: null,
         CURRENT_TASK_LIST: null,
         setRootList: function(list) {
@@ -125,6 +125,4 @@
     };
 
     TaskOnFly.$ = $(TaskOnFly);
-
-    (this || (1,eval)('this'))['TaskOnFly'] = TaskOnFly;
-})();
+})((1,eval)('this'));
