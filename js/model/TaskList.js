@@ -31,7 +31,15 @@ define([
         _parent: null,
         _NDone: 0,
         _path: '/',
-        groups: {},
+        groups: {
+            'true': {},
+            'false': {},
+            sortingOrder: {
+                0: ['false', 'true'],
+                1: [],
+                2: ['2', '1', '0']
+            }
+        },
         models: {},
 
         public: {
@@ -51,6 +59,21 @@ define([
             if (this.public.items.indexOf(item.public.id) === -1) {
                 this.public.items.unshift(item.public.id);
             }
+
+            var sort1 = item.public.isDone,     // collect by completeness
+                sort2 = sort1 ? item.public.doneDate : item.public.dueDate,    // collect by dateGroup or none (for tasks without due dateGroup property)
+                sort3 = item.public.priority;   // collect by priority: 0 = low; 1 = normal; 2 = high
+
+            if (!this.groups[sort1]) {
+                this.groups[sort1] = {};
+            }
+            if (!this.groups[sort1][sort2]) {
+                this.groups[sort1][sort2] = {};
+            }
+            if (!this.groups[sort1][sort2][sort3]) {
+                this.groups[sort1][sort2][sort3] = [];
+            }
+            this.groups[sort1][sort2][sort3].push(item.public.id);
 
             this.models[item.public.id] = item;
             if (item.public.isDone) {
@@ -182,33 +205,9 @@ define([
 
         sort: function() {
             var dueDates = {
-                    'false': [],
-                    'true': []
+                    'false': Object.keys(this.groups.false),
+                    'true': Object.keys(this.groups.true)
                 };
-            this.groups = {};
-
-            _.each(this.models, function(item) {
-                var sort1 = item.public.isDone,     // collect by completeness
-                    sort2 = sort1 ? item.public.doneDate : item.public.dueDate,    // collect by dateGroup or none (for tasks without due dateGroup property)
-                    sort3 = item.public.priority;   // collect by priority: 0 = low; 1 = normal; 2 = high
-
-                if (!this.groups[sort1]) {
-                    this.groups[sort1] = {};
-                }
-                if (!this.groups[sort1][sort2]) {
-                    this.groups[sort1][sort2] = {};
-                    if (dueDates[sort1].indexOf(sort2) === -1) {
-                        dueDates[sort1].push(sort2);
-                    }
-                }
-                if (!this.groups[sort1][sort2][sort3]) {
-                    this.groups[sort1][sort2][sort3] = [];
-                }
-
-                if (this.groups[sort1][sort2][sort3].indexOf(item.public.id) === -1) {
-                    this.groups[sort1][sort2][sort3].push(item.public.id);
-                }
-            }, this);
 
             dueDates.false.sort();
             dueDates.true.sort().reverse();
@@ -218,31 +217,7 @@ define([
                 dueDates.false.push(dueDates.false.shift());
             }
 
-            this.groups.sortingOrder = {
-                0: ['false', 'true'],
-                1: dueDates,
-                2: ['2', '1', '0']
-            };
-
-            var arr = {};
-            for (var n = 0, N = this.groups.sortingOrder['0'].length; n < N; n++) {
-                var comp = this.groups.sortingOrder['0'][n];
-                var dateGroup = this.groups.sortingOrder['1'][comp];
-
-                arr[comp] = {};
-                for (var m = 0, M = dateGroup.length; m < M; m++) {
-                    var dueDate = dateGroup[m];
-                    if (this.groups[comp] && this.groups[comp][dueDate]) {
-                        arr[comp][dueDate] = this._object2Array(this.groups[comp][dueDate], this.groups.sortingOrder['2']);
-                    }
-                }
-
-                if (arr[comp]) {
-                    arr[comp] = this._object2Array(arr[comp], dateGroup);
-                }
-            }
-
-            this.public.items = this._object2Array(arr, this.groups.sortingOrder['0']);
+            this.groups.sortingOrder['1'] = dueDates;
         },
 
         filter: function(rules) {
