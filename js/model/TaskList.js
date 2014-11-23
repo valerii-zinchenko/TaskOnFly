@@ -55,7 +55,7 @@ define([
             }
 
             if (this.public.items.indexOf(item.public.id) === -1) {
-                this.public.items.unshift(item.public.id);
+                this.public.items.push(item.public.id);
             }
 
             this.models[item.public.id] = item;
