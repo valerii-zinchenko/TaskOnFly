@@ -22,7 +22,7 @@
 */
 
 var TaskManager = {
-    version: '1.0.9',
+    version: '1.0.8',
     Pages: {},
     Modules: {}
 };

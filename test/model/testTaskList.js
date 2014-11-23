@@ -265,6 +265,12 @@ suite('Test TaskList', function() {
         assert.equal(List.getGroups(), List.groups, 'Incorrect object is returned');
 
         for (var n = 0, N = objs.length; n < N; n++) {
+            assert.equal(List.models[items[n]].public.id, objs[n].id, n + ': incorrect id property');
+            assert.equal(List.models[items[n]].public.isDone, objs[n].isDone, n + ': incorrect isDone property');
+            assert.equal(List.models[items[n]].public.dueDate, objs[n].dueDate, n + ': incorrect dueDate property');
+            assert.equal(List.models[items[n]].public.doneDate, objs[n].doneDate, n + ': incorrect dueDate property');
+            assert.equal(List.models[items[n]].public.priority, objs[n].priority, n + ': incorrect priority property');
+
             assert.notEqual(List.groups[objs[n].isDone][objs[n].isDone ? (objs[n].doneDate || "null") : objs[n].dueDate][objs[n].priority].indexOf(objs[n].id), -1, 'List item is assigned to the incorrect group');
         }
     });

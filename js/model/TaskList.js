@@ -31,13 +31,7 @@ define([
         _parent: null,
         _NDone: 0,
         _path: '/',
-        groups: {
-            isDone: [],
-            priority: [],
-            startDate: [],
-            dueDate: [],
-            doneDate: []
-        },
+        groups: {},
         models: {},
 
         public: {
@@ -55,7 +49,7 @@ define([
             }
 
             if (this.public.items.indexOf(item.public.id) === -1) {
-                this.public.items.push(item.public.id);
+                this.public.items.unshift(item.public.id);
             }
 
             this.models[item.public.id] = item;
@@ -63,8 +57,9 @@ define([
                 this._NDone++;
             }
 
-            this._registerItem(item);
             this._checkListCompleteness();
+
+            this.sort();
 
             this.$.trigger('newItem', item);
             if (toSave) {
@@ -82,6 +77,7 @@ define([
 
             if (this._parent) {
                 this._parent.toggleItemStatus(this.public.id);
+                this._parent.sort();
             } else {
                 this.public.isDone = isListDone;
             }
@@ -128,6 +124,7 @@ define([
                 this._NDone--;
             }
 
+            this.sort();
             this._checkListCompleteness();
         },
 
@@ -183,37 +180,99 @@ define([
             return this.findList(path, subList);
         },
 
-        /**
-         * Register unique item property that can be filtered.
-         *
-         * @param {Task|TaskList} item New item in list.
-         * @private
-         */
-        _registerItem: function(item) {
-            for (var property in this.groups) {
-                if (this.groups[property].indexOf(item.public[property]) == -1) {
-                    this.groups[property].push(item.public[property]);
-                    this.groups[property].sort();
+        sort: function() {
+            var dueDates = {
+                    'false': [],
+                    'true': []
+                };
+            this.groups = {};
+
+            _.each(this.models, function(item) {
+                var sort1 = item.public.isDone,     // collect by completeness
+                    sort2 = sort1 ? item.public.doneDate : item.public.dueDate,    // collect by dateGroup or none (for tasks without due dateGroup property)
+                    sort3 = item.public.priority;   // collect by priority: 0 = low; 1 = normal; 2 = high
+
+                if (!this.groups[sort1]) {
+                    this.groups[sort1] = {};
                 }
+                if (!this.groups[sort1][sort2]) {
+                    this.groups[sort1][sort2] = {};
+                    if (dueDates[sort1].indexOf(sort2) === -1) {
+                        dueDates[sort1].push(sort2);
+                    }
+                }
+                if (!this.groups[sort1][sort2][sort3]) {
+                    this.groups[sort1][sort2][sort3] = [];
+                }
+
+                if (this.groups[sort1][sort2][sort3].indexOf(item.public.id) === -1) {
+                    this.groups[sort1][sort2][sort3].push(item.public.id);
+                }
+            }, this);
+
+            dueDates.false.sort();
+            dueDates.true.sort().reverse();
+
+            // Move the group without end date to the end of the list
+            if (dueDates.false[0] === '') {
+                dueDates.false.push(dueDates.false.shift());
             }
 
-            if (this.groups.dueDate[0] === '') {
-                this.groups.dueDate.push(this.groups.dueDate.shift());
-            }
-        },
+            this.groups.sortingOrder = {
+                0: ['false', 'true'],
+                1: dueDates,
+                2: ['2', '1', '0']
+            };
 
-        filter: function(rules) {
-            return _.filter(this.models, function(item) {
-                var match = true;
-                for (var rule in rules) {
-                    if (!(new RegExp(rules[rule], 'gi').test(item.public[rule]))) {
-                        match = false;
-                        break;
+            var arr = {};
+            for (var n = 0, N = this.groups.sortingOrder['0'].length; n < N; n++) {
+                var comp = this.groups.sortingOrder['0'][n];
+                var dateGroup = this.groups.sortingOrder['1'][comp];
+
+                arr[comp] = {};
+                for (var m = 0, M = dateGroup.length; m < M; m++) {
+                    var dueDate = dateGroup[m];
+                    if (this.groups[comp] && this.groups[comp][dueDate]) {
+                        arr[comp][dueDate] = this._object2Array(this.groups[comp][dueDate], this.groups.sortingOrder['2']);
                     }
                 }
 
-                return match;
+                if (arr[comp]) {
+                    arr[comp] = this._object2Array(arr[comp], dateGroup);
+                }
+            }
+
+            this.public.items = this._object2Array(arr, this.groups.sortingOrder['0']);
+        },
+
+        filter: function(rules) {
+            var NRules = 0,
+                filterResult,
+                result;
+
+            for (var key in rules) {
+                if (rules.hasOwnProperty(key)) {
+                    NRules++;
+                }
+            }
+
+            filterResult = _.filter(this.models, function(item) {
+                var match = 0;
+                for (var rule in rules) {
+                    if (rules.hasOwnProperty(rule) && new RegExp(rules[rule], 'gi').test(item.public[rule])) {
+                        match++;
+                    }
+                }
+
+                return match === NRules;
             });
+
+            result = new TaskList(this.public.id);
+            for (var n = 0, N = filterResult.length; n < N; n++) {
+                result._add(filterResult[n], false);
+            }
+
+            return result;
         },
 
         _object2Array: function(obj, sortedKeys) {

@@ -1,6 +1,6 @@
 {
     "name": "TaskOnFly",
-    "version": "1.0.9",
+    "version": "1.0.8",
     "description": "TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.",
     "main": "index.html",
     "directories": {

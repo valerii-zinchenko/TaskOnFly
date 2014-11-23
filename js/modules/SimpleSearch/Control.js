@@ -65,15 +65,9 @@ define(function () {
                 throw new Error('listModule is not defined');
             }
 
-            var filterResult = this.list.filter({
+            this._showResults(this.list.filter({
                 title: val
-            });
-
-            var result = new TaskManager.TaskList(this.public.id);
-            for (var n = 0, N = filterResult.length; n < N; n++) {
-                result._add(filterResult[n], false);
-            }
-            this._showResults(result);
+            }));
         },
         reset: function() {
             if (!this.listModule) {

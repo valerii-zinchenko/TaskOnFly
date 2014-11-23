@@ -30,34 +30,60 @@ define([
     return new Class({
         template: '<div class="task-list"></div>',
         simpleListTemplate:
-'<table class="full">\
-    <thead\
-        <tr><th></th><th></th></tr>\
-    </thead>\
-    <tbody>\
-    <% _.each(items, function(item) { %>\
-        <% var modelPublic = item.public; %>\
-        <tr class="item" data-item-id="<%= modelPublic.id %>">\
-            <th>\
-                <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>">\
-                    <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>>\
-                    <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label>\
-                </div>\
-            </th>\
-            <td>\
-                <div data-role="controlgroup" data-type="horizontal">\
-                    <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>\
-                </div>\
-            </td>\
-        </tr>\
-    <% }); %>\
-    </tbody>\
+'<table class="full"> \
+    <thead>\
+        <tr><th></th><th></th></tr> \
+    </thead> \
+    <tbody> \
+    <% var displayedDate = ""; %> \
+    <% _.each(public.items, function(item) { %> \
+        <% var modelPublic = models[item].public; %> \
+        <tr data-item-id="<%= modelPublic.id %>"> \
+            <th> \
+                <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>"> \
+                    <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>> \
+                    <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label> \
+                </div> \
+            </th> \
+            <td> \
+                <div data-role="controlgroup" data-type="horizontal"> \
+                    <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button> \
+                </div> \
+            </td> \
+        </tr> \
+    <% }) %> \
+    </tbody> \
 </table>',
+        groupTemplate:
+'<div id="<%= groupID %>"> \
+    <div class="group-title ui-corner-all"><%= title %></div> \
+    <table class="full task-list"> \
+        <thead><tr><th></th><th></th></tr></thead> \
+        <tbody>\
+        <% _.each(items, function(item) { %>\
+        <% var modelPublic = models[item].public; %>\
+            <tr data-item-id="<%= modelPublic.id %>">\
+                <th>\
+                    <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>">\
+                        <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>>\
+                        <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label>\
+                    </div>\
+                </th>\
+                <td>\
+                    <div data-role="controlgroup" data-type="horizontal">\
+                        <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>\
+                    </div>\
+                </td>\
+            </tr>\
+        <% }); %>\
+        </tbody>\
+    </table>\
+</div>',
 
         $content: null,
         $currentList: null,
 
-        initialize: function(holder) {
+        initialize: function(holder, list) {
             this.$content = holder;
 
             TaskOnFly.$.on('showList', this.onShowList.bind(this));
@@ -86,12 +112,27 @@ define([
         },
         _prepareListElement: function(list) {
             var $el = $(_.template(this.template, this));
+            list.sort();
 
-            var items = this.control.getSortedItems();
-            $el.append(_.template(this.simpleListTemplate, {
-                items: items,
-                models: list.models
-            }));
+            if (this.control.useGroups) {
+                var groups = list.getGroups();
+
+                var firstGroupLevel = groups.sortingOrder['0'];
+                for (var n = 0, N = firstGroupLevel.length; n < N; n++) {
+                    var dates = groups.sortingOrder['1'][firstGroupLevel[n]];
+                    for (var m = 0, M = dates.length; m < M; m++) {
+                        var itemIDs = list._object2Array(groups[firstGroupLevel[n]][dates[m]], groups.sortingOrder['2']);
+                        $el.append(_.template(this.groupTemplate, {
+                            groupID: this.control.getGroupID(list, itemIDs[0]),
+                            title: this.control.getGroupTitle(list, itemIDs[0]),
+                            items: itemIDs,
+                            models: list.models
+                        }));
+                    }
+                }
+            } else {
+                $el.append(_.template(this.simpleListTemplate, list));
+            }
 
             return $el;
         },
@@ -149,28 +190,94 @@ define([
             var $el = $target.parents('tr');
             var id = $target.prop('id');
             var list = this.control.getList();
-            var $sibling;
+            var siblingID,
+                $sibling;
 
-            var indexBefore = this.control.getItemPosition(id);
+            if (this.control.useGroups) {
+                var oldGroupID = this.control.getGroupID(list, id);
+            } else {
+                var indexBefore = list.public.items.indexOf(id);
+            }
 
             this.control._toggleTaskStatus(id);
-            $el.find('.list-item').toggleClass('done');
 
-            var indexAfter = this.control.getItemPosition(id);
-            if (indexAfter === indexBefore) {
-                return;
+            var indexAfter = list.public.items.indexOf(id);
+            if (this.control.useGroups) {
+                var newGroupID = this.control.getGroupID(list, id);
+                if (newGroupID === oldGroupID) {
+                    return;
+                }
+            } else {
+                if (indexAfter === indexBefore) {
+                    return;
+                }
             }
 
             $el.detach();
 
-            var $items = this.$currentList.find('.item');
-            if (indexAfter == 0) {
-                $sibling = $items[indexAfter];
-                $el.insertBefore($sibling);
+            if (indexAfter+1 === list.public.items.length) {
+                siblingID = list.public.items[indexAfter - 1];
             } else {
-                $sibling = $items[indexAfter-1];
-                $el.insertAfter($sibling);
+                siblingID = list.public.items[indexAfter + 1];
             }
+
+            if (this.control.useGroups) {
+                var $group = this.$currentList.find('#' + newGroupID);
+
+                if ($group.length === 0) {
+                    $group = $(_.template(this.groupTemplate, {
+                        groupID: newGroupID,
+                        title: this.control.getGroupTitle(list, id),
+                        items: [],
+                        models: list.models
+                    }));
+
+                    if (siblingID) {
+                        var siblingGroupID = this.control.getGroupID(list, siblingID);
+                        var $siblingGroup = this.$currentList.find('#' + siblingGroupID);
+
+                        if (indexAfter+1 === list.public.items.length) {
+                            $group.insertAfter($siblingGroup);
+                        } else {
+                            $group.insertBefore($siblingGroup);
+                        }
+                    } else {
+                        this.$currentList.append($group);
+                    }
+
+                    $group.find('tbody').append($el);
+                } else {
+                    $sibling = $group.find('tr[data-item-id=' + siblingID + ']');
+
+                    // if siblingID is placed in other group, then simply append the element to the end of the group
+                    if ($sibling[0]) {
+                        if (indexAfter+1 === list.public.items.length) {
+                            $el.insertAfter($sibling);
+                        } else {
+                            $el.insertBefore($sibling);
+                        }
+                    } else {
+                        $group.find('tbody').append($el);
+                    }
+                }
+
+                var $oldGroup = this.$currentList.find('#' + oldGroupID);
+                if ($oldGroup.find('.list-item').length === 0) {
+                    $oldGroup.remove();
+                }
+
+                this._fixWidth();
+            } else {
+                $sibling = this.$currentList.find('tr[data-item-id=' + siblingID + ']');
+
+                if (indexAfter+1 === list.public.items.length) {
+                    $el.insertAfter($sibling);
+                } else {
+                    $el.insertBefore($sibling);
+                }
+            }
+
+            $el.find('.list-item').toggleClass('done');
         },
         _insertItem: function() {
             this.render();
@@ -204,6 +311,13 @@ define([
         },
         _continueRemoving: function($el, id) {
             $el.remove();
+            if (this.control.useGroups) {
+                var groupID = this.control.getGroupID(this.control.getList(), id);
+                var $group = this.$currentList.find('#' + groupID);
+                if ($group.find('.list-item').length === 0) {
+                    $group.remove();
+                }
+            }
 
             this.control._removeItem(id);
         },
