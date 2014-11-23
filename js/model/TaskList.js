@@ -32,13 +32,11 @@ define([
         _NDone: 0,
         _path: '/',
         groups: {
-            'true': {},
-            'false': {},
-            sortingOrder: {
-                0: ['false', 'true'],
-                1: [],
-                2: ['2', '1', '0']
-            }
+            isDone: [],
+            priority: [],
+            startDate: [],
+            dueDate: [],
+            doneDate: []
         },
         models: {},
 
@@ -60,29 +58,13 @@ define([
                 this.public.items.unshift(item.public.id);
             }
 
-            var sort1 = item.public.isDone,     // collect by completeness
-                sort2 = sort1 ? item.public.doneDate : item.public.dueDate,    // collect by dateGroup or none (for tasks without due dateGroup property)
-                sort3 = item.public.priority;   // collect by priority: 0 = low; 1 = normal; 2 = high
-
-            if (!this.groups[sort1]) {
-                this.groups[sort1] = {};
-            }
-            if (!this.groups[sort1][sort2]) {
-                this.groups[sort1][sort2] = {};
-            }
-            if (!this.groups[sort1][sort2][sort3]) {
-                this.groups[sort1][sort2][sort3] = [];
-            }
-            this.groups[sort1][sort2][sort3].push(item.public.id);
-
             this.models[item.public.id] = item;
             if (item.public.isDone) {
                 this._NDone++;
             }
 
+            this._registerItem(item);
             this._checkListCompleteness();
-
-            this.sort();
 
             this.$.trigger('newItem', item);
             if (toSave) {
@@ -100,7 +82,6 @@ define([
 
             if (this._parent) {
                 this._parent.toggleItemStatus(this.public.id);
-                this._parent.sort();
             } else {
                 this.public.isDone = isListDone;
             }
@@ -147,7 +128,6 @@ define([
                 this._NDone--;
             }
 
-            this.sort();
             this._checkListCompleteness();
         },
 
@@ -203,51 +183,37 @@ define([
             return this.findList(path, subList);
         },
 
-        sort: function() {
-            var dueDates = {
-                    'false': Object.keys(this.groups.false),
-                    'true': Object.keys(this.groups.true)
-                };
-
-            dueDates.false.sort();
-            dueDates.true.sort().reverse();
-
-            // Move the group without end date to the end of the list
-            if (dueDates.false[0] === '') {
-                dueDates.false.push(dueDates.false.shift());
+        /**
+         * Register unique item property that can be filtered.
+         *
+         * @param {Task|TaskList} item New item in list.
+         * @private
+         */
+        _registerItem: function(item) {
+            for (var property in this.groups) {
+                if (this.groups[property].indexOf(item.public[property]) == -1) {
+                    this.groups[property].push(item.public[property]);
+                    this.groups[property].sort();
+                }
             }
 
-            this.groups.sortingOrder['1'] = dueDates;
+            if (this.groups.dueDate[0] === '') {
+                this.groups.dueDate.push(this.groups.dueDate.shift());
+            }
         },
 
         filter: function(rules) {
-            var NRules = 0,
-                filterResult,
-                result;
-
-            for (var key in rules) {
-                if (rules.hasOwnProperty(key)) {
-                    NRules++;
-                }
-            }
-
-            filterResult = _.filter(this.models, function(item) {
-                var match = 0;
+            return _.filter(this.models, function(item) {
+                var match = true;
                 for (var rule in rules) {
-                    if (rules.hasOwnProperty(rule) && new RegExp(rules[rule], 'gi').test(item.public[rule])) {
-                        match++;
+                    if (!(new RegExp(rules[rule], 'gi').test(item.public[rule]))) {
+                        match = false;
+                        break;
                     }
                 }
 
-                return match === NRules;
+                return match;
             });
-
-            result = new TaskList(this.public.id);
-            for (var n = 0, N = filterResult.length; n < N; n++) {
-                result._add(filterResult[n], false);
-            }
-
-            return result;
         },
 
         _object2Array: function(obj, sortedKeys) {
