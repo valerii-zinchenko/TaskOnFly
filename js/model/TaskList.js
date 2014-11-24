@@ -246,33 +246,17 @@ define([
         },
 
         filter: function(rules) {
-            var NRules = 0,
-                filterResult,
-                result;
-
-            for (var key in rules) {
-                if (rules.hasOwnProperty(key)) {
-                    NRules++;
-                }
-            }
-
-            filterResult = _.filter(this.models, function(item) {
-                var match = 0;
+            return _.filter(this.models, function(item) {
+                var match = true;
                 for (var rule in rules) {
-                    if (rules.hasOwnProperty(rule) && new RegExp(rules[rule], 'gi').test(item.public[rule])) {
-                        match++;
+                    if (!(new RegExp(rules[rule], 'gi').test(item.public[rule]))) {
+                        match = false;
+                        break;
                     }
                 }
 
-                return match === NRules;
+                return match;
             });
-
-            result = new TaskList(this.public.id);
-            for (var n = 0, N = filterResult.length; n < N; n++) {
-                result._add(filterResult[n], false);
-            }
-
-            return result;
         },
 
         _object2Array: function(obj, sortedKeys) {
