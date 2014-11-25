@@ -304,63 +304,63 @@ suite('Test TaskList', function() {
             })
         });
 
-        test('filter by title', function() {
+        test('{title: "itl"}', function() {
             var res = List.filter({
                 title: 'itl'
             });
 
-            assert.equal(res.public.items.length, 2, 'Incorrect count of founded items');
-            assert.property(res.models, '0', 'no item with ID 0');
-            assert.property(res.models, '2', 'no item with ID 2');
+            assert.equal(res.length, 2, 'Incorrect count of founded items');
+            assert.equal(res[0].public.id, 0, 'no item with ID 0');
+            assert.equal(res[1].public.id, 2, 'no item with ID 2');
         });
 
-        test('filter by completeness', function() {
+        test('{isDone: true}', function() {
             var res = List.filter({
                 isDone: true
             });
 
-            assert.equal(res.public.items.length, 1, 'Incorrect count of founded items');
-            assert.property(res.models, '0', 'no item with ID 0');
+            assert.equal(res.length, 1, 'Incorrect count of founded items');
+            assert.equal(res[0].public.id, '0', 'no item with ID 0');
         });
 
-        test('filter by due date', function() {
+        test('{dueDate: "2014-08"}', function() {
             var res = List.filter({
                 dueDate: '2014-08'
             });
 
-            assert.equal(res.public.items.length, 2, 'Incorrect count of founded items');
-            assert.property(res.models, '0', 'no item with ID 0');
-            assert.property(res.models, '1', 'no item with ID 2');
+            assert.equal(res.length, 2, 'Incorrect count of founded items');
+            assert.equal(res[0].public.id, 0, 'no item with ID 0');
+            assert.equal(res[1].public.id, 1, 'no item with ID 2');
         });
 
-        test('filter by title and completeness', function() {
+        test('{title: "itl", isDone: false}', function() {
             var res = List.filter({
                 title: 'itl',
                 isDone: false
             });
 
-            assert.equal(res.public.items.length, 1, 'Incorrect count of founded items');
-            assert.property(res.models, '2', 'no item with ID 2');
+            assert.equal(res.length, 1, 'Incorrect count of founded items');
+            assert.equal(res[0].public.id, 2, 'no item with ID 2');
         });
 
-        test('filter by title and due date', function() {
+        test('{title: "itl", dueDate: "2014-08-31"}', function() {
             var res = List.filter({
                 title: 'itl',
                 dueDate: '2014-08-31'
             });
 
-            assert.equal(res.public.items.length, 1, 'Incorrect count of founded items');
-            assert.property(res.models, '0', 'no item with ID 0');
+            assert.equal(res.length, 1, 'Incorrect count of founded items');
+            assert.equal(res[0].public.id, 0, 'no item with ID 0');
         });
 
-        test('filter by completeness and due date', function() {
+        test('{isDone: false, dueDate: "2014-09"}', function() {
             var res = List.filter({
                 isDone: false,
                 dueDate: '2014-09'
             });
 
-            assert.equal(res.public.items.length, 1, 'Incorrect count of founded items');
-            assert.property(res.models, '2', 'no item with ID 2');
+            assert.equal(res.length, 1, 'Incorrect count of founded items');
+            assert.equal(res[0].public.id, 2, 'no item with ID 2');
         });
     });
 });
