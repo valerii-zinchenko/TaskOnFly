@@ -69,7 +69,7 @@ define(function () {
                 title: val
             });
 
-            var result = new TaskManager.TaskList(this.public.id);
+            var result = new TaskManager.TaskList(this.list.public.id);
             for (var n = 0, N = filterResult.length; n < N; n++) {
                 result._add(filterResult[n], false);
             }
