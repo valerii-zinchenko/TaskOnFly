@@ -61,7 +61,7 @@ define(function () {
             this.public.parentID = parentID;
 
             this.public.id = this._genID();
-            this.public.timestamp = new Date().toISOString();
+            this.public.timestamp = Date.now();
 
             if (typeof data !== 'undefined') {
                 if (typeof data === 'object') {
@@ -73,6 +73,11 @@ define(function () {
         },
         saveData: function(data) {
             if (data) {
+                // Convert timestamp format from YYYY-MM-DDTHH:MM:SS.MMMZ to number of milliseconds
+                if (data.timestamp && typeof data.timestamp == 'string') {
+                    data.timestamp = new Date(data.timestamp).getTime();
+                }
+
                 utils.deepCopy(this.public, data);
             }
 

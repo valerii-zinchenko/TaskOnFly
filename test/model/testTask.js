@@ -75,7 +75,7 @@ suite('Test Task model', function() {
             title = 'test task',
             priority = 3,
             description = 'task description',
-            timestamp = new Date().toISOString(),
+            timestamp = Date.now(),
             startDate = '2014-08-25',
             dueDate = '2014-08-31';
 
@@ -106,7 +106,7 @@ suite('Test Task model', function() {
             title = 'test task',
             priority = 3,
             description = 'task description',
-            timestamp = new Date().toISOString(),
+            timestamp = Date.now(),
             startDate = '2014-08-25',
             dueDate = '2014-08-31';
 
