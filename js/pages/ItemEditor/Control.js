@@ -62,7 +62,8 @@ define([
                 priority: data.priority,
                 startDate: data.startDate,
                 dueDate: data.dueDate,
-                notes: data.notes
+                notes: data.notes,
+                version: this._defaults.version
             });
         },
 

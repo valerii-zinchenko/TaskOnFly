@@ -112,22 +112,22 @@ table .ui-input-text {
     z-index: 3;
     border-radius: 5px 0 0 5px;
 }
-.task-list .list-item.priority-0:before {
+.task-list .list-item.priority-2:before {
     background-color: #3388cc;
 }
 .task-list .list-item.priority-1:before {
     background-color: #28c828;
 }
-.task-list .list-item.priority-2:before {
+.task-list .list-item.priority-0:before {
     background-color: #dc2828;
 }
-.task-list .list-item.priority-0.done:before {
+.task-list .list-item.priority-2.done:before {
     background-color: #99b5cc;
 }
 .task-list .list-item.priority-1.done:before {
     background-color: #8cc88c;
 }
-.task-list .list-item.priority-2.done:before {
+.task-list .list-item.priority-0.done:before {
     background-color: #dc9a9a;
 }
 .task-list .list-item.list label:after {

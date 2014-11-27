@@ -34,7 +34,8 @@ define(function () {
             TaskOnFly.getCurrentList().addTask({
                 title: title,
                 priority: priority,
-                dueDate: utils.date(new Date(Date.now() + 86400000))   // + 1 day
+                dueDate: utils.date(new Date(Date.now() + 86400000)),   // + 1 day
+                version: TaskManager.Task.prototype._defaults.public.version
             });
         }
     });

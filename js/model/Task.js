@@ -38,7 +38,24 @@ define(function () {
 
             id: '',
             parentID: '',
-            type: 'Task'
+            type: 'Task',
+
+            version: '1.0'
+        },
+        versionUpgrades: {
+            '0.0': function (data) {
+                switch (data.priority) {
+                    case 0:
+                    case '0':
+                        data.priority = 2;
+                        break;
+
+                    case 2:
+                    case '2':
+                        data.priority = 0;
+                        break;
+                }
+            }
         },
 
         _genID: function() {
@@ -78,6 +95,15 @@ define(function () {
                     data.timestamp = new Date(data.timestamp).getTime();
                 }
 
+                if (!data.version) {
+                    data.version = '0.0';
+                }
+
+                if (data.version < this._defaults.public.version) {
+                    this.upgrade(data);
+                    data.version = this._defaults.public.version;
+                }
+
                 utils.deepCopy(this.public, data);
             }
 
@@ -88,6 +114,14 @@ define(function () {
                 isDone: !this.public.isDone,
                 doneDate: utils.date()
             });
+        },
+
+        upgrade: function(data) {
+            for (var version in this.versionUpgrades) {
+                if (data.version <= version) {
+                    this.versionUpgrades[version](data);
+                }
+            }
         }
     });
 
