@@ -131,7 +131,8 @@ suite('ItemEditor.Control', function() {
             priority: 'priority',
             startDate: 'startDate',
             dueDate: 'dueDate',
-            notes: 'notes'
+            notes: 'notes',
+            version: '1.0'
         };
 
         module.setSaveCallback(saveFN);

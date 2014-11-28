@@ -43,7 +43,8 @@ suite('Test Task model', function() {
             timestamp: '',
             id: '',
             parentID: '',
-            type: 'Task'
+            type: 'Task',
+            version: '1.0'
         });
     });
 

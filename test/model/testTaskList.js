@@ -187,92 +187,158 @@ suite('Test TaskList', function() {
         assert.deepEqual(result, [3,2,1]);
     });
 
-    test('sort()', function() {
-        var objs = [
-            {
-                id: '0',
-                isDone: false,
-                dueDate: '2014-08-30',
-                priority: 0
-            },
-            {
-                id: '1',
-                isDone: false,
-                dueDate: '2014-08-31',
-                priority: 2
-            },
-            {
-                id: '2',
-                isDone: false,
-                dueDate: '2014-08-31',
-                priority: 1
-            },
-            {
-                id: '3',
-                isDone: false,
-                dueDate: '2014-08-31',
-                priority: 0
-            },
-            {
-                id: '4',
-                isDone: false,
-                dueDate: '2014-08-31',
-                priority: 0
-            },
-            {
-                id: '5',
-                isDone: false,
-                dueDate: '',
-                doneDate: '2014-09-05',
-                priority: 1
-            },
-            {
-                id: '6',
-                isDone: true,
-                dueDate: '2014-09-01',
-                priority: 2
-            },
-            {
-                id: '7',
-                isDone: true,
-                dueDate: '2014-09-01',
-                doneDate: '2014-09-08',
-                priority: 0
-            },
-            {
-                id: '8',
-                isDone: true,
-                dueDate: '2014-09-02',
-                doneDate: '2014-09-05',
-                priority: 1
+    suite('sort()', function(){
+        var objs;
+        setup(function(){
+            objs = [
+                {
+                    id: '0',
+                    isDone: false,
+                    dueDate: '2014-08-30',
+                    priority: 2,
+                    version: '1.0'
+                },
+                {
+                    id: '1',
+                    isDone: false,
+                    dueDate: '2014-08-31',
+                    priority: 0,
+                    version: '1.0'
+                },
+                {
+                    id: '2',
+                    isDone: false,
+                    dueDate: '2014-08-31',
+                    priority: 1,
+                    version: '1.0'
+                },
+                {
+                    id: '3',
+                    isDone: false,
+                    dueDate: '2014-08-31',
+                    priority: 2,
+                    version: '1.0'
+                },
+                {
+                    id: '4',
+                    isDone: false,
+                    dueDate: '2014-08-31',
+                    priority: 2,
+                    version: '1.0'
+                },
+                {
+                    id: '5',
+                    isDone: false,
+                    dueDate: '',
+                    doneDate: '2014-09-05',
+                    priority: 1,
+                    version: '1.0'
+                },
+                {
+                    id: '6',
+                    isDone: true,
+                    dueDate: '2014-09-01',
+                    priority: 0,
+                    version: '1.0'
+                },
+                {
+                    id: '7',
+                    isDone: true,
+                    dueDate: '2014-09-01',
+                    doneDate: '2014-09-08',
+                    priority: 2,
+                    version: '1.0'
+                },
+                {
+                    id: '8',
+                    isDone: true,
+                    dueDate: '2014-09-02',
+                    doneDate: '2014-09-05',
+                    priority: 1,
+                    version: '1.0'
+                }
+            ];
+        });
+        teardown(function(){
+            window.localStorage.storage = {};
+        });
+
+        test('default sort order: isDone, priority', function() {
+            List.setSortingOrder(['isDone', 'priority']);
+
+            List.addTask(objs[7]);
+            List.addTask(objs[1]);
+            List.addTask(objs[8]);
+            List.addTask(objs[5]);
+            List.addTask(objs[2]);
+            List.addTask(objs[6]);
+            List.addTask(objs[4]);
+            List.addTask(objs[0]);
+            List.addTask(objs[3]);
+
+            var expectedOrder = ['1','5','2','4','0','3','6','8','7'];
+
+            assert.equal(List.public.items.length, objs.length, 'Count of expected task is not equal to the count of added tasks');
+            for (var n = 0, N = objs.length; n < N; n++) {
+                assert.equal(List.public.items[n], expectedOrder[n], [
+                    'incorrect sorting: expected ',
+                    JSON.stringify(List.public.items),
+                    ' to be equal to ',
+                    JSON.stringify(expectedOrder)
+                ].join(''));
             }
-        ];
+        });
 
-        List.addTask(objs[7]);
-        List.addTask(objs[1]);
-        List.addTask(objs[8]);
-        List.addTask(objs[5]);
-        List.addTask(objs[2]);
-        List.addTask(objs[6]);
-        List.addTask(objs[4]);
-        List.addTask(objs[0]);
-        List.addTask(objs[3]);
+        test('sort order: isDone, date, priority', function() {
+            List.setSortingOrder(['isDone', 'date', 'priority']);
 
-        var items = List.public.items;
+            List.addTask(objs[7]);
+            List.addTask(objs[1]);
+            List.addTask(objs[8]);
+            List.addTask(objs[5]);
+            List.addTask(objs[2]);
+            List.addTask(objs[6]);
+            List.addTask(objs[4]);
+            List.addTask(objs[0]);
+            List.addTask(objs[3]);
 
-        assert.equal(items.length, objs.length, 'Count of expected task is not equal to the count of added tasks');
-        assert.isDefined(List.groups, '"groups" property should be already defined');
-        assert.equal(List.getGroups(), List.groups, 'Incorrect object is returned');
+            var expectedOrder = ['0','1','2','4','3','5','8','7','6'];
 
-        for (var n = 0, N = objs.length; n < N; n++) {
-            assert.equal(List.models[items[n]].public.id, objs[n].id, n + ': incorrect id property');
-            assert.equal(List.models[items[n]].public.isDone, objs[n].isDone, n + ': incorrect isDone property');
-            assert.equal(List.models[items[n]].public.dueDate, objs[n].dueDate, n + ': incorrect dueDate property');
-            assert.equal(List.models[items[n]].public.doneDate, objs[n].doneDate, n + ': incorrect dueDate property');
-            assert.equal(List.models[items[n]].public.priority, objs[n].priority, n + ': incorrect priority property');
+            assert.equal(List.public.items.length, objs.length, 'Count of expected task is not equal to the count of added tasks');
+            for (var n = 0, N = objs.length; n < N; n++) {
+                assert.equal(List.public.items[n], expectedOrder[n], [
+                    'incorrect sorting: expected ',
+                    JSON.stringify(List.public.items),
+                    ' to equal ',
+                    JSON.stringify(expectedOrder)
+                ].join(''));
+            }
+        });
 
-            assert.notEqual(List.groups[objs[n].isDone][objs[n].isDone ? (objs[n].doneDate || "null") : objs[n].dueDate][objs[n].priority].indexOf(objs[n].id), -1, 'List item is assigned to the incorrect group');
-        }
+        test('sort order: isDone, priority, date', function() {
+            List.setSortingOrder(['isDone', 'priority', 'date']);
+
+            List.addTask(objs[7]);
+            List.addTask(objs[1]);
+            List.addTask(objs[8]);
+            List.addTask(objs[5]);
+            List.addTask(objs[2]);
+            List.addTask(objs[6]);
+            List.addTask(objs[4]);
+            List.addTask(objs[0]);
+            List.addTask(objs[3]);
+
+            var expectedOrder = [1,2,5,0,4,3,8,7,6];
+
+            for (var n = 0, N = objs.length; n < N; n++) {
+                assert.equal(List.public.items[n], objs[expectedOrder[n]].id, [
+                    'incorrect sorting: expected ',
+                    JSON.stringify(List.public.items),
+                    ' to be equal to ',
+                    JSON.stringify(expectedOrder)
+                ].join(''));
+            }
+        });
     });
 
     suite('filter()', function() {

@@ -33,6 +33,18 @@ define([
         _path: '/',
         groups: {},
         models: {},
+        sortingOrder: ['isDone', 'priority'],
+        // todo for future
+        /*sortingOrder: [
+            {
+                property:'isDone',
+                sort: 'asc'
+            },
+            {
+                property: 'priority',
+                sort: 'desc'
+            }
+        ],*/
 
         public: {
             type: 'List',
@@ -49,7 +61,7 @@ define([
             }
 
             if (this.public.items.indexOf(item.public.id) === -1) {
-                this.public.items.unshift(item.public.id);
+                this.public.items.push(item.public.id);
             }
 
             this.models[item.public.id] = item;
@@ -180,69 +192,89 @@ define([
             return this.findList(path, subList);
         },
 
+        setSortingOrder: function(order) {
+            if (!order) {
+                throw new Error('No input arguments');
+            }
+
+            if (!(order instanceof Array)) {
+                order = [order];
+            }
+
+            this.sortingOrder = null;
+            this.sortingOrder = order;
+        },
         sort: function() {
-            var dueDates = {
-                    'false': [],
-                    'true': []
-                };
-            this.groups = {};
+            if (this.sortingOrder.length == 0) {
+                throw new Error('Sorting order is not defined');
+            }
 
-            _.each(this.models, function(item) {
-                var sort1 = item.public.isDone,     // collect by completeness
-                    sort2 = sort1 ? item.public.doneDate : item.public.dueDate,    // collect by dateGroup or none (for tasks without due dateGroup property)
-                    sort3 = item.public.priority;   // collect by priority: 0 = low; 1 = normal; 2 = high
+            //todo apply sorting order: asc, desc
+            // Build ID-map for sorting
+            var sortingIDs = this.public.items.map(function(id) {
+                var modID = '';
+                var publicData = this.models[id].public;
+                for (var n = 0, N = this.sortingOrder.length; n < N; n++) {
+                    var property = this.sortingOrder[n];
+                    if (property === 'date') {
+                        property = publicData.isDone ? 'doneDate' : 'dueDate';
+                    }
 
-                if (!this.groups[sort1]) {
-                    this.groups[sort1] = {};
-                }
-                if (!this.groups[sort1][sort2]) {
-                    this.groups[sort1][sort2] = {};
-                    if (dueDates[sort1].indexOf(sort2) === -1) {
-                        dueDates[sort1].push(sort2);
+                    var value = publicData[property];
+
+                    if(typeof value == 'string') {
+                        value = value.replace(/\D/g, '');
+
+                        // This is currently for date only. If value is an empty string
+                        // then simulate the maximum date value like '9999.99.99'
+                        if (value === '') {
+                            value = 99999999;
+                        } else {
+                            value = parseInt(value);
+                        }
+                    }
+
+                    // Force casting to number;
+                    value += 0;
+                    if (!isNaN(value)) {
+                        modID += value;
                     }
                 }
-                if (!this.groups[sort1][sort2][sort3]) {
-                    this.groups[sort1][sort2][sort3] = [];
-                }
 
-                if (this.groups[sort1][sort2][sort3].indexOf(item.public.id) === -1) {
-                    this.groups[sort1][sort2][sort3].push(item.public.id);
-                }
+                return {
+                    sortID: modID,
+                    timestamp: publicData.timestamp,
+                    id: id
+                };
             }, this);
 
-            dueDates.false.sort();
-            dueDates.true.sort().reverse();
-
-            // Move the group without end date to the end of the list
-            if (dueDates.false[0] === '') {
-                dueDates.false.push(dueDates.false.shift());
-            }
-
-            this.groups.sortingOrder = {
-                0: ['false', 'true'],
-                1: dueDates,
-                2: ['2', '1', '0']
-            };
-
-            var arr = {};
-            for (var n = 0, N = this.groups.sortingOrder['0'].length; n < N; n++) {
-                var comp = this.groups.sortingOrder['0'][n];
-                var dateGroup = this.groups.sortingOrder['1'][comp];
-
-                arr[comp] = {};
-                for (var m = 0, M = dateGroup.length; m < M; m++) {
-                    var dueDate = dateGroup[m];
-                    if (this.groups[comp] && this.groups[comp][dueDate]) {
-                        arr[comp][dueDate] = this._object2Array(this.groups[comp][dueDate], this.groups.sortingOrder['2']);
-                    }
+            // Sort items
+            sortingIDs.sort(function(a,b) {
+                // Check the id length.
+                // If length of a is lower than length of b - it means that a does not has some property.
+                if (a.sortID.length < b.sortID.length) {
+                    return 1;
+                } else if (a.sortID.length > b.sortID.length) {
+                    return -1;
+                // Compare ids
+                } else if (a.sortID < b.sortID) {
+                    return -1;
+                } else if (a.sortID > b.sortID) {
+                    return 1;
+                // If sortIDs are equal - sort items by their timestamp
+                } else if (a.timestamp < b.timestamp) {
+                    return -1;
+                } else if (a.timestamp > b.timestamp) {
+                    return 1;
+                } else {
+                    return 0;
                 }
+            });
 
-                if (arr[comp]) {
-                    arr[comp] = this._object2Array(arr[comp], dateGroup);
-                }
-            }
-
-            this.public.items = this._object2Array(arr, this.groups.sortingOrder['0']);
+            this.public.items = null;
+            this.public.items = sortingIDs.map(function(info) {
+                return info.id;
+            });
         },
 
         filter: function(rules) {
