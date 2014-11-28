@@ -101,6 +101,12 @@ suite('Test utility functions', function() {
 
             assert.equal(utils.date(), date, 'Incorrect date was returned from the method without input argument');
             assert.equal(utils.date(new Date()), date, 'Incorrect date was returned from the method with input argument');
-        })
+        });
+
+        test('timezone invariant', function(){
+            var date = new Date('Mon Dec 29 2014 00:00:00 GMT+0200 (EET)');
+
+            assert.equal(utils.date(date), '2014-11-29', 'Timezone should not have an influence');
+        });
     })
 });
