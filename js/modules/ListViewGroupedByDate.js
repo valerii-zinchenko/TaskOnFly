@@ -24,10 +24,10 @@
 'use strict';
 
 define([
-    './ListView/View',
-    './ListView/Control'
-], function (View, Control) {
-    TaskManager.Modules.ListView = new MVCModule({
+    './ListViewGroupedByDate/View',
+    './ListViewGroupedByDate/Control'
+],function (View, Control) {
+    TaskManager.Modules.ListViewGroupedByDate = new MVCModule({
         View: View,
         Control: Control,
 
@@ -36,5 +36,5 @@ define([
         }
     });
 
-    return TaskManager.Modules.ListView;
+    return TaskManager.Modules.ListViewGroupedByDate;
 });

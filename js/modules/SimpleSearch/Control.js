@@ -37,7 +37,10 @@ define(function () {
             }
         },
         setListModule: function(listModule) {
-            if (!listModule || listModule.constructor !== TaskManager.Modules.ListView) {
+            if (!listModule
+                && listModule.constructor !== TaskManager.Modules.ListView
+                && listModule.constructor !== TaskManager.Modules.ListViewGroupedByDate)
+            {
                 throw new Error('Incorrect type for listModule input argument');
             }
 

@@ -43,7 +43,10 @@ define([
     }
     return function() {
         var store = TaskOnFly.loadItem('root'),
-            rootList = new TaskManager.TaskList('root', {id:'root'});
+            rootList = new TaskManager.TaskList('root', {
+                id:'root',
+                version: TaskManager.TaskList.prototype._defaults.public.version
+            });
 
         if (store) {
             var ids = store.items;

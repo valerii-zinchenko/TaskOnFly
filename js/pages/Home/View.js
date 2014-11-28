@@ -26,7 +26,7 @@
 
 define([
     '../APage/View',
-    'modules/ListView',
+    'modules/ListViewGroupedByDate',
     'modules/FastTask',
     'modules/SimpleSearch',
     'modules/MainPanel'
