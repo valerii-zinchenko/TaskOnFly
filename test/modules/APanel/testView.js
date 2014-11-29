@@ -125,7 +125,7 @@ suite('Test APanel.View', function() {
 
             var id = 'id';
             assert.doesNotThrow(function() {
-                new Module({
+                module = new Module({
                     id: id
                 });
             });
@@ -148,13 +148,6 @@ suite('Test APanel.View', function() {
             assert.throw(function() {
                 new Module({
                     items: [
-                        {}
-                    ]
-                });
-            }, Error, 'Incorrect object content in "items" array');
-            assert.throw(function() {
-                new Module({
-                    items: [
                         {link:':)'}
                     ]
                 });
@@ -166,26 +159,6 @@ suite('Test APanel.View', function() {
                     ]
                 });
             }, Error, '"link" property is missed in object content in "items" array');
-            assert.throw(function() {
-                new Module({
-                    items: [
-                        {
-                            title:':)',
-                            link: ''
-                        }
-                    ]
-                });
-            }, Error, '"link" property should not be empty in object content in "items" array');
-            assert.throw(function() {
-                new Module({
-                    items: [
-                        {
-                            title:'',
-                            link: ':)'
-                        }
-                    ]
-                });
-            }, Error, '"title" property should not be empty in object content in "items" array');
             assert.throw(function() {
                 new Module({
                     items: [

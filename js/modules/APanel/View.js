@@ -47,15 +47,19 @@ define(function () {
                 return;
             }
 
-            if (options.page) {
+            if (!(options instanceof Object)) {
+                throw new Error('Incorrect type of the input argument');
+            }
+
+            if (options.hasOwnProperty('page')) {
                 this.setPanelPage(options.page);
             }
 
-            if (options.id) {
+            if (options.hasOwnProperty('id')) {
                 this.setPanelID(options.id);
             }
 
-            if (options.items && options.items.length > 0) {
+            if (options.hasOwnProperty('items')) {
                 this.setPanelItems(options.items);
             }
         },
@@ -89,12 +93,59 @@ define(function () {
             return this.$el;
         },
         setPanelPage: function(page) {
+            if (!(page instanceof Object)) {
+                throw new Error('Incorrect type of the "page" property');
+            }
+
             this._$holder = page;
         },
         setPanelID: function(id) {
+            if (typeof id !== 'string') {
+                throw new Error('Incorrect type of the "id" property');
+            }
+            if (id == '') {
+                throw new Error('Incorrect "id" value');
+            }
+
             this.panelID = id;
         },
         setPanelItems: function(items) {
+            if (!(items instanceof Array)) {
+                throw new Error('Incorrect type of the "items" property');
+            }
+            if (items.some(function(item) {
+                    return !(item instanceof Object);
+                }))
+            {
+                throw  new Error('Incorrect type of the content in "items" property');
+            }
+
+            if (items.some(function(item) {
+                    return !item.title;
+                }))
+            {
+                throw  new Error('"title" property is missed in object content in "items" array');
+            }
+            if (items.some(function(item) {
+                    return typeof item.title != 'string';
+                }))
+            {
+                throw  new Error('Incorrect type of "title" property in object content in "items" array');
+            }
+
+            if (items.some(function(item) {
+                    return !item.link;
+                }))
+            {
+                throw  new Error('"link" property is missed in object content in "items" array');
+            }
+            if (items.some(function(item) {
+                    return typeof item.link != 'string';
+                }))
+            {
+                throw  new Error('Incorrect type of "link" property in object content in "items" array');
+            }
+
             this.items = items;
         },
         close: function() {
