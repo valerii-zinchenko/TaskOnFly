@@ -24,7 +24,7 @@
 
 'use strict';
 
-suite('SimpleSearch', function() {
+suite('SimpleSearch.Control', function() {
     var Module,
         listView,
         TaskList;
@@ -63,6 +63,9 @@ suite('SimpleSearch', function() {
         var module;
         setup(function() {
             module = new Module();
+        });
+        teardown(function(){
+            module = null;
         });
 
         test('setListModule()', function() {

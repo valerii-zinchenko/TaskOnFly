@@ -34,6 +34,9 @@ define(function() {
             if (!holder) {
                 throw new Error('Holder element for module is not defined');
             }
+            if (!(holder instanceof Object)) {
+                throw new Error('Incorrect input argument type');
+            }
 
             this.$holder = holder;
 
