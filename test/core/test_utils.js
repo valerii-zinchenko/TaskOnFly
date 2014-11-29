@@ -104,7 +104,7 @@ suite('Test utility functions', function() {
         });
 
         test('timezone invariant', function(){
-            var date = new Date('Mon Dec 29 2014 00:00:00 GMT+0200 (EET)');
+            var date = new Date('Mon Nov 29 2014 00:00:00 GMT+0200 (EET)');
 
             assert.equal(utils.date(date), '2014-11-29', 'Timezone should not have an influence');
         });
