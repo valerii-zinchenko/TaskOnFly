@@ -1,6 +1,6 @@
 "use strict";
 
-suite('Test MVCModule', function() {
+suite('MVCModule', function() {
     suite('Test factory function', function() {
         test('No input arguments', function() {
             assert.throw(function() {

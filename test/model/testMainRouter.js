@@ -24,7 +24,7 @@
 
 'use strict';
 
-suite('Test MainRouter', function() {
+suite('MainRouter', function() {
     var Module;
     setup(function(done) {
         requirejs.undef('model/MainRouter');

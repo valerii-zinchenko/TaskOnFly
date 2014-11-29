@@ -23,7 +23,7 @@
 
 'use strict';
 
-suite('Test TaskList', function() {
+suite('TaskList', function() {
     var Module,
         List;
     setup(function(done) {

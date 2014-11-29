@@ -24,7 +24,7 @@
 
 'use strict';
 
-suite('Test ListView.Control', function() {
+suite('ListViewGroupedByDate.Control', function() {
     var Module, TaskListModule;
     setup(function(done) {
         requirejs(['modules/ListViewGroupedByDate/Control'], function(Control) {

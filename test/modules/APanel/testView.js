@@ -24,7 +24,7 @@
 
 'use strict';
 
-suite('Test APanel.View', function() {
+suite('APanel.View', function() {
     var Module;
     setup(function(done) {
         requirejs.undef('modules/APanel/View');

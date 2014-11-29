@@ -23,7 +23,7 @@
 
 'use strict';
 
-suite('Test FastTask.View', function() {
+suite('FastTask.View', function() {
     var Module;
     setup(function(done) {
         requirejs.undef('modules/FastTask/View');

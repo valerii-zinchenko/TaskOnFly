@@ -23,7 +23,7 @@
 
 'use strict';
 
-suite('Test Home.View', function() {
+suite('Home.View', function() {
     var Module;
     setup(function(done) {
         requirejs.undef('pages/Home/View');

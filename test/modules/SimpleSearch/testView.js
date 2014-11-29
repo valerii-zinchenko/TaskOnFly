@@ -23,7 +23,7 @@
 
 'use strict';
 
-suite('Test SimpleSearch.View', function() {
+suite('SimpleSearch.View', function() {
     suite('initialize()', function() {
         var Module;
         setup(function(done) {

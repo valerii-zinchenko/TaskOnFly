@@ -24,7 +24,7 @@
 
 'use strict';
 
-suite('Test Home.Control', function() {
+suite('Home.Control', function() {
     var Module,
         module;
     setup(function(done) {

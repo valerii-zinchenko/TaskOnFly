@@ -22,7 +22,7 @@
 */
 
 
-suite('Test Class.', function() {
+suite('Class.', function() {
     suite('Input arguments', function() {
         test('No arguments', function() {
             assert.doesNotThrow(function() {

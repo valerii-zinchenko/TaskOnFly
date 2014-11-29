@@ -21,7 +21,7 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
-suite('Test TaskOnFly', function() {
+suite('TaskOnFly', function() {
     setup(function() {
         TaskOnFly.ROOT_TASK_LIST = null;
         TaskOnFly.CURRENT_TASK_LIST = null;

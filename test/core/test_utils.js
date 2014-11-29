@@ -22,7 +22,7 @@
 */
 
 
-suite('Test utility functions', function() {
+suite('utils', function() {
     suite('Object manipulations.', function() {
         var v1 = 11,
             v2 = 4,

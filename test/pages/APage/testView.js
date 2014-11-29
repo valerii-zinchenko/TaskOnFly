@@ -23,7 +23,7 @@
 
 'use strict';
 
-suite('Test View of APage page', function() {
+suite('APage.View', function() {
     var Module;
 
     setup(function(done) {

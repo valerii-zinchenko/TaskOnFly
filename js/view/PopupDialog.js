@@ -101,13 +101,6 @@ define(function () {
                 throw new Error('All control\'s "callback" properties should be have function type');
             }
 
-            if (properties.controls && !(properties.controls instanceof Array)) {
-                throw new Error('Incorrect type of "controls" property');
-            }
-            if (_.any(properties.controls, function(control) { return !control.title; })) {
-                throw new Error('All controls should have a "title" property');
-            }
-
             if (properties.title) {
                 this.title = properties.title;
             }

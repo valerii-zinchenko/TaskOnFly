@@ -24,7 +24,7 @@
 
 'use strict';
 
-suite('Test ListView.Control', function() {
+suite('ListView.Control', function() {
     var Module, TaskListModule;
     setup(function(done) {
         requirejs(['modules/ListView/Control'], function(Control) {

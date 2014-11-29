@@ -2,6 +2,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-jscoverage');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-requirejs');
 
     function SET_GLOBALS(path) {
         assert = require('chai').assert;
@@ -35,6 +36,33 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        requirejs: {
+            compile: {
+                options: {
+                    baseUrl: 'js',
+                    dir: 'min-js',
+                    optimize: 'none',
+                    modules: [
+                        {
+                            name: 'core/AClass',
+                            include: [
+                                'core/utils',
+                                'core/Class',
+                                'core/SingletonClass',
+                                'core/MVCModule'
+                            ]
+                        },
+                        {
+                            name: 'pages/ItemEditor'
+                        },
+                        {
+                            name: 'main'
+                        }
+                    ],
+                    useStrict: true
+                }
+            }
+        },
         jscoverage: {
             src: {
                 expand: true,

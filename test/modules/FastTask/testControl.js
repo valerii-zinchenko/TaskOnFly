@@ -24,7 +24,7 @@
 
 'use strict';
 
-suite('FastTask', function() {
+suite('FastTask.Control', function() {
     var Module,
         module,
         list;

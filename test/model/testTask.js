@@ -22,7 +22,7 @@
 */
 
 
-suite('Test Task model', function() {
+suite('Task', function() {
     var Module;
     setup(function(done) {
         requirejs(['model/Task'], function() {

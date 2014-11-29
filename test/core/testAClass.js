@@ -23,7 +23,7 @@
 
 'use strict';
 
-suite('Test AClass', function() {
+suite('AClass', function() {
     suite('Input arguments', function() {
         test('No arguments', function() {
             assert.throw(function() {
