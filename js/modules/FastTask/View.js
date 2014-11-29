@@ -54,6 +54,9 @@ define(function() {
             if (!$holder) {
                 throw new Error('Holder element of FastTask module is not defined.');
             }
+            if (!($holder instanceof Object)) {
+                throw new Error('Incorrect input argument type');
+            }
 
             this.$el = $(this.template);
             this.$fastTilte = this.$el.find('#fastTitle');
