@@ -154,6 +154,23 @@ suite('TaskList', function() {
         assert.equal(l1.getParentLocation(), '/', 'Incorrect parent location address of the list');
     });
 
+    test('setSortingOrder()', function(){
+        assert.throw(function(){
+            List.setSortingOrder();
+        }, Error, 'No input arguments');
+
+        assert.throw(function(){
+            List.setSortingOrder([]);
+        }, Error, 'Array of sorting rules is empty');
+
+        List.setSortingOrder('isDone');
+        assert.isArray(List.sortingOrder, 'sortingOrder should be an Array');
+        assert.equal(List.sortingOrder[0], 'isDone');
+
+        List.setSortingOrder(['priority']);
+        assert.equal(List.sortingOrder[0], 'priority');
+    });
+
     suite('findList()', function() {
         var list, searchedList;
 
@@ -174,19 +191,6 @@ suite('TaskList', function() {
         });
     });
 
-    test('_object2Array()', function() {
-        var obj = {
-            1: 1,
-            2: 2,
-            3: 3
-        };
-
-        var result = Module.prototype._object2Array(obj, [3,2,1]);
-
-        assert.isArray(result);
-        assert.deepEqual(result, [3,2,1]);
-    });
-
     suite('sort()', function(){
         var objs;
         setup(function(){
@@ -196,6 +200,7 @@ suite('TaskList', function() {
                     isDone: false,
                     dueDate: '2014-08-30',
                     priority: 2,
+                    timestamp: 7,
                     version: '1.0'
                 },
                 {
@@ -203,6 +208,7 @@ suite('TaskList', function() {
                     isDone: false,
                     dueDate: '2014-08-31',
                     priority: 0,
+                    timestamp: 1,
                     version: '1.0'
                 },
                 {
@@ -210,6 +216,7 @@ suite('TaskList', function() {
                     isDone: false,
                     dueDate: '2014-08-31',
                     priority: 1,
+                    timestamp: 5,
                     version: '1.0'
                 },
                 {
@@ -217,6 +224,7 @@ suite('TaskList', function() {
                     isDone: false,
                     dueDate: '2014-08-31',
                     priority: 2,
+                    timestamp: 8,
                     version: '1.0'
                 },
                 {
@@ -224,6 +232,7 @@ suite('TaskList', function() {
                     isDone: false,
                     dueDate: '2014-08-31',
                     priority: 2,
+                    timestamp: 6,
                     version: '1.0'
                 },
                 {
@@ -232,6 +241,7 @@ suite('TaskList', function() {
                     dueDate: '',
                     doneDate: '2014-09-05',
                     priority: 1,
+                    timestamp: 4,
                     version: '1.0'
                 },
                 {
@@ -239,6 +249,7 @@ suite('TaskList', function() {
                     isDone: true,
                     dueDate: '2014-09-01',
                     priority: 0,
+                    timestamp: 6,
                     version: '1.0'
                 },
                 {
@@ -247,6 +258,7 @@ suite('TaskList', function() {
                     dueDate: '2014-09-01',
                     doneDate: '2014-09-08',
                     priority: 2,
+                    timestamp: 1,
                     version: '1.0'
                 },
                 {
@@ -255,12 +267,22 @@ suite('TaskList', function() {
                     dueDate: '2014-09-02',
                     doneDate: '2014-09-05',
                     priority: 1,
+                    timestamp: 2,
                     version: '1.0'
                 }
             ];
         });
         teardown(function(){
+            objs = null;
             window.localStorage.storage = {};
+        });
+
+        test('empty sorting order', function(){
+            List.sortingOrder = [];
+
+            assert.throw(function(){
+                List.sort();
+            }, Error, 'Sorting order is not defined');
         });
 
         test('default sort order: isDone, priority', function() {
@@ -324,11 +346,11 @@ suite('TaskList', function() {
             List.addTask(objs[5]);
             List.addTask(objs[2]);
             List.addTask(objs[6]);
-            List.addTask(objs[4]);
-            List.addTask(objs[0]);
             List.addTask(objs[3]);
+            List.addTask(objs[0]);
+            List.addTask(objs[4]);
 
-            var expectedOrder = [1,2,5,0,4,3,8,7,6];
+            var expectedOrder = ['1','2','5','0','4','3','8','7','6'];
 
             for (var n = 0, N = objs.length; n < N; n++) {
                 assert.equal(List.public.items[n], objs[expectedOrder[n]].id, [

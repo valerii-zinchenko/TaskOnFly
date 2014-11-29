@@ -31,7 +31,6 @@ define([
         _parent: null,
         _NDone: 0,
         _path: '/',
-        groups: {},
         models: {},
         sortingOrder: ['isDone', 'priority'],
         // todo for future
@@ -170,10 +169,6 @@ define([
             return this._parent.getLocation();
         },
 
-        getGroups: function() {
-            return this.groups;
-        },
-
         findList: function(path, list) {
             if (!list) {
                 list = this;
@@ -195,6 +190,10 @@ define([
         setSortingOrder: function(order) {
             if (!order) {
                 throw new Error('No input arguments');
+            }
+
+            if (order instanceof Array && order.length == 0) {
+                throw new Error('Array of sorting rules is empty');
             }
 
             if (!(order instanceof Array)) {
@@ -289,18 +288,6 @@ define([
 
                 return match;
             });
-        },
-
-        _object2Array: function(obj, sortedKeys) {
-            var result = [];
-
-            for (var n = 0, N = sortedKeys.length; n < N; n++) {
-                if (obj[sortedKeys[n]]) {
-                    result = result.concat(obj[sortedKeys[n]]);
-                }
-            }
-
-            return result;
         }
     });
 
