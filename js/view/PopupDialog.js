@@ -55,11 +55,50 @@ define(function () {
                 throw new Error('Incorrect input arguments');
             }
 
+            if (!(properties instanceof Object)) {
+                throw new Error('Incorrect types of input arguments');
+            }
+
             if (!properties.messages) {
                 throw new Error('No message is defined');
             }
+            if (typeof properties.messages != 'string' && !(properties.messages instanceof Array)) {
+                throw new Error('Incorrect type of "messages" property');
+            }
+
             if (!properties.controls) {
                 throw new Error('No controls defined');
+            }
+            if (!(properties.controls instanceof Array)) {
+                throw new Error('Incorrect type of "controls" property');
+            }
+            if (properties.controls.some(function(control) {
+                    return !(control instanceof Object);
+                }))
+            {
+                throw new Error('Incorrect type of content in "controls" property');
+            }
+            if (properties.controls.some(function(control) {
+                    return !control.hasOwnProperty('title');
+                }))
+            {
+                throw new Error('All controls should have a "title" property');
+            }
+            if (properties.controls.some(function(control) {
+                    return typeof control.title != 'string';
+                }))
+            {
+                throw new Error('All control\'s "title" properties should be have string type');
+            }
+            if (properties.controls.some(function(control) {
+                    if (!control.hasOwnProperty('callback')) {
+                        return false;
+                    } else {
+                        return typeof control.callback != 'function';
+                    }
+                }))
+            {
+                throw new Error('All control\'s "callback" properties should be have function type');
             }
 
             if (properties.controls && !(properties.controls instanceof Array)) {

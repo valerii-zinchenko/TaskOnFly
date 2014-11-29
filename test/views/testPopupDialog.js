@@ -52,7 +52,7 @@ suite('PopupDialog', function() {
                 new Module({});
             }, Error, 'No message is defined');
         });
-        test('{message: []}', function(){
+        test('{message: {}', function(){
             assert.throw(function(){
                 new Module({messages: {}});
             }, Error, 'Incorrect type of "messages" property');
