@@ -101,46 +101,76 @@ suite('Task', function() {
         assert.equal(task.public.doneDate, null);
     });
 
-    test('saveData()', function() {
-        var parenID = 'parentID',
-            isDone = true,
-            title = 'test task',
-            priority = 3,
-            description = 'task description',
-            timestamp = Date.now(),
-            startDate = '2014-08-25',
-            dueDate = '2014-08-31';
-
-        var task = new Module(parenID);
-        task.saveData({
-            isDone: isDone,
-            title: title,
-            priority: priority,
-            description: description,
-            timestamp: timestamp,
-            startDate: startDate,
-            dueDate: dueDate
-        });
-
-        assert.equal(task.public.isDone, isDone);
-        assert.equal(task.public.title, title);
-        assert.equal(task.public.priority, priority);
-        assert.equal(task.public.description, description);
-        assert.equal(task.public.timestamp, timestamp);
-        assert.equal(task.public.startDate, startDate);
-        assert.equal(task.public.dueDate, dueDate);
-        assert.equal(task.public.doneDate, null);
-    });
-
     test('Is Module a singleton?', function() {
         assert.notEqual(new Module('id'), new Module('id'), 'Module should not be a singleton');
     });
 
-    test('toggleStatus()', function() {
-        var task = new Module('parentID');
-        task.toggleStatus();
+    suite('Test object', function(){
+        var task;
+        setup(function(){
+            task = new Module('parentID');
+        });
+        teardown(function(){
+            task = null;
+        });
 
-        assert.equal(task.public.isDone, true);
-        assert.equal(task.public.doneDate, new Date().toISOString().slice(0,10));
+        test('saveData()', function() {
+            var isDone = true,
+                title = 'test task',
+                priority = 3,
+                description = 'task description',
+                timestamp = Date.now(),
+                startDate = '2014-08-25',
+                dueDate = '2014-08-31';
+
+            task.saveData({
+                isDone: isDone,
+                title: title,
+                priority: priority,
+                description: description,
+                timestamp: timestamp,
+                startDate: startDate,
+                dueDate: dueDate
+            });
+
+            assert.equal(task.public.isDone, isDone);
+            assert.equal(task.public.title, title);
+            assert.equal(task.public.priority, priority);
+            assert.equal(task.public.description, description);
+            assert.equal(task.public.timestamp, timestamp);
+            assert.equal(task.public.startDate, startDate);
+            assert.equal(task.public.dueDate, dueDate);
+            assert.equal(task.public.doneDate, null);
+        });
+
+        test('toggleStatus()', function() {
+            task.toggleStatus();
+
+            assert.equal(task.public.isDone, true);
+            assert.equal(task.public.doneDate, new Date().toISOString().slice(0,10));
+        });
+
+        suite('upgrade()', function(){
+            test('{version: "0.0", priority: 0}', function(){
+                var data = {
+                    version: '0.0',
+                    priority: 0
+                };
+
+                task.upgrade(data);
+
+                assert.equal(data.priority, 2, 'Priority was not changed');
+            });
+            test('{version: "0.0", priority: 2}', function(){
+                var data = {
+                    version: '0.0',
+                    priority: 2
+                };
+
+                task.upgrade(data);
+
+                assert.equal(data.priority, 0, 'Priority was not changed');
+            });
+        });
     });
 });
