@@ -324,7 +324,7 @@ suite('TaskList', function() {
             List.addTask(objs[0]);
             List.addTask(objs[3]);
 
-            var expectedOrder = ['0','1','2','4','3','5','8','7','6'];
+            var expectedOrder = ['0','1','2','4','3','5','7','8','6'];
 
             assert.equal(List.public.items.length, objs.length, 'Count of expected task is not equal to the count of added tasks');
             for (var n = 0, N = objs.length; n < N; n++) {

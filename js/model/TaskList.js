@@ -231,6 +231,10 @@ define([
                         } else {
                             value = parseInt(value);
                         }
+
+                        if (publicData.isDone) {
+                            value = 99999999 - value;
+                        }
                     }
 
                     // Force casting to number;
