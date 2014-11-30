@@ -231,6 +231,10 @@ define([
                         } else {
                             value = parseInt(value);
                         }
+
+                        if (this.sortingOrder[n] == 'date' && publicData.isDone) {
+                            value = 99999999 - value;
+                        }
                     }
 
                     // Force casting to number;
