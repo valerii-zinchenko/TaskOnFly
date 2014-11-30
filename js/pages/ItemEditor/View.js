@@ -52,12 +52,12 @@ define([
 \
     <div data-role="fieldcontain"> \
         <div id="priority" data-role="controlgroup" data-type="horizontal" class="full-width ui-controlgroup-grid-b"> \
-            <label for="0">Low</label> \
-            <input id="0" type="radio" name="priority" value="2"> \
+            <label for="2">Low</label> \
+            <input id="2" type="radio" name="priority" value="2"> \
             <label for="1">Normal</label> \
             <input id="1" type="radio" name="priority" value="1"> \
-            <label for="2">High</label> \
-            <input id="2" type="radio" name="priority" value="0"> \
+            <label for="0">High</label> \
+            <input id="0" type="radio" name="priority" value="0"> \
         </div> \
     </div> \
 \
