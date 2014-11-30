@@ -350,7 +350,7 @@ suite('TaskList', function() {
             List.addTask(objs[0]);
             List.addTask(objs[4]);
 
-            var expectedOrder = ['1','2','5','0','4','3','8','7','6'];
+            var expectedOrder = ['1','2','5','0','4','3','7','8','6'];
 
             for (var n = 0, N = objs.length; n < N; n++) {
                 assert.equal(List.public.items[n], objs[expectedOrder[n]].id, [
