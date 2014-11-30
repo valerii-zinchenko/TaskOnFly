@@ -51,13 +51,13 @@ define([
         <tbody> \
         <tr> \
             <td> \
-                <button id="addList" class="btn-left" data-role="button" data-icon="plus">New list</button> \
+                <button id="addList" class="btn-left" data-role="button" data-icon="plus">List</button> \
             </td> \
             <td> \
                 <div id="searchModule"></div> \
             </td> \
             <td> \
-                <button id="addTask" class="btn-right" data-role="button" data-icon="plus" data-iconpos="right">New task</button> \
+                <button id="addTask" class="btn-right" data-role="button" data-icon="plus" data-iconpos="right">Task</button> \
             </td> \
         </tr> \
         </tbody> \
