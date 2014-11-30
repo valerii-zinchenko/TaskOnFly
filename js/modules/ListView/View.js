@@ -115,8 +115,10 @@ define([
             this._switchLists(list);
         },
         _switchLists: function(newList) {
-            var $newList = this._prepareListElement(newList);
             var list = this.control.getList();
+            this.control.setList(newList);
+
+            var $newList = this._prepareListElement(newList);
 
             if (newList.public.items.length > 0) {
                 this.$content.append($newList);
@@ -135,8 +137,6 @@ define([
             if (newList.public.items.length > 0) {
                 this._postRender();
             }
-
-            this.control.setList(newList);
         },
         _attachEvents: function() {
             this.$currentList.find('.list-item.task input').on('change', this._toggleTaskStatus.bind(this));

@@ -38,6 +38,9 @@ define([
             list.sort();
 
             var items = list.public.items;
+            if (items.length == 0) {
+                return $el;
+            }
 
             var groupID;
             var nGroup = 0;
