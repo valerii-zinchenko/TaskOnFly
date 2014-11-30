@@ -154,7 +154,7 @@ define([
         _continueRemoving: function($el, id) {
             $el.remove();
 
-            var groupID = this.control.getGroupID(this.control.getList(), id);
+            var groupID = this.control.getGroupID(id);
             var $group = this.$currentList.find('#' + groupID);
             if ($group.find('.list-item').length === 0) {
                 $group.remove();
