@@ -21,6 +21,12 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
+TaskManager = {
+    version: '1.0.0',
+    Pages: {},
+    Modules: {}
+};
+
 window = {
     localStorage: {
         storage: {},

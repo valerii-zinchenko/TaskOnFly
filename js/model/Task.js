@@ -40,10 +40,16 @@ define(function () {
             parentID: '',
             type: 'Task',
 
-            version: '1.0'
+            version: TaskManager.version
         },
         versionUpgrades: {
-            '0.0': function (data) {
+            /** Change order of priority values.
+             * Before 1.0.9 was: 0 - low, 1 - normal, 2 - high.
+             *   From 1.0.9    : 0 - high, 1 - normal, 2 - low.
+             *
+             * @param {Object} data Task properties
+             */
+            '1.0.9': function (data) {
                 switch (data.priority) {
                     case 0:
                     case '0':
@@ -96,10 +102,15 @@ define(function () {
                 }
 
                 if (!data.version) {
-                    data.version = '0.0';
+                    data.version = '0.0.0';
                 }
 
-                if (data.version < this._defaults.public.version) {
+                var dataV = data.version.split('.').map(function(str) {return parseInt(str);});
+                var curV = this._defaults.public.version.split('.').map(function(str) {return parseInt(str);});
+                if (dataV.some(function(version, indx) {
+                        return version < curV[indx];
+                    }))
+                {
                     this.upgrade(data);
                     data.version = this._defaults.public.version;
                 }
@@ -117,8 +128,14 @@ define(function () {
         },
 
         upgrade: function(data) {
+            var dataV = data.version.split('.').map(function(str) {return parseInt(str);});
             for (var version in this.versionUpgrades) {
-                if (data.version <= version) {
+                var curV = version.split('.').map(function(str) {return parseInt(str);});
+
+                if (dataV.some(function(version, indx) {
+                        return version < curV[indx];
+                    }))
+                {
                     this.versionUpgrades[version](data);
                 }
             }
