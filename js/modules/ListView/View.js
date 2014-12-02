@@ -76,11 +76,16 @@ define([
                 this.$currentList.remove();
             }
 
+            // The rendering of ~37 items on Android is too long
+            // duration: ~81 ms
             this.$currentList = this._prepareListElement(this.control.getList());
 
+            // duration: ~5 ms
             this.$content.append(this.$currentList);
+            // duration: ~802 ms
             this.$content.trigger('create');
 
+            // duration: ~142 ms
             this._postRender();
             return this;
         },
