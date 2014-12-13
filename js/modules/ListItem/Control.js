@@ -37,17 +37,34 @@ define(function () {
             if (typeof model !== 'object') {
                 throw new Error('Incorrect type of input argument');
             }
-            if (model.constructor !== TaskManager.Task) {
+            if (!(model instanceof TaskManager.Task)) {
                 throw new Error('Incorrect instance of model');
             }
 
             this.model = model;
         },
-        toggleModelStatus: function() {
-            this.model.toggleStatus();
+        action: function() {
+            switch(this.model.public.type) {
+                case 'Task':
+                    this._toggleModelStatus();
+                    break;
+                case 'List':
+                    this._selectList();
+                    break;
+            }
         },
         removeModel: function() {
             this.model.trigger('remove');
-        }
+        },
+
+        _toggleModelStatus: function() {
+            this.model.toggleStatus();
+        },
+        _selectList: function() {
+            TaskOnFly.changeView(['#path', this.model.getLocation(), this.model.public.id, '/'].join(''));
+        },
+        _editModel: function() {
+            TaskOnFly.changeView(['#edit', this.model.public.id].join('/'));
+        } 
     });
 });
