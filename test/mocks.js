@@ -50,10 +50,14 @@ window = {
     }
 };
 
+ev = {
+    preventDefault: function(){}
+};
 
 $ = function() {return $};
 $.html = function(){};
 $.find = $;
+$.remove = function() {};
 $.on = function(){};
 $.trigger = function(){};
 $.empty = function(){};
