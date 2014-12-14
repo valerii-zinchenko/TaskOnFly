@@ -85,46 +85,13 @@ suite('ListItem.Control', function() {
             });
         });
 
-        suite('action()', function() {
-            test('for Task', function() {
-                var innerFn = sinon.stub(object, '_toggleModelStatus', function(){});
-                var stub_selectList = sinon.stub(object, '_selectList', function(){});
-
-                object.setModel(new TaskManager.Task('parent'));
-
-                assert.doesNotThrow(function() {
-                    object.action();
-                });
-                assert.equal(innerFn.callCount, 1, '_toggleModelStatus() should be called for Task model');
-                assert.equal(stub_selectList.callCount, 0, '_selectList() should not be called for Task model');
-
-                innerFn.restore();
-                stub_selectList.restore();
-            });
-            test('for TaskList', function() {
-                var stub_toggleModelStatus = sinon.stub(object, '_toggleModelStatus', function(){});
-                var innerFn = sinon.stub(object, '_selectList', function(){});
-
-                object.setModel(new TaskManager.TaskList('parent'));
-
-                assert.doesNotThrow(function() {
-                    object.action();
-                });
-                assert.equal(stub_toggleModelStatus.callCount, 0, '_toggleModelStatus() should not be called for TaskList model');
-                assert.equal(innerFn.callCount, 1, '_selectList() should be called for TaskList model');
-
-                innerFn.restore();
-                stub_toggleModelStatus.restore();
-            });
-        });
-
-        test('_toggleModelStatus()', function() {
+        test('action()', function() {
             var model = new TaskManager.Task('ok');
             var stub = sinon.stub(model, 'toggleStatus', function(){});
 
             object.setModel(model);
             assert.doesNotThrow(function() {
-                object._toggleModelStatus();
+                object.action();
             });
 
             assert.equal(stub.callCount, 1, 'This method should call model\'s method toggleStatus()');
@@ -132,14 +99,14 @@ suite('ListItem.Control', function() {
             stub.restore();
         });
 
-        test('_editModel()', function() {
+        test('editModel()', function() {
             var changeViewStub = sinon.stub(TaskOnFly, 'changeView', function() {});
             object.setModel(new TaskManager.Task('parent', {
                 id: 'ok'
             }));
 
             assert.doesNotThrow(function() {
-                object._editModel();
+                object.editModel();
             });
             assert.equal(changeViewStub.callCount, 1, 'Control should call global application function to redirect the user to edit page');
             assert.equal(changeViewStub.args[0][0], '#edit/ok', 'Location hash should be changed to "#edit/{itemID}"');
@@ -147,32 +114,15 @@ suite('ListItem.Control', function() {
             changeViewStub.restore();
         });
 
-        test('_selectList()', function() {
-            var changeViewStub = sinon.stub(TaskOnFly, 'changeView', function() {});
-            object.setModel(new TaskManager.TaskList('parent', {
-                id: 'ok'
-            }));
-
-            assert.doesNotThrow(function() {
-                object._selectList();
-            });
-            assert.equal(changeViewStub.callCount, 1, 'Control should call global application function to redirect the user to edit page');
-            assert.equal(changeViewStub.args[0][0], '#path/ok/', 'Location hash should be changed to "#path/{itemID}/"');
-
-            changeViewStub.restore();
-        });
-
-
         test('removeModel()', function() {
             object.model = $;
-            var spy = sinon.spy(object.model, 'trigger');
+            var spy = sinon.spy(object.model, 'desctuct');
 
             assert.doesNotThrow(function() {
                 object.removeModel();
             });
 
-            assert.equal(spy.callCount, 1, 'Control should trigger some the model\'s event');
-            assert.equal(spy.args[0][0], 'remove', 'Control should trigger model\'s "remove" event');
+            assert.equal(spy.callCount, 1, 'Control should call desctuct() method of the model');
 
             spy.restore();
         });

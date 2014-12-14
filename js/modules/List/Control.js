@@ -23,37 +23,12 @@
 
 'use strict';
 
-define(function () {
-    return new Class({
-        _modelConstructor: TaskManager.Task,
-
-        initialize: function(model) {
-            if (model) {
-                this.setModel(model);
-            }
-        },
-        setModel: function(model) {
-            if (!model) {
-                throw new Error('Incorrect amount of input arguments');
-            }
-            if (typeof model !== 'object') {
-                throw new Error('Incorrect type of input argument');
-            }
-            if (!(model instanceof this._modelConstructor)) {
-                throw new Error('Incorrect instance of model');
-            }
-
-            this.model = model;
-        },
+define([
+    '../ListItem/Control.js'
+], function(Parent) {
+    return new Class(Parent, {
         action: function() {
-            this.model.toggleStatus();
-        },
-        removeModel: function() {
-            this.model.desctuct();
-        },
-
-        editModel: function() {
-            TaskOnFly.changeView(['#edit', this.model.public.id].join('/'));
-        } 
+            TaskOnFly.changeView(['#path', this.model.getLocation(), this.model.public.id, '/'].join(''));
+        }
     });
 });
