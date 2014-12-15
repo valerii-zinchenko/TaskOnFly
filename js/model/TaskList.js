@@ -50,8 +50,14 @@ define([
             items: []
         },
 
-        initialize: function() {
-            this.$ = $(this);
+        desctuct: function() {
+            this._parent = null;
+            this._NDone = null;
+            this._path = null;
+            this.models = null;
+            this.sortingOrder = null;
+
+            this.parent.desctuct();
         },
 
         _add: function(item, toSave) {
