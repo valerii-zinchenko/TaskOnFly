@@ -24,7 +24,7 @@
 'use strict';
 
 define([
-    '../ListItem/Control.js'
+    '../ListItem/Control'
 ], function(Parent) {
     return new Class(Parent, {
         action: function() {
