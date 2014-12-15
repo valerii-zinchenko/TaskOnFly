@@ -21,7 +21,6 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
-
 'use strict';
 
 define(function () {
@@ -55,9 +54,7 @@ define(function () {
                 this.$el.trigger('create');
                 this.$listItem = this.$el.find('.list-item');
 
-                if (this.model.public.type === 'TaskList') {
-                    this.$listItem.find('input').prop('disabled', true);
-                }
+                this._postRender();
 
                 this._attachEvents();
 
@@ -66,24 +63,21 @@ define(function () {
 
             return this.$el;
         },
+        _postRender: function() {},
+
         _attachEvents: function() {
-            if (this.model.public.type === 'TaskList') {
-                this.$el.find('.list-item.list').on('vclick', this.onSelectLsit.bind(this));
-            } else {
-                this.$el.find('.list-item.task input').on('change', this.onToggleStatus.bind(this));
+            if (this.model.public.type === 'Task') {
+                this.$listItem.find('.task input').on('change', this.onClick.bind(this));
             }
+
             this.$el.find('.edit-btn').on('click', this.onEdit.bind(this));
             this.$el.find('.delete-btn').on('click', this.onRemove.bind(this));
         },
         onClick: function(ev) {
             ev.preventDefault();
 
-            switch (this.model.public.type) {
-                case 'Task': 
-                    this.$listItem.toggleClass('done');
-                    break;
-                case 'TaskList':
-                    break;
+            if (this.model.public.type === 'Task') {
+                this.$listItem.toggleClass('done');
             }
 
             this.control.action();
@@ -95,29 +89,15 @@ define(function () {
         },
         onRemove: function(ev) {
             ev.preventDefault();
-            var $tr = $(ev.target).parents('tr');
 
-            if ($tr.find('.list').length > 0) {
-                new TaskManager.PopupDialog({
-                    messages: ['Are you sure you want to delete the list of tasks?', 'This action cannot be undone.'],
-                    controls: [
-                        {
-                            title:    'Yes',
-                            callback: this._continueRemoving.bind(this, $tr)
-                        },
-                        {
-                            title: 'Cancel'
-                        }
-                    ]
-                }).show();
-            } else {
-                this._continueRemoving($tr);
+            if (this.model.public.type === 'Task') {
+                this._continueRemoving();
             }
         },
-        _continueRemoving: function($el) {
-            $el.remove();
+        _continueRemoving: function() {
+            this.$el.remove();
 
             this.control.removeModel();
-        },
+        }
     });
 });
