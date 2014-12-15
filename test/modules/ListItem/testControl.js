@@ -115,7 +115,7 @@ suite('ListItem.Control', function() {
         });
 
         test('removeModel()', function() {
-            object.model = $;
+            object.setModel(new TaskManager.Task('parent'));
             var spy = sinon.spy(object.model, 'desctuct');
 
             assert.doesNotThrow(function() {
