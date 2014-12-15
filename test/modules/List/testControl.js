@@ -23,10 +23,10 @@
 
 'use strict';
 
-suite(function() {
+suite('List.Control', function() { 
     var Module;
     setup(function(done) {
-        requirejs(['js/modules/Task/Control'], function(Control) {
+        requirejs(['modules/List/Control'], function(Control) {
             Module = Control;
 
             done();
