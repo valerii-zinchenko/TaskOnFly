@@ -49,49 +49,49 @@ suite('ListItem.View', function() {
     });
 
     suite('Methods', function() {
-        var module;
+        var object;
         var control;
         setup(function() {
-            module = new Module();
-            module.control = sinon.stub({
+            object = new Module();
+            object.control = sinon.stub({
                 setModel: function(){},
                 action: function(){},
                 removeModel: function(){},
                 _editItem: function(){}
-            });            
-            module.$listItem = $;
+            });
+            object.$listItem = $;
         });
         teardown(function() {
-            module = null;
+            object = null;
         });
 
         // For task - toggle; for list - select
         suite('onClick()', function() {
             test('for Task', function() {
-                var stubListItem = sinon.spy(module.$listItem, 'toggleClass');
+                var stubListItem = sinon.spy(object.$listItem, 'toggleClass');
 
-                module.model = new TaskManager.Task('parent');
+                object.model = new TaskManager.Task('parent');
 
                 assert.doesNotThrow(function() {
-                    module.onClick(ev);
+                    object.onClick(ev);
                 });
-                assert.equal(module.control.action.callCount, 1, 'View should call the method action() of control sub-module');
-                assert.equal(module.$listItem.toggleClass.callCount, 1);
-                assert.equal(module.$listItem.toggleClass.args[0][0], 'done', '"done" class should be toggled for Task item element');
+                assert.equal(object.control.action.callCount, 1, 'View should call the method action() of control sub-module');
+                assert.equal(object.$listItem.toggleClass.callCount, 1);
+                assert.equal(object.$listItem.toggleClass.args[0][0], 'done', '"done" class should be toggled for Task item element');
 
                 stubListItem.restore();
             });
 
             test('for TaskList', function() {
-                var stubListItem = sinon.spy(module.$listItem, 'toggleClass');
+                var stubListItem = sinon.spy(object.$listItem, 'toggleClass');
 
-                module.model = new TaskManager.TaskList('parent');
+                object.model = new TaskManager.TaskList('parent');
 
                 assert.doesNotThrow(function() {
-                    module.onClick(ev);
+                    object.onClick(ev);
                 });
-                assert.equal(module.control.action.callCount, 1, 'View should call the method action() of control sub-module');
-                assert.equal(module.$listItem.toggleClass.callCount, 0);
+                assert.equal(object.control.action.callCount, 1, 'View should call the method action() of control sub-module');
+                assert.equal(object.$listItem.toggleClass.callCount, 0);
 
                 stubListItem.restore();
             });
@@ -99,16 +99,21 @@ suite('ListItem.View', function() {
 
         test('onEdit()', function() {
             assert.doesNotThrow(function() {
-                module.onEdit(ev);
+                object.onEdit(ev);
             });
-            assert.equal(module.control._editItem.callCount, 1, 'View should call the method editModel() of control sub-module');
+            assert.equal(object.control._editItem.callCount, 1, 'View should call the method editModel() of control sub-module');
         });
 
         test('onRemove()', function() {
+            // Mock model
+            object.model = {
+                public: {type: 'Task'}
+            };
+
             assert.doesNotThrow(function() {
-                module.onRemove(ev);
+                object.onRemove(ev);
             });
-            assert.equal(module.control.removeModel.callCount, 1, 'View should call the method removeModel() of control sub-module');
+            assert.equal(object.control.removeModel.callCount, 1, 'View should call the method removeModel() of control sub-module');
         });
     });
 });

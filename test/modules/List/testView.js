@@ -38,25 +38,51 @@ suite('List.View', function() {
     });
 
     suite('Methods', function() {
-        var stub_popup;
-        var stub_showPopup;
-
         setup(function() {
             object = new Module();
+            object.control = sinon.stub({
+                removeModel: function(){}
+            });
 
-            stub_showPopup = sinon.stub(object.popup, 'show', function() {});
         });
         teardown(function() {
             object = null;
-
-            stub_showPopup.restore();
         });
 
-        test('onRemove()', function() {
-            assert.doesNotThrow(function() {
-                object.onRemove(ev);
+        suite('onRemove()', function() {
+            var stub_showPopup;
+
+            setup(function() {
+                object.model = {
+                    public: {
+                        items: []
+                    }
+                };
+
+                stub_showPopup = sinon.stub(object.popup, 'show', function() {});
             });
-            assert.equal(stub_showPopup.callCount, 1, 'PopupDialog should be shown');
+            teardown(function() {
+                object.model = null;
+                stub_showPopup.restore();
+            });
+
+            test('empty list', function() {
+                assert.doesNotThrow(function() {
+                    object.onRemove(ev);
+                });
+                assert.equal(stub_showPopup.callCount, 0, 'PopupDialog should not be shown');
+                assert.equal(object.control.removeModel.callCount, 1, 'removeModel() of Control sunb-module should be called');
+            });
+
+            test('nonempty list', function() {
+                object.model.public.items.push(1);
+
+                assert.doesNotThrow(function() {
+                    object.onRemove(ev);
+                });
+                assert.equal(stub_showPopup.callCount, 1, 'PopupDialog should be shown');
+                assert.equal(object.control.removeModel.callCount, 0, 'removeModel() of Control sunb-module should not be called');
+            });
         });
     });
 });
