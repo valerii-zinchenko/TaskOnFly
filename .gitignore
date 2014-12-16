@@ -1,0 +1,7 @@
+# exclude *.swp files created by vim
+**/*.swp
+
+# exclude folders
+.idea/
+node_modules/
+tmp/
