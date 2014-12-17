@@ -19,16 +19,18 @@
 
 
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
-*/
+ */
 
 'use strict';
 
 define([
-    '../ListItem/Control'
-], function(Parent) {
-    return new Class(Parent, {
-        action: function() {
-            TaskOnFly.changeView(['#path', this.model.getLocation(), this.model.public.id, '/'].join(''));
-        }
+    './ListItem/View',
+    './ListItem/Control'
+],function (View, Control) {
+    TaskManager.Modules.ListItem = new MVCModule({
+        View: View,
+        Control: Control
     });
+
+    return TaskManager.Modules.ListItem;
 });

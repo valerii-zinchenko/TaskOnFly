@@ -23,10 +23,10 @@
 
 'use strict';
 
-suite('ListItem.Control', function() {
+suite('List.Control', function() { 
     var Module;
     setup(function(done) {
-        requirejs(['modules/ListItem/Control'], function(Control) {
+        requirejs(['modules/List/Control'], function(Control) {
             Module = Control;
 
             done();
@@ -34,18 +34,6 @@ suite('ListItem.Control', function() {
     });
     teardown(function() {
         Module = null;
-    });
-
-    suite('Constructor.', function() {
-        test('new object', function() {
-            assert.doesNotThrow(function () {
-                new Module();
-            });
-        });
-
-        test('Is Singleton?', function() {
-            assert.notEqual(new Module(), new Module(), 'Control sub-module should not be an Singleton');
-        });
     });
 
     suite('Methods.', function() {
@@ -57,74 +45,20 @@ suite('ListItem.Control', function() {
             object = null;
         });
 
-
-        suite('setModel()', function() {
-            test('no input arguments', function() {
-                assert.throw(function() {
-                    object.setModel();
-                }, Error, 'Incorrect amount of input arguments');
-            });
-            test('incorrect type', function() {
-                assert.throw(function() {
-                    object.setModel(':)');
-                }, Error, 'Incorrect type of input argument');
-            });
-            test('incorrect instance', function() {
-                assert.throw(function() {
-                    object.setModel({});
-                }, Error, 'Incorrect instance of model');
-            });
-
-            test('correct input arguments', function() {
-                assert.doesNotThrow(function() {
-                    object.setModel(new TaskManager.Task('ok'));
-                });
-                assert.doesNotThrow(function() {
-                    object.setModel(new TaskManager.TaskList('ok'));
-                });
-            });
-        });
-
         test('action()', function() {
-            var model = new TaskManager.Task('ok');
-            var stub = sinon.stub(model, 'toggleStatus', function(){});
-
-            object.setModel(model);
-            assert.doesNotThrow(function() {
-                object.action();
-            });
-
-            assert.equal(stub.callCount, 1, 'This method should call model\'s method toggleStatus()');
-
-            stub.restore();
-        });
-
-        test('editModel()', function() {
             var changeViewStub = sinon.stub(TaskOnFly, 'changeView', function() {});
-            object.setModel(new TaskManager.Task('parent', {
+
+            object.setModel(new TaskManager.TaskList('parent', {
                 id: 'ok'
             }));
 
             assert.doesNotThrow(function() {
-                object.editModel();
+                object.action();
             });
             assert.equal(changeViewStub.callCount, 1, 'Control should call global application function to redirect the user to edit page');
-            assert.equal(changeViewStub.args[0][0], '#edit/ok', 'Location hash should be changed to "#edit/{itemID}"');
+            assert.equal(changeViewStub.args[0][0], '#path/ok/', 'Location hash should be changed to "#path/{itemID}/"');
 
             changeViewStub.restore();
-        });
-
-        test('removeModel()', function() {
-            object.setModel(new TaskManager.Task('parent'));
-            var spy = sinon.spy(object.model, 'desctuct');
-
-            assert.doesNotThrow(function() {
-                object.removeModel();
-            });
-
-            assert.equal(spy.callCount, 1, 'Control should call desctuct() method of the model');
-
-            spy.restore();
         });
     });
 });

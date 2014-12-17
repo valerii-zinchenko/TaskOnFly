@@ -23,81 +23,41 @@
 
 'use strict';
 
-define(function () {
-    return new Class({
-        template: '\
-<% var modelPublic = public; %> \
-<tr data-item-id="<%= modelPublic.id %>"> \
-    <th> \
-        <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>"> \
-            <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>> \
-            <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label> \
-        </div> \
-    </th> \
-    <td> \
-        <div data-role="controlgroup" data-type="horizontal"> \
-            <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button> \
-        </div> \
-    </td> \
-</tr> \
-        ',
-
-        $el: null,
-        $listItem: null,
-        isRendered: false,
+define([
+    '../ListItem/View',
+    'view/PopupDialog'
+], function(Parent) {
+    return new Class(Parent, {
+        popup: null,
 
         initialize: function() {
-            this.$el = $(_.template(this.template, this.model));
+            this.popup = new TaskManager.PopupDialog({
+                messages: ['Are you sure you want to delete the list of tasks?', 'This action cannot be undone.'],
+                controls: [
+                    {
+                        title:    'Yes',
+                        callback: this._continueRemoving.bind(this)
+                    },
+                    {
+                        title: 'Cancel'
+                    }
+                ]
+            })
         },
-        render: function() {
-            if (!this.isRendered) {
-                this.$el.trigger('create');
-                this.$listItem = this.$el.find('.list-item');
-
-                this._postRender();
-
-                this._attachEvents();
-
-                this.isRendered = true;
-            }
-
-            return this.$el;
+        _postRender: function() {
+            this.$listItem.find('input').prop('disabled', true);
         },
-        _postRender: function() {},
-
         _attachEvents: function() {
-            if (this.model.public.type === 'Task') {
-                this.$listItem.find('.task input').on('change', this.onClick.bind(this));
-            }
+            this.$listItem.on('vclick', this.onClick.bind(this));
 
-            this.$el.find('.edit-btn').on('click', this.onEdit.bind(this));
-            this.$el.find('.delete-btn').on('click', this.onRemove.bind(this));
-        },
-        onClick: function(ev) {
-            ev.preventDefault();
-
-            if (this.model.public.type === 'Task') {
-                this.$listItem.toggleClass('done');
-            }
-
-            this.control.action();
-        },
-        onEdit: function(ev) {
-            ev.preventDefault();
-
-            this.control._editItem();
+            this.parent._attachEvents();
         },
         onRemove: function(ev) {
-            ev.preventDefault();
-
-            if (this.model.public.type === 'Task') {
+            if (this.model.public.items.length > 0) {
+                this.popup.show();
+            } else {
                 this._continueRemoving();
             }
-        },
-        _continueRemoving: function() {
-            this.$el.remove();
-
-            this.control.removeModel();
         }
     });
 });

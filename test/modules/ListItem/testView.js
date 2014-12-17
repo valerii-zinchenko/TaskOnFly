@@ -22,10 +22,12 @@
 */
 
 'use strict';
-suite('ListItem.View', function() {
+
+suite('List.View', function() {
     var Module;
+    var object;
     setup(function(done) {
-        requirejs(['modules/ListItem/View'], function(View) {
+        requirejs(['modules/List/View'], function(View) {
             Module = View;
 
             done();
@@ -34,86 +36,53 @@ suite('ListItem.View', function() {
     teardown(function() {
         Module = null;
     });
-    
-
-    suite('Constructor', function() {
-        test('New object', function() {
-            assert.doesNotThrow(function() {
-                new Module();
-            });
-        });
-
-        test('Is singleton?', function() {
-            assert.notEqual(new Module(), new Module(), 'View sub-module should not be an singleton');
-        });
-    });
 
     suite('Methods', function() {
-        var object;
-        var control;
         setup(function() {
             object = new Module();
             object.control = sinon.stub({
-                setModel: function(){},
-                action: function(){},
-                removeModel: function(){},
-                _editItem: function(){}
+                removeModel: function(){}
             });
-            object.$listItem = $;
+
         });
         teardown(function() {
             object = null;
         });
 
-        // For task - toggle; for list - select
-        suite('onClick()', function() {
-            test('for Task', function() {
-                var stubListItem = sinon.spy(object.$listItem, 'toggleClass');
+        suite('onRemove()', function() {
+            var stub_showPopup;
 
-                object.model = new TaskManager.Task('parent');
+            setup(function() {
+                object.model = {
+                    public: {
+                        items: []
+                    }
+                };
+
+                stub_showPopup = sinon.stub(object.popup, 'show', function() {});
+            });
+            teardown(function() {
+                object.model = null;
+                stub_showPopup.restore();
+            });
+
+            test('empty list', function() {
+                assert.doesNotThrow(function() {
+                    object.onRemove(ev);
+                });
+                assert.equal(stub_showPopup.callCount, 0, 'PopupDialog should not be shown');
+                assert.equal(object.control.removeModel.callCount, 1, 'removeModel() of Control sunb-module should be called');
+            });
+
+            test('nonempty list', function() {
+                object.model.public.items.push(1);
 
                 assert.doesNotThrow(function() {
-                    object.onClick(ev);
+                    object.onRemove(ev);
                 });
-                assert.equal(object.control.action.callCount, 1, 'View should call the method action() of control sub-module');
-                assert.equal(object.$listItem.toggleClass.callCount, 1);
-                assert.equal(object.$listItem.toggleClass.args[0][0], 'done', '"done" class should be toggled for Task item element');
-
-                stubListItem.restore();
+                assert.equal(stub_showPopup.callCount, 1, 'PopupDialog should be shown');
+                assert.equal(object.control.removeModel.callCount, 0, 'removeModel() of Control sunb-module should not be called');
             });
-
-            test('for TaskList', function() {
-                var stubListItem = sinon.spy(object.$listItem, 'toggleClass');
-
-                object.model = new TaskManager.TaskList('parent');
-
-                assert.doesNotThrow(function() {
-                    object.onClick(ev);
-                });
-                assert.equal(object.control.action.callCount, 1, 'View should call the method action() of control sub-module');
-                assert.equal(object.$listItem.toggleClass.callCount, 0);
-
-                stubListItem.restore();
-            });
-        });
-
-        test('onEdit()', function() {
-            assert.doesNotThrow(function() {
-                object.onEdit(ev);
-            });
-            assert.equal(object.control._editItem.callCount, 1, 'View should call the method editModel() of control sub-module');
-        });
-
-        test('onRemove()', function() {
-            // Mock model
-            object.model = {
-                public: {type: 'Task'}
-            };
-
-            assert.doesNotThrow(function() {
-                object.onRemove(ev);
-            });
-            assert.equal(object.control.removeModel.callCount, 1, 'View should call the method removeModel() of control sub-module');
         });
     });
 });
