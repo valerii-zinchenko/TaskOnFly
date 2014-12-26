@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-mocha');
     grunt.loadNpmTasks('grunt-jscoverage');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
@@ -28,6 +29,7 @@ module.exports = function(grunt) {
         utils = require(src + 'core/utils');
 
         TaskManager = {
+            version: '1.0.0',
             Pages: {},
             Modules: {}
         };
@@ -72,6 +74,42 @@ module.exports = function(grunt) {
                 ext: '.js'
             }
         },
+        mocha: {
+            test: {
+                options: {
+                    run: false,
+                    reporter: 'Spec',
+
+                    log: true,
+                    logErrors: true
+                },
+                src: ['test/*.html']
+            },
+            testWithCoverage: {
+                options: {
+                    run: false,
+                    reporter: 'HTMLCov',
+                    waitForCoverage: true,
+                    //reporter: 'Spec',
+
+                    log: true,
+                    logErrors: true
+                },
+                src: ['test/*.html'],
+                dest: './reports/Coverage2.html'
+            },
+            coverage: {
+                options: {
+                    run: false,
+                    reporter: 'HTMLCov',
+
+                    //log: true,
+                    //logErrors: true
+                },
+                src: ['test/*.html'],
+                dest: './reports/Coverage2.html'
+            }
+        },
         mochaTest: {
             test: {
                 options: {
@@ -82,7 +120,7 @@ module.exports = function(grunt) {
                         SET_GLOBALS.bind(null, 'js/')
                     ]
                 },
-                src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js']
+                src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js', '!test/config.js', '!test/requirejs-config.js']
             },
             testWithCoverage: {
                 options: {
@@ -93,7 +131,8 @@ module.exports = function(grunt) {
                         SET_GLOBALS.bind(null, './js-cov/')
                     ]
                 },
-                src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js']
+                src: ['test/core/*.js', '!test/mocks.js', '!test/beforetest.js', '!test/config.js', '!test/requirejs-config.js']
+                //src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js']
             },
             coverage: {
                 options: {
@@ -101,13 +140,13 @@ module.exports = function(grunt) {
                     quiet: true,
                     captureFile: 'reports/Coverage.html'
                 },
-                src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js']
+                src: ['test/core/*.js', '!test/mocks.js', '!test/beforetest.js', '!test/config.js', '!test/requirejs-config.js']
+                //src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js']
             }
         },
         clean: ['js-cov']
     });
 
-    grunt.registerTask('default', 'test');
     grunt.registerTask('test', 'mochaTest:test');
     grunt.registerTask('coverage', function(){
         grunt.option('force', true);
