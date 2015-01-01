@@ -1,164 +1,335 @@
+/*
+ TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.
+ Copyright (C) 2014  Valerii Zinchenko
+
+ This file is part of TaskOnFly.
+
+ TaskOnFly is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ TaskOnFly is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with TaskOnFly.  If not, see <http://www.gnu.org/licenses/>.
+
+
+ All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
+*/
+
 "use strict";
 
-suite('MVCModule', function() {
-    suite('Test factory function', function() {
-        test('No input arguments', function() {
-            assert.throw(function() {
-                new MVCModule();
-            }, Error, 'Incorrect amount of input arguments');
-        });
-        test('Incorrect type of single input argument', function() {
-            assert.throw(function() {
-                new MVCModule(':)');
-            }, Error, 'No sub-module constructors are defined. At least one sub-module constructor should be defined');
-        });
-        test('MVC sub-module constructor is not defined', function() {
-            assert.throw(function() {
-                new MVCModule({
-                    hello: ':)'
+define(['core/MVCModule'], function() {
+    suite('MVCModule', function() {
+        suite('Test factory function', function() {
+            suite('General', function() {
+                test('No input arguments', function() {
+                    assert.throw(function() {
+                        new MVCModule();
+                    }, Error, 'Incorrect amount of input arguments');
                 });
-            }, Error, 'No sub-module constructors are defined. At least one sub-module constructor should be defined');
-        });
-        test('Incorrect Model constructor', function() {
-            assert.throw(function() {
-                new MVCModule({
-                    Model: ':)'
+                test('Incorrect type of input argument', function() {
+                    assert.throw(function() {
+                        new MVCModule(':]');
+                        new MVCModule([]);
+                        new MVCModule(function(){});
+                    }, Error, 'Incorrect type of input argument');
                 });
-            }, Error, 'Model constructor should be a function');
-        });
-        test('Incorrect View constructor', function() {
-            assert.throw(function() {
-                new MVCModule({
-                    View: ':)'
+                test('No Model constructor', function() {
+                    assert.throw(function() {
+                        new MVCModule({
+                            hello: ':]'
+                        });
+                    }, Error, 'Constructor for Model is not defined');
                 });
-            }, Error, 'View constructor should be a function');
-        });
-        test('Incorrect Control constructor', function() {
-            assert.throw(function() {
-                new MVCModule({
-                    Control: ':)'
+                test('No states', function() {
+                    assert.throw(function() {
+                        new MVCModule({
+                            Model: function(){}
+                        });
+                    }, Error, 'No model states are defined');
                 });
-            }, Error, 'Control constructor should be a function');
+            });
+
+            suite('State(s)', function() {
+                test('Incorrety type of model states', function() {
+                    assert.throw(function() {
+                        new MVCModule({
+                            Model: function(){},
+                            states: ':]'
+                        });
+                        new MVCModule({
+                            Model: function(){},
+                            states: []
+                        });
+                        new MVCModule({
+                            Model: function(){},
+                            states: function(){}
+                        });
+                    }, Error, 'Incorrect type for defined model states');
+                });
+                test('Incorrect type of state', function() {
+                    assert.throw(function() {
+                        new MVCModule({
+                            Model: function(){},
+                            states: {
+                                state0: ':]'
+                            }
+                        });
+                        new MVCModule({
+                            Model: function(){},
+                            states: {
+                                state0: []
+                            }
+                        });
+                        new MVCModule({
+                            Model: function(){},
+                            states: {
+                                state0: function(){}
+                            }
+                        });
+                    }, Error, 'Incorrect type of state "state0"');
+                });
+                test('Empty state', function() {
+                    assert.throw(function() {
+                        new MVCModule({
+                            Model: function() {},
+                            states: {
+                                state0: {}
+                            }
+                        });
+                    }, Error, 'View constructor for state "state0" is not defined');
+                });
+                test('Control for state is not defined', function() {
+                    assert.throw(function() {
+                        new MVCModule({
+                            Model: function(){},
+                            states: {
+                                state0: {
+                                    View: function() {}
+                                }
+                            }
+                        });
+                        new MVCModule({
+                            Model: function(){},
+                            states: {
+                                state: {
+                                    View: function(){},
+                                    Control: function(){}
+                                },
+                                state0: {
+                                    View: function() {}
+                                }
+                            }
+                        });
+                    }, Error, 'Control constructor for state "state0" is not defined');
+                });
+                test('View for state is not defined', function() {
+                    assert.throw(function() {
+                        new MVCModule({
+                            Model: function(){},
+                            states: {
+                                state0: {
+                                    Control: function() {}
+                                }
+                            }
+                        });
+                        new MVCModule({
+                            Model: function(){},
+                            states: {
+                                state: {
+                                    View: function(){},
+                                    Control: function(){}
+                                },
+                                state0: {
+                                    Control: function(){}
+                                }
+                            }
+                        });
+                    }, Error, 'View constructor for state "state0" is not defined');
+                });
+                test('Correct input object', function() {
+                    assert.doesNotThrow(function() {
+                        new MVCModule({
+                            Model: function(){},
+                            states: {
+                                state0: {
+                                    View: function(){},
+                                    Control: function(){}
+                                }
+                            }
+                        });
+                        new MVCModule({
+                            Model: function(){},
+                            states: {
+                                state: {
+                                    View: function(){},
+                                    Control: function(){}
+                                },
+                                state0: {
+                                    View: function(){},
+                                    Control: function(){}
+                                }
+                            }
+                        });
+                    });
+                });
+            });
+
+            suite('Test construct in input object', function() {
+                test('Incorrect type', function() {
+                    assert.throw(function() {
+                        new MVCModule({
+                            Model: function(){},
+                            states: {
+                                state: {
+                                    View: function(){},
+                                    Control: function(){},
+                                },
+                            },
+                            construct: 'str'
+                        });
+                        new MVCModule({
+                            Model: function(){},
+                            states: {
+                                state: {
+                                    View: function(){},
+                                    Control: function(){},
+                                },
+                            },
+                            construct: []
+                        });
+                        new MVCModule({
+                            Model: function(){},
+                            states: {
+                                state: {
+                                    View: function(){},
+                                    Control: function(){},
+                                },
+                            },
+                            construct: {}
+                        });
+                    }, Error, 'construct property should be a function');
+                });
+            });
         });
 
-        test('Define Model constructor', function() {
-            assert.doesNotThrow(function() {
-                new MVCModule({
-                    Model: function() {}
-                });
-            });
-        });
-        test('Define View constructor', function() {
-            assert.doesNotThrow(function() {
-                new MVCModule({
-                    View: function() {}
-                });
-            });
-        });
-        test('Define Control constructor', function() {
-            assert.doesNotThrow(function() {
-                new MVCModule({
-                    Control: function() {}
-                });
-            });
-        });
-        test('Define Model and View constructors', function() {
-            assert.doesNotThrow(function() {
-                new MVCModule({
-                    Model: function() {},
-                    View: function() {}
-                });
-            });
-        });
-        test('Define Model and Control constructors', function() {
-            assert.doesNotThrow(function() {
-                new MVCModule({
-                    Model: function() {},
-                    Control: function() {}
-                });
-            });
-        });
-        test('Define View and Control constructors', function() {
-            assert.doesNotThrow(function() {
-                new MVCModule({
-                    View: function() {},
-                    Control: function() {}
-                });
-            });
-        });
-        test('Define Model, View and Control constructors', function() {
-            assert.doesNotThrow(function() {
-                new MVCModule({
-                    Model: function() {},
-                    View: function() {},
-                    Control: function() {}
-                });
-            });
-        });
-    });
-
-
-    suite('Test module constructor', function() {
-        test('Create module object without input arguments', function() {
+        suite('Test module and sub-module constructors', function() {
             var Module;
-            var module;
+            var object;
 
-            assert.doesNotThrow(function() {
-                Module = new MVCModule({
-                    Model: function() {},
-                    View: function() {},
-                    Control: function() {}
-                });
-
-                module = new Module();
+            teardown(function() {
+                Module = null;
+                object = null;
             });
 
-            assert.isObject(module.model, 'Incorrect type for model sub-module');
-            assert.isObject(module.view, 'Incorrect type for view sub-module');
-            assert.isObject(module.control, 'Incorrect type for control sub-module');
-        });
-
-        test('Create module object with input arguments', function() {
-            var Module;
-            var module;
-            var input = {
-                model: 'model',
-                view: 'view',
-                control: 'control'
-            };
-
-            assert.doesNotThrow(function() {
-                Module = new MVCModule({
-                    Model: function(name) {this.name = name;},
-                    View: function(name) {this.name = name;},
-                    Control: function(name) {this.name = name;}
+            suite('Test created states and internal references to other module components', function() {
+                setup(function() {
+                    Module = new MVCModule({
+                        Model: function(){},
+                        states: {
+                            state0: {
+                                View: function(){},
+                                Control: function(){}
+                            },
+                            state1: {
+                                View: function(){},
+                                Control: function(){}
+                            }
+                        }
+                    });
+                });
+                teardown(function(){
+                    Module = null;
+                    object = null;
                 });
 
-                module = new Module(input);
+                test('States', function() {
+                    assert.doesNotThrow(function() {
+                        object = new Module();
+                    });
+
+                    assert.isObject(object.states, '"states" object was not created');
+
+                    assert.isObject(object.states.state0, 'state "state0" is not defined');
+                    assert.isObject(object.states.state1, 'state "state1" is not defined');
+               });
+               test('References to state components', function() {
+                    assert.doesNotThrow(function() {
+                        object = new Module();
+                    });
+
+                    assert.isObject(object.states.state0.view, 'no reference to the View object in state "state0"');
+                    assert.isObject(object.states.state0.control, 'no reference to the Control object in state "state0"');
+
+                    assert.isObject(object.states.state1.view, 'no reference to the View object in state "state1"');
+                    assert.isObject(object.states.state1.control, 'no reference to the Control object in state "state1"');
+               });
+               test('Internal references', function() {
+                    assert.doesNotThrow(function() {
+                        object = new Module();
+                    });
+
+                    assert.equal(object.states.state0.view.model, object.model, 'View has incorrect reference to modeule\'s model in state "state0"');
+                    assert.equal(object.states.state0.view.control, object.states.state0.control, 'View has incorrect reference to control in state "state0"');
+                    assert.equal(object.states.state0.control.model, object.model, 'Control has incorrect reference to modeule\'s model in state "state0"');
+                    assert.equal(object.states.state0.control.view, object.states.state0.view, 'Control has incorrect reference to view in state "state0"');
+
+                    assert.equal(object.states.state1.view.model, object.model, 'View has incorrect reference to modeule\'s model in state "state1"');
+                    assert.equal(object.states.state1.view.control, object.states.state1.control, 'View has incorrect reference to control in state "state1"');
+                    assert.equal(object.states.state1.control.model, object.model, 'Control has incorrect reference to modeule\'s model in state "state1"');
+                    assert.equal(object.states.state1.control.view, object.states.state1.view, 'Control has incorrect reference to view in state "state1"');
+               });
             });
 
-            assert.equal(module.model.name, input.model, 'Model sub-module was incorrect created');
-            assert.equal(module.view.name, input.view, 'View sub-module was incorrect created');
-            assert.equal(module.control.name, input.control, 'Control sub-module was incorrect created');
-        });
+            test('Create module object with input arguments', function() {
+                var input = 'model';
 
-        test('Module initialize()', function() {
-            var Module;
-            var module;
-            var counter = 0;
+                assert.doesNotThrow(function() {
+                    Module = new MVCModule({
+                        Model: function(name) {
+                            this.name = name;
+                        },
+                        states: {
+                            state: {
+                                View: function(){},
+                                Control: function(){},
+                            },
+                        }
+                    });
 
-            assert.doesNotThrow(function() {
-                Module = new MVCModule({
-                    Model: function() {this.id = ++counter;},
-                    initialize: function() {this.id = ++counter;}
+                    object = new Module(input);
                 });
 
-                module = new Module();
+                assert.equal(object.model.name, input, 'Model sub-module was incorrect created');
             });
 
-            assert.equal(counter, 2, 'Some of the constructors was not executed');
-            assert.equal(module.model.id, 1, 'Sub-module constructor should be executed first');
-            assert.equal(module.id, 2, 'Module initialize method should be executed after sub-module constructors');
+            test('construct()', function() {
+                var counter = 0;
+
+                assert.doesNotThrow(function() {
+                    Module = new MVCModule({
+                        Model: function() {this.id = ++counter;},
+                        states: {
+                            state: {
+                                View: function(){this.id = ++counter;},
+                                Control: function(){this.id = ++counter;}
+                            }
+                        },
+                        construct: function() {this.id = ++counter;}
+                    });
+
+                    object = new Module();
+                });
+
+                assert.equal(counter, 4, 'Some of the constructors was not executed');
+                assert.equal(object.model.id, 1, 'Sub-module constructor should be executed first');
+                assert.equal(object.id, 4, 'Module construct method should be executed after sub-module constructors');
+            });
         });
     });
 });
