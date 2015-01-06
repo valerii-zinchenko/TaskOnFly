@@ -311,32 +311,27 @@ define(['core/MVCModule'], function() {
                         object = new Module();
                     });
 
-                    assert.isObject(object.states, '"states" object was not created');
-                    assert.isObject(object.states._default, '"_default" state was not created');
+                    assert.isObject(object.model, 'Returned object has not the reference to the Model');
+                    assert.isObject(object.view, 'Returned object has not the reference to the View');
+                    assert.isObject(object.control, 'Returned object has not the reference to the Control');
                 });
                 test('Internal references', function() {
                     assert.doesNotThrow(function() {
                         object = new Module();
                     });
 
-                    assert.equal(object.states._default.view.model, object.model, 'Incorrect reference to the modules\' Mode');
-                    assert.equal(object.states._default.view.control, object.states._default.control, 'Incorrect reference to the Control');
+                    assert.equal(object.view.model, object.model, 'Incorrect reference to the modules\' Mode');
+                    assert.equal(object.view.control, object.control, 'Incorrect reference to the Control');
 
-                    assert.equal(object.states._default.control.model, object.model, 'Incorrect reference to the modules\' Mode');
-                    assert.equal(object.states._default.control.view, object.states._default.view, 'Incorrect reference to the View');
-                });
-                test('Check setup of default state', function() {
-                    assert.doesNotThrow(function() {
-                        object = new Module();
-                    });
-
-                    assert.equal(object.view, object.states._default.view, 'Incorrect reference to View object');
-                    assert.equal(object.control, object.states._default.control, 'Incorrect reference to Control object');
+                    assert.equal(object.control.model, object.model, 'Incorrect reference to the modules\' Mode');
+                    assert.equal(object.control.view, object.view, 'Incorrect reference to the View');
                 });
             });
 
             test('Create module object with input arguments', function() {
-                var input = 'model';
+                var input = {
+                    model: ['model']
+                };
 
                 assert.doesNotThrow(function() {
                     Module = new MVCModule({
@@ -354,7 +349,7 @@ define(['core/MVCModule'], function() {
                     object = new Module(input);
                 });
 
-                assert.equal(object.model.name, input, 'Model sub-module was incorrect created');
+                assert.equal(object.model.name, input.model[0], 'Model sub-module was incorrect created');
             });
 
             test('construct()', function() {
