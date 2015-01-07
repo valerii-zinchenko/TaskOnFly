@@ -183,43 +183,6 @@ define(['core/MVCModule'], function() {
                     });
                 });
             });
-
-            suite('Test construct in input object', function() {
-                test('Incorrect type', function() {
-                    assert.throw(function() {
-                        new MVCModule({
-                            Model: function(){},
-                            states: {
-                                state: {
-                                    View: function(){},
-                                    Control: function(){},
-                                },
-                            },
-                            construct: 'str'
-                        });
-                        new MVCModule({
-                            Model: function(){},
-                            states: {
-                                state: {
-                                    View: function(){},
-                                    Control: function(){},
-                                },
-                            },
-                            construct: []
-                        });
-                        new MVCModule({
-                            Model: function(){},
-                            states: {
-                                state: {
-                                    View: function(){},
-                                    Control: function(){},
-                                },
-                            },
-                            construct: {}
-                        });
-                    }, Error, 'construct property should be a function');
-                });
-            });
         });
 
         suite('Test module and sub-module constructors', function() {
@@ -329,14 +292,13 @@ define(['core/MVCModule'], function() {
             });
 
             test('Create module object with input arguments', function() {
-                var input = {
-                    model: ['model']
-                };
+                var input = ['a', 'b'];
 
                 assert.doesNotThrow(function() {
                     Module = new MVCModule({
-                        Model: function(name) {
-                            this.name = name;
+                        Model: function(a, b) {
+                            this.a = a;
+                            this.b = b;
                         },
                         states: {
                             state: {
@@ -346,33 +308,11 @@ define(['core/MVCModule'], function() {
                         }
                     });
 
-                    object = new Module(input);
+                    object = new Module(input[0], input[1]);
                 });
 
-                assert.equal(object.model.name, input.model[0], 'Model sub-module was incorrect created');
-            });
-
-            test('construct()', function() {
-                var counter = 0;
-
-                assert.doesNotThrow(function() {
-                    Module = new MVCModule({
-                        Model: function() {this.id = ++counter;},
-                        states: {
-                            state: {
-                                View: function(){this.id = ++counter;},
-                                Control: function(){this.id = ++counter;}
-                            }
-                        },
-                        construct: function() {this.id = ++counter;}
-                    });
-
-                    object = new Module();
-                });
-
-                assert.equal(counter, 4, 'Some of the constructors was not executed');
-                assert.equal(object.model.id, 1, 'Sub-module constructor should be executed first');
-                assert.equal(object.id, 4, 'Module construct method should be executed after sub-module constructors');
+                assert.equal(object.model.a, input[0], 'First input argument was not applied to the model');
+                assert.equal(object.model.b, input[1], 'Second input argument was not applied to the model');
             });
         });
 
