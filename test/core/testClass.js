@@ -68,7 +68,7 @@ suite('Class.', function() {
         assert.equal((new Obj()).constructor, Obj);
     });
 
-    test('Class class should not behave as singleton', function() {
+    test('Class should not behave as singleton', function() {
         var Obj = new Class();
         assert.notEqual(new Obj(), new Obj());
     });
@@ -153,6 +153,23 @@ suite('Class.', function() {
             assert.isTrue(object.isGrundchild, 'GrundChild constructor was not executed');
             assert.isTrue(object.isChild, 'Child constructor was not executed');
             assert.isTrue(object.isParent, 'Parent constructor was not executed');
+        });
+        test('Constructors with input arguments', function() {
+            var Child = new Class(Parent, {
+                initialize: function(a) {
+                    this.a = a;
+                }
+            });
+            var Grandchild = new Class(Child, {
+                initialize: function(a, b) {
+                    this.b = b;
+                }
+            });
+            var inputArgs = ['a', 'b'];
+            object = new Grandchild(inputArgs[0], inputArgs[1]);
+
+            assert.equal(object.a, inputArgs[0], 'First input argument was not processed by constructor');
+            assert.equal(object.b, inputArgs[1], 'Second input argument was not processed by constructor');
         });
         test('Parents methods', function() {
             var Child = new Class(Parent, {
