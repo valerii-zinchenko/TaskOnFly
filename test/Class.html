@@ -20,25 +20,31 @@
     <script type="text/javascript" charset="utf-8">
         requirejs([
             '../js/core/utils.js',
-            './core/test_utils.js'
+            '../js/core/AClass.js',
+            '../js/core/Class.js',
+            './core/testClass.js'
         ], function() {
-            mocha.run().on('end', function() {
-            // prepare _$jscoverage to be properly JSONified
-            var coverage = {};
+            if (window.PhantomJS) {
+                mocha.run().on('end', function() {
+                    // prepare _$jscoverage to be properly JSONified
+                    var coverage = {};
 
-            for (var filename in _$jscoverage) {
-                var data = _$jscoverage[filename];
-                var obj = {};
-                for (var line in data) {
-                    var hit = data[line];
-                    obj[line] = hit;
-                }
-                obj.source = data.source;
-                coverage[filename] = obj;
+                    for (var filename in _$jscoverage) {
+                        var data = _$jscoverage[filename];
+                        var obj = {};
+                        for (var line in data) {
+                            var hit = data[line];
+                            obj[line] = hit;
+                        }
+                        obj.source = data.source;
+                        coverage[filename] = obj;
+                    }
+
+                    alert(JSON.stringify(['coverage', coverage]));
+                });
+            } else {
+                mocha.run();
             }
-
-                alert(JSON.stringify(['coverage', coverage]));
-            });
         });
     </script>
 </body>
