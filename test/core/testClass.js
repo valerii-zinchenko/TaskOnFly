@@ -100,15 +100,20 @@ suite('Class.', function() {
 
     suite('Inheritance.', function() {
         var Parent,
-            prop = 4,
-            value = 11;
+            prop = 4;
+        var object;
         setup(function() {
             Parent = new Class({
                 prop: prop,
                 initialize: function() {
-                    this.value = value;
-                }
+                    this.isParent = true;
+                },
+                parentFn: function(){}
             });
+        });
+        teardown(function() {
+            Parent = null;
+            object = null;
         });
 
         test('Check constructor', function() {
@@ -122,14 +127,51 @@ suite('Class.', function() {
             assert.equal((new Child()).prop, prop);
         });
         test('Calling of parent initialize()', function() {
-            var k = 2;
             var Child = new Class(Parent, {
                 initialize: function() {
-                    this.value *= k;
+                    this.isChild = true;
                 }
             });
+            object = new Child();
 
-            assert.equal((new Child()).value, value*k);
+            assert.isTrue(object.isChild, 'Child constructor was not executed');
+            assert.isTrue(object.isParent, 'Parent constructor was not executed');
+        });
+        test('Calling of parent initialize() of parent class', function() {
+            var Child = new Class(Parent, {
+                initialize: function() {
+                    this.isChild = true;
+                }
+            });
+            var Grandchild = new Class(Child, {
+                initialize: function() {
+                    this.isGrundchild = true;
+                }
+            });
+            object = new Grandchild();
+
+            assert.isTrue(object.isGrundchild, 'GrundChild constructor was not executed');
+            assert.isTrue(object.isChild, 'Child constructor was not executed');
+            assert.isTrue(object.isParent, 'Parent constructor was not executed');
+        });
+        test('Parents methods', function() {
+            var Child = new Class(Parent, {
+                initialize: function() {
+                    this.isChild = true;
+                },
+                childFn: function(){}
+            });
+            var Grandchild = new Class(Child, {
+                initialize: function() {
+                    this.isGrundchild = true;
+                },
+                grandchildFn: function(){}
+            });
+            object = new Grandchild();
+
+            assert.isDefined(object.parentFn, 'Parent function was not copied');
+            assert.isDefined(object.childFn, 'Child function was not copied');
+            assert.isDefined(object.grandchildFn, 'Grandchild function was not copied');
         });
     });
 });
