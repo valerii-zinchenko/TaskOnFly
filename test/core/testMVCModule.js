@@ -303,8 +303,8 @@ define(['core/MVCModule'], function() {
                         states: {
                             state: {
                                 View: function(){},
-                                Control: function(){},
-                            },
+                                Control: function(){}
+                            }
                         }
                     });
 
