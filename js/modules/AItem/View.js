@@ -24,14 +24,13 @@
 'use strict';
 
 define(function () {
-    return new Class({
+    return new Class(AView, {
         template: '\
-<% var modelPublic = public; %> \
-<tr data-item-id="<%= modelPublic.id %>"> \
+<tr data-item-id="<%= public.id %>"> \
     <th> \
-        <div class="list-item <%= modelPublic.type.toLowerCase() %> priority-<%= modelPublic.priority %> <% if (modelPublic.isDone) {%> done <% } %>"> \
-            <input id="<%= modelPublic.id %>" type="checkbox" <% if (modelPublic.isDone) { %> checked <% } %>> \
-            <label for="<%= modelPublic.id %>"><%= modelPublic.title %></label> \
+        <div class="list-item <%= public.type.toLowerCase() %> priority-<%= public.priority %> <% if (public.isDone) {%> done <% } %>"> \
+            <input id="<%= public.id %>" type="checkbox" <% if (public.isDone) { %> checked <% } %>> \
+            <label for="<%= public.id %>"><%= public.title %></label> \
         </div> \
     </th> \
     <td> \
@@ -39,40 +38,23 @@ define(function () {
             <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button> \
         </div> \
     </td> \
-</tr> \
-        ',
+</tr>',
 
-        $el: null,
         $listItem: null,
-        isRendered: false,
 
-        initialize: function() {
-            this.$el = $(_.template(this.template, this.model));
+        _postRender: function() {
+            this.$listItem = this.$el.find('.list-item');
         },
-        render: function() {
-            if (!this.isRendered) {
-                this.$el.trigger('create');
-                this.$listItem = this.$el.find('.list-item');
-
-                this._postRender();
-
-                this._attachEvents();
-
-                this.isRendered = true;
-            }
-
-            return this.$el;
-        },
-        _postRender: function() {},
 
         _attachEvents: function() {
             if (this.model.public.type === 'Task') {
-                this.$listItem.find('.task input').on('change', this.onClick.bind(this));
+                this.$listItem.find('input').on('change', this.onClick.bind(this));
             }
 
             this.$el.find('.edit-btn').on('click', this.onEdit.bind(this));
             this.$el.find('.delete-btn').on('click', this.onRemove.bind(this));
         },
+
         onClick: function(ev) {
             ev.preventDefault();
 
@@ -85,7 +67,7 @@ define(function () {
         onEdit: function(ev) {
             ev.preventDefault();
 
-            this.control._editItem();
+            this.control.editModel();
         },
         onRemove: function(ev) {
             ev.preventDefault();
@@ -94,6 +76,7 @@ define(function () {
                 this._continueRemoving();
             }
         },
+
         _continueRemoving: function() {
             this.$el.remove();
 

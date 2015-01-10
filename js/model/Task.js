@@ -93,17 +93,13 @@ define(function () {
                     throw new Error('Incorrect type of data input argument');
                 }
             }
-
-            // This is only to connect event system
-            this.$ = $(this);
         },
-        desctuct: function() {
+        destruct: function() {
             var id = this.public.id;
 
             this.public = null;
-            
+
             TaskOnFly.removeItem(id);
-            this.$.trigger('desctuct', id);
         },
         saveData: function(data) {
             if (data) {

@@ -49,7 +49,7 @@ define(function () {
             this.model.toggleStatus();
         },
         removeModel: function() {
-            this.model.desctuct();
+            this.model.destruct();
         },
 
         editModel: function() {
