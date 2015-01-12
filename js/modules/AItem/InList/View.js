@@ -47,9 +47,7 @@ define(function () {
         },
 
         _attachEvents: function() {
-            if (this.model.public.type === 'Task') {
-                this.$listItem.find('input').on('change', this.onClick.bind(this));
-            }
+            this.$listItem.on('click', this.onClick.bind(this));
 
             this.$el.find('.edit-btn').on('click', this.onEdit.bind(this));
             this.$el.find('.delete-btn').on('click', this.onRemove.bind(this));
@@ -58,9 +56,7 @@ define(function () {
         onClick: function(ev) {
             ev.preventDefault();
 
-            if (this.model.public.type === 'Task') {
-                this.$listItem.toggleClass('done');
-            }
+            this.$listItem.toggleClass('done');
 
             this.control.action();
         },
@@ -72,12 +68,6 @@ define(function () {
         onRemove: function(ev) {
             ev.preventDefault();
 
-            if (this.model.public.type === 'Task') {
-                this._continueRemoving();
-            }
-        },
-
-        _continueRemoving: function() {
             this.$el.remove();
 
             this.control.removeModel();
