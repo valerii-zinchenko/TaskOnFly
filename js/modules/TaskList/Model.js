@@ -25,9 +25,9 @@
 'use strict';
 
 define([
-    'model/Task'
-], function (Task) {
-    var TaskList = new Class(Task, {
+    '../AItem/Model'
+], function (Parent) {
+    var TaskList = new Class(Parent, {
         _parent: null,
         _NDone: 0,
         _path: '/',
