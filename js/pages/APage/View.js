@@ -24,22 +24,20 @@
 'use strict';
 
 define(function () {
-    return new SingletonClass({
+    return new SingletonClass(AView, {
         page: '',
-        template: '',
-        $el: null,
 
-        initialize: function() {
-            this.$el = $('<div>', {
-                id: this.page,
-                'data-role': 'page'
-            });
-            this.$el.html(_.template(this.template, this));
+		initialize: function() {
+			this.$el = $('<div>', {
+				id: this.page,
+				'data-role': 'page'
+			});
 
-            $('body').append(this.$el);
+			$('body').append(this.$el);
         },
-        render: function() {
-            this.$el.trigger('create');
-        }
+
+		processTemplate: function() {
+			this.$el.html(_.template(this.template, this));
+		}
     });
 });
