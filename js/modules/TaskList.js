@@ -21,26 +21,36 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
-
 'use strict';
 
-define(function () {
-	return new Class(AControl, {
-		_items: {},
-		sortedIDs: [],
+define([
+    "./TaskList/Model",
+    "./TaskList/InList/View",
+    "./TaskList/InList/Control",
+    "./TaskList/AsList/View",
+    "./TaskList/AsList/Control",
+    /*"../pages/ItemEditor/View",
+    "../pages/ItemEditor/Control"*/
+], function (Model, InListView, InListControl, AsListView, AsListControl, EditView, EditControl) {
+    var TaskList = new MVCModule({
+        Model: Model,
+        states: {
+            inList: {
+                View: InListView,
+                Control: InListControl
+            },
+            asList: {
+                View: AsListView,
+                Control: AsListControl
+            /*},
+            edit: {
+                View: EditView,
+                Control: EditControl*/
+            }
+        }
+    });
 
-		connect: function() {
-			var that = this;
-			_.each(this.model.models, function(model, key) {
-				that._items[key] = model.useState('inList');
-			});
-		},
+	TaskManager.TaskList = TaskList;
 
-		sortIDs: function() {
-			this.model.sort();
-			this.sortedIDs = this.model.public.items;
-
-			return this.sortedIDs;
-		}
-	});
+    return TaskList;
 });

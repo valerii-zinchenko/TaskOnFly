@@ -29,9 +29,7 @@ define([
 	'view/PopupDialog'
 ], function(Parent) {
 	return new Class(Parent, {
-		_postRender: function() {
-			Parent.prototype._postRender.call(this);
-
+		update: function() {
 			this.$listItem.find('input').prop('disabled', true);
 		},
 

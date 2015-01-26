@@ -27,7 +27,7 @@
 define([
     '../AItem/Model'
 ], function (Parent) {
-    var TaskList = new Class(Parent, {
+    var TaskListModel = new Class(Parent, {
         _parent: null,
         _NDone: 0,
         _path: '/',
@@ -65,12 +65,13 @@ define([
                 toSave = true;
             }
 
-            if (this.public.items.indexOf(item.public.id) === -1) {
-                this.public.items.push(item.public.id);
+			var id = item.model.public.id;
+            if (this.public.items.indexOf(id) === -1) {
+                this.public.items.push(id);
             }
 
-            this.models[item.public.id] = item;
-            if (item.public.isDone) {
+            this.models[id] = item;
+            if (item.model.public.isDone) {
                 this._NDone++;
             }
 
@@ -78,7 +79,6 @@ define([
 
             this.sort();
 
-            this.$.trigger('newItem', item);
             if (toSave) {
                 TaskOnFly.saveItem(this);
             }
@@ -102,12 +102,12 @@ define([
             this.saveData();
         },
         addTask: function(data) {
-            return this._add(new Task(this.public.id, data));
+            return this._add(new TaskManager.Task(this.public.id, data));
         },
         addList: function(data) {
-            var list = new TaskList(this.public.id, data);
+            var list = new TaskManager.TaskList(this.public.id, data);
             list._parent = this;
-            list._path = [this._path, list.public.id, '/'].join('');
+            list._path = [this._path, list.model.public.id, '/'].join('');
             return this._add(list);
         },
 
@@ -218,7 +218,7 @@ define([
             // Build ID-map for sorting
             var sortingIDs = this.public.items.map(function(id) {
                 var modID = '';
-                var publicData = this.models[id].public;
+                var publicData = this.models[id].model.public;
                 for (var n = 0, N = this.sortingOrder.length; n < N; n++) {
                     var property = this.sortingOrder[n];
                     if (property === 'date') {
@@ -301,8 +301,7 @@ define([
         }
     });
 
-    TaskList._counter = 0;
+    TaskListModel._counter = 0;
 
-    TaskManager.TaskList = TaskList;
-    return TaskList;
+    return TaskListModel;
 });
