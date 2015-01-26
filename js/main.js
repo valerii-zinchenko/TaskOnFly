@@ -26,7 +26,8 @@
 
 define([
     'model/MainRouter',
-    'model/TaskList'
+    'modules/Task',
+    'modules/TaskList'
 ], function() {
     function sync(listRef, ids) {
         ids.forEach(function(itemID) {
@@ -34,8 +35,8 @@ define([
             var item = listRef['add' + itemData.type](itemData);
 
             if (itemData.type === 'List') {
-                var ids = item.public.items;
-                item.public.items = [];
+                var ids = item.model.public.items;
+                item.model.public.items = [];
                 sync(item, ids);
             }
         });
@@ -45,18 +46,18 @@ define([
         var store = TaskOnFly.loadItem('root'),
             rootList = new TaskManager.TaskList('root', {
                 id:'root',
-                version: TaskManager.TaskList.prototype._defaults.public.version
+                version: TaskManager.version
             });
 
         if (store) {
             var ids = store.items;
             store.items = [];
-            rootList.saveData(store);
-            sync(rootList, ids);
+            rootList.model.saveData(store);
+            sync(rootList.model, ids);
         }
 
         TaskOnFly.setRootList(rootList);
-        TaskOnFly.getRootList().saveData();
+        TaskOnFly.getRootList().model.saveData();
         TaskOnFly.setCurrentList(TaskOnFly.getRootList());
 
         new TaskManager.MainRouter();

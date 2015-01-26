@@ -40,6 +40,8 @@ requirejs.config({
         'class':            'core/Class',
         'utils':            'core/utils',
         'singleton':        'core/SingletonClass',
+		'aview':			'core/AView',
+		'acontrol':			'core/AControl',
         'mvcmodule':        'core/MVCModule'
     },
     shim: {
@@ -68,6 +70,12 @@ requirejs.config({
         'singleton': {
             exports: 'Singleton'
         },
+		'aview': {
+			deps: ['class']
+		},
+		'acontrol': {
+			deps: ['class']
+		},
         'mvcmodule': {
             epxorts: 'MVCModule'
         }
@@ -83,6 +91,8 @@ requirejs([
     requirejs([
         'class',
         'singleton',
+		'aview',
+		'acontrol',
         'mvcmodule',
         'taskonfly'
     ], function() {
@@ -100,18 +110,17 @@ requirejs([
                 Backbone.history.start();
 
                 requirejs([
-                    'model/Task',
-                    'model/TaskList',
                     'model/MainRouter',
 
-                    'modules/FastTask',
-                    'modules/ListView',
+                    'modules/Task',
+                    'modules/TaskList',
+                    /*'modules/ListView',
                     'modules/MainPanel',
-                    'modules/SimpleSearch',
+                    'modules/SimpleSearch',*/
 
-                    'pages/About',
+                    //'pages/About',
                     'pages/Home',
-                    'pages/ItemEditor',
+                    //'pages/ItemEditor',
 
                     'view/PopupDialog'
                 ]);
