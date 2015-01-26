@@ -25,7 +25,7 @@
 'use strict';
 
 define(function() {
-    return new SingletonClass({
+    return new SingletonClass(AControl, {
         addTask: function() {
             TaskOnFly.changeView('add/task');
         },

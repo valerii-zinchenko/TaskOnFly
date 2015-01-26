@@ -26,11 +26,12 @@
 
 define([
     '../APage/View',
+    'modules/TaskList'/*,
     'modules/ListViewGroupedByDate',
     'modules/FastTask',
     'modules/SimpleSearch',
-    'modules/MainPanel'
-], function(Parent, ListView, FastTask, SimpleSearch, MainPanel) {
+    'modules/MainPanel'*/
+], function(Parent, TaskList /*, FastTask, SimpleSearch, MainPanel*/) {
     return new SingletonClass(Parent, {
         page: 'home',
 
@@ -69,30 +70,24 @@ define([
         $addListBtn: null,
 
         initialize: function() {
-            this.$content = this.$el.find('#content');
-            this.$addTaskBtn = this.$el.find('#addTask');
-            this.$addListBtn = this.$el.find('#addList');
-            this.$prevListBtn = this.$el.find('#prevList');
-
-            this.$addTaskBtn.on('click', this.addTask.bind(this));
-            this.$addListBtn.on('click', this.addList.bind(this));
-            // todo: Move this button and event handler into the ListView
-            this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
+            this.list = TaskOnFly.getCurrentList().useState('asList');
 
             this._buildModules();
         },
-        render: function() {
-            this.parent.render();
+        _postProcessTemplate: function() {
+			this.$content = this.$el.find('#content');
+            this.$addTaskBtn = this.$el.find('#addTask');
+            this.$addListBtn = this.$el.find('#addList');
+            this.$prevListBtn = this.$el.find('#prevList');
+        },
 
+		update: function() {
             this._fixFooterTable();
 
-            this._renderModules();
-        },
+			this.list.view.update();
+		},
         _buildModules: function() {
-            this.list = new ListView({
-                view: this.$content.find('#listModule'),
-                control: TaskOnFly.getCurrentList()
-            });
+			/*
             this.fastTask = new FastTask({
                 view: this.$content.find('#fastTaskModule')
             });
@@ -105,13 +100,17 @@ define([
                     page: this.$el
                 }
             });
+			*/
         },
-        _renderModules: function() {
-            this.list.view.render();
-            this.fastTask.view.render();
+        renderSubModules: function() {
+            this.$el.find('#listModule').append(this.list.view.render());
+            /*this.fastTask.view.render();
             this.simpleSearch.view.render();
-            this.panel.view.render();
+            this.panel.view.render();*/
         },
+		_postRenderModules: function() {
+			this.list.view.postRender();
+		},
         addTask: function(ev) {
             ev.preventDefault();
             this.control.addTask();
@@ -124,6 +123,14 @@ define([
             ev.preventDefault();
             this.list.view.selectParentList();
         },
+
+		_attachEvents: function() {
+            this.$addTaskBtn.on('click', this.addTask.bind(this));
+            this.$addListBtn.on('click', this.addList.bind(this));
+
+            // todo: Move this button and event handler into the TaskList
+            this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
+		},
 
         _fixFooterTable: function() {
             if (!this._footerBtnsWidth) {

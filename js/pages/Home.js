@@ -29,6 +29,7 @@ define([
     './Home/Control'
 ], function (View, Control) {
     TaskManager.Pages.Home = new MVCModule({
+		Model: function(){},
         View: View,
         Control: Control
     });
