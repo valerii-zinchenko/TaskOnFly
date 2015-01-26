@@ -42,7 +42,7 @@ define(function () {
 
         $listItem: null,
 
-        _postRender: function() {
+        _postProcessTemplate: function() {
             this.$listItem = this.$el.find('.list-item');
         },
 
