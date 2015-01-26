@@ -45,9 +45,11 @@ define(function () {
          * @private
          */
         _openPage: function(pageName, fn) {
-            requirejs(['pages/' + pageName], function(View) {
+            requirejs(['pages/' + pageName], function(Page) {
                 if (!this._pages[pageName]) {
-                    this._pages[pageName] = new View();
+					var page = new Page();
+					page.view.render();
+					this._pages[pageName] = page;
                 }
 
                 this._view = this._pages[pageName].view;
@@ -57,13 +59,16 @@ define(function () {
                 }
 
                 $.mobile.pageContainer.pagecontainer('change', '#' + this._view.page);
+
             }.bind(this));
         },
 
         initialize: function() {
             $.mobile.pageContainer.pagecontainer({
                 change: function() {
-                    this._view.render();
+					this._view.postRender();
+
+					this._view.update();
                 }.bind(this)
             });
         },
