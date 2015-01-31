@@ -98,35 +98,6 @@ define([
 			this.$list.find('.task').on('click', _.bind(this.onTaskClick, this));
 		},
 
-		// this is a task for page controller
-        selectParentList: function() {
-            TaskOnFly.changeView('#path' + this.control.getList().getParentLocation());
-        },
-		// this is a task for page controller
-        _switchLists: function(newList) {
-            var list = this.control.getList();
-            this.control.setList(newList);
-
-            var $newList = this._prepareListElement(newList);
-
-            if (newList.public.items.length > 0) {
-                this.$content.append($newList);
-                $newList.trigger('create');
-            }
-
-            if (list._parent && list._parent.public.id === newList.public.id) {
-                //todo Position new list to the left side and move both lists from left to the right
-            } else {
-                //todo Position new list to the right side and move both lists from right to the left
-            }
-
-            this.$currentList.remove();
-            this.$currentList = $newList;
-
-            if (newList.public.items.length > 0) {
-                this._postRender();
-            }
-        },
 		// listen the status toggling of each model
         onTaskClick: function(ev) {
             var $target = $(ev.target);

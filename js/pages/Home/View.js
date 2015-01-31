@@ -121,7 +121,7 @@ define([
         },
         selectPreviousList: function(ev) {
             ev.preventDefault();
-            this.list.view.selectParentList();
+            this.selectParentList();
         },
 
 		_attachEvents: function() {
@@ -142,6 +142,34 @@ define([
             }
             this.$addTaskBtn.parents('td').css('width', this._footerBtnsWidth.addTaskBtn);
             this.$addListBtn.parents('td').css('width', this._footerBtnsWidth.addListBtn);
+        },
+
+        selectParentList: function() {
+            TaskOnFly.changeView('#path' + this.control.getList().getParentLocation());
+        },
+        _switchLists: function(newList) {
+            var list = this.control.getList();
+            this.control.setList(newList);
+
+            var $newList = this._prepareListElement(newList);
+
+            if (newList.public.items.length > 0) {
+                this.$content.append($newList);
+                $newList.trigger('create');
+            }
+
+            if (list._parent && list._parent.public.id === newList.public.id) {
+                //todo Position new list to the left side and move both lists from left to the right
+            } else {
+                //todo Position new list to the right side and move both lists from right to the left
+            }
+
+            this.$currentList.remove();
+            this.$currentList = $newList;
+
+            if (newList.public.items.length > 0) {
+                this._postRender();
+            }
         }
     });
 });
