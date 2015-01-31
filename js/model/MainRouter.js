@@ -48,7 +48,6 @@ define(function () {
             requirejs(['pages/' + pageName], function(Page) {
                 if (!this._pages[pageName]) {
 					var page = new Page();
-					page.view.render();
 					this._pages[pageName] = page;
                 }
 
@@ -57,6 +56,8 @@ define(function () {
                 if (fn) {
                     fn.call(this._view);
                 }
+
+				this._view.render();
 
                 $.mobile.pageContainer.pagecontainer('change', '#' + this._view.page);
 
@@ -94,11 +95,11 @@ define(function () {
                     return;
             }
 
+			var list = TaskOnFly.getCurrentList();
             var fn = 'add' + what[0].toUpperCase() + what.slice(1);
             this._openPage('ItemEditor', function() {
                 this.header = 'Add ' + what;
-                var list = TaskOnFly.getCurrentList();
-                this.control.setSaveCallback(list[fn].bind(list));
+                this.control.setSaveCallback(list.model[fn].bind(list.model));
             });
         },
 
@@ -108,16 +109,16 @@ define(function () {
          */
         edit: function(id) {
             var list = TaskOnFly.getCurrentList(),
-                item = list.getItem(id);
+                item = list.model.getItem(id);
 
             if (!item) {
                 throw new Error('Item with id: "' + id + '" was not found');
             }
 
             this._openPage('ItemEditor', function() {
-                this.header = item.public.type;
-                this.control.setItem(item);
-                this.control.setSaveCallback(list.saveData.bind(item));
+				this.item = item.useState('edit');
+                this.header = item.model.public.type;
+                this.control.setSaveCallback(list.model.saveData.bind(item.model));
             });
         },
 
