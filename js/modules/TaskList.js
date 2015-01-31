@@ -29,9 +29,8 @@ define([
     "./TaskList/InList/Control",
     "./TaskList/AsList/View",
     "./TaskList/AsList/Control",
-    /*"../pages/ItemEditor/View",
-    "../pages/ItemEditor/Control"*/
-], function (Model, InListView, InListControl, AsListView, AsListControl, EditView, EditControl) {
+    "./AItem/EditForm/View"
+], function (Model, InListView, InListControl, AsListView, AsListControl, EditView) {
     var TaskList = new MVCModule({
         Model: Model,
         states: {
@@ -42,10 +41,9 @@ define([
             asList: {
                 View: AsListView,
                 Control: AsListControl
-            /*},
+            },
             edit: {
-                View: EditView,
-                Control: EditControl*/
+                View: EditView
             }
         }
     });
