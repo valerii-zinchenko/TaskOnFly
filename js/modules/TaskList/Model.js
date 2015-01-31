@@ -102,10 +102,10 @@ define([
             this.saveData();
         },
         addTask: function(data) {
-            return this._add(new TaskManager.Task(this.public.id, data));
+            return this._add(new TaskManager.Task(data));
         },
         addList: function(data) {
-            var list = new TaskManager.TaskList(this.public.id, data);
+            var list = new TaskManager.TaskList(data);
             list._parent = this;
             list._path = [this._path, list.model.public.id, '/'].join('');
             return this._add(list);

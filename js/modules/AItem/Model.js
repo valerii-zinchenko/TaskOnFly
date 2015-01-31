@@ -37,7 +37,6 @@ define(function () {
             timestamp: '',
 
             id: '',
-            parentID: '',
             type: 'Task',
 
             version: TaskManager.version
@@ -71,17 +70,10 @@ define(function () {
             ].join('-');
         },
 
-        initialize: function(parentID, data) {
-            if (arguments.length === 0
-                || (typeof parentID === 'undefined' && typeof data === 'undefined'))
-            {
+        initialize: function(data) {
+            if (arguments.length === 0 || typeof data === 'undefined') {
                 throw new Error('Invalid input arguments');
             }
-
-            if (typeof parentID !== 'string' || 0 === parentID.length) {
-                throw new Error('parentID is not defined');
-            }
-            this.public.parentID = parentID;
 
             this.public.id = this._genID();
             this.public.timestamp = Date.now();

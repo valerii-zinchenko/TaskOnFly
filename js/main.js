@@ -44,7 +44,7 @@ define([
     }
     return function() {
         var store = TaskOnFly.loadItem('root'),
-            rootList = new TaskManager.TaskList('root', {
+            rootList = new TaskManager.TaskList({
                 id:'root',
                 version: TaskManager.version
             });
