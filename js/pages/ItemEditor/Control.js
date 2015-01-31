@@ -24,51 +24,20 @@
 
 'use strict';
 
-define([
-    'model/Task',
-    'model/TaskList'
-],function (Task, TaskList) {
-    return new SingletonClass({
+define(function () {
+    return new SingletonClass(AControl, {
         _callback: null,
-        _defaults: Task.prototype._defaults.public,
-
-        item: null,
-
-        setItem: function(item) {
-            if (!item || (item.constructor !== Task && item.constructor !== TaskList)) {
-                throw new Error('Incorrect input arguments');
-            }
-            this.item = item;
-        },
 
         setSaveCallback: function(callback) {
             if (typeof callback !== 'function') {
                 throw new Error('Incorrect input arguments');
             }
+
             this._callback = callback;
         },
 
-        getData: function() {
-            var data = this.item ? this.item.public : this._defaults._defaults;
-            data.startDate = data.startDate || data.timestamp;
-
-            return data;
-        },
-
-        save: function(data) {
-            this._callback({
-                title: data.title,
-                isDone: data.isDone,
-                priority: data.priority,
-                startDate: data.startDate,
-                dueDate: data.dueDate,
-                notes: data.notes,
-                version: this._defaults.version
-            });
-        },
-
-        resetItem: function() {
-            this.item = null;
+        save: function() {
+            this._callback(this.view.item.view.getFormData());
         }
     });
 });

@@ -29,6 +29,7 @@ define([
     './ItemEditor/Control'
 ], function (View, Control) {
     TaskManager.Pages.ItemEditor = new MVCModule({
+		Model: function(){},
         View: View,
         Control: Control
     });

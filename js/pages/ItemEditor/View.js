@@ -29,121 +29,56 @@ define([
 ], function(Parent) {
     return new SingletonClass(Parent, {
         template:
-'<div data-role="header"> \
-    <a href="#home" data-role="back" data-icon="carat-l">Back</a> \
-    <h1 id="headerTitle">Item</h1> \
-    <a id="save" data-role="button" data-icon="plus" data-iconpos="right">Save</a> \
-</div> \
-<div data-role="content"> \
-    <div data-role="fieldcontain"> \
-        <table class="task-title" style="width: 100%"> \
-        <tbody> \
-            <tr> \
-                <td> \
-                    <input type="checkbox" id="done" class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-checkbox-off"/> \
-                </td> \
-                <td> \
-                    <input type="text" id="title" name="title" placeholder="Title" value=""/> \
-                </td> \
-            </tr> \
-        </tbody> \
-        </table> \
-    </div> \
+'<div data-role="header">\
+    <a href="#home" data-role="back" data-icon="carat-l">Back</a>\
+    <h1 id="title">Item</h1>\
+    <a class="save" data-role="button" data-icon="plus" data-iconpos="right">Save</a>\
+</div>\
 \
-    <div data-role="fieldcontain"> \
-        <div id="priority" data-role="controlgroup" data-type="horizontal" class="full-width ui-controlgroup-grid-b"> \
-            <label for="2">Low</label> \
-            <input id="2" type="radio" name="priority" value="2"> \
-            <label for="1">Normal</label> \
-            <input id="1" type="radio" name="priority" value="1"> \
-            <label for="0">High</label> \
-            <input id="0" type="radio" name="priority" value="0"> \
-        </div> \
-    </div> \
+<div data-role="content">\
+	<div id="itemForm"></div>\
 \
-    <div data-role="fieldcontain"> \
-        <label for="start">Start:</label> \
-        <input type="date" id="start" value="" placeholder="YYYY-MM-DD"> \
-    </div> \
-    <div data-role="fieldcontain"> \
-        <label for="due">Due:</label> \
-        <input type="date" id="due" value="" placeholder="YYYY-MM-DD"> \
-    </div> \
-\
-    <div data-role="fieldcontain"> \
-        <textarea id="notes" name="notes" placeholder="Notes"></textarea> \
-    </div> \
-</div>',
+	<div data-role="fieldcontain">\
+		<button class="save">Save</button>\
+	</div>\
+</div>\
+',
 
         page: 'editor',
         header: 'Item',
 
-        initialize: function() {
-            this.$header = this.$el.find('#headerTitle');
-            this.$isDone = this.$el.find('#done');
-            this.$title = this.$el.find('#title');
-            this.$priority = this.$el.find('#priority');
-            this.$notes = this.$el.find('#notes');
-            this.$startDate = this.$el.find('#start');
-            this.$dueDate = this.$el.find('#due');
-
-            this._attachEvents();
+        _postProcessTemplate: function() {
+            this.$header = this.$el.find('#title');
         },
+
+		_postRenderModules: function() {
+			this.item.view.postRender();
+		},
+
+		renderSubModules: function() {
+			this.$el.find('#itemForm').append(this.item.view.render());
+		},
 
         _attachEvents: function() {
-            this.$el.find('#save').on('vclick', this.save.bind(this));
-            this.$el.find('form').on('submit', this.save.bind(this));
-            this.$isDone.on('vclick', this.onToggleStatus.bind(this));
+            this.$el.find('.save').on('vclick', this.onSave.bind(this));
         },
 
-        render: function() {
-            this.setData();
-
+        update: function() {
             this.$header.html(this.header);
-            this.$isDone.prop('checked', this.data.isDone);
-            this.$title.val(this.data.title);
-            this.$priority.find('#' + this.data.priority).prop('checked', true);
-            this.$startDate.val(this.data.startDate);
-            this.$dueDate.val(this.data.dueDate);
-            this.$notes.val(this.data.notes);
 
-            this.parent.render();
-
-            if (this.data.isDone) {
-                this.$isDone.removeClass('ui-checkbox-off');
-                this.$isDone.addClass('ui-checkbox-on');
-            } else {
-                this.$isDone.removeClass('ui-checkbox-on');
-                this.$isDone.addClass('ui-checkbox-off');
-            }
-
-            this.control.resetItem();
-
-            return this;
+			this.updateSubModules();
         },
 
-        setData: function() {
-            this.data = this.control.getData();
-        },
+		updateSubModules: function() {
+			this.item.view.update();
+		},
 
-        save: function(ev) {
+        onSave: function(ev) {
             ev.preventDefault();
 
-            this.control.save({
-                title: this.$title.val().trim(),
-                isDone: this.$isDone.prop('checked'),
-                priority: this.$priority.find(':checked').val(),
-                startDate: this.$startDate.val(),
-                dueDate: this.$dueDate.val(),
-                notes: this.$notes.val().trim()
-            });
+            this.control.save();
 
-            TaskOnFly.changeView('#home');
-        },
-
-        onToggleStatus: function(ev) {
-            this.$isDone.toggleClass('ui-checkbox-on');
-            this.$isDone.toggleClass('ui-checkbox-off');
+            TaskOnFly.changeView('home');
         }
     });
 });
