@@ -107,6 +107,9 @@ define(function () {
                 if (data.timestamp && typeof data.timestamp == 'string') {
                     data.timestamp = new Date(data.timestamp).getTime();
                 }
+				if (!data.startDate) {
+					data.startDate = utils.date(new Date(data.timestamp || this.public.timestamp));
+				}
 
                 if (!data.version) {
                     data.version = '0.0.0';
