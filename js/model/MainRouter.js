@@ -129,7 +129,7 @@ define(function () {
             if (path) {
                 pathStack = path.split('/');
                 pathStack.pop();
-                list = list.findList(pathStack);
+                list = list.model.findList(pathStack);
             }
 
             if (!list) {
