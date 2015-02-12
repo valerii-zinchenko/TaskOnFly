@@ -31,8 +31,13 @@ define(function () {
 
 		connect: function() {
 			var that = this;
+
+			var eventHandler = _.bind(this.onItemStatusToggle, this);
 			_.each(this.model.models, function(model, key) {
-				that._items[key] = model.useState('inList');
+				var state = model.useState('inList');
+				that._items[key] = state;
+
+				state.model.listen('toggleStatus', eventHandler);
 			});
 		},
 
@@ -41,6 +46,18 @@ define(function () {
 			this.sortedIDs = this.model.public.items;
 
 			return this.sortedIDs;
+		},
+
+		onItemStatusToggle: function(ev) {
+			var id = ev.public.id;
+			var item = this._items[id];
+
+			var indexBefore = this.sortedIDs.indexOf(id);
+			var indexAfter = this.sortIDs().indexOf(id);
+
+			if (indexAfter != indexBefore) {
+				this.view.moveItem(item.view, indexBefore, indexAfter);
+			}
 		}
 	});
 });

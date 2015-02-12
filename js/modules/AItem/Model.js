@@ -26,6 +26,8 @@
 
 define(function () {
     var Task = new Class({
+		Encapsulate: EventHandler,
+
         public: {
             isDone: false,
             title: '',
@@ -121,12 +123,16 @@ define(function () {
             }
 
             TaskOnFly.saveItem(this);
+
+			this.trigger('update');
         },
         toggleStatus: function() {
             this.saveData({
                 isDone: !this.public.isDone,
                 doneDate: utils.date()
             });
+
+			this.trigger('toggleStatus', this.public.isDone);
         },
 
         upgrade: function(data) {

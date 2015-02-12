@@ -40,6 +40,7 @@ requirejs.config({
         'class':            'core/Class',
         'utils':            'core/utils',
         'singleton':        'core/SingletonClass',
+		'EventHandler':		'core/EventHandler',
 		'aview':			'core/AView',
 		'acontrol':			'core/AControl',
         'mvcmodule':        'core/MVCModule'
@@ -70,6 +71,9 @@ requirejs.config({
         'singleton': {
             exports: 'Singleton'
         },
+		'EventHandler': {
+			deps: ['class']
+		},
 		'aview': {
 			deps: ['class']
 		},
@@ -91,6 +95,7 @@ requirejs([
     requirejs([
         'class',
         'singleton',
+		'EventHandler',
 		'aview',
 		'acontrol',
         'mvcmodule',

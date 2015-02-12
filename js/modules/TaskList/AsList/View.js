@@ -36,6 +36,8 @@ define([
 	</table>\
 </div>',
 
+		_subModules: [],
+
         __render: function() {
             if (this.$currentList) {
                 this.$currentList.remove();
@@ -68,11 +70,15 @@ define([
 
 		renderSubModules: function() {
 			// todo: make update()
-			this.control.connect();
+			//this.control.connect();
 
+			var view;
 			var itemIDs = this.control.sortIDs();
 			for (var n=0, N = itemIDs.length; n < N; n++) {
-				this.$list.append(this.control._items[itemIDs[n]].view.render());
+				view = this.control._items[itemIDs[n]].view;
+				this.$list.append(view.render());
+
+				this._subModules.push(view);
 			}
 		},
 
@@ -94,42 +100,26 @@ define([
 					that._fixWidth();
 				}, 300);
 			});
-
-			this.$list.find('.task').on('click', _.bind(this.onTaskClick, this));
 		},
 
-		// listen the status toggling of each model
-        onTaskClick: function(ev) {
-            var $target = $(ev.target);
-            var $el = $target.parents('tr');
-            var id = $target.prop('id');
-            var list = this.control.sortedIDs;
-            var siblingID,
-                $sibling;
-
-            var indexBefore = this.control.sortedIDs.indexOf(id);
-
-            this.control.sortIDs();
-
-            var indexAfter = this.control.sortedIDs.indexOf(id);
-            if (indexAfter === indexBefore) {
-                return;
-            }
-
+        moveItem: function(itemView, fromIndex, toIndex) {
+            var $el = itemView.$el;
             $el.detach();
 
-            if (indexAfter+1 === list.length) {
-                siblingID = list[indexAfter - 1];
-            } else {
-                siblingID = list[indexAfter + 1];
-            }
-            $sibling = this.$currentList.find('tr[data-item-id=' + siblingID + ']');
+			this._subModules.splice(fromIndex, 1);
+			this._subModules.splice(toIndex, 0, itemView);
 
-            if (indexAfter+1 === list.length) {
-                $el.insertAfter($sibling);
+            var siblingItemView;
+			var insertionFn;
+            if (toIndex +1 === this._subModules.length) {
+                siblingItemView = this._subModules[toIndex - 1];
+				insertionFn = 'insertAfter';
             } else {
-                $el.insertBefore($sibling);
+                siblingItemView = this._subModules[toIndex + 1];
+				insertionFn = 'insertBefore';
             }
+
+			$el[insertionFn](siblingItemView.$el);
         },
 
         _fixWidth: function () {
