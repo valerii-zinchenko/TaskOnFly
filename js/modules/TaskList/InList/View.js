@@ -33,11 +33,6 @@ define([
 			this.$listItem.find('input').prop('disabled', true);
 		},
 
-		onClick: function(ev) {
-			ev.preventDefault();
-
-			this.control.action();
-		},
 		onRemove: function(ev) {
 			ev.preventDefault();
 

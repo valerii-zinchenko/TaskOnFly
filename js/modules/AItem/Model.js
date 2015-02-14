@@ -120,12 +120,29 @@ define(function () {
                 }
 
                 utils.deepCopy(this.public, data);
+
+				this.triggerEvents(data);
             }
 
             TaskOnFly.saveItem(this);
 
 			this.trigger('update');
         },
+
+		triggerEvents: function(data) {
+			for (var key in data) {
+				if (Object.prototype.toString.call(data) == '[object Object]') {
+					this.triggerEvents(data[key]);
+				}
+
+				this.trigger(this._buildPropertyEventName(key, 'update'), data[key]);
+			}
+		},
+
+		_buildPropertyEventName: function(property, prefix) {
+			return (prefix ? prefix : '') + property[0].toUpperCase() + property.slice(1);
+		},
+
         toggleStatus: function() {
             this.saveData({
                 isDone: !this.public.isDone,

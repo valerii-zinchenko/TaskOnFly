@@ -25,6 +25,21 @@
 
 define(function () {
     return new Class(AControl, {
+		connect: function() {
+			this.model.listen({
+				updateIsDone: _.bind(this.onUpdateIsDone, this),
+				updateTitle: _.bind(this.onUpdateTitle, this)
+			});
+		},
+
+		onUpdateIsDone: function(model) {
+			this.view.updateIsDone(model.public.isDone);
+		},
+
+		onUpdateTitle: function(model) {
+			this.view.updateTitle(model.public.title);
+		},
+
         action: function() {
             this.model.toggleStatus();
         },

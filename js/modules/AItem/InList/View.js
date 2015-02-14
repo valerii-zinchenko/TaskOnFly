@@ -26,24 +26,26 @@
 define(function () {
     return new Class(AView, {
         template: '\
-<tr data-item-id="<%= public.id %>"> \
-    <th> \
-        <div class="list-item <%= public.type.toLowerCase() %> priority-<%= public.priority %> <% if (public.isDone) {%> done <% } %>"> \
-            <input id="<%= public.id %>" type="checkbox" <% if (public.isDone) { %> checked <% } %>> \
-            <label for="<%= public.id %>"><%= public.title %></label> \
-        </div> \
-    </th> \
-    <td> \
-        <div data-role="controlgroup" data-type="horizontal"> \
-            <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button> \
-        </div> \
-    </td> \
+<tr data-item-id="<%= public.id %>">\
+    <th>\
+        <div class="list-item <%= public.type.toLowerCase() %> priority-<%= public.priority %> <% if (public.isDone) {%> done <% } %>">\
+            <input id="<%= public.id %>" type="checkbox" <% if (public.isDone) { %> checked <% } %>>\
+            <label class="title" for="<%= public.id %>"><%= public.title %></label>\
+        </div>\
+    </th>\
+    <td>\
+        <div data-role="controlgroup" data-type="horizontal">\
+            <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>\
+        </div>\
+    </td>\
 </tr>',
 
         $listItem: null,
+		$title: null,
 
         _postProcessTemplate: function() {
             this.$listItem = this.$el.find('.list-item');
+			this.$title = this.$el.find('.title');
         },
 
         _attachEvents: function() {
@@ -53,10 +55,19 @@ define(function () {
             this.$el.find('.delete-btn').on('click', this.onRemove.bind(this));
         },
 
+		updateIsDone: function(value) {
+			if (value) {
+				this.$listItem.addClass('done');
+			} else {
+				this.$listItem.removeClass('done');
+			}
+		},
+		updateTitle: function(value) {
+			this.$title.html(value);
+		},
+
         onClick: function(ev) {
             ev.preventDefault();
-
-            this.$listItem.toggleClass('done');
 
             this.control.action();
         },

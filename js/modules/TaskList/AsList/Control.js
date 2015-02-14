@@ -30,15 +30,13 @@ define(function () {
 		sortedIDs: [],
 
 		connect: function() {
-			var that = this;
-
-			var eventHandler = _.bind(this.onItemStatusToggle, this);
+			var eventHandler = _.bind(this.onUpdateIsDone, this);
 			_.each(this.model.models, function(model, key) {
 				var state = model.useState('inList');
-				that._items[key] = state;
+				this._items[key] = state;
 
-				state.model.listen('toggleStatus', eventHandler);
-			});
+				state.model.listen('updateIsDone', eventHandler);
+			}, this);
 		},
 
 		sortIDs: function() {
@@ -48,7 +46,7 @@ define(function () {
 			return this.sortedIDs;
 		},
 
-		onItemStatusToggle: function(ev) {
+		onUpdateIsDone: function(ev) {
 			var id = ev.public.id;
 			var item = this._items[id];
 
