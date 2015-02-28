@@ -95,11 +95,15 @@ define(function () {
                     return;
             }
 
-			var list = TaskOnFly.getCurrentList();
             var fn = 'add' + what[0].toUpperCase() + what.slice(1);
             this._openPage('ItemEditor', function() {
-                this.header = 'Add ' + what;
-                this.control.setSaveCallback(list.model[fn].bind(list.model));
+				this.setHeader('Add ' + what);
+
+                this.control.setSaveCallback(function(data) {
+					var list = TaskOnFly.getCurrentList();
+
+					list.model[fn](data);
+				});
             });
         },
 
@@ -139,8 +143,8 @@ define(function () {
                 return;
             }
 
-            TaskOnFly.$.trigger('showList', list);
             TaskOnFly.setCurrentList(list);
+            TaskOnFly.trigger('showList', list);
 
             if (!this._pages.Home || !this._view || this._view.page !== 'home') {
                 this.home();

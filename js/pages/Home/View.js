@@ -35,37 +35,39 @@ define([
     return new SingletonClass(Parent, {
         page: 'home',
 
-        template:
-'<div data-role="header"> \
-    <a href="#" id="prevList" data-role="button" data-icon="carat-l">Previous list</a> \
-    <h1>Home</h1> \
-    <a href="#mainPanel" data-role="button" data-icon="gear" data-iconpos="notext"></a> \
-</div> \
+        template: '\
+<div data-role="header">\
+    <a href="#" id="prevList" data-role="button" data-icon="carat-l">Previous list</a>\
+    <h1>Home</h1>\
+    <a href="#mainPanel" data-role="button" data-icon="gear" data-iconpos="notext"></a>\
+</div>\
 \
-<div id="content" class="ui-content"> \
-    <div id="fastTaskModule" data-role="fieldcontain"></div> \
-    <div id="listModule" data-role="fieldcontain"></div> \
-</div> \
+<div id="content" class="ui-content">\
+    <div id="fastTaskModule" data-role="fieldcontain"></div>\
+    <div id="listModule" data-role="fieldcontain"></div>\
+</div>\
 \
-<div data-role="footer" data-position="fixed" data-tap-toggle="false"> \
-    <table class="full"> \
-        <tbody> \
-        <tr> \
-            <td> \
-                <button id="addList" class="btn-left" data-role="button" data-icon="plus">List</button> \
-            </td> \
-            <td> \
-                <div id="searchModule"></div> \
-            </td> \
-            <td> \
-                <button id="addTask" class="btn-right" data-role="button" data-icon="plus" data-iconpos="right">Task</button> \
-            </td> \
-        </tr> \
-        </tbody> \
-    </table> \
+<div data-role="footer" data-position="fixed" data-tap-toggle="false">\
+    <table class="full">\
+        <tbody>\
+        <tr>\
+            <td>\
+                <button id="addList" class="btn-left" data-role="button" data-icon="plus">List</button>\
+            </td>\
+            <td>\
+                <div id="searchModule"></div>\
+            </td>\
+            <td>\
+                <button id="addTask" class="btn-right" data-role="button" data-icon="plus" data-iconpos="right">Task</button>\
+            </td>\
+        </tr>\
+        </tbody>\
+    </table>\
 </div>',
 
         _footerBtnsWidth: null,
+		$content: null,
+		$listModule: null,
         $addTaskBtn: null,
         $addListBtn: null,
 
@@ -76,6 +78,7 @@ define([
         },
         _postProcessTemplate: function() {
 			this.$content = this.$el.find('#content');
+			this.$listModule = this.$content.find('#listModule');
             this.$addTaskBtn = this.$el.find('#addTask');
             this.$addListBtn = this.$el.find('#addList');
             this.$prevListBtn = this.$el.find('#prevList');
@@ -103,7 +106,7 @@ define([
 			*/
         },
         renderSubModules: function() {
-            this.$el.find('#listModule').append(this.list.view.render());
+            this.$listModule.append(this.list.view.render());
             /*this.fastTask.view.render();
             this.simpleSearch.view.render();
             this.panel.view.render();*/
@@ -130,6 +133,8 @@ define([
 
             // todo: Move this button and event handler into the TaskList
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
+
+			TaskOnFly.listen('changeList', _.bind(this._switchLists, this));
 		},
 
         _fixFooterTable: function() {
@@ -145,31 +150,34 @@ define([
         },
 
         selectParentList: function() {
-            TaskOnFly.changeView('#path' + this.control.getList().getParentLocation());
+			TaskOnFly.changeView('path' + this.list.model.getParentLocation());
         },
-        _switchLists: function(newList) {
-            var list = this.control.getList();
-            this.control.setList(newList);
+        _switchLists: function(ev, newList) {
+			var list = newList.useState('asList');
+			if (!list.view._isRendered) {
+				list.view.render();
+			}
+			var $newList = list.view.$el;
+			var $currentList = this.list.view.$el;
 
-            var $newList = this._prepareListElement(newList);
+			if (list.model.public.items.length > 0) {
+				this.$listModule.append($newList);
+				if (!list.view._isRendered) {
+					$newList.trigger('create');
+					list.view.postRender();
+				}
+			}
 
-            if (newList.public.items.length > 0) {
-                this.$content.append($newList);
-                $newList.trigger('create');
-            }
-
-            if (list._parent && list._parent.public.id === newList.public.id) {
+            if (this.list.model._parent && this.list.model._parent.public.id === list.public.id) {
                 //todo Position new list to the left side and move both lists from left to the right
             } else {
                 //todo Position new list to the right side and move both lists from right to the left
             }
 
-            this.$currentList.remove();
-            this.$currentList = $newList;
+			$currentList.detach();
+			this.list = list;
 
-            if (newList.public.items.length > 0) {
-                this._postRender();
-            }
+			this.list.view.update();
         }
     });
 });
