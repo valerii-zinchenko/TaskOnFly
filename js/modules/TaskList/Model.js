@@ -85,6 +85,8 @@ define([
 
 			this.trigger('newItem', item);
 
+			item.model.listen('remove', _.bind(this.onRemove, this));
+
             return item;
         },
         _checkListCompleteness: function() {
@@ -130,7 +132,6 @@ define([
             this._checkListCompleteness();
 
             TaskOnFly.saveItem(this);
-            TaskOnFly.removeItem(id);
         },
 
         toggleItemStatus: function(id) {
@@ -300,7 +301,11 @@ define([
 
                 return match;
             });
-        }
+        },
+
+		onRemove: function(module, id) {
+			this.removeItem(id);
+		}
     });
 
     TaskListModel._counter = 0;

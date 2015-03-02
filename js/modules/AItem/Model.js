@@ -93,6 +93,8 @@ define(function () {
 
             this.public = null;
 
+			this.trigger('remove', id);
+
             TaskOnFly.removeItem(id);
         },
         saveData: function(data) {
