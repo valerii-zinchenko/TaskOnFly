@@ -37,7 +37,7 @@ define(function () {
         },
 
         save: function() {
-            this._callback(this.view.item.view.getFormData());
+            this._callback(this.view.getFormData());
         }
     });
 });
