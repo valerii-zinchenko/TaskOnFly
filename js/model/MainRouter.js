@@ -47,8 +47,7 @@ define(function () {
         _openPage: function(pageName, fn) {
             requirejs(['pages/' + pageName], function(Page) {
                 if (!this._pages[pageName]) {
-					var page = new Page();
-					this._pages[pageName] = page;
+					this._pages[pageName] = new Page();
                 }
 
                 this._view = this._pages[pageName].view;
@@ -60,7 +59,6 @@ define(function () {
 				this._view.render();
 
                 $.mobile.pageContainer.pagecontainer('change', '#' + this._view.page);
-
             }.bind(this));
         },
 
@@ -120,8 +118,8 @@ define(function () {
             }
 
             this._openPage('ItemEditor', function() {
-				this.item = item.useState('edit');
-                this.header = item.model.public.type;
+                this.setHeader(item.model.public.type);
+				this.setDataModel(item.model);
                 this.control.setSaveCallback(list.model.saveData.bind(item.model));
             });
         },

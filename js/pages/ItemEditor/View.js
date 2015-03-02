@@ -100,13 +100,16 @@ define([
 			this.$isDone.on('change', this.onToggleStatus.bind(this));
 		},
 
-		update: function(data) {
+		update: function() {
 			this.$header.html(this.header);
 
-			if (arguments.length == 0) {
+			if (!this._model) {
 				this.resetForm();
 				return;
 			}
+
+			var data = this._model.public;
+			this._model = null;
 
 			this.$priority.find(':checked').prop('checked', false).checkboxradio('refresh');
 
@@ -140,6 +143,9 @@ define([
 
 		setHeader: function(header) {
 			this.header = header;
+		},
+		setDataModel: function(model) {
+			this._model = model;
 		},
 		resetForm: function() {
 			this.$isDone.prop('checked', false);
