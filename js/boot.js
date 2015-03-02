@@ -98,8 +98,7 @@ requirejs([
 		'EventHandler',
 		'aview',
 		'acontrol',
-        'mvcmodule',
-        'taskonfly'
+        'mvcmodule'
     ], function() {
         $(document).on('mobileinit', function() {
             $.extend($.mobile, {
@@ -110,7 +109,7 @@ requirejs([
         });
 
         requirejs(['jquery.mobile'], function() {
-            requirejs(['main'], function(main) {
+            requirejs(['main', 'taskonfly'], function(main) {
                 main();
                 Backbone.history.start();
 
