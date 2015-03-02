@@ -30,13 +30,19 @@ define(function () {
 		sortedIDs: [],
 
 		connect: function() {
-			var eventHandler = _.bind(this.onUpdateIsDone, this);
-			_.each(this.model.models, function(model, key) {
-				var state = model.useState('inList');
-				this._items[key] = state;
+			this.model.listen('newItem', _.bind(this.onNewItem, this));
 
-				state.model.listen('updateIsDone', eventHandler);
+			_.each(this.model.models, function(module) {
+				this.connectItem(module);
 			}, this);
+		},
+		connectItem: function(module) {
+			var state = module.useState('inList');
+			this._items[module.model.public.id] = state;
+
+			state.model.listen('updateIsDone', _.bind(this.onUpdateIsDone, this));
+
+			return state;
 		},
 
 		sortIDs: function() {
@@ -46,6 +52,12 @@ define(function () {
 			return this.sortedIDs;
 		},
 
+		onNewItem: function(ev, module) {
+			var item = this.connectItem(module);
+			var index = this.sortIDs().indexOf(module.model.public.id);
+
+			this.view.insertNewItemTo(item.view, index);
+		},
 		onUpdateIsDone: function(ev) {
 			var id = ev.public.id;
 			var item = this._items[id];

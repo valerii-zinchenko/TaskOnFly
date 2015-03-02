@@ -57,7 +57,7 @@ define([
             return this;
         },
 
-        _postProcessTemplate: function() {
+		_postProcessTemplate: function() {
 			this.$list = this.$el.find('tbody');
 		},
 
@@ -74,7 +74,7 @@ define([
 
 			var view;
 			var itemIDs = this.control.sortIDs();
-			for (var n=0, N = itemIDs.length; n < N; n++) {
+			for (var n = 0, N = itemIDs.length; n < N; n++) {
 				view = this.control._items[itemIDs[n]].view;
 				this.$list.append(view.render());
 
@@ -84,10 +84,11 @@ define([
 
 		update: function() {
 			this._fixWidth();
-	
-			var itemIDs = this.control.sortIDs();
-			for (var n=0, N = itemIDs.length; n < N; n++) {
-				this.control._items[itemIDs[n]].view.update();
+
+			this.control.sortIDs();
+
+			for (var n=0, N = this._subModules.length; n < N; n++) {
+				this._subModules[n].update();
 			}
 		},
 
@@ -102,25 +103,39 @@ define([
 			});
 		},
 
-        moveItem: function(itemView, fromIndex, toIndex) {
-            var $el = itemView.$el;
-            $el.detach();
+		insertNewItemTo: function(itemView, toIndex) {
+			itemView.render();
 
-			this._subModules.splice(fromIndex, 1);
+			this.insertItemTo(itemView, toIndex);
+
+			itemView.$el.trigger('create');
+			itemView.postRender();
+
+			itemView.update();
+		},
+		insertItemTo: function(itemView, toIndex) {
 			this._subModules.splice(toIndex, 0, itemView);
 
-            var siblingItemView;
+			var siblingItemView;
 			var insertionFn;
-            if (toIndex +1 === this._subModules.length) {
-                siblingItemView = this._subModules[toIndex - 1];
-				insertionFn = 'insertAfter';
-            } else {
-                siblingItemView = this._subModules[toIndex + 1];
-				insertionFn = 'insertBefore';
-            }
 
-			$el[insertionFn](siblingItemView.$el);
-        },
+			if (toIndex +1 === this._subModules.length) {
+				siblingItemView = this._subModules[toIndex - 1];
+				insertionFn = 'insertAfter';
+			} else {
+				siblingItemView = this._subModules[toIndex + 1];
+				insertionFn = 'insertBefore';
+			}
+
+			itemView.$el[insertionFn](siblingItemView.$el);
+		},
+		moveItem: function(itemView, fromIndex, toIndex) {
+			itemView.$el.detach();
+
+			this._subModules.splice(fromIndex, 1);
+
+			this.insertItemTo(itemView, toIndex);
+		},
 
         _fixWidth: function () {
             var $tables = this.$el.find('table');
@@ -135,5 +150,5 @@ define([
             $tables.addClass('fixed');
             lists.addClass('nowrap');
         }
-    });
+	});
 });

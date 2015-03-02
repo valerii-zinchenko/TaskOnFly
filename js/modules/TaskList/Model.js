@@ -83,6 +83,8 @@ define([
                 TaskOnFly.saveItem(this);
             }
 
+			this.trigger('newItem', item);
+
             return item;
         },
         _checkListCompleteness: function() {

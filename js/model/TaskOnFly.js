@@ -38,91 +38,105 @@
         window.localStorage.removeItem(key);
     }
 
-    var TaskOnFly = GLOBAL.TaskOnFly = {
-        ROOT_TASK_LIST: null,
-        CURRENT_TASK_LIST: null,
-        setRootList: function(list) {
-            if (!list) {
-                throw new Error('Invalid list');
-            }
-            TaskOnFly.ROOT_TASK_LIST = list;
-        },
-        getRootList: function() {
-            return TaskOnFly.ROOT_TASK_LIST;
-        },
-        setCurrentList: function(list) {
-            if (!list) {
-                throw new Error('Invalid list');
-            }
-            TaskOnFly.CURRENT_TASK_LIST = list;
-        },
-        getCurrentList: function() {
-            return TaskOnFly.CURRENT_TASK_LIST;
-        },
-        changeView: function(page) {
-            if (page[0] !== '#') {
-                page = '#' + page;
-            }
-            window.location.hash = page;
-        },
-        saveItem: function(item) {
-            if (!item) {
-                throw new Error('item is not defined');
-            }
+	var TaskOnFly = GLOBAL.TaskOnFly = new (new Class({
+		Encapsulate: EventHandler,
 
-            if (!item.public || typeof item.public !== 'object') {
-                throw new Error('Item object does not contain public object');
-            }
-            if (!item.public.id) {
-                throw new Error('Item id is not defined');
-            }
+		ROOT_TASK_LIST: null,
+		CURRENT_TASK_LIST: null,
+		setRootList: function(list) {
+			if (!list) {
+				throw new Error('Invalid list');
+			}
 
-            var id = item.public.id,
-                items = loadLocal('items') || [];
+			this.ROOT_TASK_LIST = list;
+		},
 
-            if (items.indexOf(id) === -1) {
-                items.push(id);
-            }
+		getRootList: function() {
+			return this.ROOT_TASK_LIST;
+		},
 
-            saveLocal('items', items);
-            saveLocal(id, item.public);
-        },
-        loadItem: function(id) {
-            if (!id) {
-                throw new Error('Item id is not defined');
-            }
-            return loadLocal(id);
-        },
-        removeItem: function(id) {
-            if (!id) {
-                return;
-            }
+		setCurrentList: function(list) {
+			if (!list) {
+				throw new Error('Invalid list');
+			}
 
-            var items = loadLocal('items'),
-                index = items.indexOf(id);
+			this.CURRENT_TASK_LIST = list;
 
-            if (index > -1) {
-                items.splice(index,1);
-            }
+			this.trigger('changeList', list);
+		},
 
-            saveLocal('items', items);
-            removeLocal(id);
-        },
-        loadAllItems: function() {
-            var itemList = loadLocal('items'),
-                items = {};
+		getCurrentList: function() {
+			return this.CURRENT_TASK_LIST;
+		},
 
-            if (!itemList) {
-                return null;
-            }
+		changeView: function(page) {
+			if (page[0] !== '#') {
+				page = '#' + page;
+			}
 
-            itemList.forEach(function(id) {
-                items[id] = loadLocal(id)
-            });
+			window.location.hash = page;
+		},
 
-            return items;
-        }
-    };
+		saveItem: function(item) {
+			if (!item) {
+				throw new Error('item is not defined');
+			}
 
-    TaskOnFly.$ = $(TaskOnFly);
+			if (!item.public || typeof item.public !== 'object') {
+				throw new Error('Item object does not contain public object');
+			}
+			if (!item.public.id) {
+				throw new Error('Item id is not defined');
+			}
+
+			var id = item.public.id;
+			var items = loadLocal('items') || [];
+
+			if (items.indexOf(id) === -1) {
+				items.push(id);
+			}
+
+			saveLocal('items', items);
+			saveLocal(id, item.public);
+		},
+
+		loadItem: function(id) {
+			if (!id) {
+				throw new Error('Item id is not defined');
+			}
+
+			return loadLocal(id);
+		},
+
+		removeItem: function(id) {
+			if (!id) {
+				return;
+			}
+
+			var items = loadLocal('items'),
+			index = items.indexOf(id);
+
+			if (index > -1) {
+				items.splice(index,1);
+			}
+
+			saveLocal('items', items);
+			removeLocal(id);
+		},
+
+		loadAllItems: function() {
+			var itemList = loadLocal('items'),
+			items = {};
+
+			if (!itemList) {
+				return null;
+			}
+
+			itemList.forEach(function(id) {
+				items[id] = loadLocal(id)
+			});
+
+			return items;
+		}
+	}))();
 })((1,eval)('this'));
