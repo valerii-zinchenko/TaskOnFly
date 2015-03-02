@@ -37,7 +37,11 @@ define(function () {
         },
 
         save: function() {
-            this._callback(this.view.getFormData());
+			var data = this.view.getFormData();
+
+			if (data.title) {
+				this._callback(this.view.getFormData());
+			}
         }
     });
 });
