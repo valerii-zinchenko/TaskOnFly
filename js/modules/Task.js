@@ -26,18 +26,14 @@
 define([
     "./AItem/Model",
     "./AItem/InList/View",
-    "./AItem/InList/Control",
-    "./AItem/EditForm/View"
-], function (Model, InListView, InListControl, EditView) {
+    "./AItem/InList/Control"
+], function (Model, InListView, InListControl) {
     var Task = new MVCModule({
         Model: Model,
         states: {
             inList: {
                 View: InListView,
                 Control: InListControl
-            },
-            edit: {
-                View: EditView
             }
         }
     });
