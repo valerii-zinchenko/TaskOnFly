@@ -41,6 +41,8 @@ requirejs.config({
         'utils':            'core/utils',
         'singleton':        'core/SingletonClass',
 		'EventHandler':		'core/EventHandler',
+		'AStateComponent':	'core/AStateComponent',
+		'astate':			'core/AState',
 		'aview':			'core/AView',
 		'acontrol':			'core/AControl',
         'mvcmodule':        'core/MVCModule'
@@ -74,6 +76,12 @@ requirejs.config({
 		'EventHandler': {
 			deps: ['class']
 		},
+		AStateComponent: {
+			deps: ['class']
+		},
+		astate: {
+			deps: ['AStateComponent']
+		},
 		'aview': {
 			deps: ['class']
 		},
@@ -82,7 +90,10 @@ requirejs.config({
 		},
         'mvcmodule': {
             epxorts: 'MVCModule'
-        }
+        },
+		'taskonfly': {
+			deps: ['class', 'EventHandler']
+		}
     }
 });
 
@@ -96,9 +107,12 @@ requirejs([
         'class',
         'singleton',
 		'EventHandler',
+		'AStateComponent',
+		'astate',
 		'aview',
 		'acontrol',
-        'mvcmodule'
+        'mvcmodule',
+		'taskonfly'
     ], function() {
         $(document).on('mobileinit', function() {
             $.extend($.mobile, {
@@ -109,7 +123,7 @@ requirejs([
         });
 
         requirejs(['jquery.mobile'], function() {
-            requirejs(['main', 'taskonfly'], function(main) {
+            requirejs(['main'], function(main) {
                 main();
                 Backbone.history.start();
 
