@@ -160,12 +160,10 @@ define([
 			var $newList = list.view.$el;
 			var $currentList = this.list.view.$el;
 
-			if (list.model.public.items.length > 0) {
-				this.$listModule.append($newList);
-				if (!list.view._isRendered) {
-					$newList.trigger('create');
-					list.view.postRender();
-				}
+			this.$listModule.append($newList);
+			if (!list.view._isRendered) {
+				$newList.trigger('create');
+				list.view.postRender();
 			}
 
             if (this.list.model._parent && this.list.model._parent.public.id === list.public.id) {
