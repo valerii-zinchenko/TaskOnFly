@@ -127,7 +127,11 @@ define([
 				insertionFn = 'insertBefore';
 			}
 
-			itemView.$el[insertionFn](siblingItemView.$el);
+			if (siblingItemView) {
+				itemView.$el[insertionFn](siblingItemView.$el);
+			} else {
+				this.$el.append(itemView.$el);
+			}
 		},
 		moveItem: function(itemView, fromIndex, toIndex) {
 			itemView.$el.detach();
