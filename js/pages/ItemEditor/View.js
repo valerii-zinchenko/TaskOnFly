@@ -138,7 +138,7 @@ define([
 
             this.control.save();
 
-            TaskOnFly.changeView('home');
+            TaskOnFly.back();
         },
 
 		setHeader: function(header) {
@@ -151,6 +151,7 @@ define([
 			this.$isDone.prop('checked', false);
 			this.$title.val('');
 			this.$priority.find('#1').prop('checked', true).checkboxradio('refresh');;
+			this.$priority.find('#0, #2').prop('checked', false).checkboxradio('refresh');;
 			this.$startDate.val('');
 			this.$dueDate.val('');
 			this.$notes.val('');

@@ -77,6 +77,10 @@
 			window.location.hash = page;
 		},
 
+		back: function() {
+			window.history.back();
+		},
+
 		saveItem: function(item) {
 			if (!item) {
 				throw new Error('item is not defined');
