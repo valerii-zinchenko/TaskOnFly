@@ -27,10 +27,10 @@
 define(function() {
     return new SingletonClass(AControl, {
         addTask: function() {
-            TaskOnFly.changeView('add/task');
+            TaskOnFly.model.changeView('add/task');
         },
         addList: function() {
-            TaskOnFly.changeView('add/list');
+            TaskOnFly.model.changeView('add/list');
         }
     });
 });

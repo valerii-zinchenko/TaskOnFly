@@ -24,7 +24,7 @@
 'use strict';
 
 define(function () {
-    var MainRouter = Backbone.Router.extend({
+    return Backbone.Router.extend({
         routes: {
             '': 'home',
             'home': 'home',
@@ -36,7 +36,6 @@ define(function () {
         },
 
         _view: null,
-        _pages: {},
 
         /**
          *
@@ -44,23 +43,19 @@ define(function () {
          * @param {Function} [fn] Function that calls before rendering of view.
          * @private
          */
-        _openPage: function(pageName, fn) {
-            requirejs(['pages/' + pageName], function(Page) {
-                if (!this._pages[pageName]) {
-					this._pages[pageName] = new Page();
-                }
+		_openPage: function(pageName, fn) {
+			var page = TaskOnFly.useState(pageName);
 
-                this._view = this._pages[pageName].view;
+			this._view = page.view;
 
-                if (fn) {
-                    fn.call(this._view);
-                }
+			if (fn) {
+				fn.call(this._view);
+			}
 
-				this._view.render();
+			this._view.render();
 
-                $.mobile.pageContainer.pagecontainer('change', '#' + this._view.page);
-            }.bind(this));
-        },
+			$.mobile.pageContainer.pagecontainer('change', '#' + this._view.page);
+		},
 
         initialize: function() {
             $.mobile.pageContainer.pagecontainer({
@@ -73,10 +68,10 @@ define(function () {
         },
 
         home: function() {
-            this._openPage('Home');
+            this._openPage('home');
         },
         about: function() {
-            this._openPage('About');
+            this._openPage('about');
         },
 
         /**
@@ -94,11 +89,11 @@ define(function () {
             }
 
             var fn = 'add' + what[0].toUpperCase() + what.slice(1);
-            this._openPage('ItemEditor', function() {
+            this._openPage('itemEditor', function() {
 				this.setHeader('Add ' + what);
 
                 this.control.setSaveCallback(function(data) {
-					var list = TaskOnFly.getCurrentList();
+					var list = TaskOnFly.model.getCurrentList();
 
 					list.model[fn](data);
 				});
@@ -110,14 +105,14 @@ define(function () {
          * @param {string} id Item name in the current list.
          */
         edit: function(id) {
-            var list = TaskOnFly.getCurrentList(),
+            var list = TaskOnFly.model.getCurrentList(),
                 item = list.model.getItem(id);
 
             if (!item) {
                 throw new Error('Item with id: "' + id + '" was not found');
             }
 
-            this._openPage('ItemEditor', function() {
+            this._openPage('itemEditor', function() {
                 this.setHeader(item.model.public.type);
 				this.setDataModel(item.model);
                 this.control.setSaveCallback(list.model.saveData.bind(item.model));
@@ -125,7 +120,7 @@ define(function () {
         },
 
         path: function(path) {
-            var list = TaskOnFly.getRootList(),
+            var list = TaskOnFly.model.getRootList(),
                 pathStack;
 
             if (path) {
@@ -136,20 +131,16 @@ define(function () {
 
             if (!list) {
                 console.warn('Incorrect list path:' + path);
-                TaskOnFly.changeView('#home');
+                TaskOnFly.model.changeView('home');
 
                 return;
             }
 
-            TaskOnFly.setCurrentList(list);
-            TaskOnFly.trigger('showList', list);
+            TaskOnFly.model.setCurrentList(list);
 
-            if (!this._pages.Home || !this._view || this._view.page !== 'home') {
+            if (!this._view || this._view.page !== 'home') {
                 this.home();
             }
         }
     });
-
-    TaskManager.MainRouter = MainRouter;
-    return MainRouter;
 });

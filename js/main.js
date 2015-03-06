@@ -25,41 +25,35 @@
 'use strict';
 
 define([
-    'model/MainRouter',
-    'modules/Task',
-    'modules/TaskList'
-], function() {
-    function sync(listRef, ids) {
-        ids.forEach(function(itemID) {
-            var itemData = TaskOnFly.loadItem(itemID);
-            var item = listRef['add' + itemData.type](itemData);
-
-            if (itemData.type === 'List') {
-                var ids = item.model.public.items;
-                item.model.public.items = [];
-                sync(item, ids);
-            }
-        });
-
-    }
-    return function() {
-        var store = TaskOnFly.loadItem('root'),
-            rootList = new TaskManager.TaskList({
-                id:'root',
-                version: TaskManager.version
-            });
-
-        if (store) {
-            var ids = store.items;
-            store.items = [];
-            rootList.model.saveData(store);
-            sync(rootList.model, ids);
-        }
-
-        TaskOnFly.setRootList(rootList);
-        TaskOnFly.getRootList().model.saveData();
-        TaskOnFly.setCurrentList(TaskOnFly.getRootList());
-
-        new TaskManager.MainRouter();
-    }
+    'model/TaskOnFly',
+    'pages/Home/View',
+    'pages/Home/Control',
+    'pages/ItemEditor/View',
+    'pages/ItemEditor/Control',
+], function(Model, HomeView, HomeControl, ItemEditorView, ItemEditorControl) {
+	return new MVCModule({
+		Model: Model,
+		states: {
+/*			about: {
+				View: AboutView,
+				Control: AboutControl
+			},*/
+			home: {
+				View: HomeView,
+				Control: HomeControl
+			},
+			itemEditor: {
+				View: ItemEditorView,
+				Control: ItemEditorControl
+/*			},
+			fastTask: {
+				View: FastTaskView,
+				Control: FastTaskControl
+			},
+			fastSearch: {
+				View: FastSearchView,
+				Control: FastSearchControl*/
+			}
+		}
+	});
 });

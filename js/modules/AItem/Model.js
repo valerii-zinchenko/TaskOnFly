@@ -95,7 +95,7 @@ define(function () {
 
 			this.trigger('remove', id);
 
-            TaskOnFly.removeItem(id);
+            TaskOnFly.model.removeItem(id);
         },
         saveData: function(data) {
             if (data) {
@@ -126,7 +126,7 @@ define(function () {
 				this.triggerEvents(data);
             }
 
-            TaskOnFly.saveItem(this);
+            TaskOnFly.model.saveItem(this);
 
 			this.trigger('update');
         },

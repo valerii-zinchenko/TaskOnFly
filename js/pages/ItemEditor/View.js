@@ -138,7 +138,7 @@ define([
 
             this.control.save();
 
-            TaskOnFly.back();
+            TaskOnFly.model.back();
         },
 
 		setHeader: function(header) {

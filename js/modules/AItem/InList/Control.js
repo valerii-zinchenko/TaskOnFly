@@ -49,7 +49,7 @@ define(function () {
         },
 
         editModel: function() {
-            TaskOnFly.changeView(['#edit', this.model.public.id].join('/'));
+            TaskOnFly.model.changeView(['edit', this.model.public.id].join('/'));
         }
     });
 });

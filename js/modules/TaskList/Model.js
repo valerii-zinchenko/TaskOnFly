@@ -80,7 +80,7 @@ define([
             this.sort();
 
             if (toSave) {
-                TaskOnFly.saveItem(this);
+                TaskOnFly.model.saveItem(this);
             }
 
 			this.trigger('newItem', item);
@@ -131,7 +131,7 @@ define([
             this.sort();
             this._checkListCompleteness();
 
-            TaskOnFly.saveItem(this);
+            TaskOnFly.model.saveItem(this);
         },
 
         toggleItemStatus: function(id) {
@@ -152,7 +152,7 @@ define([
             var list = this.getItem(id);
 
             if (list) {
-                TaskOnFly.setCurrentList(list);
+                TaskOnFly.model.setCurrentList(list);
             }
 
             return list;
@@ -162,7 +162,7 @@ define([
                 return this;
             }
 
-            TaskOnFly.setCurrentList(this._parent);
+            TaskOnFly.model.setCurrentList(this._parent);
 
             return this._parent;
         },

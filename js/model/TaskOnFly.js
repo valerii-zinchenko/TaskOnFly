@@ -24,25 +24,69 @@
 
 'use strict';
 
-(function(GLOBAL) {
-    function saveLocal(key, data) {
-        window.localStorage.setItem(key, JSON.stringify(data));
-    }
+define([
+	'model/MainRouter'
+], function(MainRouter) {
+	function saveLocal(key, data) {
+		window.localStorage.setItem(key, JSON.stringify(data));
+	}
 
-    function loadLocal(key) {
-        var value = window.localStorage.getItem(key);
-        return value ? JSON.parse(value) : null;
-    }
+	function loadLocal(key) {
+		var value = window.localStorage.getItem(key);
+		return value ? JSON.parse(value) : null;
+	}
 
-    function removeLocal(key) {
-        window.localStorage.removeItem(key);
-    }
+	function removeLocal(key) {
+		window.localStorage.removeItem(key);
+	}
 
-	var TaskOnFly = GLOBAL.TaskOnFly = new (new Class({
+
+	return new Class({
 		Encapsulate: EventHandler,
 
+		varsion: '2.0.0',
 		ROOT_TASK_LIST: null,
 		CURRENT_TASK_LIST: null,
+
+		start: function() {
+			var store = this.loadItem('root'),
+				rootList = new TaskManager.TaskList({
+					id:'root',
+					version: this.version
+				});
+
+			if (store) {
+				var ids = store.items;
+				store.items = [];
+				rootList.model.saveData(store);
+				this.sync(rootList.model, ids);
+			}
+
+			this.setRootList(rootList);
+			this.getRootList().model.saveData();
+			this.setCurrentList(this.getRootList());
+
+			new MainRouter();
+			Backbone.history.start();
+		},
+		sync: function(listRef, ids) {
+			var that = this;
+			ids.forEach(function(itemID) {
+				var itemData = that.loadItem(itemID);
+				if (!itemData) {
+					return;
+				}
+
+				var item = listRef['add' + itemData.type](itemData);
+
+				if (itemData.type === 'List') {
+					var ids = item.model.public.items;
+					item.model.public.items = [];
+					that.sync(item.model, ids);
+				}
+			});
+		},
+
 		setRootList: function(list) {
 			if (!list) {
 				throw new Error('Invalid list');
@@ -142,5 +186,5 @@
 
 			return items;
 		}
-	}))();
-})((1,eval)('this'));
+	});
+});

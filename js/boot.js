@@ -27,13 +27,14 @@ var TaskManager = {
     Modules: {}
 };
 
+var TaskOnFly;
+
 requirejs.config({
     paths: {
         'jquery':           'lib/jquery-2.1.1',
         'jquery.mobile':    'lib/jquery.mobile-1.4.3',
         'underscore':       'lib/underscore-1.6.0',
         'backbone':         'lib/backbone-1.1.2',
-        'text':             'lib/text-2.0.12',
         'i18n':             'lib/i18n-2.0.4',
         'taskonfly':        'model/TaskOnFly',
         'aclass':           'core/AClass',
@@ -111,8 +112,7 @@ requirejs([
 		'astate',
 		'aview',
 		'acontrol',
-        'mvcmodule',
-		'taskonfly'
+        'mvcmodule'
     ], function() {
         $(document).on('mobileinit', function() {
             $.extend($.mobile, {
@@ -122,26 +122,14 @@ requirejs([
             });
         });
 
-        requirejs(['jquery.mobile'], function() {
-            requirejs(['main'], function(main) {
-                main();
-                Backbone.history.start();
-
-                requirejs([
-                    'model/MainRouter',
-
-                    'modules/Task',
-                    'modules/TaskList',
-                    /*'modules/ListView',
-                    'modules/MainPanel',
-                    'modules/SimpleSearch',*/
-
-                    //'pages/About',
-                    'pages/Home',
-                    //'pages/ItemEditor',
-
-                    'view/PopupDialog'
-                ]);
+        requirejs([
+			'jquery.mobile',
+			'modules/Task',
+			'modules/TaskList'
+		], function() {
+            requirejs(['main'], function(App) {
+                TaskOnFly = new App();
+				TaskOnFly.model.start();
             });
         });
     });

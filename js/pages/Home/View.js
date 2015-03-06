@@ -72,10 +72,11 @@ define([
         $addListBtn: null,
 
         initialize: function() {
-            this.list = TaskOnFly.getCurrentList().useState('asList');
-
             this._buildModules();
         },
+		connect: function() {
+			this.list = TaskOnFly.model.getCurrentList().useState('asList');
+		},
         _postProcessTemplate: function() {
 			this.$content = this.$el.find('#content');
 			this.$listModule = this.$content.find('#listModule');
@@ -134,7 +135,7 @@ define([
             // todo: Move this button and event handler into the TaskList
             this.$prevListBtn.on('click', this.selectPreviousList.bind(this));
 
-			TaskOnFly.listen('changeList', _.bind(this._switchLists, this));
+			TaskOnFly.model.listen('changeList', _.bind(this._switchLists, this));
 		},
 
         _fixFooterTable: function() {
@@ -150,7 +151,7 @@ define([
         },
 
         selectParentList: function() {
-			TaskOnFly.changeView('path' + this.list.model.getParentLocation());
+			TaskOnFly.model.changeView('path' + this.list.model.getParentLocation());
         },
         _switchLists: function(ev, newList) {
 			var list = newList.useState('asList');
