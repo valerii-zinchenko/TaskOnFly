@@ -83,13 +83,12 @@ define([
 		},
 
 		update: function() {
-			this._fixWidth();
-
 			this.control.sortIDs();
-
 			for (var n=0, N = this._subModules.length; n < N; n++) {
 				this._subModules[n].update();
 			}
+
+			this._fixWidth();
 		},
 
 		_attachEvents: function() {
@@ -130,7 +129,7 @@ define([
 			if (siblingItemView) {
 				itemView.$el[insertionFn](siblingItemView.$el);
 			} else {
-				this.$el.append(itemView.$el);
+				this.$list.append(itemView.$el);
 			}
 		},
 		moveItem: function(itemView, fromIndex, toIndex) {
