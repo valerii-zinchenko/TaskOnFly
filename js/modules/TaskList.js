@@ -33,14 +33,8 @@ define([
     var TaskList = new MVCModule({
         Model: Model,
         states: {
-            inList: {
-                View: InListView,
-                Control: InListControl
-            },
-            asList: {
-                View: AsListView,
-                Control: AsListControl
-            }
+            inList: new AState(InListView, InListControl),
+            asList: new AState(AsListView, AsListControl)
         }
     });
 

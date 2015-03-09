@@ -38,14 +38,9 @@ define([
 				View: AboutView,
 				Control: AboutControl
 			},*/
-			home: {
-				View: HomeView,
-				Control: HomeControl
-			},
-			itemEditor: {
-				View: ItemEditorView,
-				Control: ItemEditorControl
-/*			},
+			home: new AState(HomeView, HomeControl),
+			itemEditor: new AState(ItemEditorView, ItemEditorControl)
+/*			
 			fastTask: {
 				View: FastTaskView,
 				Control: FastTaskControl
@@ -53,7 +48,6 @@ define([
 			fastSearch: {
 				View: FastSearchView,
 				Control: FastSearchControl*/
-			}
 		}
 	});
 });

@@ -31,10 +31,7 @@ define([
     var Task = new MVCModule({
         Model: Model,
         states: {
-            inList: {
-                View: InListView,
-                Control: InListControl
-            }
+            inList: new AState(InListView, InListControl)
         }
     });
 
