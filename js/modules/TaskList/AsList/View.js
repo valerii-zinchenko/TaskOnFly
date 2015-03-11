@@ -139,6 +139,10 @@ define([
 
 			this.insertItemTo(itemView, toIndex);
 		},
+		removeItem: function(id) {
+			var index = this._subModules.indexOf(id);
+			this._subModules.splice(index, 1);
+		},
 
         _fixWidth: function () {
             var $tables = this.$el.find('table');

@@ -40,7 +40,10 @@ define(function () {
 			var state = module.useState('inList');
 			this._items[module.model.public.id] = state;
 
-			state.model.listen('updateIsDone', _.bind(this.onUpdateIsDone, this));
+			state.model.listen({
+				updateIsDone: _.bind(this.onUpdateIsDone, this),
+				remove: _.bind(this.onRemove, this)
+			});
 
 			return state;
 		},
@@ -68,6 +71,11 @@ define(function () {
 			if (indexAfter != indexBefore) {
 				this.view.moveItem(item.view, indexBefore, indexAfter);
 			}
+		},
+		onRemove: function(ev, id) {
+			this.view.removeItem(this._items[id].view);
+
+			delete this._items[id];
 		}
 	});
 });
