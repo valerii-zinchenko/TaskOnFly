@@ -63,8 +63,8 @@ define([
 			}
 
 			this.setRootList(rootList);
-			this.getRootList().model.saveData();
-			this.setCurrentList(this.getRootList());
+			rootList.model.saveData();
+			this.setCurrentList(rootList);
 
 			new MainRouter();
 			Backbone.history.start();
