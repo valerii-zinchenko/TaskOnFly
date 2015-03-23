@@ -26,11 +26,10 @@
 
 define([
     'model/TaskOnFly',
-    'pages/Home/View',
-    'pages/Home/Control',
+    'pages/Home',
     'pages/ItemEditor/View',
     'pages/ItemEditor/Control',
-], function(Model, HomeView, HomeControl, ItemEditorView, ItemEditorControl) {
+], function(Model, HomeState, ItemEditorView, ItemEditorControl) {
 	return new MVCModule({
 		Model: Model,
 		states: {
@@ -38,7 +37,7 @@ define([
 				View: AboutView,
 				Control: AboutControl
 			},*/
-			home: new AState(HomeView, HomeControl),
+			home: new HomeState(), //new AState(HomeView, HomeControl),
 			itemEditor: new AState(ItemEditorView, ItemEditorControl)
 /*			
 			fastTask: {

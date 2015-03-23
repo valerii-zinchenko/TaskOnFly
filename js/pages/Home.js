@@ -25,14 +25,10 @@
 'use strict';
 
 define([
-    './Home/View',
-    './Home/Control'
+	'./Home/View',
+	'./Home/Control'
 ], function (View, Control) {
-    TaskManager.Pages.Home = new MVCModule({
-		Model: function(){},
-        View: View,
-        Control: Control
-    });
-
-    return TaskManager.Pages.Home;
+	return function() {
+		new AState(View, Control);
+	}
 });
