@@ -27,11 +27,11 @@
 define([
     '../APage/View'
 ],function (Parent) {
-    return new Class(Parent, {
+    return new SingletonClass(Parent, {
         page: 'about',
         template:
 '<div data-role="header" data-position="fixed"> \
-    <a href="#home" data-role="button" data-icon="home" data-iconpos="notext"></a> \
+    <a href="#" id="toHome" data-role="button" data-icon="home" data-iconpos="notext"></a> \
     <h1>About</h1> \
 </div> \
 <div data-role="content"> \
@@ -44,6 +44,20 @@ define([
         <p class="justify">You should have received a copy of the GNU General Public License along with TaskOnFly.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p> \
         <p class="justify">All source files are available at: <a href="http://github.com/valerii-zinchenko/TaskOnFly">http://github.com/valerii-zinchenko/TaskOnFly</a></p> \
     </div> \
-</div>'
+</div>',
+
+		_attachEvents: function() {
+			this.$el.find('#toHome', this.onToHome.bind(this));
+		},
+
+		onToHome: function(ev) {
+			ev.preventDefault();
+
+			this.toHome();
+		},
+
+		toHome: function() {
+			TaskOnFly.changeView('home');
+		}
     });
 });

@@ -27,17 +27,15 @@
 define([
     'model/TaskOnFly',
     'pages/Home',
-    'pages/ItemEditor'
-], function(Model, Home, ItemEditor) {
+    'pages/ItemEditor',
+	'pages/About'
+], function(Model, Home, ItemEditor, About) {
 	return new MVCModule({
 		Model: Model,
 		states: {
-/*			about: {
-				View: AboutView,
-				Control: AboutControl
-			},*/
 			home: new Home(),
 			itemEditor: new ItemEditor(),
+			about: new About(),
 /*			
 			fastTask: {
 				View: FastTaskView,

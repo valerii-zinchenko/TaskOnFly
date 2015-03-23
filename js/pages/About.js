@@ -25,11 +25,9 @@
 'use strict';
 
 define([
-    './About/View'
+	'./About/View'
 ], function (View) {
-    TaskManager.Pages.About = new MVCModule({
-        View: View
-    });
-
-    return TaskManager.Pages.About;
+	return function() {
+		return new AState(View);
+	}
 });
