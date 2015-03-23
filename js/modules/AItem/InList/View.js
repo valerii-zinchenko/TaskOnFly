@@ -46,10 +46,11 @@ define(function () {
         _postProcessTemplate: function() {
             this.$listItem = this.$el.find('.list-item');
 			this.$title = this.$el.find('.title');
+			this.$checkBox = this.$listItem.find('input');
         },
 
         _attachEvents: function() {
-            this.$listItem.on('click', this.onClick.bind(this));
+            this.$checkBox.on('change', this.onChange.bind(this));
 
             this.$el.find('.edit-btn').on('click', this.onEdit.bind(this));
             this.$el.find('.delete-btn').on('click', this.onRemove.bind(this));
@@ -58,16 +59,23 @@ define(function () {
 		updateIsDone: function(value) {
 			if (value) {
 				this.$listItem.addClass('done');
+				this.$title.addClass('ui-checkbox-on');
+				this.$title.removeClass('ui-checkbox-off');
+				this.$checkBox.prop('checked', true);
 			} else {
 				this.$listItem.removeClass('done');
+				this.$title.addClass('ui-checkbox-off');
+				this.$title.removeClass('ui-checkbox-on');
+				this.$checkBox.prop('checked', false);
 			}
 		},
 		updateTitle: function(value) {
 			this.$title.html(value);
 		},
 
-        onClick: function(ev) {
+        onChange: function(ev) {
             ev.preventDefault();
+			ev.stopPropagation();
 
             this.control.action();
         },
