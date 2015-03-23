@@ -79,6 +79,21 @@ define(function () {
 
             this.public.id = this._genID();
             this.public.timestamp = Date.now();
+			this.public.startDate = utils.date(new Date(this.public.timestamp));
+
+			if (!data.version) {
+				data.version = '0.0.0';
+			}
+
+			var dataV = data.version.split('.').map(function(str) {return parseInt(str);});
+			var curV = this.public.version.split('.').map(function(str) {return parseInt(str);});
+			if (dataV.some(function(version, indx) {
+					return version < curV[indx];
+				}))
+			{
+				this.upgrade(data);
+			}
+
 
             if (typeof data !== 'undefined') {
                 if (typeof data === 'object') {
@@ -99,28 +114,6 @@ define(function () {
         },
         saveData: function(data) {
             if (data) {
-                // Convert timestamp format from YYYY-MM-DDTHH:MM:SS.MMMZ to number of milliseconds
-                if (data.timestamp && typeof data.timestamp == 'string') {
-                    data.timestamp = new Date(data.timestamp).getTime();
-                }
-				if (!data.startDate) {
-					data.startDate = utils.date(new Date(data.timestamp || this.public.timestamp));
-				}
-
-                if (!data.version) {
-                    data.version = '0.0.0';
-                }
-
-                var dataV = data.version.split('.').map(function(str) {return parseInt(str);});
-                var curV = this._defaults.public.version.split('.').map(function(str) {return parseInt(str);});
-                if (dataV.some(function(version, indx) {
-                        return version < curV[indx];
-                    }))
-                {
-                    this.upgrade(data);
-                    data.version = this._defaults.public.version;
-                }
-
                 utils.deepCopy(this.public, data);
 
 				this.triggerEvents(data);
@@ -133,7 +126,7 @@ define(function () {
 
 		triggerEvents: function(data) {
 			for (var key in data) {
-				if (Object.prototype.toString.call(data) == '[object Object]') {
+				if (Object.prototype.toString.call(data[key]) == '[object Object]') {
 					this.triggerEvents(data[key]);
 				}
 
