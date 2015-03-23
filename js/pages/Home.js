@@ -29,6 +29,6 @@ define([
 	'./Home/Control'
 ], function (View, Control) {
 	return function() {
-		new AState(View, Control);
+		return new AState(View, Control);
 	}
 });

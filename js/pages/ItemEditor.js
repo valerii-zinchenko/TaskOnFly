@@ -25,14 +25,10 @@
 'use strict';
 
 define([
-    './ItemEditor/View',
-    './ItemEditor/Control'
+	'./ItemEditor/View',
+	'./ItemEditor/Control'
 ], function (View, Control) {
-    TaskManager.Pages.ItemEditor = new MVCModule({
-		Model: function(){},
-        View: View,
-        Control: Control
-    });
-
-    return TaskManager.Pages.ItemEditor;
+	return function() {
+		return new AState(View, Control);
+	}
 });
