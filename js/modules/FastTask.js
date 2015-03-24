@@ -27,11 +27,7 @@ define([
     'modules/FastTask/View',
     'modules/FastTask/Control'
 ], function (View, Control) {
-    var FastTask = new MVCModule({
-        View: View,
-        Control: Control
-    });
-
-    TaskManager.Modules.FastTask = FastTask;
-    return FastTask;
+    return function() {
+		return new AState(View, Control);
+	};
 });

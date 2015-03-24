@@ -25,18 +25,18 @@
 'use strict';
 
 define(function () {
-    return new SingletonClass({
-        _addTask: function(title, priority) {
-            if (!title) {
-                return;
-            }
+	return new SingletonClass(AControl, {
+		action: function() {
+			var data = this.view.getData();
 
-            TaskOnFly.getCurrentList().addTask({
-                title: title,
-                priority: priority,
-                dueDate: utils.date(new Date(Date.now() + 86400000)),   // + 1 day
-                version: TaskManager.Task.prototype._defaults.public.version
-            });
-        }
-    });
+			if (data.title) {
+				TaskOnFly.model.getCurrentList().model.addTask({
+					title: data.title,
+					priority: data.priority,
+					dueDate: utils.date(new Date(Date.now() + 86400000)),	// + 1 day
+					version: TaskManager.version
+				});
+			}
+		}
+	});
 });

@@ -25,66 +25,55 @@
 'use strict';
 
 define(function() {
-    return new SingletonClass({
+    return new SingletonClass(AView, {
         template:
-'<table class="full fast-task"> \
-    <tbody> \
-    <tr> \
-        <td> \
-            <input id="fastTitle" type="text" placeholder="Fast task"> \
-        </td> \
-        <td class="select-priority"> \
-            <div id="priority" class="full-width ui-controlgroup-grid-b" data-role="controlgroup" data-type="horizontal" data-mini="true"> \
-                <label for="low" class="low ui-icon-arrow-d ui-btn-icon-notext">Low</label> \
-                <input id="low" type="radio" name="priority" value="2"> \
-                <label for="normal" class="normal ui-icon-circle ui-btn-icon-notext">Normal</label> \
-                <input id="normal" type="radio" name="priority" value="1" checked> \
-                <label for="high" class="high ui-icon-arrow-u ui-btn-icon-notext">High</label> \
-                <input id="high" type="radio" name="priority" value="0"> \
-            </div> \
-        </td> \
-        <td class="add-btn"> \
-            <button id="addFastTask" data-role="button" data-icon="plus" data-iconpos="notext">add</button> \
-        </td> \
-    </tr> \
-    </tbody> \
+'<table class="full fast-task">\
+    <tbody>\
+    <tr>\
+        <td>\
+            <input id="fastTitle" type="text" placeholder="Fast task">\
+        </td>\
+        <td class="select-priority">\
+            <div id="priority" class="full-width ui-controlgroup-grid-b" data-role="controlgroup" data-type="horizontal" data-mini="true">\
+                <label for="low" class="low ui-icon-arrow-d ui-btn-icon-notext">Low</label>\
+                <input id="low" type="radio" name="priority" value="2">\
+                <label for="normal" class="normal ui-icon-circle ui-btn-icon-notext">Normal</label>\
+                <input id="normal" type="radio" name="priority" value="1" checked>\
+                <label for="high" class="high ui-icon-arrow-u ui-btn-icon-notext">High</label>\
+                <input id="high" type="radio" name="priority" value="0">\
+            </div>\
+        </td>\
+        <td class="add-btn">\
+            <button id="addFastTask" data-role="button" data-icon="plus" data-iconpos="notext">add</button>\
+        </td>\
+    </tr>\
+    </tbody>\
 </table>',
 
-        initialize: function($holder) {
-            if (!$holder) {
-                throw new Error('Holder element of FastTask module is not defined.');
-            }
-            if (!($holder instanceof Object)) {
-                throw new Error('Incorrect input argument type');
-            }
-
-            this.$el = $(this.template);
+        _postRender: function() {
             this.$fastTilte = this.$el.find('#fastTitle');
             this.$priority = this.$el.find('#priority');
             this.$add = this.$el.find('#addFastTask');
-
-            this.$add.on('click', this._addTask.bind(this));
-
-            this.$content = $holder;
-            this.$content.empty();
-            this.$content.append(this.$el);
-
-            this.$content.trigger('create');
         },
-        render: function() {
+		_attachEvents: function() {
+            this.$add.on('click', this.onAddTask.bind(this));
+        },
+        update: function() {
             this.$fastTilte.val('');
 
             this.$priority.find(':checked').prop('checked', false).checkboxradio("refresh");
             this.$priority.find('#normal').prop('checked', true).checkboxradio("refresh");
-
-            return this;
         },
-        _addTask: function(ev) {
+		getData: function() {
+			return {
+				title: this.$fastTilte.val(),
+				priority: this.$priority.find(':checked').val()
+			};
+		},
+        onAddTask: function(ev) {
             ev.preventDefault();
 
-            this.control._addTask(this.$fastTilte.val(), this.$priority.find(':checked').val());
-
-            this.render();
+            this.control.action();
         }
     });
 });

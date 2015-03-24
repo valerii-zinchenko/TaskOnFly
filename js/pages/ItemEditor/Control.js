@@ -40,7 +40,7 @@ define(function () {
 			var data = this.view.getFormData();
 
 			if (data.title) {
-				this._callback(this.view.getFormData());
+				this._callback(data);
 			}
         }
     });
