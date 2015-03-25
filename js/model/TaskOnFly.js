@@ -114,11 +114,7 @@ define([
 		},
 
 		changeView: function(page) {
-			if (page[0] !== '#') {
-				page = '#' + page;
-			}
-
-			window.location.hash = page;
+			window.location.hash = '#' + page;
 		},
 
 		back: function() {
