@@ -29,6 +29,11 @@ define([
 	'view/PopupDialog'
 ], function(Parent) {
 	return new Class(Parent, {
+		_attachEvents: function() {
+			Parent.prototype._attachEvents.call(this);
+
+			this.$listItem.on('click', this.onChange.bind(this));
+		},
 		update: function() {
 			this.$listItem.find('input').prop('disabled', true);
 		},

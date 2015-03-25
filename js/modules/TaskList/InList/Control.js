@@ -30,7 +30,7 @@ define([
 	return new Class(Parent, {
 		action: function(id) {
 			var id = this.model.public.id;
-			TaskOnFly.changeView(['#path', this.model._path, id, '/'].join(''));
+			TaskOnFly.model.changeView(['path', this.model._path, id, '/'].join(''));
 		}
 	});
 });
