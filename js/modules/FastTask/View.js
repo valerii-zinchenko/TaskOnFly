@@ -54,6 +54,9 @@ define(function() {
             this.$fastTilte = this.$el.find('#fastTitle');
             this.$priority = this.$el.find('#priority');
             this.$add = this.$el.find('#addFastTask');
+			this.$radioButtons = this.$priority.find('input');
+
+			this.$radioButtons.checkboxradio();
         },
 		_attachEvents: function() {
             this.$add.on('click', this.onAddTask.bind(this));
@@ -61,7 +64,7 @@ define(function() {
         update: function() {
             this.$fastTilte.val('');
 
-            this.$priority.find(':checked').prop('checked', false).checkboxradio("refresh");
+            this.$radioButtons.prop('checked', false).checkboxradio("refresh");
             this.$priority.find('#normal').prop('checked', true).checkboxradio("refresh");
         },
 		getData: function() {
@@ -74,6 +77,8 @@ define(function() {
             ev.preventDefault();
 
             this.control.action();
+
+			this.update();
         }
     });
 });
