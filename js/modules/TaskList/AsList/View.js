@@ -111,6 +111,10 @@ define([
 			itemView.postRender();
 
 			itemView.update();
+
+			if (this._subModules.length == 1) {
+				this._fixWidth();
+			}
 		},
 		insertItemTo: function(itemView, toIndex) {
 			this._subModules.splice(toIndex, 0, itemView);
