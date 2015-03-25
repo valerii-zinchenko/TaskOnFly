@@ -30,9 +30,9 @@ define([
     return new SingletonClass(Parent, {
         template:'\
 <div data-role="header">\
-	<a href="#home" data-role="back" data-icon="carat-l">Back</a>\
+	<a href="#" class="back" data-role="back" data-icon="carat-l">Back</a>\
 	<h1 id="headerTitle">Item</h1>\
-	<a class="save" data-role="button" data-icon="plus" data-iconpos="right">Save</a>\
+	<a href="#" class="save" data-role="button" data-icon="plus" data-iconpos="right">Save</a>\
 </div>\
 \
 <div data-role="content">\
@@ -96,6 +96,7 @@ define([
 		},
 
 		_attachEvents: function() {
+			this.$el.find('.back').on('vclick', this.onBack.bind(this));
 			this.$el.find('.save').on('vclick', this.onSave.bind(this));
 			this.$isDone.on('change', this.onToggleStatus.bind(this));
 		},
@@ -132,6 +133,11 @@ define([
 		onToggleStatus: function(ev) {
 			this.$isDone.toggleClass('ui-checkbox-on');
 			this.$isDone.toggleClass('ui-checkbox-off');
+		},
+		onBack: function(ev) {
+			ev.preventDefault();
+
+			TaskOnFly.model.back();
 		},
         onSave: function(ev) {
             ev.preventDefault();
