@@ -28,10 +28,9 @@ define([
     '../APage/View',
     'modules/TaskList'/*,
     'modules/ListViewGroupedByDate',
-    'modules/FastTask',
     'modules/SimpleSearch',
     'modules/MainPanel'*/
-], function(Parent, TaskList /*, FastTask, SimpleSearch, MainPanel*/) {
+], function(Parent, TaskList /*SimpleSearch, MainPanel*/) {
     return new SingletonClass(Parent, {
         page: 'home',
 
@@ -154,6 +153,9 @@ define([
         },
         _switchLists: function(ev, newList) {
 			var list = newList.useState('asList');
+			if (this.list == list) {
+				return;
+			}
 			if (!list.view._isRendered) {
 				list.view.render();
 			}
