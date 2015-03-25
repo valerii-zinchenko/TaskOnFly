@@ -85,7 +85,10 @@ define([
 
 			this.trigger('newItem', item);
 
-			item.model.listen('remove', _.bind(this.onRemove, this));
+			item.model.listen({
+				updateIsDone: this.onUpdateIsDone.bind(this),
+				remove: _.bind(this.onRemove, this)
+			});
 
             return item;
         },
@@ -96,15 +99,9 @@ define([
                 return;
             }
 
-            if (this._parent) {
-                this._parent.toggleItemStatus(this.public.id);
-                this._parent.sort();
-            } else {
-                this.public.isDone = isListDone;
-            }
-
-            this.saveData();
+			this.toggleStatus();
         },
+
         addTask: function(data) {
             return this._add(new TaskManager.Task(data));
         },
@@ -118,55 +115,6 @@ define([
         getItem: function(id) {
             return this.models[id];
         },
-
-        removeItem: function(id) {
-            if (!id || !this.models[id]) {
-                console.warn('removeItem(id): item id "' + id + '" was not found');
-                return;
-            }
-
-            this.public.items.splice(this.public.items.indexOf(id), 1);
-            delete this.models[id];
-
-            this.sort();
-            this._checkListCompleteness();
-
-            TaskOnFly.model.saveItem(this);
-        },
-
-        toggleItemStatus: function(id) {
-            var task = this.models[id];
-            task.toggleStatus();
-
-            if (task.public.isDone) {
-                this._NDone++;
-            } else {
-                this._NDone--;
-            }
-
-            this.sort();
-            this._checkListCompleteness();
-        },
-
-        selectList: function(id) {
-            var list = this.getItem(id);
-
-            if (list) {
-                TaskOnFly.model.setCurrentList(list);
-            }
-
-            return list;
-        },
-        selectParentList: function() {
-            if (this.public.id === 'root') {
-                return this;
-            }
-
-            TaskOnFly.model.setCurrentList(this._parent);
-
-            return this._parent;
-        },
-
         getLocation: function() {
             return this._path;
         },
@@ -303,6 +251,15 @@ define([
             });
         },
 
+		onUpdateIsDone: function(model, isDone) {
+			if (isDone) {
+				this._NDone++;
+			} else {
+				this._NDone--;
+			}
+
+			this._checkListCompleteness();
+		},
 		onRemove: function(module, id) {
 			this.removeItem(id);
 		}
