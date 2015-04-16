@@ -41,7 +41,7 @@ define(function () {
             id: '',
             type: 'Task',
 
-            version: TaskManager.version
+            version: '0.0.0'
         },
         versionUpgrades: {
             /** Change order of priority values.
@@ -86,12 +86,14 @@ define(function () {
 			}
 
 			var dataV = data.version.split('.').map(function(str) {return parseInt(str);});
-			var curV = this.public.version.split('.').map(function(str) {return parseInt(str);});
+			var curV = TaskOnFly.model.version;
+			var curVSeparated = curV.split('.').map(function(str) {return parseInt(str);});
 			if (dataV.some(function(version, indx) {
-					return version < curV[indx];
+					return version < curVSeparated[indx];
 				}))
 			{
 				this.upgrade(data);
+				data.version = curV;
 			}
 
 
