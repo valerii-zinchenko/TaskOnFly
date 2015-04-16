@@ -73,11 +73,13 @@ define([
 		connect: function() {
 			this.list = TaskOnFly.model.getCurrentList().useState('asList');
 			this.fastTaskModule = TaskOnFly.useState('fastTask');
+			this.fastSearchModule = TaskOnFly.useState('fastSearch');
 		},
         _postProcessTemplate: function() {
 			this.$content = this.$el.find('#content');
 			this.$listModule = this.$content.find('#listModule');
 			this.$fastTaskModule = this.$content.find('#fastTaskModule');
+			this.$fastSearchModule = this.$el.find('#searchModule');
             this.$addTaskBtn = this.$el.find('#addTask');
             this.$addListBtn = this.$el.find('#addList');
             this.$prevListBtn = this.$el.find('#prevList');
@@ -88,13 +90,10 @@ define([
 
 			this.list.view.update();
 			this.fastTaskModule.view.update();
+			this.fastSearchModule.view.update();
 		},
         _buildModules: function() {
 			/*
-            this.simpleSearch = new SimpleSearch({
-                view: this.$el.find('#searchModule'),
-                control: this.list
-            });
             this.panel = new MainPanel({
                 view: {
                     page: this.$el
@@ -105,12 +104,13 @@ define([
         renderSubModules: function() {
             this.$listModule.append(this.list.view.render());
 			this.$fastTaskModule.append(this.fastTaskModule.view.render());
-            /*this.simpleSearch.view.render();
-            this.panel.view.render();*/
+			this.$fastSearchModule.append(this.fastSearchModule.view.render());
+            //this.panel.view.render();
         },
 		_postRenderModules: function() {
 			this.list.view.postRender();
 			this.fastTaskModule.view.postRender();
+			this.fastSearchModule.view.postRender();
 		},
 
         addTask: function(ev) {

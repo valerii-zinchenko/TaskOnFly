@@ -72,6 +72,12 @@ define(function () {
 		updateTitle: function(value) {
 			this.$title.html(value);
 		},
+		hide: function() {
+			this.$el.addClass('hidden');
+		},
+		show: function() {
+			this.$el.removeClass('hidden');
+		},
 
         onChange: function(ev) {
             ev.preventDefault();

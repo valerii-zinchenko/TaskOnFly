@@ -241,11 +241,14 @@ define([
             return _.filter(this.models, function(item) {
                 var match = true;
                 for (var rule in rules) {
-                    if (!(new RegExp(rules[rule], 'gi').test(item.public[rule]))) {
+                    if (!(new RegExp(rules[rule], 'gi').test(item.model.public[rule]))) {
                         match = false;
+
                         break;
                     }
                 }
+
+				item.model.trigger(match ? 'show' : 'hide');
 
                 return match;
             });

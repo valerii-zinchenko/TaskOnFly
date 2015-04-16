@@ -24,14 +24,10 @@
 'use strict';
 
 define([
-    'modules/SimpleSearch/View',
-    'modules/SimpleSearch/Control'
+	'modules/SimpleSearch/View',
+	'modules/SimpleSearch/Control'
 ], function (View, Control) {
-    var SimpleSearch = new MVCModule({
-        View: View,
-        Control: Control
-    });
-
-    TaskManager.Modules.SimpleSearch = SimpleSearch;
-    return SimpleSearch;
+	return function() {
+		return new AState(View, Control);
+	}
 });

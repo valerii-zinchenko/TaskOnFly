@@ -28,7 +28,9 @@ define(function () {
 		connect: function() {
 			this.model.listen({
 				updateIsDone: _.bind(this.onUpdateIsDone, this),
-				updateTitle: _.bind(this.onUpdateTitle, this)
+				updateTitle: _.bind(this.onUpdateTitle, this),
+				hide: _.bind(this.onHide, this),
+				show: _.bind(this.onShow, this)
 			});
 		},
 
@@ -38,6 +40,14 @@ define(function () {
 
 		onUpdateTitle: function(model) {
 			this.view.updateTitle(model.public.title);
+		},
+
+		onHide: function(model) {
+			this.view.hide();
+		},
+
+		onShow: function(model) {
+			this.view.show();
 		},
 
         action: function() {

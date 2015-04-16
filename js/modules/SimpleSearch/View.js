@@ -25,53 +25,37 @@
 'use strict';
 
 define(function() {
-    return new SingletonClass({
-        template: '<input data-type="search" id="simpleSearch" placeholder="Search...">',
+	return new SingletonClass(AView, {
+		template: '\
+<div>\
+	<input data-type="search" id="simpleSearch" placeholder="Search...">\
+</div>',
 
-        $el: null,
+		_postRender: function() {
+			this.$input = this.$el.find('#simpleSearch');
+			this.$clear = this.$el.find('.ui-input-clear');
+		},
+		_attachEvents: function() {
+			this.$input.on('keyup', this.onType.bind(this));
+			this.$clear.on('click', this.onClear.bind(this));
+		},
 
-        initialize: function(holder) {
-            if (!holder) {
-                throw new Error('Holder element for module is not defined');
-            }
-            if (!(holder instanceof Object)) {
-                throw new Error('Incorrect input argument type');
-            }
+		onType: function(ev) {
+			ev.preventDefault();
 
-            this.$holder = holder;
+			var val = $(ev.target).val();
 
-            this.$el = $(this.template);
-        },
-        render: function() {
-            this.$holder.empty();
-            this.$holder.append(this.$el);
+			if (val.length < 2) {
+				this.control.reset();
+				return;
+			}
 
-            this.$holder.trigger('create');
+			this.control.search(val);
+		},
+		onClear: function(ev) {
+			ev.preventDefault();
 
-            this._attachEvents();
-
-            return this;
-        },
-        _attachEvents: function() {
-            this.$el.on('keyup', this.onType.bind(this));
-            this.$holder.find('.ui-input-clear').on('click', this.onClear.bind(this));
-        },
-        onType: function(ev) {
-            ev.preventDefault();
-
-            var val = $(ev.target).val();
-
-            if (val.length < 2) {
-                this.onClear(ev);
-                return;
-            }
-
-            this.control.search(val);
-        },
-        onClear: function(ev) {
-            ev.preventDefault();
-
-            this.control.reset();
-        }
-    });
+			this.control.reset();
+		}
+	});
 });

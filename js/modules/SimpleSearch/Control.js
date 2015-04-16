@@ -25,66 +25,20 @@
 'use strict';
 
 define(function () {
-    return new Class({
-        list: null,
-        listModule: null,
+	return new SingletonClass(AControl, {
+		search: function(val) {
+			if (!val) {
+				return;
+			}
 
-        initialize: function(listModule) {
-            this.list = TaskOnFly.getCurrentList();
-
-            if (listModule) {
-                this.setListModule(listModule);
-            }
-        },
-        setListModule: function(listModule) {
-            if (!listModule
-                || !listModule.constructor
-                || (listModule.constructor !== TaskManager.Modules.ListView
-                    && listModule.constructor !== TaskManager.Modules.ListViewGroupedByDate))
-            {
-                throw new Error('Incorrect type for listModule input argument');
-            }
-
-            this.listModule = listModule;
-
-            TaskOnFly.$.on('showList', this.update.bind(this));
-        },
-        update: function(ev, list) {
-            this.list = list;
-        },
-        _showResults: function(list) {
-            if (this.listModule.control.getList() === this.list && list === this.list) {
-                return;
-            }
-
-            this.listModule.control.setList(list);
-            this.listModule.view.render();
-        },
-        search: function(val) {
-            if (!val) {
-                return;
-            }
-
-            if (!this.listModule) {
-                throw new Error('listModule is not defined');
-            }
-
-            var filterResult = this.list.filter({
-                title: val
-            });
-
-            var result = new TaskManager.TaskList(this.list.public.id);
-            for (var n = 0, N = filterResult.length; n < N; n++) {
-                result._add(filterResult[n], false);
-            }
-            this._showResults(result);
-        },
-        reset: function() {
-            if (!this.listModule) {
-                throw new Error('listModule is not defined');
-            }
-
-            this._showResults(this.list);
-        }
-    });
+			TaskOnFly.model.getCurrentList().model.filter({
+				title: val
+			});
+		},
+		reset: function() {
+			TaskOnFly.model.getCurrentList().model.filter({
+				title: '.*'
+			});
+		}
+	});
 });
