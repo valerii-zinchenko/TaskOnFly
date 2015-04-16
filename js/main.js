@@ -30,8 +30,9 @@ define([
     'pages/ItemEditor',
 	'pages/About',
 	'modules/FastTask',
-	'modules/SimpleSearch'
-], function(Model, Home, ItemEditor, About, FastTask, FastSearch) {
+	'modules/SimpleSearch',
+	'modules/MainPanel'
+], function(Model, Home, ItemEditor, About, FastTask, FastSearch, MainPanel) {
 	return new MVCModule({
 		Model: Model,
 		states: {
@@ -39,7 +40,8 @@ define([
 			itemEditor: new ItemEditor(),
 			about: new About(),
 			fastTask: new FastTask(),
-			fastSearch: new FastSearch()
+			fastSearch: new FastSearch(),
+			mainPanel: new MainPanel()
 		}
 	});
 });

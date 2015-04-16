@@ -25,134 +25,81 @@
 'use strict';
 
 define(function () {
-    return new Class({
-        template:
+	return new Class(AView, {
+		template:
 '<div id="<%= panelID %>" data-role="panel" data-position="right" data-display="overlay"> \
-    <ul data-role="listview"> \
-    <% _.each(items, function(item) { %> \
-        <li> \
-            <a href="<%= item.link %>"><%= item.title %></a> \
-        </li> \
-    <% }); %> \
-    </ul> \
+	<ul data-role="listview"> \
+	<% _.each(items, function(item) { %> \
+		<li> \
+			<a href="<%= item.link %>"><%= item.title %></a> \
+		</li> \
+	<% }); %> \
+	</ul> \
 </div>',
 
-        panelID: '',
-        items: [],
-        $el: null,
-        _$holder: null,
+		panelID: '',
+		items: [],
 
-        initialize: function(options) {
-            if (!options) {
-                return;
-            }
 
-            if (!(options instanceof Object)) {
-                throw new Error('Incorrect type of the input argument');
-            }
+		processTemplate: function() {
+			this.$el = $(_.template(this.template, this));
+		},
 
-            if (options.hasOwnProperty('page')) {
-                this.setPanelPage(options.page);
-            }
-
-            if (options.hasOwnProperty('id')) {
-                this.setPanelID(options.id);
-            }
-
-            if (options.hasOwnProperty('items')) {
-                this.setPanelItems(options.items);
-            }
-        },
-        render: function() {
-            if (this.$el) {
-                return this.$el;
-            }
-
-            if (this.items.length === 0) {
-                console.warn('No items for panel. Panel will be disabled.');
-                return
-            }
-            if (!this._$holder) {
-                throw new Error('Page element is not defined for panel');
-            }
+        initialize: function() {
             if (!this.panelID) {
                 throw new Error('Panel ID is not defined');
             }
 
-            this.$el = $(_.template(this.template, this));
-
-            //todo Thing about some connection method instead of such thing
-            this._$holder.append(this.$el);
-
-            this.$el.trigger('create');
-
-            this.$el.panel();
-
-            this._attachEvents();
-
-            return this.$el;
-        },
-        setPanelPage: function(page) {
-            if (!(page instanceof Object)) {
-                throw new Error('Incorrect type of the "page" property');
-            }
-
-            this._$holder = page;
-        },
-        setPanelID: function(id) {
-            if (typeof id !== 'string') {
-                throw new Error('Incorrect type of the "id" property');
-            }
-            if (id == '') {
-                throw new Error('Incorrect "id" value');
-            }
-
-            this.panelID = id;
-        },
-        setPanelItems: function(items) {
-            if (!(items instanceof Array)) {
+            if (!(this.items instanceof Array)) {
                 throw new Error('Incorrect type of the "items" property');
             }
-            if (items.some(function(item) {
+            if (this.items.length === 0) {
+                console.warn('No items for panel. Panel will be disabled.');
+                return
+            }
+            if (this.items.some(function(item) {
                     return !(item instanceof Object);
                 }))
             {
                 throw  new Error('Incorrect type of the content in "items" property');
             }
 
-            if (items.some(function(item) {
+            if (this.items.some(function(item) {
                     return !item.title;
                 }))
             {
                 throw  new Error('"title" property is missed in object content in "items" array');
             }
-            if (items.some(function(item) {
+            if (this.items.some(function(item) {
                     return typeof item.title != 'string';
                 }))
             {
                 throw  new Error('Incorrect type of "title" property in object content in "items" array');
             }
 
-            if (items.some(function(item) {
+            if (this.items.some(function(item) {
                     return !item.link;
                 }))
             {
                 throw  new Error('"link" property is missed in object content in "items" array');
             }
-            if (items.some(function(item) {
+            if (this.items.some(function(item) {
                     return typeof item.link != 'string';
                 }))
             {
                 throw  new Error('Incorrect type of "link" property in object content in "items" array');
             }
-
-            this.items = items;
         },
+
+        _postRender: function() {
+            this.$el.panel();
+        },
+
         close: function() {
             this.$el.panel('close');
         },
         _attachEvents: function() {
             this.$el.find('a').on('vclick', this.close.bind(this));
         }
-    });
+	});
 });

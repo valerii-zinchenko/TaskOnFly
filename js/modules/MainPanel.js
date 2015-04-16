@@ -24,12 +24,9 @@
 'use strict';
 
 define([
-    'modules/MainPanel/View'
+	'modules/MainPanel/View'
 ], function(View) {
-    var MainPanel = new MVCModule({
-        View: View
-    });
-
-    TaskManager.Modules.MainPanel = MainPanel;
-    return MainPanel;
+	return function() {
+		return new AState(View);
+	};
 });

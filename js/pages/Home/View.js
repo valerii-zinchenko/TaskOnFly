@@ -26,11 +26,9 @@
 
 define([
     '../APage/View',
-    'modules/TaskList'/*,
-    'modules/ListViewGroupedByDate',
-    'modules/SimpleSearch',
-    'modules/MainPanel'*/
-], function(Parent, TaskList /*SimpleSearch, MainPanel*/) {
+    'modules/TaskList'
+    //'modules/ListViewGroupedByDate'
+], function(Parent, TaskList) {
     return new SingletonClass(Parent, {
         page: 'home',
 
@@ -67,6 +65,9 @@ define([
         _footerBtnsWidth: null,
 		$content: null,
 		$listModule: null,
+		$fastTaskModule: null,
+		$fastSearchModule: null,
+		$mainPanel: null,
         $addTaskBtn: null,
         $addListBtn: null,
 
@@ -74,12 +75,14 @@ define([
 			this.list = TaskOnFly.model.getCurrentList().useState('asList');
 			this.fastTaskModule = TaskOnFly.useState('fastTask');
 			this.fastSearchModule = TaskOnFly.useState('fastSearch');
+			this.mainPanel = TaskOnFly.useState('mainPanel');
 		},
         _postProcessTemplate: function() {
 			this.$content = this.$el.find('#content');
 			this.$listModule = this.$content.find('#listModule');
 			this.$fastTaskModule = this.$content.find('#fastTaskModule');
 			this.$fastSearchModule = this.$el.find('#searchModule');
+			this.$mainPanel = this.$el.find('#mainPanel');
             this.$addTaskBtn = this.$el.find('#addTask');
             this.$addListBtn = this.$el.find('#addList');
             this.$prevListBtn = this.$el.find('#prevList');
@@ -91,26 +94,19 @@ define([
 			this.list.view.update();
 			this.fastTaskModule.view.update();
 			this.fastSearchModule.view.update();
+			this.mainPanel.view.update();
 		},
-        _buildModules: function() {
-			/*
-            this.panel = new MainPanel({
-                view: {
-                    page: this.$el
-                }
-            });
-			*/
-        },
         renderSubModules: function() {
             this.$listModule.append(this.list.view.render());
 			this.$fastTaskModule.append(this.fastTaskModule.view.render());
 			this.$fastSearchModule.append(this.fastSearchModule.view.render());
-            //this.panel.view.render();
+			this.$el.append(this.mainPanel.view.render());
         },
 		_postRenderModules: function() {
 			this.list.view.postRender();
 			this.fastTaskModule.view.postRender();
 			this.fastSearchModule.view.postRender();
+			this.mainPanel.view.postRender();
 		},
 
         addTask: function(ev) {

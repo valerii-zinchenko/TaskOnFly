@@ -25,15 +25,15 @@
 'use strict';
 
 define([
-    'modules/APanel/View'
+	'modules/APanel/View'
 ], function (APanel) {
-    return new SingletonClass(APanel, {
-        panelID: 'mainPanel',
-        items: [
-            {
-                title: 'About',
-                link: '#about'
-            }
-        ]
-    });
+	return new SingletonClass(APanel, {
+		panelID: 'mainPanel',
+		items: [
+			{
+				title: 'About',
+				link: '#about'
+			}
+		]
+	});
 });
