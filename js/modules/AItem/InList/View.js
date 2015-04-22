@@ -24,27 +24,30 @@
 'use strict';
 
 define(function () {
+	var template = '\
+<div class="list-item" data-item-id="<%= public.id %>">\
+	<div class="model-data <%= public.type.toLowerCase() %> priority-<%= public.priority %> <% if (public.isDone) {%>done<% } %>">\
+		<label class="title btn btn-default" for="<%= public.id %>">\
+			<span class="checkbox-wrapper glyphicon glyphicon-ok">\
+				<input id="<%= public.id %>" type="checkbox" <% if (public.isDone) { %> checked <% } %>>\
+			</span>\
+			<span class="title-text"><%= public.title %></span>\
+		</label>\
+	</div>\
+	<div class="btn-group model-controls" role="group">\
+		<button class="btn btn-default js-btn-edit" aria-label="Edit"><span class="glyphicon glyphicon-pencil"></span></button>\
+		<button class="btn btn-default js-btn-remove" aria-label="Remove"><span class="glyphicon glyphicon-remove"></button>\
+	</div>\
+</div>';
+
     return new Class(AView, {
-        template: '\
-<tr data-item-id="<%= public.id %>">\
-    <th>\
-        <div class="list-item <%= public.type.toLowerCase() %> priority-<%= public.priority %> <% if (public.isDone) {%> done <% } %>">\
-            <input id="<%= public.id %>" type="checkbox" <% if (public.isDone) { %> checked <% } %>>\
-            <label class="title" for="<%= public.id %>"><%= public.title %></label>\
-        </div>\
-    </th>\
-    <td>\
-        <div data-role="controlgroup" data-type="horizontal">\
-            <button class="custom edit-btn" data-role="button" data-icon="edit" data-iconpos="notext">edit</button><button class="custom delete-btn" data-role="button" data-icon="delete" data-iconpos="notext">delete</button>\
-        </div>\
-    </td>\
-</tr>',
+        template: template,
 
         $listItem: null,
 		$title: null,
 
         _postProcessTemplate: function() {
-            this.$listItem = this.$el.find('.list-item');
+            this.$listItem = this.$el.find('.model-data');
 			this.$title = this.$el.find('.title');
 			this.$checkBox = this.$listItem.find('input');
         },
@@ -52,8 +55,8 @@ define(function () {
         _attachEvents: function() {
             this.$checkBox.on('change', this.onChange.bind(this));
 
-            this.$el.find('.edit-btn').on('click', this.onEdit.bind(this));
-            this.$el.find('.delete-btn').on('click', this.onRemove.bind(this));
+            this.$el.find('.js-btn-edit').on('click', this.onEdit.bind(this));
+            this.$el.find('.js-btn-remomve').on('click', this.onRemove.bind(this));
         },
 
 		updateIsDone: function(value) {

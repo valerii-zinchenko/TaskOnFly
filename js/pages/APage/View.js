@@ -30,7 +30,7 @@ define(function () {
 		initialize: function() {
 			this.$el = $('<div>', {
 				id: this.page,
-				'data-role': 'page'
+				'class': 'page'
 			});
 
 			$('body').append(this.$el);
@@ -38,6 +38,13 @@ define(function () {
 
 		processTemplate: function() {
 			this.$el.html(_.template(this.template, this));
+		},
+
+		show: function() {
+			this.$el.addClass('active');
+		},
+		hide: function() {
+			this.$el.removeClass('active');
 		}
     });
 });

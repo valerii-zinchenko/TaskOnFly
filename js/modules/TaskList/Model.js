@@ -107,8 +107,8 @@ define([
         },
         addList: function(data) {
             var list = new TaskManager.TaskList(data);
-            list._parent = this;
-            list._path = [this._path, list.model.public.id, '/'].join('');
+            list.model._parent = this;
+            list.model._path = [this._path, list.model.public.id, '/'].join('');
             return this._add(list);
         },
 
@@ -127,15 +127,19 @@ define([
         },
 
         findList: function(path, list) {
+			var listModel;
+
             if (!list) {
-                list = this;
-            }
+                listModel = this;
+            } else {
+				listModel = list.model;
+			}
 
             if (path.length === 0) {
                 return list;
             }
 
-            var subList = list.models[path.shift()];
+            var subList = listModel.models[path.shift()];
 
             if (!subList) {
                 return null;

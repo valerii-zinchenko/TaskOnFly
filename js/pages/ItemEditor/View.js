@@ -29,58 +29,75 @@ define([
 ], function(Parent) {
     return new SingletonClass(Parent, {
         template:'\
-<div data-role="header">\
-	<a href="#" class="back" data-role="back" data-icon="carat-l">Back</a>\
-	<h1 id="headerTitle">Item</h1>\
-	<a href="#" class="save" data-role="button" data-icon="plus" data-iconpos="right">Save</a>\
-</div>\
-\
-<div data-role="content">\
-	<div data-role="fieldcontain">\
-		<table class="task-title" style="width: 100%">\
-		<tbody>\
-			<tr>\
-				<td>\
-					<input type="checkbox" id="done" class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-checkbox-off"/>\
-				</td>\
-				<td>\
-					<input type="text" id="title" name="title" placeholder="Title" value=""/>\
-				</td>\
-			</tr>\
-		</tbody>\
-		</table>\
-	</div>\
-\
-	<div data-role="fieldcontain">\
-		<div id="priority" data-role="controlgroup" data-type="horizontal" class="full-width ui-controlgroup-grid-b">\
-			<label for="2">Low</label>\
-			<input id="2" type="radio" name="priority" value="2">\
-			<label for="1">Normal</label>\
-			<input id="1" type="radio" name="priority" value="1">\
-			<label for="0">High</label>\
-			<input id="0" type="radio" name="priority" value="0">\
+<nav class="navbar navbar-default navbar-fixed-top">\
+	<div class="container-fluid">\
+		<div class="navbar-header">\
+			<a href="#" class="navbar-brand">TaskOnFly</a>\
+			<p id="headerTitle" class="navbar-text">Item</p>\
 		</div>\
 	</div>\
+</nav>\
+<div class="container-fluid">\
+	<form class="form-horizontal">\
+		<div class="form-group">\
+			<div class="col-xs-12">\
+				<div class="input-group" data-toggle="buttons">\
+					<label class="is-done btn btn-default input-group-addon" for="done">\
+						<input id="done" type="checkbox" aria-label="Is task done?">\
+						<span class="glyphicon glyphicon-ok"></span>\
+					</label>\
+					<input type="text" id="title" class="form-control" name="title" placeholder="Title" value=""/>\
+				</div>\
+			</div>\
+		</div>\
 \
-	<div data-role="fieldcontain">\
-		<label for="start">Start:</label>\
-		<input type="date" id="start" value="" placeholder="YYYY-MM-DD">\
-	</div>\
+		<div class="form-group">\
+			<div id="priority" class="col-xs-12 btn-group btn-group-justified" data-toggle="buttons">\
+				<label for="2" class="low btn btn-default">\
+					<input id="2" type="radio" name="priority" value="2">Low\
+				</label>\
+				<label for="1" class="normal btn btn-default active">\
+					<input id="1" type="radio" name="priority" value="1" checked>Normal\
+				</label>\
+				<label for="0" class="high btn btn-default">\
+					<input id="0" type="radio" name="priority" value="0">High\
+				</label>\
+			</div>\
+		</div>\
 \
-	<div data-role="fieldcontain">\
-		<label for="due">Due:</label>\
-		<input type="date" id="due" value="" placeholder="YYYY-MM-DD">\
-	</div>\
+		<div class="form-group">\
+			<div class="col-xs-12 col-sm-6">\
+				<div class="row">\
+					<label for="start" class="control-label col-xs-2">Start:</label>\
+					<div class="col-xs-10">\
+						<input type="date" id="start" class="form-control" value="" placeholder="YYYY-MM-DD">\
+					</div>\
+				</div>\
+			</div>\
+			<div class="col-xs-12 col-sm-6">\
+				<div class="row">\
+					<label for="due" class="control-label col-xs-2">Due:</label>\
+					<div class="col-xs-10">\
+						<input type="date" id="due" class="form-control" value="" placeholder="YYYY-MM-DD">\
+					</div>\
+				</div>\
+			</div>\
+		</div>\
 \
-	<div data-role="fieldcontain">\
-		<textarea id="notes" name="notes" placeholder="Notes"></textarea>\
-	</div>\
+		<div class="form-group">\
+			<div class="col-xs-12">\
+				<textarea id="notes" class="form-control" name="notes" placeholder="Notes..."></textarea>\
+			</div>\
+		</div>\
 \
-	<div data-role="fieldcontain">\
-		<button class="save">Save</button>\
-	</div>\
+		<div class="form-group">\
+			<div class="col-xs-12">\
+				<input type="submit" value="Save" class="save btn btn-primary btn-block">\
+			</div>\
+		</div>\
+	</form>\
 </div>\
-',
+		',
 
 		page: 'editor',
 		header: 'Item',
@@ -97,7 +114,7 @@ define([
 
 		_attachEvents: function() {
 			this.$el.find('.back').on('vclick', this.onBack.bind(this));
-			this.$el.find('.save').on('vclick', this.onSave.bind(this));
+			this.$el.find('form').on('submit', this.onSave.bind(this));
 			this.$isDone.on('change', this.onToggleStatus.bind(this));
 		},
 
@@ -112,27 +129,24 @@ define([
 			var data = this._model.public;
 			this._model = null;
 
-			this.$priority.find(':checked').prop('checked', false).checkboxradio('refresh');
+			this.$priority.find(':checked').prop('checked', false);
 
 			this.$isDone.prop('checked', data.isDone);
 			this.$title.val(data.title);
-			this.$priority.find('#' + data.priority).prop('checked', true).checkboxradio('refresh');;
+			this.$priority.find('#' + data.priority).prop('checked', true);
 			this.$startDate.val(data.startDate);
 			this.$dueDate.val(data.dueDate);
 			this.$notes.val(data.notes);
 
 			if (data.isDone) {
-				this.$isDone.removeClass('ui-checkbox-off');
-				this.$isDone.addClass('ui-checkbox-on');
+				this.$isDone.addClass('done');
 			} else {
-				this.$isDone.removeClass('ui-checkbox-on');
-				this.$isDone.addClass('ui-checkbox-off');
+				this.$isDone.removeClass('done');
 			}
 		},
 
 		onToggleStatus: function(ev) {
-			this.$isDone.toggleClass('ui-checkbox-on');
-			this.$isDone.toggleClass('ui-checkbox-off');
+			this.$isDone.toggleClass('done');
 		},
 		onBack: function(ev) {
 			ev.preventDefault();
@@ -156,14 +170,13 @@ define([
 		resetForm: function() {
 			this.$isDone.prop('checked', false);
 			this.$title.val('');
-			this.$priority.find('#1').prop('checked', true).checkboxradio('refresh');;
-			this.$priority.find('#0, #2').prop('checked', false).checkboxradio('refresh');;
+			this.$priority.find('#1').prop('checked', true);
+			this.$priority.find('#0, #2').prop('checked', false);
 			this.$startDate.val('');
 			this.$dueDate.val('');
 			this.$notes.val('');
 
-			this.$isDone.removeClass('ui-checkbox-on');
-			this.$isDone.addClass('ui-checkbox-off');
+			this.$isDone.removeClass('done');
 		},
 		getFormData: function() {
 			return {
@@ -173,7 +186,7 @@ define([
 				startDate: this.$startDate.val(),
 				dueDate: this.$dueDate.val(),
 				notes: this.$notes.val().trim(),
-				version: TaskManager.version
+				version: TaskOnFly.model.version
 			};
 		}
 	});

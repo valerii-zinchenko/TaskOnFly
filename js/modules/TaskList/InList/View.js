@@ -28,14 +28,30 @@ define([
 	'../../AItem/InList/View',
 	'view/PopupDialog'
 ], function(Parent) {
+	var taskCounterTemplate = '\
+<span class="list-counter">\
+	<span class="js-done-tasks"></span>/<span class="js-total-tasks"></span>\
+</span>\
+';
 	return new Class(Parent, {
+		_postProcessTemplate: function() {
+			Parent.prototype._postProcessTemplate.call(this);
+
+			this.$listItem.find('input').prop('disabled', true);
+
+			this.$title.append(taskCounterTemplate);
+
+			this.$nDoneTasks = this.$title.find('.js-done-tasks');
+			this.$nTasks = this.$title.find('.js-total-tasks');
+		},
 		_attachEvents: function() {
 			Parent.prototype._attachEvents.call(this);
 
 			this.$listItem.on('click', this.onChange.bind(this));
 		},
 		update: function() {
-			this.$listItem.find('input').prop('disabled', true);
+			this.$nDoneTasks.html(this.model._NDone);
+			this.$nTasks.html(this.model.public.items.length);
 		},
 
 		onRemove: function(ev) {

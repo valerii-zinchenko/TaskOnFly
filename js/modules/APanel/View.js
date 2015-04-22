@@ -92,11 +92,9 @@ define(function () {
         },
 
         _postRender: function() {
-            this.$el.panel();
         },
 
         close: function() {
-            this.$el.panel('close');
         },
         _attachEvents: function() {
             this.$el.find('a').on('vclick', this.close.bind(this));

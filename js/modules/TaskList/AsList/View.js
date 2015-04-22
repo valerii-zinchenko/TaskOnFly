@@ -28,13 +28,7 @@ define([
 	'view/PopupDialog'
 ], function() {
 	return new Class(AView, {
-		template: '\
-<div class="task-list">\
-	<table class="full">\
-		<thead><tr><th></th><th></th></tr></thead>\
-		<tbody></tbody>\
-	</table>\
-</div>',
+		template: '<div class="task-list"></div>',
 
 		_subModules: [],
 
@@ -58,7 +52,7 @@ define([
         },
 
 		_postProcessTemplate: function() {
-			this.$list = this.$el.find('tbody');
+			this.$list = this.$el;
 		},
 
 		_postRenderModules: function() {
@@ -156,7 +150,7 @@ define([
             $tables.removeClass('fixed');
             lists.removeClass('nowrap');
 
-            th.css('width', th.width());
+            th.css('width', $tables.width() - 84 - 3*2);
 
             $tables.addClass('fixed');
             lists.addClass('nowrap');

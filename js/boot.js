@@ -22,7 +22,6 @@
 */
 
 var TaskManager = {
-    version: '1.0.9',
     Pages: {},
     Modules: {}
 };
@@ -32,7 +31,7 @@ var TaskOnFly;
 requirejs.config({
     paths: {
         'jquery':           'lib/jquery-2.1.1',
-        'jquery.mobile':    'lib/jquery.mobile-1.4.3',
+		'bootstrap':		'lib/bootstrap-3.3.4',
         'underscore':       'lib/underscore-1.6.0',
         'backbone':         'lib/backbone-1.1.2',
         'i18n':             'lib/i18n-2.0.4',
@@ -52,7 +51,7 @@ requirejs.config({
         'jquery': {
             exports: '$'
         },
-        'jquery.mobile': {
+        'bootstrap': {
             deps: ['jquery']
         },
         'underscore': {
@@ -100,6 +99,7 @@ requirejs.config({
 
 requirejs([
     'jquery',
+	'bootstrap',
     'backbone',
     'utils',
     'aclass'
@@ -114,16 +114,7 @@ requirejs([
 		'acontrol',
         'mvcmodule'
     ], function() {
-        $(document).on('mobileinit', function() {
-            $.extend($.mobile, {
-                ajaxEnabled: false,
-                linkBindingEnabled: false,
-                hashListeningEnabled: false
-            });
-        });
-
         requirejs([
-			'jquery.mobile',
 			'modules/Task',
 			'modules/TaskList'
 		], function() {

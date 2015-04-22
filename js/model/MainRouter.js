@@ -45,27 +45,26 @@ define(function () {
          */
 		_openPage: function(pageName, fn) {
 			var page = TaskOnFly.useState(pageName);
-
-			this._view = page.view;
+			var view = page.view;
 
 			if (fn) {
-				fn.call(this._view);
+				fn.call(view);
 			}
 
-			this._view.render();
+			view.render();
+			view.postRender();
 
-			$.mobile.pageContainer.pagecontainer('change', '#' + this._view.page);
+			//view.update();
+
+			if (this._view) {
+				this._view.hide();
+			}
+
+			view.show();
+			view.update();
+
+			this._view = view;
 		},
-
-        initialize: function() {
-            $.mobile.pageContainer.pagecontainer({
-                change: function() {
-					this._view.postRender();
-
-					this._view.update();
-                }.bind(this)
-            });
-        },
 
         home: function() {
             this._openPage('home');

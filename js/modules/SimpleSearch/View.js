@@ -28,7 +28,7 @@ define(function() {
 	return new SingletonClass(AView, {
 		template: '\
 <div>\
-	<input data-type="search" id="simpleSearch" placeholder="Search...">\
+	<input id="simpleSearch" class="form-control" placeholder="Search in current list...">\
 </div>',
 
 		_postRender: function() {

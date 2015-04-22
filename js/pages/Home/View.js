@@ -33,41 +33,45 @@ define([
         page: 'home',
 
         template: '\
-<div data-role="header">\
-    <a href="#" id="prevList" data-role="button" data-icon="carat-l">Previous list</a>\
-    <h1>Home</h1>\
-    <a href="#mainPanel" data-role="button" data-icon="gear" data-iconpos="notext"></a>\
+<nav class="navbar navbar-default navbar-fixed-top">\
+	<div class="container-fluid">\
+		<div class="navbar-header">\
+			<button id="prevList" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-left"></span>Prev list</button>\
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainPanel">\
+				<span class="sr-only">Toggle navigation</span>\
+				<span class="icon-bar"></span>\
+				<span class="icon-bar"></span>\
+				<span class="icon-bar"></span>\
+			</button>\
+			<a href="#" class="navbar-brand">TaskOnFly</a>\
+		</div>\
+\
+		<div id="mainPanel" class="collapse navbar-collapse">\
+			<ul class="nav navbar-nav navbar-right">\
+				<li><a href="#add/task"><span class="glyphicon glyphicon-plus"></span> Add task</a></li>\
+				<li><a href="#add/list"><span class="glyphicon glyphicon-plus"></span> Add list</a></li>\
+				<li><a href="#about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>\
+			</ul>\
+		</div>\
+	</div>\
+</nav>\
+\
+<div id="content" class="container-fluid">\
+	<div id="fastTaskModule" class="module" data-role="fieldcontain"></div>\
+	<div id="listModule" class="module" data-role="fieldcontain"></div>\
 </div>\
 \
-<div id="content" class="ui-content">\
-    <div id="fastTaskModule" data-role="fieldcontain"></div>\
-    <div id="listModule" data-role="fieldcontain"></div>\
-</div>\
-\
-<div data-role="footer" data-position="fixed" data-tap-toggle="false">\
-    <table class="full">\
-        <tbody>\
-        <tr>\
-            <td>\
-                <button id="addList" class="btn-left" data-role="button" data-icon="plus">List</button>\
-            </td>\
-            <td>\
-                <div id="searchModule"></div>\
-            </td>\
-            <td>\
-                <button id="addTask" class="btn-right" data-role="button" data-icon="plus" data-iconpos="right">Task</button>\
-            </td>\
-        </tr>\
-        </tbody>\
-    </table>\
-</div>',
+<footer class="footer">\
+	<div class="container-fluid">\
+		<div id="searchModule" class="module"></div>\
+	</div>\
+</footer>',
 
         _footerBtnsWidth: null,
 		$content: null,
 		$listModule: null,
 		$fastTaskModule: null,
 		$fastSearchModule: null,
-		$mainPanel: null,
         $addTaskBtn: null,
         $addListBtn: null,
 
@@ -75,38 +79,46 @@ define([
 			this.list = TaskOnFly.model.getCurrentList().useState('asList');
 			this.fastTaskModule = TaskOnFly.useState('fastTask');
 			this.fastSearchModule = TaskOnFly.useState('fastSearch');
-			this.mainPanel = TaskOnFly.useState('mainPanel');
+			//this.mainPanel = TaskOnFly.useState('mainPanel');
 		},
         _postProcessTemplate: function() {
 			this.$content = this.$el.find('#content');
 			this.$listModule = this.$content.find('#listModule');
 			this.$fastTaskModule = this.$content.find('#fastTaskModule');
 			this.$fastSearchModule = this.$el.find('#searchModule');
-			this.$mainPanel = this.$el.find('#mainPanel');
+			this.$navBarToggler = this.$el.find('nav .navbar-toggle');
             this.$addTaskBtn = this.$el.find('#addTask');
             this.$addListBtn = this.$el.find('#addList');
             this.$prevListBtn = this.$el.find('#prevList');
         },
 
 		update: function() {
-            this._fixFooterTable();
+			if (!this.$navBarToggler.hasClass('collapsed')) {
+				this.$navBarToggler.click();
+			}
 
 			this.list.view.update();
 			this.fastTaskModule.view.update();
 			this.fastSearchModule.view.update();
-			this.mainPanel.view.update();
+			//this.mainPanel.view.update();
+			
+			if (this.list.model._path == '/') {
+				this.$prevListBtn.prop('disabled', true);
+			} else {
+				this.$prevListBtn.prop('disabled', false);
+			}
 		},
         renderSubModules: function() {
             this.$listModule.append(this.list.view.render());
 			this.$fastTaskModule.append(this.fastTaskModule.view.render());
 			this.$fastSearchModule.append(this.fastSearchModule.view.render());
-			this.$el.append(this.mainPanel.view.render());
+			//this.$el.append(this.mainPanel.view.render());
         },
 		_postRenderModules: function() {
 			this.list.view.postRender();
 			this.fastTaskModule.view.postRender();
 			this.fastSearchModule.view.postRender();
-			this.mainPanel.view.postRender();
+			//this.mainPanel.view.postRender();
 		},
 
         addTask: function(ev) {
@@ -132,18 +144,6 @@ define([
 			TaskOnFly.model.listen('changeList', _.bind(this._switchLists, this));
 		},
 
-        _fixFooterTable: function() {
-            if (!this._footerBtnsWidth) {
-                var offset = parseFloat(this.$addTaskBtn.css('left'));
-                this._footerBtnsWidth = {
-                    addTaskBtn: this.$addTaskBtn.outerWidth() + offset*2,
-                    addListBtn: this.$addListBtn.outerWidth() + offset*2
-                };
-            }
-            this.$addTaskBtn.parents('td').css('width', this._footerBtnsWidth.addTaskBtn);
-            this.$addListBtn.parents('td').css('width', this._footerBtnsWidth.addListBtn);
-        },
-
         selectParentList: function() {
 			TaskOnFly.model.changeView('path' + this.list.model.getParentLocation());
         },
@@ -164,7 +164,7 @@ define([
 				list.view.postRender();
 			}
 
-            if (this.list.model._parent && this.list.model._parent.public.id === list.public.id) {
+            if (this.list.model._parent && this.list.model._parent.public.id === list.model.public.id) {
                 //todo Position new list to the left side and move both lists from left to the right
             } else {
                 //todo Position new list to the right side and move both lists from right to the left
@@ -174,6 +174,12 @@ define([
 			this.list = list;
 
 			this.list.view.update();
+
+			if (this.list.model._path == '/') {
+				this.$prevListBtn.prop('disabled', true);
+			} else {
+				this.$prevListBtn.prop('disabled', false);
+			}
         }
     });
 });

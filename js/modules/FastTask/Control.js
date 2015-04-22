@@ -34,7 +34,7 @@ define(function () {
 					title: data.title,
 					priority: data.priority,
 					dueDate: utils.date(new Date(Date.now() + 86400000)),	// + 1 day
-					version: TaskManager.version
+					version: TaskOnFly.model.version
 				});
 			}
 		}

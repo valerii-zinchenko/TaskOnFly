@@ -26,37 +26,35 @@
 
 define(function() {
     return new SingletonClass(AView, {
-        template:
-'<table class="full fast-task">\
-    <tbody>\
-    <tr>\
-        <td>\
-            <input id="fastTitle" type="text" placeholder="Fast task">\
-        </td>\
-        <td class="select-priority">\
-            <div id="priority" class="full-width ui-controlgroup-grid-b" data-role="controlgroup" data-type="horizontal" data-mini="true">\
-                <label for="low" class="low ui-icon-arrow-d ui-btn-icon-notext">Low</label>\
-                <input id="low" type="radio" name="priority" value="2">\
-                <label for="normal" class="normal ui-icon-circle ui-btn-icon-notext">Normal</label>\
-                <input id="normal" type="radio" name="priority" value="1" checked>\
-                <label for="high" class="high ui-icon-arrow-u ui-btn-icon-notext">High</label>\
-                <input id="high" type="radio" name="priority" value="0">\
-            </div>\
-        </td>\
-        <td class="add-btn">\
-            <button id="addFastTask" data-role="button" data-icon="plus" data-iconpos="notext">add</button>\
-        </td>\
-    </tr>\
-    </tbody>\
-</table>',
+		template: '\
+<div class="full fast-task">\
+	<div class="task-name">\
+		<input id="fastTitle" class="form-control" type="text" placeholder="Fast task">\
+	</div>\
+	<div class="controls">\
+		<div id="priority" class="btn-group" data-toggle="buttons">\
+			<label class="low btn btn-default" for="low">\
+				<input id="low" type="radio" name="priority" value="2" aria-label="Low priority">\
+				<span class="glyphicon glyphicon-download"></span>\
+			</label>\
+			<label class="normal btn btn-default active" for="normal">\
+				<input id="normal" type="radio" name="priority" value="1" aria-label="Normal priority" checked>\
+				<span class="glyphicon glyphicon-record"></span>\
+			</label>\
+			<label class="high btn btn-default" for="high">\
+				<input id="high" type="radio" name="priority" value="0" aria-label="High priority">\
+				<span class="glyphicon glyphicon-upload"></span>\
+			</label>\
+		</div>\
+		<button id="addFastTask" class="btn btn-default" aria-label="Create"><span class="glyphicon glyphicon-plus"></span></button>\
+	</div>\
+</div>',
 
         _postRender: function() {
             this.$fastTilte = this.$el.find('#fastTitle');
             this.$priority = this.$el.find('#priority');
             this.$add = this.$el.find('#addFastTask');
 			this.$radioButtons = this.$priority.find('input');
-
-			this.$radioButtons.checkboxradio();
         },
 		_attachEvents: function() {
             this.$add.on('click', this.onAddTask.bind(this));
@@ -64,8 +62,8 @@ define(function() {
         update: function() {
             this.$fastTilte.val('');
 
-            this.$radioButtons.prop('checked', false).checkboxradio("refresh");
-            this.$priority.find('#normal').prop('checked', true).checkboxradio("refresh");
+            this.$radioButtons.prop('checked', false);
+            this.$priority.find('#normal').prop('checked', true);
         },
 		getData: function() {
 			return {
