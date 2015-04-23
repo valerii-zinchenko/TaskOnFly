@@ -1,6 +1,6 @@
 /*
  TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.
- Copyright (C) 2014  Valerii Zinchenko
+ Copyright (C) 2014-2015  Valerii Zinchenko
 
  This file is part of TaskOnFly.
 
@@ -23,7 +23,7 @@
 
 'use strict';
 
-suite('List.Control', function() { 
+suite('List.Control', function() {
     var Module;
     setup(function(done) {
         requirejs(['modules/List/Control'], function(Control) {
