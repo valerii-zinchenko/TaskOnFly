@@ -200,3 +200,40 @@ footer .module {
 	text-align: right;
 	margin-bottom: 0;
 }
+
+/* About page */
+.gpl-link {
+	float: right;
+}
+.gpl-link img {
+	height: 50px;
+}
+.jquery-link img {
+	background-color: #0769AD;
+	padding: 0 2px;
+}
+.nodejs-link img {
+	background-color: #303030;
+	padding: 0 2px;
+}
+.mochajs-link:link, .mochajs-link:visited, .mochajs-link:hover, .mochajs-link:active {
+	display: inline-block;
+	vertical-align: middle;
+	height: 40px;
+	background-color: #8a6343;
+	border-radius: 50%;
+	text-decoration: none;
+}
+.mochajs-link span {
+	color: #fff;
+	font-size: 0.85em;
+	position: relative;
+	top: 8px;
+}
+.sinonjs-link:link, .sinonjs-link:visited, .sinonjs-link:hover, .sinonjs-link:active {
+	text-decoration: none;
+	font-size: 2em;
+	vertical-align: middle;
+	color: #fff;
+	background-color: #333;
+}
