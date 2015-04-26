@@ -111,6 +111,14 @@ define([
             list.model._path = [this._path, list.model.public.id, '/'].join('');
             return this._add(list);
         },
+		removeItem: function(id, model) {
+			if (model.public.isDone) {
+				this._NDone--;
+			}
+
+			this.public.items.splice(this.public.items.indexOf(id), 1);
+			delete this.models[id];
+		},
 
         getItem: function(id) {
             return this.models[id];
@@ -267,8 +275,8 @@ define([
 
 			this._checkListCompleteness();
 		},
-		onRemove: function(module, id) {
-			this.removeItem(id);
+		onRemove: function(model, id) {
+			this.removeItem(id, model);
 		}
     });
 

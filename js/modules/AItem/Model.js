@@ -108,9 +108,9 @@ define(function () {
         destruct: function() {
             var id = this.public.id;
 
-            this.public = null;
-
 			this.trigger('remove', id);
+
+            this.public = null;
 
             TaskOnFly.model.removeItem(id);
         },

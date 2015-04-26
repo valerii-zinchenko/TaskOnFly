@@ -56,7 +56,7 @@ define(function () {
             this.$checkBox.on('change', this.onChange.bind(this));
 
             this.$el.find('.js-btn-edit').on('click', this.onEdit.bind(this));
-            this.$el.find('.js-btn-remomve').on('click', this.onRemove.bind(this));
+            this.$el.find('.js-btn-remove').on('click', this.onRemove.bind(this));
         },
 
 		updateIsDone: function(value) {
