@@ -177,12 +177,10 @@ footer .module {
     background-color: #dc9a9a;
 }
 
-.task-list .model-data.done .title {
+.task-list .model-data.done .title-text,
+.task-list .model-data.done .list-counter {
     text-decoration: line-through;
     color: gray;
-}
-.task-list .model-data.done .list-counter {
-	text-decoration: inherit;
 }
 
 .group-title {
