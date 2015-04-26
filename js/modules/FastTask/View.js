@@ -56,7 +56,6 @@ define(function() {
             this.$fastTilte = this.$el.find('#fastTitle');
             this.$priority = this.$el.find('#priority');
             this.$add = this.$el.find('#addFastTask');
-			this.$radioButtons = this.$priority.find('input');
         },
 		_attachEvents: function() {
 			this.$fastTilte.on('keyup', this.onChange.bind(this));
@@ -64,9 +63,6 @@ define(function() {
         },
         update: function() {
             this.$fastTilte.val('');
-
-            this.$radioButtons.prop('checked', false);
-            this.$priority.find('#normal').prop('checked', true);
         },
 		getData: function() {
 			return {
