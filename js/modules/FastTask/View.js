@@ -25,8 +25,7 @@
 'use strict';
 
 define(function() {
-    return new SingletonClass(AView, {
-		template: '\
+	var template = '\
 <div class="full fast-task">\
 	<div class="task-name">\
 		<input id="fastTitle" class="form-control" type="text" placeholder="Fast task">\
@@ -48,7 +47,10 @@ define(function() {
 		</div>\
 		<button id="addFastTask" class="btn btn-default" aria-label="Create"><span class="glyphicon glyphicon-plus"></span></button>\
 	</div>\
-</div>',
+</div>';
+
+    return new SingletonClass(AView, {
+		template: template,
 
         _postRender: function() {
             this.$fastTilte = this.$el.find('#fastTitle');
@@ -57,6 +59,7 @@ define(function() {
 			this.$radioButtons = this.$priority.find('input');
         },
 		_attachEvents: function() {
+			this.$fastTilte.on('keyup', this.onChange.bind(this));
             this.$add.on('click', this.onAddTask.bind(this));
         },
         update: function() {
@@ -70,6 +73,12 @@ define(function() {
 				title: this.$fastTilte.val(),
 				priority: this.$priority.find(':checked').val()
 			};
+		},
+		onChange: function(ev) {
+			if (ev.keyCode == 13) {
+				this.control.action();
+				this.update();
+			}
 		},
         onAddTask: function(ev) {
             ev.preventDefault();
