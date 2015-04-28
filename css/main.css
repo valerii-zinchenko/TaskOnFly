@@ -200,6 +200,9 @@ footer .module {
 }
 
 /* About page */
+.thanks img {
+	height: 40px;
+}
 .gpl-link {
 	float: right;
 }

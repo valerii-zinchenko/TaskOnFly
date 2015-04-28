@@ -52,41 +52,44 @@ define([
 	</div>\
 	<div class="well thanks">\
 		<a href="http://www.vim.org/" class="vim-link">\
-			<img src="http://upload.wikimedia.org/wikipedia/commons/1/12/Vimlogo.png" alt="Vim" height="40px">\
+			<img src="http://upload.wikimedia.org/wikipedia/commons/1/12/Vimlogo.png" alt="Vim">\
 		</a>\
 		<a href="http://getbootstrap.com/" class="bootstrap-link">\
-			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAA81BMVEX///9VPnxWPXxWPXxWPXxWPXxWPXxWPXz///9hSYT6+vuFc6BXPn37+vz8+/z9/f2LeqWMe6aOfqiTg6uXiK5bQ4BZQX9iS4VdRYFdRYJfSINuWI5vWY9xXJF0YJR3Y5Z4ZZd5ZZd6Z5h9apq0qcW1qsW1q8a6sMqpnLyrn76tocCvpMGwpMJoUoprVYxeRoJjS4abjLGilLemmbrDutDFvdLPx9nX0eDa1OLb1uPd1+Td2OXe2eXh3Ofj3+nk4Orl4evp5u7u7PLv7fPx7/T08vb08/f19Pf29Pj39vn6+fuEcZ9YP35aQn/8/P1ZQH5fR4PINAOdAAAAB3RSTlMAIWWOw/P002ipnAAAAPhJREFUeF6NldWOhEAUBRvtRsfdfd3d3e3/v2ZPmGSWZNPDqScqqaSBSy4CGJbtSi2ubRkiwXRkBo6ZdJIApeEwoWMIS1JYwuZCW7hc6ApJkgrr+T/eW1V9uKXS5I5GXAjW2VAV9KFfSfgJpk+w4yXhwoqwl5AIGwp4RPgdK3XNHD2ETYiwe6nUa18f5jYSxle4vulw7/EtoCdzvqkPv3bn7M0eYbc7xFPXzqCrRCgH0Hsm/IjgTSb04W0i7EGjz+xw+wR6oZ1MnJ9TWrtToEx+4QfcZJ5X6tnhw+nhvqebdVhZUJX/oFcKvaTotUcvUnY188ue/n38AunzPPE8yg7bAAAAAElFTkSuQmCC" alt="Bootstrap" height="40px">\
+			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAA81BMVEX///9VPnxWPXxWPXxWPXxWPXxWPXxWPXz///9hSYT6+vuFc6BXPn37+vz8+/z9/f2LeqWMe6aOfqiTg6uXiK5bQ4BZQX9iS4VdRYFdRYJfSINuWI5vWY9xXJF0YJR3Y5Z4ZZd5ZZd6Z5h9apq0qcW1qsW1q8a6sMqpnLyrn76tocCvpMGwpMJoUoprVYxeRoJjS4abjLGilLemmbrDutDFvdLPx9nX0eDa1OLb1uPd1+Td2OXe2eXh3Ofj3+nk4Orl4evp5u7u7PLv7fPx7/T08vb08/f19Pf29Pj39vn6+fuEcZ9YP35aQn/8/P1ZQH5fR4PINAOdAAAAB3RSTlMAIWWOw/P002ipnAAAAPhJREFUeF6NldWOhEAUBRvtRsfdfd3d3e3/v2ZPmGSWZNPDqScqqaSBSy4CGJbtSi2ubRkiwXRkBo6ZdJIApeEwoWMIS1JYwuZCW7hc6ApJkgrr+T/eW1V9uKXS5I5GXAjW2VAV9KFfSfgJpk+w4yXhwoqwl5AIGwp4RPgdK3XNHD2ETYiwe6nUa18f5jYSxle4vulw7/EtoCdzvqkPv3bn7M0eYbc7xFPXzqCrRCgH0Hsm/IjgTSb04W0i7EGjz+xw+wR6oZ1MnJ9TWrtToEx+4QfcZJ5X6tnhw+nhvqebdVhZUJX/oFcKvaTotUcvUnY188ue/n38AunzPPE8yg7bAAAAAElFTkSuQmCC" alt="Bootstrap">\
 		</a>\
 		<a href="http://jquery.com/" class="jquery-link">\
-			<img src="http://jquery.com/jquery-wp-content/themes/jquery/images/logo-jquery.png" alt=jQuery"" height="40px">\
+			<img src="http://jquery.com/jquery-wp-content/themes/jquery/images/logo-jquery.png" alt="jQuery">\
 		</a>\
 		<a href="http://requirejs.org/" class="requirejs-link">\
-			<img src="http://requirejs.org/i/logo.png" alt="Require JS" height="40px">\
+			<img src="http://requirejs.org/i/logo.png" alt="Require JS">\
 		</a>\
 		<a href="https://nodejs.org/" class="nodejs-link">\
-			<img src="https://nodejs.org/images/logo.svg" alt="Node.js" height="40px">\
+			<img src="https://nodejs.org/images/logo.svg" alt="Node.js">\
 		</a>\
 		<a href="http://gruntjs.com/" class="grunt-link">\
-			<img src="http://gruntjs.com/img/grunt-logo.png" alt="Grunt" height="40px">\
+			<img src="http://gruntjs.com/img/grunt-logo.png" alt="Grunt">\
 		</a>\
 		<a href="http://phantomjs.org/" class="phantomjs-link">\
-			<img src="http://phantomjs.org/img/phantomjs-logo.png" alt="PhantomJS" height="40px">\
+			<img src="http://phantomjs.org/img/phantomjs-logo.png" alt="PhantomJS">\
 		</a>\
 		<a href="http://mochajs.org/" class="mochajs-link">\
 			<span>mocha</span>\
 		</a>\
 		<a href="http://sinonjs.org/" class="sinonjs-link">Sinon.JS</a>\
 		<a href="http://chaijs.com/" class="chaijs-link">\
-			<img src="http://chaijs.com/public/img/chai-logo-small.png" alt="Chai Assertion Library" height="40px">\
+			<img src="http://chaijs.com/public/img/chai-logo-small.png" alt="Chai Assertion Library">\
 		</a>\
 		<a href="http://underscorejs.org/" class="underscorejs-link">\
-			<img src="http://underscorejs.org/docs/images/underscore.png" alt="Underscore.js" height="40px">\
+			<img src="http://underscorejs.org/docs/images/underscore.png" alt="Underscore.js">\
 		</a>\
 		<a href="http://backbonejs.org/" class="backbonejs-link">\
-			<img src="http://backbonejs.org/docs/images/backbone.png" alt="Backbone.js" height="40px">\
+			<img src="http://backbonejs.org/docs/images/backbone.png" alt="Backbone.js">\
+		</a>\
+		<a href="http://bower.io/" class="bower-link">\
+			<img src="http://bower.io/img/bower-logo.png" alt="Bower">\
 		</a>\
 		<a href="http://glyphicons.com/" class="bootstrap-glyphicons-link">\
-			<img src="http://glyphicons.com/wp-content/themes/glyphicons/sk/public/img/logo.svg" alt="Glyphicons" height="40px">\
+			<img src="http://glyphicons.com/wp-content/themes/glyphicons/sk/public/img/logo.svg" alt="Glyphicons">\
 		</a>\
 	</div>\
 </div>',
