@@ -25,25 +25,33 @@
 'use strict';
 
 define(function () {
-    var PopupDialog = new Class({
-        template:
-'<div data-role="popup" id="popupDialog" data-overlay-theme="b" data-theme="a" data-dismissible="false" data-position-to="window" style="max-width:400px;">\
-<% if (false) { %>\
-    <div data-role="header" data-theme="a">\
-        <h1><%= title %></h1>\
-    </div>\
-<% } %>\
-    <div role="main" class="ui-content">\
-    <% _.each(messages, function(msg) { %>\
-        <h3 class="ui-title"><%= msg %></h3>\
-    <% }); %>\
+    return new Class({
+        template: '\
+<div id="popupDialog" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">\
+	<div class="modal-dialog">\
+		<div class="modal-content">\
+			<div class="modal-header">\
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">\
+					<span aria-hidden="true">&times;</span>\
+				</button>\
+			<% if (title) { %>\
+				<h4 class="modal-title"><%= title %></h4>\
+			<% } %>\
+			</div>\
 \
-        <div class="buttons">\
-        <% _.each(controls, function(control, indx) { %>\
-            <button id="btn<%= indx %>" data-inline="true"><%= control.title %></button>\
-        <% }); %>\
-        </div>\
-    </div>\
+			<div class="modal-body">\
+			<% _.each(messages, function(msg) { %>\
+				<p><%= msg %></p>\
+			<% }); %>\
+			</div>\
+\
+			<div class="modal-footer">\
+			<% _.each(controls, function(control, indx) { %>\
+				<button id="btn<%= indx %>" class="btn <%= control.btnClass %>"><%= control.title %></button>\
+			<% }); %>\
+			</div>\
+		</div>\
+	</div>\
 </div>',
 
         title: '',
@@ -116,10 +124,7 @@ define(function () {
             this.$el = $(_.template(this.template, this));
             $(document.body).append(this.$el);
 
-            this.$el.popup();
             this._attachEvents();
-
-            this.$el.trigger('create');
 
             return this.$el;
         },
@@ -128,29 +133,21 @@ define(function () {
                 this.render();
             }
 
-            this.$el.popup('open');
+            this.$el.modal('show');
         },
         hide: function(callback) {
             if (callback) {
                 callback();
             }
 
-            this.$el.popup('close');
+            this.$el.modal('hide');
         },
 
         _attachEvents: function() {
             _.each(this.controls, function(control, indx) {
-                if (!control.callback) {
-                    return ;
-                }
-
                 var $control = this.$el.find('#btn' + indx);
-                $control.on('vclick', this.hide.bind(this, control.callback));
+                $control.on('click', this.hide.bind(this, control.callback));
             }, this);
         }
     });
-
-    TaskManager.PopupDialog = PopupDialog;
-
-    return PopupDialog;
 });

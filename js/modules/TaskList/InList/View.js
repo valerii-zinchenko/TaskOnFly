@@ -27,7 +27,7 @@
 define([
 	'../../AItem/InList/View',
 	'view/PopupDialog'
-], function(Parent) {
+], function(Parent, PopupDialog) {
 	var taskCounterTemplate = '\
 <span class="list-counter">\
 	<span class="js-done-tasks"></span>/<span class="js-total-tasks"></span>\
@@ -58,15 +58,18 @@ define([
 			ev.preventDefault();
 
 			if (this.model.public.items.length > 0) {
-				new TaskManager.PopupDialog({
-					messages: ['Are you sure you want to delete the list of tasks?', 'This action cannot be undone.'],
+				new PopupDialog({
+					title: "Remove non-empty list of tasks?",
+					messages: ['Are you sure you want to remove the list of tasks?', 'This action cannot be undone.'],
 					controls: [
 						{
-							title:    'Yes',
-							callback: this._continueRemoving.bind(this)
+							title: 'Cancel',
+							btnClass: 'btn-default'
 						},
 						{
-							title: 'Cancel'
+							title: 'Yes',
+							callback: this._continueRemoving.bind(this),
+							btnClass: 'btn-primary'
 						}
 					]
 				}).show();
