@@ -79,14 +79,14 @@ define([
 		<a href="http://chaijs.com/" class="chaijs-link">\
 			<img src="http://chaijs.com/public/img/chai-logo-small.png" alt="Chai Assertion Library">\
 		</a>\
+		<a href="http://bower.io/" class="bower-link">\
+			<img src="http://bower.io/img/bower-logo.png" alt="Bower">\
+		</a>\
 		<a href="http://underscorejs.org/" class="underscorejs-link">\
 			<img src="http://underscorejs.org/docs/images/underscore.png" alt="Underscore.js">\
 		</a>\
 		<a href="http://backbonejs.org/" class="backbonejs-link">\
 			<img src="http://backbonejs.org/docs/images/backbone.png" alt="Backbone.js">\
-		</a>\
-		<a href="http://bower.io/" class="bower-link">\
-			<img src="http://bower.io/img/bower-logo.png" alt="Bower">\
 		</a>\
 		<a href="http://glyphicons.com/" class="bootstrap-glyphicons-link">\
 			<img src="http://glyphicons.com/wp-content/themes/glyphicons/sk/public/img/logo.svg" alt="Glyphicons">\

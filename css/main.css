@@ -201,13 +201,16 @@ footer .module {
 
 /* About page */
 .thanks img {
-	height: 40px;
+	height: auto;
+	max-height: 40px;
+	max-width: 150px;
 }
 .gpl-link {
 	float: right;
+	padding: 10px 15px 0;
 }
 .gpl-link img {
-	height: 50px;
+	height: 30px;
 }
 .jquery-link img {
 	background-color: #0769AD;
