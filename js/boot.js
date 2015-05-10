@@ -30,11 +30,10 @@ var TaskOnFly;
 
 requirejs.config({
     paths: {
-        'jquery':           'lib/jquery-2.1.1',
-		'bootstrap':		'lib/bootstrap-3.3.4',
-        'underscore':       'lib/underscore-1.6.0',
-        'backbone':         'lib/backbone-1.1.2',
-        'i18n':             'lib/i18n-2.0.4',
+        'jquery':           '../3rd-party/jquery',
+		'bootstrap':		'../3rd-party/bootstrap',
+        'underscore':       '../3rd-party/underscore',
+        'backbone':         '../3rd-party/backbone',
         'taskonfly':        'model/TaskOnFly',
         'aclass':           'core/AClass',
         'class':            'core/Class',

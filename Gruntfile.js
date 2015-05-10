@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-mocha');
     grunt.loadNpmTasks('grunt-jscoverage');
@@ -37,6 +38,23 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
+		copy: {
+			js: {
+				expand: true,
+				cwd: "./bower_components",
+				src: ["requirejs/require.js", "jquery/dist/jquery.js", "bootstrap/dist/js/bootstrap.js", "underscore/underscore.js", "backbone/backbone.js"],
+				dest: "./3rd-party",
+				flatten: true
+			},
+			fonts: {
+				expand: true,
+				cwd: "./bower_components/bootstrap/dist/fonts",
+				src: ["*.*"],
+				dest: "./3rd-party/bootstrap/fonts",
+				flatten: true
+			}
+		},
 
         requirejs: {
             compile: {
@@ -152,4 +170,6 @@ module.exports = function(grunt) {
         grunt.option('force', true);
         grunt.task.run(['jscoverage', 'mochaTest:testWithCoverage', 'mochaTest:coverage', 'clean']);
     });
+
+	grunt.registerTask('default', 'copy');
 };

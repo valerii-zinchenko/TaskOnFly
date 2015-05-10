@@ -4,5 +4,7 @@
 # exclude folders
 .idea/
 node_modules/
+bower_components/
+3rd-party/
 tmp/
 js-cov/
