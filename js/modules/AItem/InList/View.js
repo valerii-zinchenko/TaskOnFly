@@ -44,11 +44,13 @@ define(function () {
         template: template,
 
         $listItem: null,
+		$titleWrapper: null,
 		$title: null,
 
         _postProcessTemplate: function() {
             this.$listItem = this.$el.find('.model-data');
-			this.$title = this.$el.find('.title');
+			this.$titleWrapper = this.$el.find('.title');
+			this.$title = this.$el.find('.title-text');
 			this.$checkBox = this.$listItem.find('input');
         },
 
@@ -62,13 +64,13 @@ define(function () {
 		updateIsDone: function(value) {
 			if (value) {
 				this.$listItem.addClass('done');
-				this.$title.addClass('ui-checkbox-on');
-				this.$title.removeClass('ui-checkbox-off');
+				this.$titleWrapper.addClass('ui-checkbox-on');
+				this.$titleWrapper.removeClass('ui-checkbox-off');
 				this.$checkBox.prop('checked', true);
 			} else {
 				this.$listItem.removeClass('done');
-				this.$title.addClass('ui-checkbox-off');
-				this.$title.removeClass('ui-checkbox-on');
+				this.$titleWrapper.addClass('ui-checkbox-off');
+				this.$titleWrapper.removeClass('ui-checkbox-on');
 				this.$checkBox.prop('checked', false);
 			}
 		},

@@ -104,7 +104,8 @@ define([
 
 		_postProcessTemplate: function() {
 			this.$header = this.$el.find('#headerTitle');
-			this.$isDone = this.$el.find('#done');
+			this.$isDone = this.$el.find('.is-done');
+			this.$done = this.$el.find('#done');
 			this.$title = this.$el.find('#title');
 			this.$priority = this.$el.find('#priority');
 			this.$notes = this.$el.find('#notes');
@@ -115,33 +116,35 @@ define([
 		_attachEvents: function() {
 			this.$el.find('.back').on('vclick', this.onBack.bind(this));
 			this.$el.find('form').on('submit', this.onSave.bind(this));
-			this.$isDone.on('change', this.onToggleStatus.bind(this));
+			this.$done.on('change', this.onToggleStatus.bind(this));
 		},
 
 		update: function() {
+			this.resetForm();
+
 			this.$header.html(this.header);
 
 			if (!this._model) {
-				this.resetForm();
+				this.$priority.find('#1') .prop('checked', true)
+					.parent().addClass('active');
 				return;
 			}
 
 			var data = this._model.public;
 			this._model = null;
 
-			this.$priority.find(':checked').prop('checked', false);
-
-			this.$isDone.prop('checked', data.isDone);
+			this.$done.prop('checked', data.isDone);
 			this.$title.val(data.title);
-			this.$priority.find('#' + data.priority).prop('checked', true);
+			this.$priority.find('#' + data.priority).prop('checked', true)
+				.parent().addClass('active');
 			this.$startDate.val(data.startDate);
 			this.$dueDate.val(data.dueDate);
 			this.$notes.val(data.notes);
 
 			if (data.isDone) {
-				this.$isDone.addClass('done');
-			} else {
-				this.$isDone.removeClass('done');
+				this.$isDone
+					.addClass('done')
+					.addClass('active');
 			}
 		},
 
@@ -168,10 +171,13 @@ define([
 			this._model = model;
 		},
 		resetForm: function() {
-			this.$isDone.prop('checked', false);
+			this.$done.prop('checked', false)
+			this.$isDone
+				.removeClass('done')
+				.removeClass('active');
 			this.$title.val('');
-			this.$priority.find('#1').prop('checked', true);
-			this.$priority.find('#0, #2').prop('checked', false);
+			this.$priority.find('input').prop('checked', false)
+			this.$priority.find('label').removeClass('active');
 			this.$startDate.val('');
 			this.$dueDate.val('');
 			this.$notes.val('');
@@ -181,7 +187,7 @@ define([
 		getFormData: function() {
 			return {
 				title: this.$title.val().trim(),
-				isDone: this.$isDone.prop('checked'),
+				isDone: this.$done.prop('checked'),
 				priority: this.$priority.find(':checked').val(),
 				startDate: this.$startDate.val(),
 				dueDate: this.$dueDate.val(),
