@@ -26,7 +26,7 @@
 define(function () {
 	var template = '\
 <div class="list-item" data-item-id="<%= public.id %>">\
-	<div class="model-data <%= public.type.toLowerCase() %> priority-<%= public.priority %> <% if (public.isDone) {%>done<% } %>">\
+	<div class="model-data <%= public.type.toLowerCase() %> <% if (public.isDone) {%>done<% } %>" data-priority="<%= public.priority %>">\
 		<label class="title btn btn-default" for="<%= public.id %>">\
 			<span class="checkbox-wrapper glyphicon glyphicon-ok">\
 				<input id="<%= public.id %>" type="checkbox" <% if (public.isDone) { %> checked <% } %>>\
@@ -77,6 +77,10 @@ define(function () {
 		updateTitle: function(value) {
 			this.$title.html(value);
 		},
+		updatePriority: function(value) {
+			this.$listItem.attr('data-priority', value);
+		},
+
 		hide: function() {
 			this.$el.addClass('hidden');
 		},

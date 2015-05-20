@@ -29,6 +29,7 @@ define(function () {
 			this.model.listen({
 				updateIsDone: _.bind(this.onUpdateIsDone, this),
 				updateTitle: _.bind(this.onUpdateTitle, this),
+				updatePriority: _.bind(this.onUpdatePriority, this),
 				hide: _.bind(this.onHide, this),
 				show: _.bind(this.onShow, this)
 			});
@@ -40,6 +41,10 @@ define(function () {
 
 		onUpdateTitle: function(model) {
 			this.view.updateTitle(model.public.title);
+		},
+
+		onUpdatePriority: function(model) {
+			this.view.updatePriority(model.public.priority);
 		},
 
 		onHide: function(model) {

@@ -158,22 +158,22 @@ footer .module {
     position: absolute;
     border-radius: 5px 0 0 5px;
 }
-.task-list .model-data.priority-2:before {
+.task-list .model-data[data-priority="2"]:before {
     background-color: #3388cc;
 }
-.task-list .model-data.priority-1:before {
+.task-list .model-data[data-priority="1"]:before {
     background-color: #28c828;
 }
-.task-list .model-data.priority-0:before {
+.task-list .model-data[data-priority="0"]:before {
     background-color: #dc2828;
 }
-.task-list .model-data.priority-2.done:before {
+.task-list .model-data.done[data-priority="2"]:before {
     background-color: #99b5cc;
 }
-.task-list .model-data.priority-1.done:before {
+.task-list .model-data.done[data-priority="1"]:before {
     background-color: #8cc88c;
 }
-.task-list .model-data.priority-0.done:before {
+.task-list .model-data.done[data-priority="0"]:before {
     background-color: #dc9a9a;
 }
 
