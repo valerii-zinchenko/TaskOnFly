@@ -36,7 +36,7 @@ var require = {
             exports: 'utils'
         },
         'aclass': {
-            exports: 'aclass'
+            exports: 'AClass'
         },
         'class': {
             exports: 'Class'
