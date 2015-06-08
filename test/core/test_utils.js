@@ -42,12 +42,13 @@ suite('utils', function() {
                     }
                 },
                 empty: null,
-                array: []
+                array: [v3]
             };
             obj2 = {
                 value: v3,
                 innObj2: {
-                    innInnObj: {}
+                    innInnObj: {},
+					innInnV: v1
                 }
             };
         });
@@ -63,9 +64,11 @@ suite('utils', function() {
             assert.equal(obj2.innObj.innValue, v2);
             assert.notEqual(obj2.innObj, obj1.innObj);
             assert.isObject(obj2.innObj2.innInnObj);
+			assert.equal(obj2.innObj2.innInnV, v1);
             assert.equal(obj2.innObj2.innInnObj.innInnVal, v4);
             assert.property(obj2, 'empty', 'Extended object was not extended with property "empty"');
             assert.property(obj2, 'array', 'Extended object was not extended with property "array"');
+			assert.equal(obj2.array[0], v3);
             assert.notEqual(obj2.array, obj1.array, 'Array should be copied into the extended object');
         });
         test('deepCopy()', function() {

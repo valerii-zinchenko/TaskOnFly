@@ -20,6 +20,6 @@ requirejs([
 		'./core/testSingletonClass.js'
 		//'./core/testMVCModule.js'
 	], function() {
-			mocha.run();
+		mocha.run();
 	});
 });
