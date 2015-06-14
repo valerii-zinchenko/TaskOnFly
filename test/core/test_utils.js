@@ -100,10 +100,12 @@ suite('utils', function() {
         });
 
         test('correct argument', function() {
-            var date = new Date().toISOString().slice(0,10);
+            var date = new Date();
+			date.setTime(date.getTime() - date.getTimezoneOffset()*60000);
+			var dateStr = date.toISOString().slice(0,10);
 
-            assert.equal(utils.date(), date, 'Incorrect date was returned from the method without input argument');
-            assert.equal(utils.date(new Date()), date, 'Incorrect date was returned from the method with input argument');
+            assert.equal(utils.date(), dateStr, 'Incorrect date was returned from the method without input argument');
+            assert.equal(utils.date(new Date()), dateStr, 'Incorrect date was returned from the method with input argument');
         });
 
         test('timezone invariant', function(){
