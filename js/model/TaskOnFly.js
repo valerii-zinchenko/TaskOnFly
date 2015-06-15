@@ -44,7 +44,7 @@ define([
 	return new Class({
 		Encapsulate: EventHandler,
 
-		version: '2.0.0',
+		version: '2.0.1',
 		ROOT_TASK_LIST: null,
 		CURRENT_TASK_LIST: null,
 

@@ -23,168 +23,154 @@
 
 
 suite('Class.', function() {
-    suite('Input arguments', function() {
-        test('No arguments', function() {
-            assert.doesNotThrow(function() {
-                new Class();
-            });
-        });
-        test('Single argument', function() {
-            assert.doesNotThrow(function() {
-                new Class(Object);
-            });
-            assert.doesNotThrow(function() {
-                new Class({});
-            });
-            assert.throw(function() {
-                new Class(11);
-            }, Error, 'Incorrect input arguments. It should be: new Class([[Function], Object])');
-        });
-        test('Two arguments', function() {
-            assert.doesNotThrow(function() {
-                new Class(Object, {});
-            });
-            assert.throw(function() {
-                new Class(Object, 11);
-            }, Error, 'Incorrect input arguments. It should be: new Class([[Function], Object])');
-        });
-    });
+	test('initialize()', function() {
+		var spy = sinon.spy();
+		assert.doesNotThrow(function() {
+			new (new Class({
+				initialize: spy
+			}))();
+		});
+		assert.isTrue(spy.calledOnce, 'initialize() should be called by creating new class instance');
+	});
 
-    test('initialize()', function() {
-        assert.doesNotThrow(function() {
-            new (new Class())();
-        });
-        assert.throw(function() {
-            new (new Class({
-                initialize: function() {
-                    throw 'OK';
-                }
-            }))();
-        }, 'OK');
-    });
+	test('Check constructor', function() {
+		var Obj;
+		assert.doesNotThrow(function(){
+			Obj = new Class({});
+		});
+		assert.equal((new Obj()).constructor, Obj, 'Constructor function was incorrectly stored');
+	});
 
-    test('Check constructor', function() {
-        var Obj = new Class();
-        assert.equal((new Obj()).constructor, Obj);
-    });
+	test('Class should not behave as singleton', function() {
+		var Obj;
+		assert.doesNotThrow(function(){
+			Obj = new Class({});
+		});
+		assert.notEqual(new Obj(), new Obj(), 'Class should not behave as singleton');
+	});
 
-    test('Class should not behave as singleton', function() {
-        var Obj = new Class();
-        assert.notEqual(new Obj(), new Obj());
-    });
+	test('Cloning of property', function() {
+		var Obj;
+		var obj1;
+		var obj2;
 
-    test('Cloning of property', function() {
-        var value = 11;
-        var Obj = new Class({
-            obj: {
-                key: value
-            }
-        });
+		assert.doesNotThrow(function(){
+			Obj = new Class({
+				obj: {}
+			});
+			obj1 = new Obj(),
+			obj2 = new Obj();
+		});
 
-        var obj1 = new Obj(),
-            obj2 = new Obj();
-
-        assert.notEqual(obj1.obj, obj2.obj);
-    });
-    test('Calling of initialize()', function() {
-        var Obj = new Class({
-            initialize: function() {
-                throw 'OK';
-            }
-        });
-
-        assert.throw(function(){
-            new Obj();
-        }, 'OK');
-    });
+		assert.notEqual(obj1.obj, obj2.obj, 'Object under property name "obj" should clonned');
+	});
 
     suite('Inheritance.', function() {
-        var Parent,
-            prop = 4;
-        var object;
+        var Parent;
+		var parentInitialize;
+        var prop = 4;
         setup(function() {
+			parentInitialize = sinon.spy();
             Parent = new Class({
                 prop: prop,
-                initialize: function() {
-                    this.isParent = true;
-                },
+                initialize: parentInitialize,
                 parentFn: function(){}
             });
         });
         teardown(function() {
+			parentInitialize = null;
             Parent = null;
-            object = null;
         });
 
         test('Check constructor', function() {
-            var Child = new Class(Parent);
+			var Child;
+			var instance;
+			assert.doesNotThrow(function(){
+				Child = new Class(Parent, {});
+				instance = new Child();
+			});
 
-            assert.equal((new Child()).constructor, Child);
-            assert.notEqual((new Child()).constructor, Parent);
+            assert.equal(instance.constructor, Child);
+            assert.notEqual(instance.constructor, Parent);
         });
         test('Public property', function() {
-            var Child = new Class(Parent);
+			var Child;
+			assert.doesNotThrow(function(){
+				Child = new Class(Parent, {});
+			});
             assert.equal((new Child()).prop, prop);
         });
-        test('Calling of parent initialize()', function() {
-            var Child = new Class(Parent, {
-                initialize: function() {
-                    this.isChild = true;
-                }
-            });
-            object = new Child();
+		test('Calling of parent initialize()', function() {
+			var childInitialize = sinon.spy();
+			assert.doesNotThrow(function(){
+				var Child = new Class(Parent, {
+					initialize: childInitialize
+				});
 
-            assert.isTrue(object.isChild, 'Child constructor was not executed');
-            assert.isTrue(object.isParent, 'Parent constructor was not executed');
+				new Child();
+			});
+
+			assert.isTrue(parentInitialize.calledOnce, 'Parent constructor was not executed');
+			assert.isTrue(childInitialize.calledOnce, 'Child constructor was not executed');
+			assert.isTrue(childInitialize.calledAfter(parentInitialize), 'Child\'s initialize() should be called after Parent\'s initialize()');
         });
         test('Calling of parent initialize() of parent class', function() {
-            var Child = new Class(Parent, {
-                initialize: function() {
-                    this.isChild = true;
-                }
-            });
-            var Grandchild = new Class(Child, {
-                initialize: function() {
-                    this.isGrundchild = true;
-                }
-            });
-            object = new Grandchild();
+			var childInitialize = sinon.spy();
+			var grandChildInitialize = sinon.spy();
+			assert.doesNotThrow(function(){
+				var Child = new Class(Parent, {
+					initialize: childInitialize
+				});
+				var Grandchild = new Class(Child, {
+					initialize: grandChildInitialize
+				});
 
-            assert.isTrue(object.isGrundchild, 'GrundChild constructor was not executed');
-            assert.isTrue(object.isChild, 'Child constructor was not executed');
-            assert.isTrue(object.isParent, 'Parent constructor was not executed');
+				new Grandchild();
+			});
+
+			assert.isTrue(parentInitialize.calledOnce, 'Parent constructor was not executed');
+			assert.isTrue(childInitialize.calledOnce, 'Child constructor was not executed');
+			assert.isTrue(grandChildInitialize.calledOnce, 'Grand child constructor was not executed');
+			assert.isTrue(childInitialize.calledAfter(parentInitialize), 'Child\'s initialize() should be called after Parent\'s initialize()');
+			assert.isTrue(grandChildInitialize.calledAfter(childInitialize), 'Grand child\'s initialize() should be called after Child\'s initialize()');
         });
         test('Constructors with input arguments', function() {
-            var Child = new Class(Parent, {
-                initialize: function(a) {
-                    this.a = a;
-                }
-            });
-            var Grandchild = new Class(Child, {
-                initialize: function(a, b) {
-                    this.b = b;
-                }
-            });
-            var inputArgs = ['a', 'b'];
-            object = new Grandchild(inputArgs[0], inputArgs[1]);
+			var object;
+			var inputArgs = ['a', 'b'];
+			assert.doesNotThrow(function(){
+				var Child = new Class(Parent, {
+					initialize: function(a) {
+						this.a = a;
+					}
+				});
+				var Grandchild = new Class(Child, {
+					initialize: function(a, b) {
+						this.b = b;
+					}
+				});
+				object = new Grandchild(inputArgs[0], inputArgs[1]);
+			});
 
             assert.equal(object.a, inputArgs[0], 'First input argument was not processed by constructor');
             assert.equal(object.b, inputArgs[1], 'Second input argument was not processed by constructor');
         });
         test('Parents methods', function() {
-            var Child = new Class(Parent, {
-                initialize: function() {
-                    this.isChild = true;
-                },
-                childFn: function(){}
-            });
-            var Grandchild = new Class(Child, {
-                initialize: function() {
-                    this.isGrundchild = true;
-                },
-                grandchildFn: function(){}
-            });
-            object = new Grandchild();
+			var object;
+			assert.doesNotThrow(function(){
+				var Child = new Class(Parent, {
+					initialize: function() {
+						this.isChild = true;
+					},
+					childFn: function(){}
+				});
+				var Grandchild = new Class(Child, {
+					initialize: function() {
+						this.isGrundchild = true;
+					},
+					grandchildFn: function(){}
+				});
+				object = new Grandchild();
+			});
 
             assert.isDefined(object.parentFn, 'Parent function was not copied');
             assert.isDefined(object.childFn, 'Child function was not copied');

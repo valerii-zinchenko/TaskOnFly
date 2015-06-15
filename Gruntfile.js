@@ -1,40 +1,10 @@
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.loadNpmTasks('grunt-mocha');
-    grunt.loadNpmTasks('grunt-jscoverage');
+    grunt.loadNpmTasks('grunt-istanbul');
+    grunt.loadNpmTasks('grunt-mocha-phantom-istanbul');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
 
-    function SET_GLOBALS(path) {
-        assert = require('chai').assert;
-        sinon = require('sinon');
-        _ = require('underscore');
-        Backbone = require('backbone');
-        require('./test/mocks');
-        require('./js/model/TaskOnFly');
-        requirejs = require('requirejs');
-        define = requirejs.define;
-
-
-        requirejs.config({
-            baseUrl: path,
-            nodeRequire: require
-        });
-
-        var src = './js/';
-        AClass = require(src + 'core/AClass');
-        Class = require(src + 'core/Class');
-        SingletonClass = require(src + 'core/SingletonClass');
-        MVCModule = require(src + 'core/MVCModule');
-        utils = require(src + 'core/utils');
-
-        TaskManager = {
-            version: '1.0.0',
-            Pages: {},
-            Modules: {}
-        };
-    }
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -83,15 +53,16 @@ module.exports = function(grunt) {
                 }
             }
         },
-        jscoverage: {
-            src: {
-                expand: true,
-                cwd: 'js/',
-                src: ['**/*.js', '!lib/**/*.js', '!tmp/**/*.js'],
-                dest: 'js-cov',
-                ext: '.js'
-            }
-        },
+		prepareForCoverage: {
+			instrument: {
+				files: [{
+					expand: true,
+					cwd: 'js/',
+					src: '**/*.js',
+					dest: 'js-cov'
+				}]
+			}
+		},
         mocha: {
             test: {
                 options: {
@@ -101,75 +72,43 @@ module.exports = function(grunt) {
                     log: true,
                     logErrors: true
                 },
-                src: ['test/*.html']
+                src: ['test/index.html']
             },
-            testWithCoverage: {
+            coverage: {
                 options: {
                     run: false,
-                    reporter: 'HTMLCov',
-                    waitForCoverage: true,
-                    //reporter: 'Spec',
-
+                    reporter: 'Spec',
                     log: true,
-                    logErrors: true
+                    logErrors: true,
+					coverage: {
+						htmlReport: 'reports/coverage'
+					}
                 },
-                src: ['test/*.html'],
-                dest: './reports/Coverage2.html'
-            },
-            coverage: {
-                options: {
-                    run: false,
-                    reporter: 'HTMLCov',
-
-                    //log: true,
-                    //logErrors: true
-                },
-                src: ['test/*.html'],
-                dest: './reports/Coverage2.html'
-            }
-        },
-        mochaTest: {
-            test: {
-                options: {
-                    ui: 'tdd',
-                    reporter: 'spec',
-                    quite: true,
-                    require: [
-                        SET_GLOBALS.bind(null, 'js/')
-                    ]
-                },
-                src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js', '!test/config.js', '!test/requirejs-config.js']
-            },
-            testWithCoverage: {
-                options: {
-                    ui: 'tdd',
-                    reporter: 'spec',
-                    quite: true,
-                    require: [
-                        SET_GLOBALS.bind(null, './js-cov/')
-                    ]
-                },
-                src: ['test/core/*.js', '!test/mocks.js', '!test/beforetest.js', '!test/config.js', '!test/requirejs-config.js']
-                //src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js']
-            },
-            coverage: {
-                options: {
-                    reporter: 'html-cov',
-                    quiet: true,
-                    captureFile: 'reports/Coverage.html'
-                },
-                src: ['test/core/*.js', '!test/mocks.js', '!test/beforetest.js', '!test/config.js', '!test/requirejs-config.js']
-                //src: ['test/**/*.js', '!test/mocks.js', '!test/beforetest.js']
+                src: ['test/index-cov.html']
             }
         },
         clean: ['js-cov']
     });
 
-    grunt.registerTask('test', 'mochaTest:test');
-    grunt.registerTask('coverage', function(){
-        grunt.option('force', true);
-        grunt.task.run(['jscoverage', 'mochaTest:testWithCoverage', 'mochaTest:coverage', 'clean']);
-    });
+    grunt.registerTask('test', 'mocha:test');
+    grunt.registerTask('coverage', ['prepareForCoverage', 'mocha:coverage', 'clean']);
 
 	grunt.registerTask('default', 'copy');
+
+	var istanbul = require('istanbul');
+	grunt.registerMultiTask('prepareForCoverage', 'Generates coverage reports for JS using Istanbul', function() {
+		var ignore = this.data.ignore || [];
+		var instrumenter = new istanbul.Instrumenter();
+
+		this.files.forEach(function(file) {
+			var filename = file.src[0];
+			var instrumented = grunt.file.read(filename);
+
+			if (!grunt.file.isMatch(ignore, filename)) {
+				instrumented = instrumenter.instrumentSync(instrumented, filename);
+			}
+
+			grunt.file.write(file.dest, instrumented);
+		});
+	});
 };

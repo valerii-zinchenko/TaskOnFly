@@ -22,10 +22,10 @@
 */
 
 
-suite('SingletonClass. General', function() {
+suite('SingletonClass', function() {
     test('initialize()', function() {
         assert.doesNotThrow(function() {
-            new (new SingletonClass())();
+            new (new SingletonClass({}))();
         });
         assert.throw(function() {
             new (new SingletonClass({
@@ -37,12 +37,12 @@ suite('SingletonClass. General', function() {
     });
 
     test('Check constructor', function() {
-        var Obj = new SingletonClass();
+        var Obj = new SingletonClass({});
         assert.equal(Obj, (new Obj()).constructor);
     });
 
     test('SingletonClass class should behave as singleton', function() {
-        var Obj = new SingletonClass();
+        var Obj = new SingletonClass({});
         assert.equal(new Obj(), new Obj());
     });
 

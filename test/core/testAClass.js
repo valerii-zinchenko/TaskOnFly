@@ -30,21 +30,51 @@ suite('AClass', function() {
                 new AClass();
             }, Error, 'Incorrect input arguments. Constructor function is not defined');
         });
-        test('Single argument', function() {
-            assert.doesNotThrow(function() {
-                new AClass(function() {});
-            });
-            assert.throw(function() {
-                new AClass(2);
-            }, Error, 'Constructor should be an function');
-        });
+		test('Incorrect type of input argument', function(){
+			assert.throw(function() {
+				new AClass(2);
+			}, Error, 'Constructor should be an function');
+		});
+		test('Correct input arguments', function() {
+			assert.doesNotThrow(function() {
+				new AClass(function() {});
+			});
+		});
     });
 
-    suite('Test returning class constructor', function() {
+    suite('Test returned class constructor', function() {
         var SomeClassBuilder;
         setup(function() {
             SomeClassBuilder = new AClass(function(){});
         });
+		teardown(function(){
+			SomeClassBuilder = null;
+		});
+
+		test('Create new class without any properties and methods', function(){
+			assert.throw(function(){
+				new (new SomeClassBuilder())();
+			}, Error, 'Incorrect input arguments. It should be: new Class([Function], [Function | Object]*, Object)');
+		});
+		test('Incorrect input argument(s)', function() {
+			assert.throw(function() {
+				new SomeClassBuilder(Object);
+			}, Error, 'Incorrect input arguments. It should be: new Class([Function], [Function | Object]*, Object)');
+			assert.throw(function() {
+				new SomeClassBuilder(11);
+			}, Error, 'Incorrect input arguments. It should be: new Class([Function], [Function | Object]*, Object)');
+			assert.throw(function() {
+				new SomeClassBuilder(Object, 11);
+			}, Error, 'Incorrect input arguments. It should be: new Class([Function], [Function | Object]*, Object)');
+		});
+		test('Correct input argument(s)', function() {
+			assert.doesNotThrow(function() {
+				new SomeClassBuilder({});
+			});
+			assert.doesNotThrow(function() {
+				new SomeClassBuilder(Object, {});
+			});
+		});
 
         test('Test types and values of the properties', function() {
             var obj = new (new SomeClassBuilder({
@@ -73,5 +103,72 @@ suite('AClass', function() {
             assert.isTrue(obj._defaults.array[0] === 0 && obj._defaults.array[1] === 1);
             assert.equal(obj._defaults.obj.v, 11);
         });
+
+		suite('Encapsulation', function(){
+			test('encapsulate some class into new one', function(){
+				var SomeClass = new SomeClassBuilder({
+					prop: 'property',
+					object: {
+						objprop: 'objprop'
+					},
+					method: function(){}
+				});
+				var properties = {
+					object: {
+						someprop: 'someprop'
+					}
+				};
+
+				var result;
+				assert.doesNotThrow(function(){
+					result = new (new SomeClassBuilder(Object, SomeClass, properties))();
+				});
+
+				assert.equal(result._defaults.prop, SomeClass.prototype._defaults.prop, 'Property of some class should be encapsulated into the new class');
+				assert.equal(result.method, SomeClass.prototype.method, 'Method of some class should be encapsulated into the new class');
+				assert.notEqual(result._defaults.object, SomeClass.prototype._defaults, 'Object properties should not be encapsulated over reference, the should be cloned in the new class');
+				assert.equal(result._defaults.object.objprop, SomeClass.prototype._defaults.object.objprop, 'Object property was incorrectly cloned/extended into the new class');
+				assert.equal(result._defaults.object.someprop, properties.object.someprop, 'Encapsulated object was incorreclt merged into the new class');
+			});
+
+			test('encapsulate an object/class over object property "Encapsulate"', function(){
+				var properties = {
+					prop: 'prop',
+					Encapsulate: {
+						prop2: 'prop2'
+					}
+				};
+
+				var result;
+				assert.doesNotThrow(function(){
+					result = new (new SomeClassBuilder(properties));
+				});
+
+				assert.isDefined(result._defaults.prop2, 'Encapsulated object was not encapsulated into the new class');
+				assert.isUndefined(result._defaults.Encapsulate, '"Encapsulate" property should not be encapsulated into the new class');
+			});
+
+			test('encapsulate array of objects/classes over object property "Encapsulate"', function(){
+				var properties = {
+					Encapsulate: [
+						{
+							prop: 'prop'
+						},
+						{
+							prop2: 'prop2'
+						}
+					]
+				};
+
+				var result;
+				assert.doesNotThrow(function(){
+					result = new (new SomeClassBuilder(properties));
+				});
+
+				assert.isDefined(result._defaults.prop, 'First encapsulated object was not encapsulated into the new class');
+				assert.isDefined(result._defaults.prop2, 'Second encapsulated object was not encapsulated into the new class');
+				assert.isUndefined(result._defaults.Encapsulate, '"Encapsulate" property should not be encapsulated into the new class');
+			});
+		});
     });
 });

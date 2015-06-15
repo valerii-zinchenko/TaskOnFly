@@ -23,348 +23,250 @@
 
 "use strict";
 
-define(['core/MVCModule'], function() {
-    suite('MVCModule', function() {
-        suite('Test factory function', function() {
-            suite('General', function() {
-                test('No input arguments', function() {
-                    assert.throw(function() {
-                        new MVCModule();
-                    }, Error, 'Incorrect amount of input arguments');
-                });
-                test('Incorrect type of input argument', function() {
-                    assert.throw(function() {
-                        new MVCModule(':]');
-                        new MVCModule([]);
-                        new MVCModule(function(){});
-                    }, Error, 'Incorrect type of input argument');
-                });
-                test('No Model constructor', function() {
-                    assert.throw(function() {
-                        new MVCModule({
-                            hello: ':]'
-                        });
-                    }, Error, 'Constructor for Model is not defined');
-                });
-                test('No states', function() {
-                    assert.throw(function() {
-                        new MVCModule({
-                            Model: function(){}
-                        });
-                        new MVCModule({
-                            Model: function(){},
-                            View: function(){}
-                        });
-                        new MVCModule({
-                            Model: function(){},
-                            Control: function(){}
-                        });
-                    }, Error, 'No model states are defined');
-                });
-            });
+suite('MVCModule', function() {
+	suite('Test factory function', function() {
+		suite('General', function() {
+			test('No input arguments', function() {
+				assert.throw(function() {
+					new MVCModule();
+				}, Error, 'Incorrect amount of input arguments');
+			});
+			test('Incorrect type of input argument', function() {
+				assert.throw(function() {
+					new MVCModule(':]');
+				}, Error, 'Incorrect type of input argument');
+				assert.throw(function() {
+					new MVCModule([]);
+				}, Error, 'Incorrect type of input argument');
+				assert.throw(function() {
+					new MVCModule(function(){});
+				}, Error, 'Incorrect type of input argument');
+			});
 
-            suite('State(s)', function() {
-                test('Incorret type of model states', function() {
-                    assert.throw(function() {
-                        new MVCModule({
-                            Model: function(){},
-                            states: ':]'
-                        });
-                        new MVCModule({
-                            Model: function(){},
-                            states: []
-                        });
-                        new MVCModule({
-                            Model: function(){},
-                            states: function(){}
-                        });
-                    }, Error, 'Incorrect type for defined model states');
-                });
-                test('Incorrect type of state', function() {
-                    assert.throw(function() {
-                        new MVCModule({
-                            Model: function(){},
-                            states: {
-                                state0: ':]'
-                            }
-                        });
-                        new MVCModule({
-                            Model: function(){},
-                            states: {
-                                state0: []
-                            }
-                        });
-                        new MVCModule({
-                            Model: function(){},
-                            states: {
-                                state0: function(){}
-                            }
-                        });
-                    }, Error, 'Incorrect type of state "state0"');
-                });
-                test('Empty state', function() {
-                    assert.throw(function() {
-                        new MVCModule({
-                            Model: function() {},
-                            states: {
-                                state0: {}
-                            }
-                        });
-                    }, Error, 'View constructor for state "state0" is not defined');
-                });
-                test('Control for state is not defined', function() {
-                    assert.throw(function() {
-                        new MVCModule({
-                            Model: function(){},
-                            states: {
-                                state0: {
-                                    View: function() {}
-                                }
-                            }
-                        });
-                        new MVCModule({
-                            Model: function(){},
-                            states: {
-                                state: {
-                                    View: function(){},
-                                    Control: function(){}
-                                },
-                                state0: {
-                                    View: function() {}
-                                }
-                            }
-                        });
-                    }, Error, 'Control constructor for state "state0" is not defined');
-                });
-                test('View for state is not defined', function() {
-                    assert.throw(function() {
-                        new MVCModule({
-                            Model: function(){},
-                            states: {
-                                state0: {
-                                    Control: function() {}
-                                }
-                            }
-                        });
-                        new MVCModule({
-                            Model: function(){},
-                            states: {
-                                state: {
-                                    View: function(){},
-                                    Control: function(){}
-                                },
-                                state0: {
-                                    Control: function(){}
-                                }
-                            }
-                        });
-                    }, Error, 'View constructor for state "state0" is not defined');
-                });
-                test('Correct input object', function() {
-                    assert.doesNotThrow(function() {
-                        new MVCModule({
-                            Model: function(){},
-                            View: function(){},
-                            Control: function(){}
-                        });
-                        new MVCModule({
-                            Model: function(){},
-                            states: {
-                                state: {
-                                    View: function(){},
-                                    Control: function(){}
-                                },
-                                state0: {
-                                    View: function(){},
-                                    Control: function(){}
-                                }
-                            }
-                        });
-                    });
-                });
-            });
-        });
+			test('No Model constructor', function() {
+				assert.throw(function() {
+					new MVCModule({
+						hello: ':]'
+					});
+				}, Error, 'Constructor for Model is not defined');
+			});
+			test('Incorrect type of Model constructor', function(){
+				assert.throw(function(){
+					new MVCModule({
+						Model: ':]'
+					});
+				}, Error, 'Model constructor should be a function');
+				assert.throw(function(){
+					new MVCModule({
+						Model: []
+					});
+				}, Error, 'Model constructor should be a function');
+				assert.throw(function(){
+					new MVCModule({
+						Model: {}
+					});
+				}, Error, 'Model constructor should be a function');
+			});
 
-        suite('Test module and sub-module constructors', function() {
-            var Module;
-            var object;
+			test('No model states', function() {
+				assert.throw(function() {
+					new MVCModule({
+						Model: function(){}
+					});
+				}, Error, 'No model states are defined');
+				assert.throw(function() {
+					new MVCModule({
+						Model: function(){},
+						Control: function(){}
+					});
+				}, Error, 'No model states are defined');
+			});
+		});
 
-            teardown(function() {
-                Module = null;
-                object = null;
-            });
+		suite('State(s)', function() {
+			test('Incorret type of model states', function() {
+				assert.throw(function() {
+					new MVCModule({
+						Model: function(){},
+						states: ':]'
+					});
+				}, Error, 'Incorrect type for defined model states');
+				assert.throw(function() {
+					new MVCModule({
+						Model: function(){},
+						states: []
+					});
+				}, Error, 'Incorrect type for defined model states');
+				assert.throw(function() {
+					new MVCModule({
+						Model: function(){},
+						states: function(){}
+					});
+				}, Error, 'Incorrect type for defined model states');
+			});
+			test('Incorrect type of state', function() {
+				assert.throw(function() {
+					new MVCModule({
+						Model: function(){},
+						states: {
+							state: ':]'
+						}
+					});
+				}, Error, 'Incorrect type of state "state", Function expected');
+				assert.throw(function() {
+					new MVCModule({
+						Model: function(){},
+						states: {
+							state: []
+						}
+					});
+				}, Error, 'Incorrect type of state "state", Function expected');
+				assert.throw(function() {
+					new MVCModule({
+						Model: function(){},
+						states: {
+							state: {}
+						}
+					});
+				}, Error, 'Incorrect type of state "state", Function expected');
+			});
+			test('Correct state definition', function() {
+				assert.doesNotThrow(function() {
+					new MVCModule({
+						Model: function(){},
+						states: {
+							state: function(){}
+						}
+					});
+				});
+			});
 
-            suite('Test created states and internal references to other module components', function() {
-                setup(function() {
-                    Module = new MVCModule({
-                        Model: function(){},
-                        states: {
-                            state0: {
-                                View: function(){},
-                                Control: function(){}
-                            },
-                            state1: {
-                                View: function(){},
-                                Control: function(){}
-                            }
-                        }
-                    });
-                });
-                teardown(function(){
-                    Module = null;
-                    object = null;
-                });
+			test('Implicit state', function(){
+				var Constructors = {
+					Model: function(){},
+					View: AView,
+					Control: AControl
+				};
+				
+				assert.doesNotThrow(function(){
+					new MVCModule(Constructors);
+				});
 
-                test('States', function() {
-                    assert.doesNotThrow(function() {
-                        object = new Module();
-                    });
+				assert.isObject(Constructors.states, '"states" Object should be created by defining implicit state');
+				assert.isFunction(Constructors.states._default, '"_default" state shoube created by implicit state definition');
+			});
+		});
+	});
 
-                    assert.isObject(object.states, '"states" object was not created');
+	suite('Factory result', function() {
+		var Module;
+		var object;
 
-                    assert.isObject(object.states.state0, 'state "state0" is not defined');
-                    assert.isObject(object.states.state1, 'state "state1" is not defined');
-               });
-               test('References to state components', function() {
-                    assert.doesNotThrow(function() {
-                        object = new Module();
-                    });
+		test('Redirecting input arguments to Model constructor', function(){
+			var spyModelConstructor = sinon.spy();
+			var args = [1,'2',{}];
+			assert.doesNotThrow(function(){
+				var Module = new MVCModule({
+					Model: spyModelConstructor,
+					View: AView
+				});
+				new Module(args[0], args[1], args[2]);
+			});
 
-                    assert.isObject(object.states.state0.view, 'no reference to the View object in state "state0"');
-                    assert.isObject(object.states.state0.control, 'no reference to the Control object in state "state0"');
+			assert.equal(spyModelConstructor.args[0][0], args[0], 'First input argeumnt for Model constructor is incorrect');
+			assert.equal(spyModelConstructor.args[0][1], args[1], 'Second input argeumnt for Model constructor is incorrect');
+			assert.equal(spyModelConstructor.args[0][2], args[2], 'Third input argeumnt for Model constructor is incorrect');
+		});
 
-                    assert.isObject(object.states.state1.view, 'no reference to the View object in state "state1"');
-                    assert.isObject(object.states.state1.control, 'no reference to the Control object in state "state1"');
-               });
-               test('Internal references', function() {
-                    assert.doesNotThrow(function() {
-                        object = new Module();
-                    });
+		suite('Creating states', function() {
+			test('Implicit state', function(){
+				var module;
+				assert.doesNotThrow(function() {
+					var Module = new MVCModule({
+						Model: function(){},
+						View: AView
+					});
 
-                    assert.isNull(object.view, 'In multiple state model view should be null directly after constructing');
-                    assert.isNull(object.control, 'In multiple state model control should be null directly after constructing');
+					module = new Module();
+				});
 
-                    assert.equal(object.states.state0.view.model, object.model, 'View has incorrect reference to modeule\'s model in state "state0"');
-                    assert.equal(object.states.state0.view.control, object.states.state0.control, 'View has incorrect reference to control in state "state0"');
-                    assert.equal(object.states.state0.control.model, object.model, 'Control has incorrect reference to modeule\'s model in state "state0"');
-                    assert.equal(object.states.state0.control.view, object.states.state0.view, 'Control has incorrect reference to view in state "state0"');
+				assert.isUndefined(module.states, '"states" should be undefied, because "_default" state is directly returned');
+				assert.isObject(module.model, 'model should be accessible from "_default" state');
+				assert.isObject(module.view, 'view should be accessible from "_default" state');
+			});
 
-                    assert.equal(object.states.state1.view.model, object.model, 'View has incorrect reference to modeule\'s model in state "state1"');
-                    assert.equal(object.states.state1.view.control, object.states.state1.control, 'View has incorrect reference to control in state "state1"');
-                    assert.equal(object.states.state1.control.model, object.model, 'Control has incorrect reference to modeule\'s model in state "state1"');
-                    assert.equal(object.states.state1.control.view, object.states.state1.view, 'Control has incorrect reference to view in state "state1"');
-               });
-            });
+			test('Explicit states', function(){
+				var module;
+				assert.doesNotThrow(function() {
+					var Module = new MVCModule({
+						Model: function(){},
+						states: {
+							state0: new AState(AView),
+							state1: new AState(AView)
+						}
+					});
 
-            suite('Test single state', function() {
-                setup(function() {
-                    Module = new MVCModule({
-                        Model: function(){},
-                        View: function(){},
-                        Control: function(){}
-                    });
-                });
-                teardown(function() {
-                    Module = null;
-                    object = null;
-                });
+					module = new Module();
+				});
 
-                test('Test "_default" state', function() {
-                    assert.doesNotThrow(function() {
-                        object = new Module();
-                    });
+				assert.isObject(module.states, '"states" object was not created for module with explicit states');
+				assert.isObject(module.states.state0, 'State "state0" was not created for module with explicit states');
+				assert.isObject(module.states.state1, 'State "state1" was not created for module with explicit states');
+			});
+		});
+	});
 
-                    assert.isObject(object.model, 'Returned object has not the reference to the Model');
-                    assert.isObject(object.view, 'Returned object has not the reference to the View');
-                    assert.isObject(object.control, 'Returned object has not the reference to the Control');
-                });
-                test('Internal references', function() {
-                    assert.doesNotThrow(function() {
-                        object = new Module();
-                    });
+	suite('Object methods', function() {
+		var object;
+		setup(function() {
+			var Module = new MVCModule({
+				Model: function() {},
+				states: {
+					state0: new AState(AView),
+					state1: new AState(AView)
+				}
+			});
 
-                    assert.equal(object.view.model, object.model, 'Incorrect reference to the modules\' Mode');
-                    assert.equal(object.view.control, object.control, 'Incorrect reference to the Control');
+			object = new Module();
+		});
+		teardown(function() {
+			object = null;
+		});
 
-                    assert.equal(object.control.model, object.model, 'Incorrect reference to the modules\' Mode');
-                    assert.equal(object.control.view, object.view, 'Incorrect reference to the View');
-                });
-            });
-
-            test('Create module object with input arguments', function() {
-                var input = ['a', 'b'];
-
-                assert.doesNotThrow(function() {
-                    Module = new MVCModule({
-                        Model: function(a, b) {
-                            this.a = a;
-                            this.b = b;
-                        },
-                        states: {
-                            state: {
-                                View: function(){},
-                                Control: function(){}
-                            }
-                        }
-                    });
-
-                    object = new Module(input[0], input[1]);
-                });
-
-                assert.equal(object.model.a, input[0], 'First input argument was not applied to the model');
-                assert.equal(object.model.b, input[1], 'Second input argument was not applied to the model');
-            });
-        });
-
-        suite('Object methods', function() {
-            var Module;
-            var object;
-
-            setup(function() {
-                Module = new MVCModule({
-                    Model: function() {},
-                    states: {
-                        state: {
-                            View: function(){},
-                            Control: function(){}
-                        },
-                        state0: {
-                            View: function(){},
-                            Control: function(){}
-                        }
-                    }
-                });
-
-                object = new Module();
-            });
-            teardown(function() {
-                Module  = null;
-                object = null;
-            });
-
-            suite('useState()', function() {
-                test('No arguments', function() {
-                    assert.throw(function() {
-                        object.useState();
-                    }, Error, 'Incorrect amount of input arguments');
-                });
-                test('Incorrect type', function() {
-                    assert.throw(function() {
-                        object.useState(null);
-                        object.useState(undefined);
-                        object.useState(1);
-                        object.useState(true);
-                        object.useState([]);
-                        object.useState(function(){});
-                        object.useState({});
-                    }, Error, 'Incorrect type of input argument');
-                });
-                test('Undefined state', function() {
-                    assert.throw(function() {
-                        object.useState('str');
-                    }, Error, 'Undefined state "str"');
-                });
-            });
-        });
-    });
+		suite('useState()', function() {
+			test('No arguments', function() {
+				assert.throw(function() {
+					object.useState();
+				}, Error, 'Incorrect amount of input arguments');
+			});
+			test('Incorrect type', function() {
+				assert.throw(function() {
+					object.useState(null);
+				}, Error, 'Incorrect type of input argument');
+				assert.throw(function() {
+					object.useState(undefined);
+				}, Error, 'Incorrect type of input argument');
+				assert.throw(function() {
+					object.useState(1);
+				}, Error, 'Incorrect type of input argument');
+				assert.throw(function() {
+					object.useState(true);
+				}, Error, 'Incorrect type of input argument');
+				assert.throw(function() {
+					object.useState([]);
+				}, Error, 'Incorrect type of input argument');
+				assert.throw(function() {
+					object.useState(function(){});
+				}, Error, 'Incorrect type of input argument');
+				assert.throw(function() {
+					object.useState({});
+				}, Error, 'Incorrect type of input argument');
+			});
+			test('Undefined state', function() {
+				assert.throw(function() {
+					object.useState('str');
+				}, Error, 'Undefined state "str"');
+			});
+		});
+	});
 });
