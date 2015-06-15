@@ -1,6 +1,11 @@
 window.assert = chai.assert;
 window.sinon = sinon;
 
+var TaskManager = {
+    Pages: {},
+    Modules: {}
+};
+
 mocha.setup({
 	ui: 'tdd',
 	bail: false
@@ -16,7 +21,10 @@ requirejs([
 		'AStateComponent',
 		'aview',
 		'acontrol',
-		//'astate',
+		'astate',
+		'mvcmodule',
+		'EventHandler',
+
 		'./core/test_utils.js',
 		'./core/testAClass.js',
 		'./core/testClass.js',
@@ -24,8 +32,12 @@ requirejs([
 		'./core/testAStateComponent.js',
 		'./core/testAControl.js',
 		'./core/testAView.js',
-		//'./core/testMVCModule.js'
+		'./core/testAState.js',
+		'./core/testMVCModule.js',
+		'./core/testEventHandler.js'
 	], function() {
-		mocha.run();
+		//requirejs(['main'], function(){
+			mocha.run();
+		//});
 	});
 });
