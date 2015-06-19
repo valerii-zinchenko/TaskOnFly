@@ -36,8 +36,14 @@ requirejs([
 		'./core/testMVCModule.js',
 		'./core/testEventHandler.js'
 	], function() {
+		requirejs([
+			'model/TaskOnFly',
+
+			'./model/testTaskOnFly.js'
+		], function() {
 		//requirejs(['main'], function(){
 			mocha.run();
 		//});
+		});
 	});
 });

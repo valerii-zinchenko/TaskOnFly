@@ -21,148 +21,246 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
-suite('TaskOnFly', function() {
-    setup(function() {
-        TaskOnFly.ROOT_TASK_LIST = null;
-        TaskOnFly.CURRENT_TASK_LIST = null;
-    });
+define(['model/TaskOnFly'], function(Module) {
+	suite('TaskOnFly', function() {
+		var TaskOnFly;
+		setup(function() {
+			TaskOnFly = new Module();
+		});
+		teardown(function(){
+			TaskOnFly = null;
+			window.localStorage.clear();
+		});
 
-    test('setRootList()', function() {
-        assert.throw(function() {
-            TaskOnFly.setRootList()
-        }, Error, 'Invalid list');
-        assert.doesNotThrow(function() {
-            TaskOnFly.setRootList({})
-        });
-    });
-    test('getRootList()', function() {
-        assert.isNull(TaskOnFly.getRootList());
-        var obj = {};
-        TaskOnFly.setRootList(obj);
-        assert.equal(TaskOnFly.getRootList(), obj);
-    });
+		test('setRootList()', function() {
+			assert.throw(function() {
+				TaskOnFly.setRootList();
+			}, Error, 'Invalid list');
 
-    test('setCurrentList()', function() {
-        assert.throw(function() {
-            TaskOnFly.setCurrentList()
-        }, Error, 'Invalid list');
-        assert.doesNotThrow(function() {
-            TaskOnFly.setCurrentList({})
-        });
-    });
-    test('getCurrentList()', function() {
-        assert.isNull(TaskOnFly.getCurrentList());
-        var obj = {};
-        TaskOnFly.setCurrentList(obj);
-        assert.equal(TaskOnFly.getCurrentList(), obj);
-    });
+			assert.doesNotThrow(function() {
+				TaskOnFly.setRootList({});
+			});
+		});
+		test('getRootList()', function() {
+			assert.isNull(TaskOnFly.getRootList(), 'Root list should be null after initializing of module');
 
-    test('changeView()', function() {
-        var hash = '';
-        TaskOnFly.changeView(hash);
-        assert.equal(window.location.hash, '#');
+			var obj = {};
+			TaskOnFly.setRootList(obj);
+			assert.equal(TaskOnFly.getRootList(), obj, 'Invalid root list is returned');
+		});
 
-        hash = 'view';
-        TaskOnFly.changeView(hash);
-        assert.equal(window.location.hash, '#view');
-    });
+		test('setCurrentList()', function() {
+			assert.throw(function() {
+				TaskOnFly.setCurrentList();
+			}, Error, 'Invalid list');
 
-    test('saveItem() with incorrect input arguments', function() {
-        assert.throw(function() {
-            TaskOnFly.saveItem();
-        }, Error, 'item is not defined');
-        assert.throw(function() {
-            TaskOnFly.saveItem({});
-        }, Error, 'Item object does not contain public object');
+			assert.doesNotThrow(function() {
+				TaskOnFly.setCurrentList({});
+			});
+		});
+		test('getCurrentList()', function() {
+			assert.isNull(TaskOnFly.getCurrentList(), 'Current list should be null after initializing of module');
 
-        assert.throw(function() {
-            TaskOnFly.saveItem({public: 5});
-        }, Error, 'Item object does not contain public object');
-        assert.throw(function() {
-            TaskOnFly.saveItem({public: {}});
-        }, Error, 'Item id is not defined');
-    });
-    test('saveItem() with correct input arguments', function() {
-        var item = {
-            public: {
-                id: '04',
-                value: 11
-            }
-        };
-        assert.doesNotThrow(function() {
-            TaskOnFly.saveItem(item);
-        });
-    });
+			var obj = {};
+			TaskOnFly.setCurrentList(obj);
+			assert.equal(TaskOnFly.getCurrentList(), obj, 'Invalid current list is returned');
+		});
 
-    test('loadItem() with incorrect input arguments', function() {
-        assert.throw(function() {
-            TaskOnFly.loadItem();
-        }, Error, 'Item id is not defined');
-    });
-});
+		test('changeView()', function() {
+			var hash = 'view';
+			TaskOnFly.changeView(hash);
+			assert.equal(window.location.hash, '#' + hash, 'Browser hash was incorrectly changed');
+		});
 
-suite('Test TaskOnFly IO', function() {
-    var item = {
-            public: {
-                id: '04',
-                value: 11
-            }
-        },
-        id = item.public.id;
+		suite('back()', function(){
+			setup(function(){
+				sinon.stub(window.history, 'back');
+			});
+			teardown(function(){
+				window.history.back.restore();
+			});
 
-    setup(function() {
-        window.localStorage.clear();
-    });
+			test('chain', function(){
+				assert.doesNotThrow(function(){
+					TaskOnFly.back();
+				});
+				assert.isTrue(window.history.back.calledOnce, 'window.history.back() should be called');
+			});
+		});
 
-    test('saveItem() Check localStorage', function() {
-        TaskOnFly.saveItem(item);
-        assert.equal(window.localStorage.getItem(id), JSON.stringify(item.public));
-        assert.ok(window.localStorage.getItem('items'));
-    });
+		suite('saveItem()', function(){
+			setup(function(){
+				sinon.spy(window.localStorage, 'setItem');
+			});
+			teardown(function(){
+				window.localStorage.setItem.restore();
+				window.localStorage.clear();
+			});
 
-    test('loadItem()', function() {
-        TaskOnFly.saveItem(item);
+			test('incorrect input arguments', function() {
+				assert.throw(function() {
+					TaskOnFly.saveItem();
+				}, Error, 'Item is not defined');
 
-        var storedItem = TaskOnFly.loadItem(item.public.id);
-        assert.equal(storedItem.id, item.public.id);
-        assert.equal(storedItem.value, item.public.value);
-    });
+				assert.throw(function() {
+					TaskOnFly.saveItem({});
+				}, Error, 'Item object does not contain public object');
+				assert.throw(function() {
+					TaskOnFly.saveItem({public: 5});
+				}, Error, 'Item object does not contain public object');
 
-    test('removeItem()', function() {
-        assert.doesNotThrow(function() {
-            TaskOnFly.removeItem();
-        });
+				assert.throw(function() {
+					TaskOnFly.saveItem({public: {}});
+				}, Error, 'Item id is not defined');
+			});
+			test('correct input arguments', function() {
+				assert.doesNotThrow(function() {
+					TaskOnFly.saveItem({
+						public: {
+							id: '04',
+							value: 11
+						}
+					});
+				});
+				assert.isTrue(window.localStorage.setItem.called, 'Saving should redirect to localStorage.setItem()');
+				assert.isTrue(window.localStorage.setItem.calledTwice, 'setItem() should be called twice: first to update index; second to save the item data');
+			});
+			test('update item', function() {
+				var item = {
+					public: {
+						id: '04',
+						value: 11
+					}
+				};
+				assert.doesNotThrow(function() {
+					TaskOnFly.saveItem(item);
+					TaskOnFly.saveItem(item);
+				});
+			});
+		});
 
-        TaskOnFly.saveItem(item);
-        assert.doesNotThrow(function() {
-            TaskOnFly.removeItem(item.public.id);
-        });
+		suite('loadItem()', function(){
+			setup(function(){
+				sinon.spy(window.localStorage, 'getItem');
+			});
+			teardown(function(){
+				window.localStorage.getItem.restore();
+			});
+			test('incorrect input arguments', function() {
+				assert.throw(function() {
+					TaskOnFly.loadItem();
+				}, Error, 'Item id is not defined');
+			});
+			test('not existing item', function(){
+				var item;
+				assert.doesNotThrow(function(){
+					item = TaskOnFly.loadItem('item');
+				});
+				assert.isTrue(window.localStorage.getItem.calledOnce, 'Loading should redirect to localStorage.getItem()');
+				assert.isNull(item, 'Null should be returned if item is not exist');
+			});
+			test('existing item', function(){
+				var obj = {
+					public: {
+						id: '04',
+						value: 11
+					}
+				};
+				var item;
+				assert.doesNotThrow(function(){
+					TaskOnFly.saveItem(obj);
 
-        assert.isNull(TaskOnFly.loadItem(item.public.id));
-    });
+					item = TaskOnFly.loadItem('04');
+				});
+				assert.isObject(item, 'Object should be returned');
+				assert.deepEqual(item, obj.public, 'The content of returned object shoud be the same');
+			});
+		});
 
-    suite('Load all items.', function() {
-        var item2 = {
-            public: {
-                id: '19',
-                value: 90
-            }
-        };
+		suite('removeItem()', function(){
+			setup(function(){
+				sinon.spy(window.localStorage, 'removeItem');
+			});
+			teardown(function(){
+				window.localStorage.removeItem.restore();
+			});
 
-        test('No items', function() {
-            assert.isNull(TaskOnFly.loadAllItems());
-        });
+			test('without argument', function(){
+				assert.doesNotThrow(function(){
+					TaskOnFly.removeItem();
+				});
+			});
+			test('not existing item and index of items', function(){
+				assert.doesNotThrow(function(){
+					TaskOnFly.removeItem('item');
+				});
+			});
+			test('not existing item and with existing index of items', function(){
+				assert.doesNotThrow(function(){
+					TaskOnFly.saveItem({
+						public: {
+							id: 'i',
+							value: 1
+						}
+					});
+					TaskOnFly.removeItem('item');
+				});
+				assert.isTrue(window.localStorage.removeItem.calledOnce, 'localStorage.removeItem() should be called');
+			});
+			test('existing item', function(){
+				var item;
+				assert.doesNotThrow(function(){
+					TaskOnFly.saveItem({
+						public: {
+							id: 'item',
+							value: 1
+						}
+					});
+					TaskOnFly.removeItem('item');
+					item = TaskOnFly.loadItem('item');
+				});
+				assert.isNull(item, 'Item shoud be removed');
+			});
+		});
 
-        test('Two items', function() {
-            TaskOnFly.saveItem(item);
-            TaskOnFly.saveItem(item2);
+		suite('loadAllItems()', function() {
+			teardown(function() {
+				window.localStorage.clear();
+			});
+			
+			test('no stored items', function(){
+				assert.doesNotThrow(function(){
+					assert.isNull(TaskOnFly.loadAllItems());
+				});
+			});
 
-            var items = TaskOnFly.loadAllItems();
+			test('two items', function() {
+				var items = [
+					{
+						public: {
+							id: '04',
+							value: 11
+						}
+					},
+					{
+						public: {
+							id: '19',
+							value: 90
+						}
+					}
+				];
 
-            assert.equal(items['04'].id, '04');
-            assert.equal(items['04'].value, 11);
-            assert.equal(items['19'].id, '19');
-            assert.equal(items['19'].value, 90);
-        })
-    });
+				var result;
+				assert.doesNotThrow(function(){
+					TaskOnFly.saveItem(items[0]);
+					TaskOnFly.saveItem(items[1]);
+
+					result = TaskOnFly.loadAllItems();
+				});
+
+				assert.deepEqual(result[items[0].public.id], items[0].public, 'First item was incorectly loaded');
+				assert.deepEqual(result[items[1].public.id], items[1].public, 'Second item was incorectly loaded');
+			});
+		});
+	});
 });

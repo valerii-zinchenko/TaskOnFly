@@ -69,6 +69,7 @@ define([
 			new MainRouter();
 			Backbone.history.start();
 		},
+
 		sync: function(listRef, ids) {
 			var that = this;
 			ids.forEach(function(itemID) {
@@ -123,7 +124,7 @@ define([
 
 		saveItem: function(item) {
 			if (!item) {
-				throw new Error('item is not defined');
+				throw new Error('Item is not defined');
 			}
 
 			if (!item.public || typeof item.public !== 'object') {
@@ -157,9 +158,12 @@ define([
 				return;
 			}
 
-			var items = loadLocal('items'),
-			index = items.indexOf(id);
+			var items = loadLocal('items');
+			if (!items) {
+				return;
+			}
 
+			var index = items.indexOf(id);
 			if (index > -1) {
 				items.splice(index,1);
 			}
