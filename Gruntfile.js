@@ -32,24 +32,13 @@ module.exports = function(grunt) {
                     baseUrl: 'js',
                     dir: 'min-js',
                     optimize: 'none',
+                    useStrict: true,
+					preserveLicenseComments: false,
                     modules: [
-                        {
-                            name: 'core/AClass',
-                            include: [
-                                'core/utils',
-                                'core/Class',
-                                'core/SingletonClass',
-                                'core/MVCModule'
-                            ]
-                        },
-                        {
-                            name: 'pages/ItemEditor'
-                        },
-                        {
-                            name: 'main'
-                        }
-                    ],
-                    useStrict: true
+						{
+							name: 'all'
+						}
+                    ]
                 }
             }
         },
