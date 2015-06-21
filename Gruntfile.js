@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'index_test.html': ['index.html.tpl'],
+					'index.html': ['index.html.tpl'],
 				}
 			},
 			PROD: {
