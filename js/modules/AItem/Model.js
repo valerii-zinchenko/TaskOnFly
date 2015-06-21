@@ -116,6 +116,11 @@ define(function () {
         },
         saveData: function(data) {
             if (data) {
+				for (var key in data) {
+					if (this.public[key] == data[key]) {
+						delete data[key];
+					}
+				}
                 utils.deepCopy(this.public, data);
 
 				this.triggerEvents(data);
