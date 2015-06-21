@@ -23,7 +23,10 @@
 
 'use strict';
 
-define(function () {
+define([
+	'modules/Task',
+	'modules/TaskList',
+], function (Task, TaskList) {
     return Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -87,17 +90,28 @@ define(function () {
                     return;
             }
 
-            var fn = 'add' + what[0].toUpperCase() + what.slice(1);
+            var fn = '_add' + what[0].toUpperCase() + what.slice(1);
+			var _this = this;
             this._openPage('itemEditor', function() {
 				this.setHeader('Add ' + what);
 
-                this.control.setSaveCallback(function(data) {
-					var list = TaskOnFly.model.getCurrentList();
-
-					list.model[fn](data);
-				});
+                this.control.setSaveCallback(_this[fn]);
             });
         },
+		_addTask: function(data){
+			var list = TaskOnFly.model.getCurrentList();
+
+			list.model.addItem(new Task(data));
+		},
+		_addList: function(data){
+			var list = TaskOnFly.model.getCurrentList();
+
+			var newList = new TaskList(data);
+			newList.model._parent = list.model;
+			newList.model._path = [list.model._path, newList.model.public.id, '/'].join('');
+
+			list.model.addItem(newList);
+		},
 
         /**
          *

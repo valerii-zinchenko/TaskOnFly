@@ -25,8 +25,10 @@
 'use strict';
 
 define([
-	'model/MainRouter'
-], function(MainRouter) {
+	'model/MainRouter',
+	'modules/Task',
+	'modules/TaskList'
+], function(MainRouter, Task, TaskList) {
 	function saveLocal(key, data) {
 		window.localStorage.setItem(key, JSON.stringify(data));
 	}
@@ -50,7 +52,7 @@ define([
 
 		start: function() {
 			var store = this.loadItem('root'),
-				rootList = new TaskManager.TaskList({
+				rootList = new TaskList({
 					id:'root',
 					version: this.version
 				});
@@ -78,12 +80,20 @@ define([
 					return;
 				}
 
-				var item = listRef['add' + itemData.type](itemData);
+				switch (itemData.type) {
+					case 'Task':
+						listRef.addItem(new Task(itemData));
+						break;
 
-				if (itemData.type === 'List') {
-					var ids = item.model.public.items;
-					item.model.public.items = [];
-					that.sync(item.model, ids);
+					case 'List':
+						var item = listRef.addItem(new TaskList(itemData));
+						item.model._parent = listRef;
+						item.model._path = [listRef._path, item.model.public.id, '/'].join('');
+
+						var ids = item.model.public.items;
+						item.model.public.items = [];
+						that.sync(item.model, ids);
+						break;
 				}
 			});
 		},

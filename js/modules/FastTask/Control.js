@@ -24,18 +24,20 @@
 
 'use strict';
 
-define(function () {
+define([
+	'modules/Task'
+], function (Task) {
 	return new SingletonClass(AControl, {
 		action: function() {
 			var data = this.view.getData();
 
 			if (data.title) {
-				TaskOnFly.model.getCurrentList().model.addTask({
+				TaskOnFly.model.getCurrentList().model.addItem(new Task({
 					title: data.title,
 					priority: data.priority,
 					dueDate: utils.date(new Date(Date.now() + 86400000)),	// + 1 day
 					version: TaskOnFly.model.version
-				});
+				}));
 			}
 		}
 	});

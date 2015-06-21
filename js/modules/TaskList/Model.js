@@ -60,7 +60,7 @@ define([
             this.parent.desctuct();
         },
 
-        _add: function(item, toSave) {
+        addItem: function(item, toSave) {
             if (typeof toSave === 'undefined') {
                 toSave = true;
             }
@@ -102,15 +102,6 @@ define([
 			this.toggleStatus();
         },
 
-        addTask: function(data) {
-            return this._add(new TaskManager.Task(data));
-        },
-        addList: function(data) {
-            var list = new TaskManager.TaskList(data);
-            list.model._parent = this;
-            list.model._path = [this._path, list.model.public.id, '/'].join('');
-            return this._add(list);
-        },
 		removeItem: function(id, model) {
 			if (model.public.isDone) {
 				this._NDone--;
