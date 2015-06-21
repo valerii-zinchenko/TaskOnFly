@@ -29,27 +29,10 @@ var TaskManager = {
 var TaskOnFly;
 
 requirejs([
-    'utils',
-    'aclass'
+	'libs'
 ], function() {
-    requirejs([
-        'class',
-        'singleton',
-		'EventHandler',
-		'AStateComponent',
-		'astate',
-		'aview',
-		'acontrol',
-        'mvcmodule'
-    ], function() {
-        requirejs([
-			'modules/Task',
-			'modules/TaskList'
-		], function() {
-            requirejs(['main'], function(App) {
-                TaskOnFly = new App();
-				TaskOnFly.model.start();
-            });
-        });
-    });
+	requirejs(['main'], function(App) {
+		TaskOnFly = new App();
+		TaskOnFly.model.start();
+	});
 });

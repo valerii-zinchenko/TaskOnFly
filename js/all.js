@@ -24,7 +24,6 @@
 'use strict';
 
 define([
-	'require-config',
 	'libs',
 	'core',
 	'main',

@@ -13,7 +13,6 @@
 <% if (env == 'PROD') { %>
 	<script src="js/all.js" type="text/javascript" charset="utf-8"></script>
 <% } else { %>
-    <script src="js/require-config.js" type="text/javascript" charset="utf-8"></script>
     <script src="./3rd-party/require.js" data-main='js/all.js' type="text/javascript" charset="utf-8"></script>
 <% } %>
 </body>
