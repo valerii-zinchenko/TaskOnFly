@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-template');
     grunt.loadNpmTasks('grunt-istanbul');
     grunt.loadNpmTasks('grunt-mocha-phantom-istanbul');
     grunt.loadNpmTasks('grunt-contrib-clean');
@@ -23,6 +24,31 @@ module.exports = function(grunt) {
 				src: ["*.*"],
 				dest: "./3rd-party/bootstrap/fonts",
 				flatten: true
+			}
+		},
+
+		template: {
+			DEV: {
+				options: {
+					data: {
+						env: 'DEV'
+					}
+				},
+				files: {
+					'index_test.html': ['index.html.tpl'],
+				}
+			},
+			PROD: {
+				options: {
+					data: {
+						env: 'PROD',
+						version: '<%- pkg.version %>'
+					}
+				},
+				files: {
+					'index.html': ['index.html.tpl'],
+					'cache.manifest': ['cache.manifest.tpl']
+				}
 			}
 		},
 
