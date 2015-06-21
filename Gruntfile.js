@@ -15,14 +15,18 @@ module.exports = function(grunt) {
 				expand: true,
 				cwd: "./bower_components",
 				src: ["requirejs/require.js", "jquery/dist/jquery.js", "bootstrap/dist/js/bootstrap.js", "underscore/underscore.js", "backbone/backbone.js"],
-				dest: "./3rd-party",
+				dest: "build/3rd-party",
 				flatten: true
+			},
+			css: {
+				src: 'css/main.css',
+				dest: 'build/'
 			},
 			fonts: {
 				expand: true,
 				cwd: "./bower_components/bootstrap/dist/fonts",
 				src: ["*.*"],
-				dest: "./3rd-party/bootstrap/fonts",
+				dest: "build/3rd-party/bootstrap/fonts",
 				flatten: true
 			}
 		},
@@ -46,8 +50,8 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'index.html': ['index.html.tpl'],
-					'cache.manifest': ['cache.manifest.tpl']
+					'build/index.html': ['index.html.tpl'],
+					'build/cache.manifest': ['cache.manifest.tpl']
 				}
 			}
 		},
@@ -56,10 +60,10 @@ module.exports = function(grunt) {
             compile: {
                 options: {
                     baseUrl: 'js',
-                    dir: 'min-js',
-                    optimize: 'none',
+                    dir: 'build/js',
+                    optimize: 'uglify2',
                     useStrict: true,
-					preserveLicenseComments: false,
+					removeCombined: true,
                     modules: [
 						{
 							name: 'all'
@@ -68,6 +72,7 @@ module.exports = function(grunt) {
                 }
             }
         },
+
 		prepareForCoverage: {
 			instrument: {
 				files: [{
@@ -102,13 +107,16 @@ module.exports = function(grunt) {
                 src: ['test/index-cov.html']
             }
         },
-        clean: ['js-cov']
+        clean: {
+			build: ['build/3rd-party/*.js'],
+			conerage: ['js-cov']
+		}
     });
 
     grunt.registerTask('test', 'mocha:test');
-    grunt.registerTask('coverage', ['prepareForCoverage', 'mocha:coverage', 'clean']);
+    grunt.registerTask('coverage', ['prepareForCoverage', 'mocha:coverage', 'clean:coverage']);
 
-	grunt.registerTask('default', 'copy');
+	grunt.registerTask('build', ['copy', 'template:PROD', 'requirejs', 'clean:build']);
 
 	var istanbul = require('istanbul');
 	grunt.registerMultiTask('prepareForCoverage', 'Generates coverage reports for JS using Istanbul', function() {
