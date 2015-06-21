@@ -27,7 +27,7 @@ define([
     './ListViewGroupedByDate/View',
     './ListViewGroupedByDate/Control'
 ],function (View, Control) {
-    TaskManager.Modules.ListViewGroupedByDate = new MVCModule({
+    return new MVCModule({
         View: View,
         Control: Control,
 
@@ -35,6 +35,4 @@ define([
             this.control.$.on('newItem', this.view._insertItem.bind(this.view));
         }
     });
-
-    return TaskManager.Modules.ListViewGroupedByDate;
 });

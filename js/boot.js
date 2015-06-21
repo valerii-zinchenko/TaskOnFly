@@ -21,10 +21,7 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
-var TaskManager = {
-    Pages: {},
-    Modules: {}
-};
+'use strict';
 
 var TaskOnFly;
 

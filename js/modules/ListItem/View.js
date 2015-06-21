@@ -26,12 +26,12 @@
 define([
     '../ListItem/View',
     'view/PopupDialog'
-], function(Parent) {
+], function(Parent, PopupDialog) {
     return new Class(Parent, {
         popup: null,
 
         initialize: function() {
-            this.popup = new TaskManager.PopupDialog({
+            this.popup = new PopupDialog({
                 messages: ['Are you sure you want to delete the list of tasks?', 'This action cannot be undone.'],
                 controls: [
                     {

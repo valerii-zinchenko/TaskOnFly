@@ -27,7 +27,7 @@ define([
     './ListView/View',
     './ListView/Control'
 ], function (View, Control) {
-    TaskManager.Modules.ListView = new MVCModule({
+    return new MVCModule({
         View: View,
         Control: Control,
 
@@ -35,6 +35,4 @@ define([
             this.control.$.on('newItem', this.view._insertItem.bind(this.view));
         }
     });
-
-    return TaskManager.Modules.ListView;
 });

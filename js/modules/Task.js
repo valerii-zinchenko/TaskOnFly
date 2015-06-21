@@ -28,14 +28,10 @@ define([
     "./AItem/InList/View",
     "./AItem/InList/Control"
 ], function (Model, InListView, InListControl) {
-    var Task = new MVCModule({
+    return new MVCModule({
         Model: Model,
         states: {
             inList: new AState(InListView, InListControl)
         }
     });
-
-    TaskManager.Task = Task;
-
-    return Task;
 });

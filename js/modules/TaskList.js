@@ -30,15 +30,11 @@ define([
     "./TaskList/AsList/View",
     "./TaskList/AsList/Control"
 ], function (Model, InListView, InListControl, AsListView, AsListControl) {
-    var TaskList = new MVCModule({
+    return new MVCModule({
         Model: Model,
         states: {
             inList: new AState(InListView, InListControl),
             asList: new AState(AsListView, AsListControl)
         }
     });
-
-	TaskManager.TaskList = TaskList;
-
-    return TaskList;
 });

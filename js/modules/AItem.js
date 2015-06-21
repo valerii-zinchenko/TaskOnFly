@@ -27,10 +27,8 @@ define([
     './ListItem/View',
     './ListItem/Control'
 ],function (View, Control) {
-    TaskManager.Modules.ListItem = new MVCModule({
+    return new MVCModule({
         View: View,
         Control: Control
     });
-
-    return TaskManager.Modules.ListItem;
 });
