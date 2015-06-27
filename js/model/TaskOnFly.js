@@ -21,14 +21,14 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
-
 'use strict';
 
 define([
+	'version',
 	'model/MainRouter',
 	'modules/Task',
 	'modules/TaskList'
-], function(MainRouter, Task, TaskList) {
+], function(version, MainRouter, Task, TaskList) {
 	function saveLocal(key, data) {
 		window.localStorage.setItem(key, JSON.stringify(data));
 	}
@@ -46,16 +46,16 @@ define([
 	return new Class({
 		Encapsulate: EventHandler,
 
-		version: '2.0.1',
+		version: version(),
 		ROOT_TASK_LIST: null,
 		CURRENT_TASK_LIST: null,
 
 		start: function() {
 			var store = this.loadItem('root'),
 				rootList = new TaskList({
-					id:'root',
-					version: this.version
-				});
+					id: 'root',
+					version: version()
+				}, version(), [this]);
 
 			if (store) {
 				var ids = store.items;
@@ -65,7 +65,6 @@ define([
 			}
 
 			this.setRootList(rootList);
-			rootList.model.saveData();
 			this.setCurrentList(rootList);
 
 			new MainRouter();
@@ -73,29 +72,36 @@ define([
 		},
 
 		sync: function(listRef, ids) {
-			var that = this;
 			ids.forEach(function(itemID) {
-				var itemData = that.loadItem(itemID);
+				var itemData = this.loadItem(itemID);
 				if (!itemData) {
 					return;
 				}
 
 				switch (itemData.type) {
 					case 'Task':
-						listRef.addItem(new Task(itemData));
+						listRef.addItem(this.createTask(itemData));
 						break;
 
 					case 'List':
-						var item = listRef.addItem(new TaskList(itemData));
+						var item = listRef.addItem(this.createTaskList(itemData));
 						item.model._parent = listRef;
 						item.model._path = [listRef._path, item.model.public.id, '/'].join('');
 
 						var ids = item.model.public.items;
 						item.model.public.items = [];
-						that.sync(item.model, ids);
+						this.sync(item.model, ids);
 						break;
 				}
-			});
+			}, this);
+		},
+
+		createTask: function(data) {
+			return new Task(data, version(), [this]);
+		},
+
+		createTaskList: function(data) {
+			return new TaskList(data, version(), [this]);
 		},
 
 		setRootList: function(list) {

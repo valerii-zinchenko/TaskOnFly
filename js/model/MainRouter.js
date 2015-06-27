@@ -23,10 +23,7 @@
 
 'use strict';
 
-define([
-	'modules/Task',
-	'modules/TaskList',
-], function (Task, TaskList) {
+define(function () {
     return Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -101,12 +98,12 @@ define([
 		_addTask: function(data){
 			var list = TaskOnFly.model.getCurrentList();
 
-			list.model.addItem(new Task(data));
+			list.model.addItem(TaskOnFly.model.createTask(data));
 		},
 		_addList: function(data){
 			var list = TaskOnFly.model.getCurrentList();
 
-			var newList = new TaskList(data);
+			var newList = TaskOnFly.model.createTaskList(data);
 			newList.model._parent = list.model;
 			newList.model._path = [list.model._path, newList.model.public.id, '/'].join('');
 
