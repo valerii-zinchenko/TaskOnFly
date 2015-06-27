@@ -79,7 +79,7 @@ suite('utils', function() {
             assert.notEqual(obj2.innObj, obj1.innObj);
             assert.isObject(obj2.innObj2.innInnObj);
             assert.equal(obj2.innObj2.innInnObj.innInnVal, v4);
-        })
+        });
     });
 
     suite('date()', function() {
@@ -113,5 +113,82 @@ suite('utils', function() {
 
             assert.equal(utils.date(date), '2014-11-29', 'Timezone should not have an influence');
         });
-    })
+    });
+
+	test('isObject()', function(){
+		assert.isTrue(utils.isObject({}), 'Object was incorrectly detected');
+		[
+			[null, 'Null'],
+			[undefined, 'Undefined'],
+			[function(){}, 'Function'],
+			[[], 'Array'],
+			[false, 'Boolean'],
+			[1, 'Number'],
+			['str', 'String']
+		].forEach(function(testCase){
+			assert.isFalse(utils.isObject(testCase[0]), testCase[1] + ' is not a object');
+		});
+	});
+
+	test('isArray()', function(){
+		assert.isTrue(utils.isArray([]), 'Array was incorrectly detected');
+		[
+			[null, 'Null'],
+			[undefined, 'Undefined'],
+			[function(){}, 'Function'],
+			[{}, 'Object'],
+			[false, 'Boolean'],
+			[1, 'Number'],
+			['str', 'String']
+		].forEach(function(testCase){
+			assert.isFalse(utils.isArray(testCase[0]), testCase[1] + ' is not an array');
+		});
+	});
+
+	test('isString()', function(){
+		assert.isTrue(utils.isString(''), 'String was incorrectly detected');
+		[
+			[null, 'Null'],
+			[undefined, 'Undefined'],
+			[function(){}, 'Function'],
+			[{}, 'Object'],
+			[false, 'Boolean'],
+			[1, 'Number'],
+			[[], 'Array']
+		].forEach(function(testCase){
+			assert.isFalse(utils.isString(testCase[0]), testCase[1] + ' is not a string');
+		});
+	});
+
+	test('isObjectEmpty()', function(){
+		assert.isTrue(utils.isObjectEmpty({}));
+		assert.isFalse(utils.isObjectEmpty({a:1}));
+	});
+
+	suite('compareVersions()', function(){
+		[
+			['0.0.0', '1.0.0', -1],
+			['1.0.0', '1.0.0', 0],
+			['2.0.0', '1.0.0', 1],
+			['2.0.0', '1.10.0', 1],
+			['0.10.0', '0.2.0', 1],
+			['0.10.0', '0.0.2', 1]
+		].forEach(function(testCase){
+			var msg = testCase[0] + ' is ';
+			switch(testCase[2]) {
+				case -1:
+					msg += 'lower';
+					break;
+				case 0:
+					msg += 'equal';
+					break;
+				case 1:
+					msg += 'greater';
+					break;
+			}
+			msg += ' than ' + testCase[1];
+
+			asert.equal(utils.compareVersions(testCase[0], testCase[1]), testCase[2], msg);
+		});
+	});
 });
