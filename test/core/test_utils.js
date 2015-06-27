@@ -188,7 +188,11 @@ suite('utils', function() {
 			}
 			msg += ' than ' + testCase[1];
 
-			asert.equal(utils.compareVersions(testCase[0], testCase[1]), testCase[2], msg);
+			var result;
+			assert.doesNotThrow(function(){
+				result = utils.compareVersions(testCase[0], testCase[1]);
+			});
+			assert.equal(result, testCase[2], msg);
 		});
 	});
 });
