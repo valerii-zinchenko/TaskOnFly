@@ -21,6 +21,7 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
 */
 
+// todo: Subscribe storages to the model events
 
 'use strict';
 
@@ -43,6 +44,9 @@ define(function () {
 
             version: '0.0.0'
         },
+
+		storages: [],
+
         versionUpgrades: {
             /** Change order of priority values.
              * Before 1.0.9 was: 0 - low, 1 - normal, 2 - high.
@@ -72,10 +76,25 @@ define(function () {
             ].join('-');
         },
 
-        initialize: function(data) {
-            if (arguments.length === 0 || typeof data === 'undefined') {
+		/**
+		 * @params {Object} data
+		 */
+        initialize: function(data, version, storages) {
+            if (arguments.length !== 3) {
                 throw new Error('Invalid input arguments');
             }
+
+			if (!utils.isObject(data)) {
+				throw new Error('Incorrect type of "data" argument');
+			}
+			if (!utils.isString(version)) {
+				throw new Error('Incorrect type of "version" argument');
+			}
+			if (!utils.isArray(storages)) {
+				throw new Error('Incorrect type of "storages" argument');
+			}
+
+			this.storages = storages;
 
             this.public.id = this._genID();
             this.public.timestamp = Date.now();
@@ -85,26 +104,14 @@ define(function () {
 				data.version = '0.0.0';
 			}
 
-			var dataV = data.version.split('.').map(function(str) {return parseInt(str);});
-			var curV = TaskOnFly.model.version;
-			var curVSeparated = curV.split('.').map(function(str) {return parseInt(str);});
-			if (dataV.some(function(version, indx) {
-					return version < curVSeparated[indx];
-				}))
-			{
+			if (utils.compareVersions(data.version, version) < 0) {
 				this.upgrade(data);
-				data.version = curV;
+				data.version = version;
 			}
 
-
-            if (typeof data !== 'undefined') {
-                if (typeof data === 'object') {
-                    this.saveData(data);
-                } else {
-                    throw new Error('Incorrect type of data input argument');
-                }
-            }
+			this.saveData(data);
         },
+
         destruct: function() {
             var id = this.public.id;
 
@@ -112,28 +119,40 @@ define(function () {
 
             this.public = null;
 
-            TaskOnFly.model.removeItem(id);
+			this.storages.forEach(function(storage) {
+				storage.removeItem(id);
+			});
         },
+
         saveData: function(data) {
-            if (data) {
-				for (var key in data) {
-					if (this.public[key] == data[key]) {
-						delete data[key];
-					}
+            if (!data) {
+				return;
+			}
+
+			for (var key in data) {
+				if (this.public[key] == data[key]) {
+					delete data[key];
 				}
-                utils.deepCopy(this.public, data);
+			}
 
-				this.triggerEvents(data);
-            }
+			if (utils.isObjectEmpty(data)) {
+				return;
+			}
 
-            TaskOnFly.model.saveItem(this);
+			utils.deepCopy(this.public, data);
+
+			this.triggerEvents(data);
 
 			this.trigger('update');
+
+			this.storages.forEach(function(storage) {
+				storage.saveItem(this);
+			}, this);
         },
 
 		triggerEvents: function(data) {
 			for (var key in data) {
-				if (Object.prototype.toString.call(data[key]) == '[object Object]') {
+				if (utils.isObject(data[key])) {
 					this.triggerEvents(data[key]);
 				}
 
@@ -155,14 +174,8 @@ define(function () {
         },
 
         upgrade: function(data) {
-            var dataV = data.version.split('.').map(function(str) {return parseInt(str);});
             for (var version in this.versionUpgrades) {
-                var curV = version.split('.').map(function(str) {return parseInt(str);});
-
-                if (dataV.some(function(version, indx) {
-                        return version < curV[indx];
-                    }))
-                {
+				if (utils.compareVersions(data.version, version) < 0) {
                     this.versionUpgrades[version](data);
                 }
             }

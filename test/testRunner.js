@@ -13,19 +13,9 @@ mocha.setup({
 
 requirejs([
 	'../js/libs',
-	'../js/core/utils',
-	'../js/core/AClass'
+	'../js/core'
 ], function() {
 	requirejs([
-		'../js/core/Class',
-		'../js/core/SingletonClass',
-		'../js/core/AStateComponent',
-		'../js/core/AView',
-		'../js/core/AControl',
-		'../js/core/AState',
-		'../js/core/MVCModule',
-		'../js/core/EventHandler',
-
 		'./core/test_utils.js',
 		'./core/testAClass.js',
 		'./core/testClass.js',
@@ -38,9 +28,11 @@ requirejs([
 		'./core/testEventHandler.js'
 	], function() {
 		requirejs([
-			'../js/model/TaskOnFly',
+			'../js/modules/AItem/Model',
+			//'../js/model/TaskOnFly',
 
-			'./model/testTaskOnFly.js'
+			'./modules/AItem/testModel.js'
+			//'./model/testTaskOnFly.js'
 		], function() {
 		//requirejs(['main'], function(){
 			mocha.run();
