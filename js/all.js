@@ -26,6 +26,7 @@
 define([
 	'libs',
 	'core',
+	'version',
 	'main',
 	'boot'
 ], function(){});

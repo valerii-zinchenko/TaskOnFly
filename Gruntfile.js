@@ -35,11 +35,13 @@ module.exports = function(grunt) {
 			DEV: {
 				options: {
 					data: {
-						env: 'DEV'
+						env: 'DEV',
+						version: '<%- pkg.version %>'
 					}
 				},
 				files: {
 					'index.html': ['index.html.tpl'],
+					'js/version.js': ['js/version.js.tpl']
 				}
 			},
 			PROD: {
@@ -51,6 +53,7 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'build/index.html': ['index.html.tpl'],
+					'js/version.js': ['js/version.js.tpl'],
 					'build/cache.manifest': ['cache.manifest.tpl']
 				}
 			}
@@ -88,7 +91,6 @@ module.exports = function(grunt) {
                 options: {
                     run: false,
                     reporter: 'Spec',
-
                     log: true,
                     logErrors: true
                 },
@@ -109,7 +111,7 @@ module.exports = function(grunt) {
         },
         clean: {
 			build: ['build/3rd-party/*.js'],
-			conerage: ['js-cov']
+			coverage: ['js-cov']
 		}
     });
 
