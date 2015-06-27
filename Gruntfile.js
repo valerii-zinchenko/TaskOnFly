@@ -56,6 +56,27 @@ module.exports = function(grunt) {
 					'js/version.js': ['js/version.js.tpl'],
 					'build/cache.manifest': ['cache.manifest.tpl']
 				}
+			},
+
+			TEST: {
+				options: {
+					data: {
+						jsFolder: '../js'
+					}
+				},
+				files: {
+					'test/config.js': ['test/config.js.tpl']
+				}
+			},
+			CODE_COVERAGE: {
+				options: {
+					data: {
+						jsFolder: '../js-cov'
+					}
+				},
+				files: {
+					'test/config.js': ['test/config.js.tpl']
+				}
 			}
 		},
 
@@ -106,17 +127,18 @@ module.exports = function(grunt) {
 						htmlReport: 'reports/coverage'
 					}
                 },
-                src: ['test/index-cov.html']
+                src: ['test/index.html']
             }
         },
+
         clean: {
 			build: ['build/3rd-party/*.js'],
 			coverage: ['js-cov']
 		}
     });
 
-    grunt.registerTask('test', 'mocha:test');
-    grunt.registerTask('coverage', ['prepareForCoverage', 'mocha:coverage', 'clean:coverage']);
+    grunt.registerTask('test', ['template:TEST', 'mocha:test']);
+    grunt.registerTask('coverage', ['prepareForCoverage', 'template:CODE_COVERAGE', 'mocha:coverage', 'clean:coverage']);
 
 	grunt.registerTask('build', ['copy', 'template:PROD', 'requirejs', 'clean:build']);
 
