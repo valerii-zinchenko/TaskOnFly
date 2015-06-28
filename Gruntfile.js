@@ -1,11 +1,11 @@
 module.exports = function(grunt) {
+    grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-template');
     grunt.loadNpmTasks('grunt-istanbul');
     grunt.loadNpmTasks('grunt-mocha-phantom-istanbul');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-requirejs');
-
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -28,6 +28,14 @@ module.exports = function(grunt) {
 				src: ["*.*"],
 				dest: "build/3rd-party/bootstrap/fonts",
 				flatten: true
+			}
+		},
+
+		less: {
+			compile: {
+				files: {
+					'css/main.css': ['less/main.less']
+				}
 			}
 		},
 
@@ -140,7 +148,8 @@ module.exports = function(grunt) {
     grunt.registerTask('test', ['template:TEST', 'mocha:test']);
     grunt.registerTask('coverage', ['prepareForCoverage', 'template:CODE_COVERAGE', 'mocha:coverage', 'clean:coverage']);
 
-	grunt.registerTask('build', ['copy', 'template:PROD', 'requirejs', 'clean:build']);
+	grunt.registerTask('build-dev', ['less', 'copy', 'template:DEV']);
+	grunt.registerTask('build', ['less', 'copy', 'template:PROD', 'requirejs', 'clean:build']);
 
 	var istanbul = require('istanbul');
 	grunt.registerMultiTask('prepareForCoverage', 'Generates coverage reports for JS using Istanbul', function() {

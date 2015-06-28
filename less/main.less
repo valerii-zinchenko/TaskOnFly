@@ -1,0 +1,286 @@
+/*
+ TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.
+ Copyright (C) 2014-2015  Valerii Zinchenko
+
+ This file is part of TaskOnFly.
+
+ TaskOnFly is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ TaskOnFly is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with TaskOnFly.  If not, see <http://www.gnu.org/licenses/>.
+
+
+ All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
+*/
+
+@import "less/variables.less";
+
+/* Commons */
+.clear-empty-pseudo() {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+body {
+	padding-top: 70px;
+	margin-bottom: 50px;
+}
+
+.page {
+	display: none;
+	
+	&.active {
+		display: block;
+	}
+
+	footer {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		height: 50px;
+		background-color: #e6e6e6;
+	}
+}
+
+
+.module {
+	margin-bottom: 1.2em;
+
+	&:after {
+		.clear-empty-pseudo();
+	}
+}
+.list-item:after {
+	.clear-empty-pseudo();
+}
+footer .module {
+	margin: 0.4em 0;
+}
+
+.right {
+	float: right;
+}
+.justify {
+    text-align: justify;
+}
+
+.checkbox-wrapper input[type="checkbox"],
+.wrapper input[type="radio"] {
+	display: none;
+}
+.checkbox-wrapper {
+	padding: 2px;
+	color: lightgray;
+	background-color: lightgray;
+	vertical-align: text-bottom;
+	border-radius: @border-radius-base;
+}
+
+.btn.right {
+	margin-right: 15px;
+}
+
+/* Home page */
+
+/* Fast task */
+.fast-task {
+	padding-right: 179px;
+
+	.task-name {
+		float: left;
+		width: 100%;
+	}
+
+	.controls {
+		margin-right: -179px;
+		float: right;
+	}
+}
+
+#priority {
+	label .glyphicon {
+		vertical-align: text-bottom;
+		font-size: 18px;
+	}
+
+	.active {
+		color: #fff;
+
+		&.low {
+			color: white;
+			background-color: @low-priority;
+			border-color: @low-priority;
+		}
+
+		&.normal {
+			background-color: @normal-priority;
+			border-color: @normal-priority;
+		}
+
+		&.high {
+			background-color: @high-priority;
+			border-color: @high-priority;
+		}
+	}
+}
+
+/* List content */
+.list-item {
+	padding-right: 86px;
+}
+.is-done.done {
+	color: white;
+	background-color: @done-item-bg;
+}
+.model-data {
+	&.done .checkbox-wrapper {
+		.is-done.done();
+	}
+
+	font-weight: bold;
+	float: left;
+	width: 100%;
+	margin-bottom: 3px;
+}
+.model-controls {
+	display: inline-block;
+	float: right;
+	margin-right: -86px;
+}
+
+.task-list {
+	.btn {
+		font-size: initial;
+		font-weight: bold;
+	}
+
+	.model-data {
+		&:before {
+			display: block;
+			content: "";
+			height: 37px;
+			width: @border-radius-base;
+			position: absolute;
+			border-radius: @border-radius-base 0 0 @border-radius-base;
+		}
+
+		&[data-priority="2"]:before {
+			background-color: @low-priority;
+		}
+		&[data-priority="1"]:before {
+			background-color: @normal-priority;
+		}
+		&[data-priority="0"]:before {
+			background-color: @high-priority;
+		}
+
+		&.done {
+			&[data-priority="2"]:before {
+				background-color: @low-priority-done;
+			}
+			&[data-priority="1"]:before {
+				background-color: @normal-priority-done;
+			}
+			&[data-priority="0"]:before {
+				background-color: @high-priority-done;
+			}
+
+			.title-text,
+			.list-counter {
+				text-decoration: line-through;
+				color: gray;
+			}
+		}
+
+		.title {
+			width: 100%;
+			text-align: left;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.list .title .list-counter {
+			float: right;
+		}
+	}
+}
+
+.group-title {
+    text-align: right;
+    margin-top: 5px;
+    font-size: 0.8em;
+}
+
+/* Edit page */
+.form-group .col-xs-12 {
+	margin-bottom: 5px;
+}
+.col-xs-2.control-label {
+	padding-top: 7px;
+	text-align: right;
+	margin-bottom: 0;
+}
+
+/* About page */
+.thanks img {
+	height: auto;
+	max-height: 40px;
+	max-width: 150px;
+}
+.gpl-link {
+	float: right;
+	padding: 10px 15px 0;
+
+	img {
+		height: 30px;
+	}
+}
+.jquery-link img {
+	background-color: #0769AD;
+	padding: 0 2px;
+}
+.nodejs-link img {
+	background-color: #303030;
+	padding: 0 2px;
+}
+.mochajs-link {
+	&:link,
+	&:visited,
+	&:hover,
+	&:active {
+		display: inline-block;
+		vertical-align: middle;
+		height: 40px;
+		background-color: #8a6343;
+		border-radius: 50%;
+		text-decoration: none;
+	}
+
+	span {
+		color: #fff;
+		font-size: 0.85em;
+		position: relative;
+		top: 8px;
+	}
+}
+.sinonjs-link {
+	&:link,
+	&:visited,
+	&:hover,
+	&:active {
+		text-decoration: none;
+		font-size: 2em;
+		vertical-align: middle;
+		color: #fff;
+		background-color: #333;
+	}
+}
