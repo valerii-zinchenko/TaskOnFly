@@ -26,7 +26,7 @@ module.exports = function(grunt) {
 				expand: true,
 				cwd: "./bower_components/bootstrap/dist/fonts",
 				src: ["*.*"],
-				dest: "build/3rd-party/bootstrap/fonts",
+				dest: "build/fonts",
 				flatten: true
 			}
 		},
@@ -140,7 +140,7 @@ module.exports = function(grunt) {
         },
 
         clean: {
-			build: ['build/3rd-party/*.js'],
+			build: ['build/3rd-party'],
 			coverage: ['js-cov']
 		}
     });
