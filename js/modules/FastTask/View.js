@@ -25,57 +25,38 @@
 'use strict';
 
 define(function() {
-	var template = '\
-<div class="full fast-task">\
-	<div class="task-name">\
-		<input id="fastTitle" class="form-control" type="text" placeholder="Fast task">\
-	</div>\
-	<div class="controls">\
-		<div id="priority" class="btn-group" data-toggle="buttons">\
-			<label class="low btn btn-default" for="low">\
-				<input id="low" type="radio" name="priority" value="2" aria-label="Low priority">\
-				<span class="glyphicon glyphicon-download"></span>\
-			</label>\
-			<label class="normal btn btn-default active" for="normal">\
-				<input id="normal" type="radio" name="priority" value="1" aria-label="Normal priority" checked>\
-				<span class="glyphicon glyphicon-record"></span>\
-			</label>\
-			<label class="high btn btn-default" for="high">\
-				<input id="high" type="radio" name="priority" value="0" aria-label="High priority">\
-				<span class="glyphicon glyphicon-upload"></span>\
-			</label>\
-		</div>\
-		<button id="addFastTask" class="btn btn-default" aria-label="Create"><span class="glyphicon glyphicon-plus"></span></button>\
-	</div>\
-</div>';
+    return new SingletonClass(StaticView, {
+		selector: '#fastTask',
 
-    return new SingletonClass(AView, {
-		template: template,
-
-        _postRender: function() {
+        _initElements: function() {
             this.$fastTilte = this.$el.find('#fastTitle');
             this.$priority = this.$el.find('#priority');
             this.$add = this.$el.find('#addFastTask');
         },
+
 		_attachEvents: function() {
 			this.$fastTilte.on('keyup', this.onChange.bind(this));
             this.$add.on('click', this.onAddTask.bind(this));
         },
+
         update: function() {
             this.$fastTilte.val('');
         },
+
 		getData: function() {
 			return {
 				title: this.$fastTilte.val(),
 				priority: this.$priority.find(':checked').val()
 			};
 		},
+
 		onChange: function(ev) {
 			if (ev.keyCode == 13) {
 				this.control.action();
 				this.update();
 			}
 		},
+
         onAddTask: function(ev) {
             ev.preventDefault();
 

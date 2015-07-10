@@ -25,16 +25,14 @@
 'use strict';
 
 define(function() {
-	return new SingletonClass(AView, {
-		template: '\
-<div>\
-	<input id="simpleSearch" class="form-control" placeholder="Search in current list...">\
-</div>',
+	return new SingletonClass(StaticView, {
+		selector: '#simpleSearch',
 
-		_postRender: function() {
-			this.$input = this.$el.find('#simpleSearch');
+		_initElements: function() {
+			this.$input = this.$el.find('input');
 			this.$clear = this.$el.find('.ui-input-clear');
 		},
+
 		_attachEvents: function() {
 			this.$input.on('keyup', this.onType.bind(this));
 			this.$clear.on('click', this.onClear.bind(this));
@@ -52,6 +50,7 @@ define(function() {
 
 			this.control.search(val);
 		},
+
 		onClear: function(ev) {
 			ev.preventDefault();
 
