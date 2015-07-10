@@ -21,19 +21,39 @@
  All source files are available at: http://github.com/valerii-zinchenko/TaskOnFly
  */
 
+/**
+ * @file It contains the implementation of [Static View class]{@link StaticView} creator.
+ *
+ * @see {@link AStateComponent}
+ * @see {@link AView}
+ * @see {@link DynamicView}
+ *
+ * @author Valerii Zinchenko
+ *
+ * @version 1.0.0
+ */
+
 'use strict';
 
-define([
-	'core/utils',
-	'core/AClass',
-	'core/Class',
-	'core/SingletonClass',
-	'core/AStateComponent',
-	'core/AView',
-	'core/StaticView',
-	'core/DynamicView',
-	'core/AControl',
-	'core/AState',
-	'core/MVCModule',
-	'core/EventHandler'
-], function(){});
+/**
+ * Static view.
+ * It implements parent's [render()]{@link render} method to initalize required elements and attach eventh.
+ *
+ * @type {Class}
+ *
+ * @constructor
+ */
+var StaticView = new SingletonClass(AView, {
+	selector: '',
+
+	initialize: function() {
+		this.$el = $(this.selector);
+	},
+
+	render: function() {
+		this._initElements();
+		this._attachEvents();
+
+		return this.$el;
+	}
+});
