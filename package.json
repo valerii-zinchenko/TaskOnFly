@@ -1,6 +1,6 @@
 {
   "name": "TaskOnFly",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.",
   "author": "Valerii Zinchenko",
   "license": "GPLv3",
@@ -14,7 +14,8 @@
     "grunt-contrib-clean": "~0.6.0",
     "grunt-contrib-copy": "~0.8.0",
     "grunt-contrib-less": "~1.0.1",
-    "grunt-template": "~0.2.3"
+    "grunt-template": "~0.2.3",
+    "lodash": "~3.10.0"
   },
   "devDependencies": {
     "chai": "~1.10.0",

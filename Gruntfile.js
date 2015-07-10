@@ -7,6 +7,14 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-istanbul');
     grunt.loadNpmTasks('grunt-mocha-phantom-istanbul');
 
+	var fs = require('fs');
+	var _ = require('lodash');
+	var insertHTML = function(path, additionalContext) {
+		var text = fs.readFileSync(__dirname + '/' + path);
+
+		return _.template(text)(this);
+	};
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -44,7 +52,8 @@ module.exports = function(grunt) {
 				options: {
 					data: {
 						env: 'DEV',
-						version: '<%- pkg.version %>'
+						version: '<%- pkg.version %>',
+						insertHTML: insertHTML
 					}
 				},
 				files: {
@@ -56,7 +65,8 @@ module.exports = function(grunt) {
 				options: {
 					data: {
 						env: 'PROD',
-						version: '<%- pkg.version %>'
+						version: '<%- pkg.version %>',
+						insertHTML: insertHTML
 					}
 				},
 				files: {

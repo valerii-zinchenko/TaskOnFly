@@ -1,0 +1,42 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button id="prevList" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-left"></span>Prev list</button>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainPanel">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="#" class="navbar-brand">TaskOnFly</a>
+		</div>
+
+		<div id="mainPanel" class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#add/task"><span class="glyphicon glyphicon-plus"></span> Add task</a></li>
+				<li><a href="#add/list"><span class="glyphicon glyphicon-plus"></span> Add list</a></li>
+				<li><a href="#about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<div id="content" class="container-fluid">
+<% ['fastTask', 'list'].forEach(function(module) { %>
+<% var path = 'html/modules/' + module + '.html'; %>
+	<div id="<%= module %>" class="module">
+		<%= insertHTML(path) %>
+	</div>
+<% }, this); %>
+</div>
+
+<footer class="footer">
+	<div class="container-fluid">
+<% ['simpleSearch'].forEach(function(module) { %>
+<% var path = 'html/modules/' + module + '.html'; %>
+	<div id="<%= module %>" class="module">
+		<%= insertHTML(path) %>
+	</div>
+<% }, this); %>
+	</div>
+</footer>
