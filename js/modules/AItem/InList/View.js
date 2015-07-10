@@ -40,14 +40,14 @@ define(function () {
 	</div>\
 </div>';
 
-    return new Class(AView, {
+    return new Class(DynamicView, {
         template: template,
 
         $listItem: null,
 		$titleWrapper: null,
 		$title: null,
 
-        _postProcessTemplate: function() {
+        _initElements: function() {
             this.$listItem = this.$el.find('.model-data');
 			this.$titleWrapper = this.$el.find('.title');
 			this.$title = this.$el.find('.title-text');

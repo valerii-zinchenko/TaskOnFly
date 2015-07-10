@@ -27,73 +27,13 @@
 define([
 	'view/PopupDialog'
 ], function() {
-	return new Class(AView, {
+	return new Class(DynamicView, {
 		template: '<div class="task-list"></div>',
 
 		_subModules: [],
 
-        __render: function() {
-            if (this.$currentList) {
-                this.$currentList.remove();
-            }
-
-            // The rendering of ~37 items on Android is too long
-            // duration: ~81 ms
-            this.$currentList = this._prepareListElement(this.control.getList());
-
-            // duration: ~5 ms
-            this.$content.append(this.$currentList);
-            // duration: ~802 ms
-            this.$content.trigger('create');
-
-            // duration: ~142 ms
-            this._postRender();
-            return this;
-        },
-
-		_postProcessTemplate: function() {
-			this.$list = this.$el;
-		},
-
-		_postRenderModules: function() {
-			var itemIDs = this.control.sortIDs();
-			for (var n=0, N = itemIDs.length; n < N; n++) {
-				this.control._items[itemIDs[n]].view.postRender();
-			}
-		},
-
-		renderSubModules: function() {
-			// todo: make update()
-			//this.control.connect();
-
-			var view;
-			var itemIDs = this.control.sortIDs();
-			for (var n = 0, N = itemIDs.length; n < N; n++) {
-				view = this.control._items[itemIDs[n]].view;
-				this.$list.append(view.render());
-
-				this._subModules.push(view);
-			}
-		},
-
 		update: function() {
 			this.control.sortIDs();
-			for (var n=0, N = this._subModules.length; n < N; n++) {
-				this._subModules[n].update();
-			}
-
-			this._fixWidth();
-		},
-
-		_attachEvents: function() {
-			var that = this;
-			$(window).on('orientationchange', function() {
-				// Timeout is used here because at this moment there is no guaranties
-				// that the new window dimensions are already applied.
-				setTimeout(function(){
-					that._fixWidth();
-				}, 300);
-			});
 		},
 
 		insertNewItemTo: function(itemView, toIndex) {
@@ -101,15 +41,9 @@ define([
 
 			this.insertItemTo(itemView, toIndex);
 
-			itemView.$el.trigger('create');
-			itemView.postRender();
-
 			itemView.update();
-
-			if (this._subModules.length == 1) {
-				this._fixWidth();
-			}
 		},
+
 		insertItemTo: function(itemView, toIndex) {
 			this._subModules.splice(toIndex, 0, itemView);
 
@@ -127,9 +61,10 @@ define([
 			if (siblingItemView) {
 				itemView.$el[insertionFn](siblingItemView.$el);
 			} else {
-				this.$list.append(itemView.$el);
+				this.$el.append(itemView.$el);
 			}
 		},
+
 		moveItem: function(itemView, fromIndex, toIndex) {
 			itemView.$el.detach();
 
@@ -137,23 +72,10 @@ define([
 
 			this.insertItemTo(itemView, toIndex);
 		},
+
 		removeItem: function(id) {
 			var index = this._subModules.indexOf(id);
 			this._subModules.splice(index, 1);
-		},
-
-        _fixWidth: function () {
-            var $tables = this.$el.find('table');
-            var th = $tables.find('th:first');
-            var lists = $tables.find('.list-item label');
-
-            $tables.removeClass('fixed');
-            lists.removeClass('nowrap');
-
-            th.css('width', $tables.width() - 84 - 3*2);
-
-            $tables.addClass('fixed');
-            lists.addClass('nowrap');
         }
 	});
 });

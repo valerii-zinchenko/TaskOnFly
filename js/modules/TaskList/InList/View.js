@@ -34,8 +34,8 @@ define([
 </span>\
 ';
 	return new Class(Parent, {
-		_postProcessTemplate: function() {
-			Parent.prototype._postProcessTemplate.call(this);
+		_initElements: function() {
+			Parent.prototype._initElements.call(this);
 
 			this.$listItem.find('input').prop('disabled', true);
 
@@ -50,6 +50,7 @@ define([
 			this.$listItem.on('click', this.onChange.bind(this));
 		},
 		update: function() {
+			// todo: Subscribe to model events
 			this.$nDoneTasks.html(this.model._NDone);
 			this.$nTasks.html(this.model.public.items.length);
 		},
