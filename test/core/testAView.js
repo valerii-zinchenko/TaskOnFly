@@ -64,6 +64,7 @@ suite('AView', function() {
 		});
 
 		test('desctuct()', function(){
+			aView.$el = $();
 			assert.doesNotThrow(function(){
 				aView.setControl(new AControl());
 				aView.destruct();
@@ -73,16 +74,15 @@ suite('AView', function() {
 			assert.isTrue(AStateComponent.prototype.destruct.calledOnce, 'Parent\'s destruct() should be called');
 		});
 
+		/*
 		suite('render()', function(){
 			setup(function(){
 				sinon.spy(AView.prototype, 'processTemplate');
-				sinon.spy(AView.prototype, '_postProcessTemplate');
-				sinon.spy(AView.prototype, 'renderSubModules');
+				sinon.spy(AView.prototype, '_initElements');
 			});
 			teardown(function(){
 				AView.prototype.processTemplate.restore();
-				AView.prototype._postProcessTemplate.restore();
-				AView.prototype.renderSubModules.restore();
+				AView.prototype._initElements.restore();
 			});
 
 			test('without model', function(){
@@ -160,16 +160,11 @@ suite('AView', function() {
 				assert.isTrue(aView._postRenderModules.calledOnce, '_postRenderModules() should be called once by execution render(), postRender(), render() and postRender()');
 			});
 		});
+		*/
 
 		test('update()', function() {
 			assert.doesNotThrow(function(){
 				aView.update();
-			});
-		});
-
-		test('updateSubModules()', function() {
-			assert.doesNotThrow(function(){
-				aView.updateSubModules();
 			});
 		});
 	});
