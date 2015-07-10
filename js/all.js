@@ -26,7 +26,11 @@
 define([
 	'libs',
 	'core',
-	'version',
-	'main',
 	'boot'
-], function(){});
+], function(){
+	requirejs([
+		'libs',
+	], function(){
+		requirejs(['boot'], function(){});
+	});
+});
