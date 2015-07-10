@@ -26,10 +26,12 @@
 var TaskOnFly;
 
 requirejs([
-	'libs'
-], function() {
-	requirejs(['main'], function(App) {
-		TaskOnFly = new App();
-		TaskOnFly.model.start();
-	});
+	"main",
+	"version"
+], function(App) {
+	TaskOnFly = new App();
+	TaskOnFly.model.start();
+
+	TaskOnFly.useState('fastTask');
+	TaskOnFly.useState('fastSearch');
 });
