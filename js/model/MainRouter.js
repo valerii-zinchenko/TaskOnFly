@@ -23,7 +23,7 @@
 
 'use strict';
 
-define(function () {
+define(['../../3rd-party/backbone'], function () {
     return Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -51,10 +51,7 @@ define(function () {
 				fn.call(view);
 			}
 
-			view.render();
-			view.postRender();
-
-			//view.update();
+			view.update();
 
 			if (this._view) {
 				this._view.hide();
