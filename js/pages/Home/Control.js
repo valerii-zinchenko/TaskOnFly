@@ -25,12 +25,5 @@
 'use strict';
 
 define(function() {
-    return new SingletonClass(AControl, {
-        addTask: function() {
-            TaskOnFly.model.changeView('add/task');
-        },
-        addList: function() {
-            TaskOnFly.model.changeView('add/list');
-        }
-    });
+    return new SingletonClass(AControl, {});
 });
