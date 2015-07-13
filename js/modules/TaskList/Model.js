@@ -69,11 +69,13 @@ define([
             if (this.public.items.indexOf(id) === -1) {
                 this.public.items.push(id);
             }
+			this.trigger('updateNItems', this.public.items.length);
 
             this.models[id] = item;
             if (item.model.public.isDone) {
                 this._NDone++;
             }
+			this.trigger('updateNDone', this._NDone);
 
             this._checkListCompleteness();
 
@@ -105,10 +107,13 @@ define([
 		removeItem: function(id, model) {
 			if (model.public.isDone) {
 				this._NDone--;
+				this.trigger('updateNDone', this._NDone);
 			}
 
 			this.public.items.splice(this.public.items.indexOf(id), 1);
 			delete this.models[id];
+
+			this.trigger('updateNItems', this.public.items.length);
 		},
 
         getItem: function(id) {
@@ -265,6 +270,8 @@ define([
 			}
 
 			this._checkListCompleteness();
+
+			this.trigger('updateNDone', this._NDone);
 		},
 		onRemove: function(model, id) {
 			this.removeItem(id, model);

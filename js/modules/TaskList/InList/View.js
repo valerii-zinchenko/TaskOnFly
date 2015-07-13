@@ -39,20 +39,23 @@ define([
 
 			this.$listItem.find('input').prop('disabled', true);
 
-			this.$title.append(taskCounterTemplate);
+			this.$titleWrapper.append(taskCounterTemplate);
 
-			this.$nDoneTasks = this.$title.find('.js-done-tasks');
-			this.$nTasks = this.$title.find('.js-total-tasks');
+			this.$nDoneTasks = this.$titleWrapper.find('.js-done-tasks');
+			this.$nTasks = this.$titleWrapper.find('.js-total-tasks');
 		},
 		_attachEvents: function() {
 			Parent.prototype._attachEvents.call(this);
 
 			this.$listItem.on('click', this.onChange.bind(this));
 		},
-		update: function() {
-			// todo: Subscribe to model events
-			this.$nDoneTasks.html(this.model._NDone);
-			this.$nTasks.html(this.model.public.items.length);
+
+		updateNItems: function(N) {
+			this.$nTasks.html(N);
+		},
+
+		updateNDone: function(N) {
+			this.$nDoneTasks.html(N);
 		},
 
 		onRemove: function(ev) {

@@ -28,9 +28,26 @@ define([
 	'../../AItem/InList/Control'
 ], function (Parent) {
 	return new Class(Parent, {
+		connect: function() {
+			Parent.prototype.connect.call(this);
+
+			this.model.listen({
+				updateNDone: _.bind(this.onUpdateNDone, this),
+				updateNItems: _.bind(this.onUpdateNItems, this)
+			});
+		},
+
 		action: function(id) {
 			var id = this.model.public.id;
 			TaskOnFly.model.changeView(['path', this.model._path].join(''));
+		},
+
+		onUpdateNDone: function(ev, N) {
+			this.view.updateNDone(N);
+		},
+
+		onUpdateNItems: function(ev, N) {
+			this.view.updateNItems(N);
 		}
 	});
 });
