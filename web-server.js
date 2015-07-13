@@ -8,7 +8,8 @@ var mimeTypes = {
 	'.css': 'text/css',
 	'.js': 'application/javascript',
 	'.txt': 'text/plain',
-	'.woff2': 'application/font-woff2'
+	'.woff2': 'application/font-woff2',
+	'.png': 'image/png'
 };
 
 function getFile(path, rs, mimeType) {
