@@ -74,17 +74,11 @@ define(function() {
 			if (this.list == list) {
 				return;
 			}
-			if (!list.view._isRendered) {
-				list.view.render();
-			}
+
 			var $newList = list.view.$el;
 			var $currentList = this.list.view.$el;
 
-			this.$listModule.append($newList);
-			if (!list.view._isRendered) {
-				$newList.trigger('create');
-				list.view.postRender();
-			}
+			this.$list.append($newList);
 
             if (this.list.model._parent && this.list.model._parent.public.id === list.model.public.id) {
                 //todo Position new list to the left side and move both lists from left to the right
