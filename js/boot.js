@@ -29,16 +29,8 @@ requirejs([
 	"main",
 	"version"
 ], function(App) {
-	$('#progressBar').css('width', '100%').attr('aria-valuenow', '100');
-
 	TaskOnFly = new App();
 	TaskOnFly.useState('fastTask');
 	TaskOnFly.useState('fastSearch');
-	TaskOnFly.model.start(function(){
-		var $loading = $('#loading');
-		$loading.css('opacity', '0');
-		setTimeout(function(){
-			$loading.css('display', 'none');
-		}, 500);
-	});
+	TaskOnFly.model.start();
 });

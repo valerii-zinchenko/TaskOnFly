@@ -50,7 +50,7 @@ define([
 		ROOT_TASK_LIST: null,
 		CURRENT_TASK_LIST: null,
 
-		start: function(fn) {
+		start: function() {
 			var store = this.loadItem('root'),
 				rootList = new TaskList({
 					id: 'root',
@@ -69,10 +69,6 @@ define([
 
 			new MainRouter();
 			Backbone.history.start();
-
-			if (fn) {
-				fn();
-			}
 		},
 
 		sync: function(listRef, ids) {

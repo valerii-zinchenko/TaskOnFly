@@ -11,7 +11,7 @@
 </head>
 <body>
 <% var pages = ['home', 'editor', 'about']; %>
-<% var progressSteps = pages.length + 1 + 1; // 1 for scripts; 1 for app statr %>
+<% var progressSteps = pages.length + 1; // 1 for scripts %>
 <div id="loading" class="container-fluid">
 	<div class="progress">
 		<div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
@@ -67,16 +67,30 @@
 			], function(){
 				requirejs([
 					"boot"
-				], function(){});
+				], function(){
+					var $loading = $('#loading');
+					$loading.css('opacity', '0');
+					setTimeout(function(){
+						$loading.css('display', 'none');
+					}, 500);
+				});
 			});
 		});
 	</script>
 <% } %>
 
 	<script>
-		var progress = (total-1)/total * 100;
+		var progress = 100;
 		progressBar.style.width = progress + "%";
 		progressBar.setAttribute("aria-valuenow", progress);
+
+<% if (env == 'PROD') { %>
+		var $loading = $('#loading');
+		$loading.css('opacity', '0');
+		setTimeout(function(){
+			$loading.css('display', 'none');
+		}, 500);
+<% } %>
 	</script>
 </body>
 </html>
