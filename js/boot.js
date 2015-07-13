@@ -29,9 +29,16 @@ requirejs([
 	"main",
 	"version"
 ], function(App) {
-	TaskOnFly = new App();
-	TaskOnFly.model.start();
+	$('#progressBar').css('width', '100%').attr('aria-valuenow', '100');
 
+	TaskOnFly = new App();
 	TaskOnFly.useState('fastTask');
 	TaskOnFly.useState('fastSearch');
+	TaskOnFly.model.start(function(){
+		var $loading = $('#loading');
+		$loading.css('opacity', '0');
+		setTimeout(function(){
+			$loading.css('display', 'none');
+		}, 500);
+	});
 });
