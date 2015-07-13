@@ -15,7 +15,9 @@
     "grunt-contrib-copy": "~0.8.0",
     "grunt-contrib-less": "~1.0.1",
     "grunt-template": "~0.2.3",
-    "lodash": "~3.10.0"
+    "lodash": "~3.10.0",
+    "bower": "~1.4.1",
+    "grunt-bower-install-task": "0.0.4"
   },
   "devDependencies": {
     "chai": "~1.10.0",

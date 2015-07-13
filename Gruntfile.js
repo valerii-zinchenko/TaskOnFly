@@ -4,6 +4,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-template');
+    grunt.loadNpmTasks('grunt-bower-install-task');
     grunt.loadNpmTasks('grunt-istanbul');
     grunt.loadNpmTasks('grunt-mocha-phantom-istanbul');
 
@@ -36,6 +37,11 @@ module.exports = function(grunt) {
 				src: ["*.*"],
 				dest: "build/fonts",
 				flatten: true
+			},
+			favicon: {
+				files: {
+					'build/favicon.png': ['favicon.png']
+				}
 			}
 		},
 
@@ -158,8 +164,8 @@ module.exports = function(grunt) {
     grunt.registerTask('test', ['template:TEST', 'mocha:test']);
     grunt.registerTask('coverage', ['prepareForCoverage', 'template:CODE_COVERAGE', 'mocha:coverage', 'clean:coverage']);
 
-	grunt.registerTask('build-dev', ['less', 'copy', 'template:DEV']);
-	grunt.registerTask('build', ['less', 'copy', 'template:PROD', 'requirejs', 'clean:build']);
+	grunt.registerTask('build-dev', ['bower_install', 'less', 'template:DEV', 'copy']);
+	grunt.registerTask('build', ['bower_install', 'less', 'template:PROD', 'copy', 'requirejs', 'clean:build']);
 
 	var istanbul = require('istanbul');
 	grunt.registerMultiTask('prepareForCoverage', 'Generates coverage reports for JS using Istanbul', function() {
