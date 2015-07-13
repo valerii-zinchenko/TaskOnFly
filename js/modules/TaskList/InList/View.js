@@ -30,7 +30,7 @@ define([
 ], function(Parent, PopupDialog) {
 	var taskCounterTemplate = '\
 <span class="list-counter">\
-	<span class="js-done-tasks"></span>/<span class="js-total-tasks"></span>\
+	<span class="js-done-tasks">0</span>/<span class="js-total-tasks">0</span>\
 </span>\
 ';
 	return new Class(Parent, {
