@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html manifest="cache.manifest">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="author" content="Valerii Zinchenko">
+    <meta name="description" content="TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.">
+    <title>TaskOnFly</title>
+
+	<link rel="shortcut icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+
+<div id="loading" class="container-fluid">
+	<div class="progress">
+		<div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+	</div>
+</div>
+<script>
+	var progressBar = document.getElementById('progressBar');
+	var progress = 0;
+	var total = 4;
+</script>
+
+
+	<div id="home" class="page hidden">
+		<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button id="prevList" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-left"></span>Prev list</button>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainPanel">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="#" class="navbar-brand">TaskOnFly</a>
+		</div>
+
+		<div id="mainPanel" class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#add/task"><span class="glyphicon glyphicon-plus"></span> Add task</a></li>
+				<li><a href="#add/list"><span class="glyphicon glyphicon-plus"></span> Add list</a></li>
+				<li><a href="#about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<div id="content" class="container-fluid">
+
+
+	<div id="fastTask" class="module">
+		<div class="full fast-task">
+	<div class="task-name">
+		<input id="fastTitle" class="form-control" type="text" placeholder="Fast task">
+	</div>
+	<div class="controls">
+		<div id="priority" class="btn-group" data-toggle="buttons">
+			<label class="low btn btn-default" for="low">
+				<input id="low" type="radio" name="priority" value="2" aria-label="Low priority">
+				<span class="glyphicon glyphicon-download"></span>
+			</label>
+			<label class="normal btn btn-default active" for="normal">
+				<input id="normal" type="radio" name="priority" value="1" aria-label="Normal priority" checked>
+				<span class="glyphicon glyphicon-record"></span>
+			</label>
+			<label class="high btn btn-default" for="high">
+				<input id="high" type="radio" name="priority" value="0" aria-label="High priority">
+				<span class="glyphicon glyphicon-upload"></span>
+			</label>
+		</div>
+		<button id="addFastTask" class="btn btn-default" aria-label="Create"><span class="glyphicon glyphicon-plus"></span></button>
+	</div>
+</div>
+
+	</div>
+
+
+	<div id="list" class="module">
+		
+	</div>
+
+</div>
+
+<footer class="footer">
+	<div class="container-fluid">
+
+
+	<div id="simpleSearch" class="module">
+		<div>
+	<input class="form-control" placeholder="Search in current list...">
+</div>
+
+	</div>
+
+	</div>
+</footer>
+
+	</div>
+	<script>
+		progress = 1/total * 100;
+		progressBar.style.width = progress + "%";
+		progressBar.setAttribute("aria-valuenow", progress);
+	</script>
+
+	<div id="editor" class="page hidden">
+		<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a href="#" class="navbar-brand">TaskOnFly</a>
+			<p id="headerTitle" class="navbar-text">Item</p>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<form class="form-horizontal">
+		<div class="form-group">
+			<div class="col-xs-12">
+				<div class="input-group" data-toggle="buttons">
+					<label class="is-done btn btn-default input-group-addon" for="done">
+						<input id="done" type="checkbox" aria-label="Is task done?">
+						<span class="glyphicon glyphicon-ok"></span>
+					</label>
+					<input type="text" id="title" class="form-control" name="title" placeholder="Title" value=""/>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div id="priority" class="col-xs-12 btn-group btn-group-justified" data-toggle="buttons">
+				<label for="2" class="low btn btn-default">
+					<input id="2" type="radio" name="priority" value="2">Low
+				</label>
+				<label for="1" class="normal btn btn-default active">
+					<input id="1" type="radio" name="priority" value="1" checked>Normal
+				</label>
+				<label for="0" class="high btn btn-default">
+					<input id="0" type="radio" name="priority" value="0">High
+				</label>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-12 col-sm-6">
+				<div class="row">
+					<label for="start" class="control-label col-xs-2">Start:</label>
+					<div class="col-xs-10">
+						<input type="date" id="start" class="form-control" value="" placeholder="YYYY-MM-DD">
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<div class="row">
+					<label for="due" class="control-label col-xs-2">Due:</label>
+					<div class="col-xs-10">
+						<input type="date" id="due" class="form-control" value="" placeholder="YYYY-MM-DD">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-12">
+				<textarea id="notes" class="form-control" name="notes" placeholder="Notes..."></textarea>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-12">
+				<input type="submit" value="Save" class="save btn btn-primary btn-block">
+			</div>
+		</div>
+	</form>
+</div>
+
+	</div>
+	<script>
+		progress = 2/total * 100;
+		progressBar.style.width = progress + "%";
+		progressBar.setAttribute("aria-valuenow", progress);
+	</script>
+
+	<div id="about" class="page hidden">
+		<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a href="#" class="navbar-brand">TaskOnFly</a>
+			<a href="http://www.gnu.org/licenses/gpl-3.0.html" class="gpl-link">
+				<img src="http://www.gnu.org/graphics/gplv3-127x51.png" alt="GPLv3">
+			</a>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="well justify">
+		<p>Version 3.0.0</p>
+		<p>TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.</p>
+		<p>Copyright (C) 2014-2015  Valerii Zinchenko</p>
+		<p>TaskOnFly is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
+		<p>TaskOnFly is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p>
+		<p>You should have received a copy of the GNU General Public License along with TaskOnFly.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+		<p>All source files are available at: <a href="http://github.com/valerii-zinchenko/TaskOnFly">http://github.com/valerii-zinchenko/TaskOnFly</a></p>
+	</div>
+	<div class="well thanks">
+		<a href="http://www.vim.org/" class="vim-link">
+			<img src="http://upload.wikimedia.org/wikipedia/commons/1/12/Vimlogo.png" alt="Vim">
+		</a>
+		<a href="http://getbootstrap.com/" class="bootstrap-link">
+			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAA81BMVEX///9VPnxWPXxWPXxWPXxWPXxWPXxWPXz///9hSYT6+vuFc6BXPn37+vz8+/z9/f2LeqWMe6aOfqiTg6uXiK5bQ4BZQX9iS4VdRYFdRYJfSINuWI5vWY9xXJF0YJR3Y5Z4ZZd5ZZd6Z5h9apq0qcW1qsW1q8a6sMqpnLyrn76tocCvpMGwpMJoUoprVYxeRoJjS4abjLGilLemmbrDutDFvdLPx9nX0eDa1OLb1uPd1+Td2OXe2eXh3Ofj3+nk4Orl4evp5u7u7PLv7fPx7/T08vb08/f19Pf29Pj39vn6+fuEcZ9YP35aQn/8/P1ZQH5fR4PINAOdAAAAB3RSTlMAIWWOw/P002ipnAAAAPhJREFUeF6NldWOhEAUBRvtRsfdfd3d3e3/v2ZPmGSWZNPDqScqqaSBSy4CGJbtSi2ubRkiwXRkBo6ZdJIApeEwoWMIS1JYwuZCW7hc6ApJkgrr+T/eW1V9uKXS5I5GXAjW2VAV9KFfSfgJpk+w4yXhwoqwl5AIGwp4RPgdK3XNHD2ETYiwe6nUa18f5jYSxle4vulw7/EtoCdzvqkPv3bn7M0eYbc7xFPXzqCrRCgH0Hsm/IjgTSb04W0i7EGjz+xw+wR6oZ1MnJ9TWrtToEx+4QfcZJ5X6tnhw+nhvqebdVhZUJX/oFcKvaTotUcvUnY188ue/n38AunzPPE8yg7bAAAAAElFTkSuQmCC" alt="Bootstrap">
+		</a>
+		<a href="http://jquery.com/" class="jquery-link">
+			<img src="http://jquery.com/jquery-wp-content/themes/jquery/images/logo-jquery.png" alt="jQuery">
+		</a>
+		<a href="http://requirejs.org/" class="requirejs-link">
+			<img src="http://requirejs.org/i/logo.png" alt="Require JS">
+		</a>
+		<a href="https://nodejs.org/" class="nodejs-link">
+			<img src="https://nodejs.org/images/logo.svg" alt="Node.js">
+		</a>
+		<a href="http://gruntjs.com/" class="grunt-link">
+			<img src="http://gruntjs.com/img/grunt-logo.png" alt="Grunt">
+		</a>
+		<a href="http://phantomjs.org/" class="phantomjs-link">
+			<img src="http://phantomjs.org/img/phantomjs-logo.png" alt="PhantomJS">
+		</a>
+		<a href="http://mochajs.org/" class="mochajs-link">
+			<span>mocha</span>
+		</a>
+		<a href="http://sinonjs.org/" class="sinonjs-link">Sinon.JS</a>
+		<a href="http://chaijs.com/" class="chaijs-link">
+			<img src="http://chaijs.com/public/img/chai-logo-small.png" alt="Chai Assertion Library">
+		</a>
+		<a href="http://bower.io/" class="bower-link">
+			<img src="http://bower.io/img/bower-logo.png" alt="Bower">
+		</a>
+		<a href="http://underscorejs.org/" class="underscorejs-link">
+			<img src="http://underscorejs.org/docs/images/underscore.png" alt="Underscore.js">
+		</a>
+		<a href="http://backbonejs.org/" class="backbonejs-link">
+			<img src="http://backbonejs.org/docs/images/backbone.png" alt="Backbone.js">
+		</a>
+		<a href="http://glyphicons.com/" class="bootstrap-glyphicons-link">
+			<img src="http://glyphicons.com/wp-content/themes/glyphicons/sk/public/img/logo.svg" alt="Glyphicons">
+		</a>
+	</div>
+</div>
+
+	</div>
+	<script>
+		progress = 3/total * 100;
+		progressBar.style.width = progress + "%";
+		progressBar.setAttribute("aria-valuenow", progress);
+	</script>
+
+
+
+	<script src="js/all.js" type="text/javascript" charset="utf-8"></script>
+
+
+	<script>
+		var progress = 100;
+		progressBar.style.width = progress + "%";
+		progressBar.setAttribute("aria-valuenow", progress);
+
+
+		var $loading = $('#loading');
+		$loading.css('opacity', '0');
+		setTimeout(function(){
+			$loading.css('display', 'none');
+		}, 500);
+
+	</script>
+</body>
+</html>
