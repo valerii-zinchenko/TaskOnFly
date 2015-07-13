@@ -41,7 +41,8 @@ define(function () {
 			this._items[module.model.public.id] = state;
 
 			state.model.listen({
-				updateIsDone: _.bind(this.onUpdateIsDone, this),
+				updateIsDone: _.bind(this.onUpdatePosition, this),
+				updatePriority: _.bind(this.onUpdatePosition, this),
 				remove: _.bind(this.onRemove, this)
 			});
 
@@ -61,7 +62,7 @@ define(function () {
 
 			this.view.insertNewItemTo(item.view, index);
 		},
-		onUpdateIsDone: function(ev) {
+		onUpdatePosition: function(ev) {
 			var id = ev.public.id;
 			var item = this._items[id];
 
