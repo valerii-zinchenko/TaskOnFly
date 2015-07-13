@@ -58,7 +58,6 @@ define(['../../3rd-party/backbone'], function () {
 			}
 
 			view.show();
-			view.update();
 
 			this._view = view;
 		},
