@@ -172,34 +172,25 @@ footer .module {
 	}
 
 	.model-data {
-		&:before {
-			display: block;
-			content: "";
-			height: 37px;
-			width: @border-radius-base;
-			position: absolute;
-			border-radius: @border-radius-base 0 0 @border-radius-base;
+		&[data-priority="2"] .title {
+			border-left-color: @low-priority;
 		}
-
-		&[data-priority="2"]:before {
-			background-color: @low-priority;
+		&[data-priority="1"] .title {
+			border-left-color: @normal-priority;
 		}
-		&[data-priority="1"]:before {
-			background-color: @normal-priority;
-		}
-		&[data-priority="0"]:before {
-			background-color: @high-priority;
+		&[data-priority="0"] .title {
+			border-left-color: @high-priority;
 		}
 
 		&.done {
-			&[data-priority="2"]:before {
-				background-color: @low-priority-done;
+			&[data-priority="2"] .title {
+				border-left-color: @low-priority-done;
 			}
-			&[data-priority="1"]:before {
-				background-color: @normal-priority-done;
+			&[data-priority="1"] .title {
+				border-left-color: @normal-priority-done;
 			}
-			&[data-priority="0"]:before {
-				background-color: @high-priority-done;
+			&[data-priority="0"] .title {
+				border-left-color: @high-priority-done;
 			}
 
 			.title-text,
@@ -214,6 +205,7 @@ footer .module {
 			text-align: left;
 			overflow: hidden;
 			text-overflow: ellipsis;
+			border-left-width: @border-radius-base;
 		}
 
 		&.list .title .list-counter {
