@@ -203,13 +203,26 @@ footer .module {
 		.title {
 			width: 100%;
 			text-align: left;
-			overflow: hidden;
-			text-overflow: ellipsis;
 			border-left-width: @border-radius-base;
+			padding-left: @padding-base-vertical;
+
+			label {
+				width: 100%;
+				margin: 0;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				vertical-align: middle;
+			}
 		}
 
-		&.list .title .list-counter {
-			float: right;
+		&.list .title {
+			padding-right: @padding-base-vertical + @list-counter-size;
+
+			.list-counter {
+				float: right;
+				margin-right: -@list-counter-size;
+			}
 		}
 	}
 }

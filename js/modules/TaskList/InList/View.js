@@ -28,18 +28,34 @@ define([
 	'../../AItem/InList/View',
 	'view/PopupDialog'
 ], function(Parent, PopupDialog) {
-	var taskCounterTemplate = '\
-<span class="list-counter">\
-	<span class="js-done-tasks">0</span>/<span class="js-total-tasks">0</span>\
-</span>\
-';
+	var template = '\
+<div class="list-item" data-item-id="<%= public.id %>">\
+	<div class="model-data <%= public.type.toLowerCase() %> <% if (public.isDone) {%>done<% } %>" data-priority="<%= public.priority %>">\
+		<div class="title btn btn-default">\
+			<label for="<%= public.id %>">\
+				<span class="checkbox-wrapper glyphicon glyphicon-ok">\
+					<input id="<%= public.id %>" type="checkbox" <% if (public.isDone) { %> checked <% } %>>\
+				</span>\
+				<span class="title-text"><%= public.title %></span>\
+			</label>\
+			<span class="list-counter">\
+				<span class="js-done-tasks"><%= _NDone %></span>/<span class="js-total-tasks"><%= public.items.length %></span>\
+			</span>\
+		</div>\
+	</div>\
+	<div class="btn-group model-controls" role="group">\
+		<button class="btn btn-default js-btn-edit" aria-label="Edit"><span class="glyphicon glyphicon-pencil"></span></button>\
+		<button class="btn btn-default js-btn-remove" aria-label="Remove"><span class="glyphicon glyphicon-remove"></button>\
+	</div>\
+</div>';
+
 	return new Class(Parent, {
+		template: template,
+
 		_initElements: function() {
 			Parent.prototype._initElements.call(this);
 
 			this.$listItem.find('input').prop('disabled', true);
-
-			this.$titleWrapper.append(taskCounterTemplate);
 
 			this.$nDoneTasks = this.$titleWrapper.find('.js-done-tasks');
 			this.$nTasks = this.$titleWrapper.find('.js-total-tasks');

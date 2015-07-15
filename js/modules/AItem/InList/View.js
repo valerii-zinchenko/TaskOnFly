@@ -27,12 +27,14 @@ define(function () {
 	var template = '\
 <div class="list-item" data-item-id="<%= public.id %>">\
 	<div class="model-data <%= public.type.toLowerCase() %> <% if (public.isDone) {%>done<% } %>" data-priority="<%= public.priority %>">\
-		<label class="title btn btn-default" for="<%= public.id %>">\
-			<span class="checkbox-wrapper glyphicon glyphicon-ok">\
-				<input id="<%= public.id %>" type="checkbox" <% if (public.isDone) { %> checked <% } %>>\
-			</span>\
-			<span class="title-text"><%= public.title %></span>\
-		</label>\
+		<div class="title btn btn-default">\
+			<label for="<%= public.id %>">\
+				<span class="checkbox-wrapper glyphicon glyphicon-ok">\
+					<input id="<%= public.id %>" type="checkbox" <% if (public.isDone) { %> checked <% } %>>\
+				</span>\
+				<span class="title-text"><%= public.title %></span>\
+			</label>\
+		</div>\
 	</div>\
 	<div class="btn-group model-controls" role="group">\
 		<button class="btn btn-default js-btn-edit" aria-label="Edit"><span class="glyphicon glyphicon-pencil"></span></button>\
