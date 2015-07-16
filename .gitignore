@@ -1,9 +1,17 @@
 # exclude *.swp files created by vim
 **/*.swp
 
+# exclude files
+index.html
+
 # exclude folders
 .idea/
 node_modules/
 bower_components/
 tmp/
 js-cov/
+3rd-party/
+css/
+fonts/
+build/
+reports/
