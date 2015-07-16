@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-template');
     grunt.loadNpmTasks('grunt-bower-install-task');
     grunt.loadNpmTasks('grunt-istanbul');
@@ -158,6 +159,17 @@ module.exports = function(grunt) {
         clean: {
 			build: ['build/3rd-party'],
 			coverage: ['js-cov']
+		},
+
+		watch: {
+			templates: {
+				files: ['html/**/*.html'],
+				tasks: ['template:DEV']
+			},
+			less: {
+				files: ['less/*.less'],
+				tasks: ['less']
+			}
 		}
     });
 
