@@ -63,8 +63,8 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'index.html': ['index.html.tpl'],
-					'js/version.js': ['js/version.js.tpl']
+					'index.html': ['index.tpl.html'],
+					'js/version.js': ['js/version.tpl.js']
 				}
 			},
 			PROD: {
@@ -76,9 +76,9 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'build/index.html': ['index.html.tpl'],
-					'js/version.js': ['js/version.js.tpl'],
-					'build/cache.manifest': ['cache.manifest.tpl']
+					'build/index.html': ['index.tpl.html'],
+					'js/version.js': ['js/version.tpl.js'],
+					'build/cache.manifest': ['cache.tpl.manifest']
 				}
 			},
 
@@ -89,7 +89,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'test/config.js': ['test/config.js.tpl']
+					'test/config.js': ['test/config.tpl.js']
 				}
 			},
 			CODE_COVERAGE: {
@@ -99,7 +99,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'test/config.js': ['test/config.js.tpl']
+					'test/config.js': ['test/config.tpl.js']
 				}
 			}
 		},
