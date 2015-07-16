@@ -46,7 +46,7 @@ define(function() {
 		getData: function() {
 			return {
 				title: this.$fastTilte.val(),
-				priority: this.$priority.find(':checked').val()
+				priority: this.$priority.find('.active input').val()
 			};
 		},
 
