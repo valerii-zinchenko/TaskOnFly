@@ -163,7 +163,7 @@ module.exports = function(grunt) {
 
 		watch: {
 			templates: {
-				files: ['html/**/*.html'],
+				files: ['index.tpl.html', 'html/**/*.html'],
 				tasks: ['template:DEV']
 			},
 			less: {
