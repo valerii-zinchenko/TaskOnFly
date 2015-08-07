@@ -1,5 +1,5 @@
 # TaskOnFly
-TaskOnFly gives you an easy way to track your tasks from any device with HTML5 compatible browser and enabled JavaScript.
+Simple, light and offline task manager. Manage your tasks and lists of tasks on the fly. You can work with TaskOnFly when you offline, becase all your tasks are stored in the browser.
 
 You can create tasks and group them in lists. Lists of tasks also can be nested.
 
