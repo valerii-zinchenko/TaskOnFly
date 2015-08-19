@@ -3,6 +3,8 @@
 
 # exclude files
 index.html
+js/version.js
+test/index.html
 
 # exclude folders
 .idea/

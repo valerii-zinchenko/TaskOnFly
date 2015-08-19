@@ -90,7 +90,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'test/config.js': ['test/config.tpl.js']
+					'test/index.html': ['test/index.tpl.html']
 				}
 			},
 			CODE_COVERAGE: {
@@ -100,7 +100,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'test/config.js': ['test/config.tpl.js']
+					'test/index.html': ['test/index.tpl.html']
 				}
 			}
 		},
