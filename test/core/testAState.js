@@ -52,63 +52,44 @@ suite('AState', function(){
 
 	suite('Factory result', function(){
 		suite('initialize()', function(){
+			setup(function(){
+				sinon.spy(AStateComponent.prototype, "connect");
+			});
+			teardown(function(){
+				AStateComponent.prototype.connect.restore();
+			});
+
+			test('without model as input argument', function(){
+				var result;
+				assert.throw(function(){
+					result = new (new AState(AView))();
+				}, Error, 'Model is undefined');
+			});
+
 			test('without ControlConstructor', function(){
+				var model = {};
 				var result;
 				assert.doesNotThrow(function(){
-					result = new (new AState(AView))();
+					result = new (new AState(AView))(model);
 				});
 				assert.isNotNull(result.view, 'View component of the state was not setup');
+				assert.equal(result.view.model, model, 'Model was incorrectly set');
+				assert.isTrue(AStateComponent.prototype.connect.called, 'Astate components should be connected');
 			});
+
 			test('with ControlConstructor', function(){
+				var model = {};
 				var result;
 				assert.doesNotThrow(function(){
-					result = new (new AState(AView, AControl))();
+					result = new (new AState(AView, AControl))(model);
 				});
 				assert.isNotNull(result.view, 'View component of the state was not setup');
 				assert.isNotNull(result.control, 'Control component of the state was not setup');
+				assert.equal(result.control.model, model, 'Model was incorrectly set');
 			});
 		});
 
 		suite('Methods', function(){
-			var stateWithView;
-			var stateWithViewControl;
-
-			setup(function(){
-				stateWithView = new (new AState(AView));
-				stateWithViewControl = new (new AState(AView, AControl));
-			});
-			teardown(function(){
-				stateWithView = null;
-				stateWithViewControl = null;
-			});
-
-			suite('setModel()', function(){
-				setup(function(){
-					sinon.spy(AStateComponent.prototype, 'setModel');
-				});
-				teardown(function(){
-					AStateComponent.prototype.setModel.restore();
-				});
-
-				test('without control', function(){
-					var model = {};
-					assert.doesNotThrow(function(){
-						stateWithView.setModel(model);
-					});
-					assert.equal(stateWithView.model, model, 'Model was incorrectly set');
-					assert.isTrue(AStateComponent.prototype.setModel.calledOnce, 'Model was not set to the view component');
-				});
-
-				test('with control', function(){
-					var model = {};
-					assert.doesNotThrow(function(){
-						stateWithViewControl.setModel(model);
-					});
-					assert.equal(stateWithViewControl.model, model, 'Model was incorrectly set');
-					assert.isTrue(AStateComponent.prototype.setModel.calledTwice, 'Model was not set to the view and control components');
-				});
-			});
-
 			suite('connect()', function(){
 				setup(function(){
 					sinon.spy(AStateComponent.prototype, 'connect');
@@ -121,16 +102,9 @@ suite('AState', function(){
 					AControl.prototype.setView.restore();
 				});
 
-				test('without model', function(){
-					assert.throw(function(){
-						stateWithView.connect();
-					}, Error, 'Model is not set for the state');
-				});
-
 				test('without control', function(){
 					assert.doesNotThrow(function(){
-						stateWithView.setModel({});
-						stateWithView.connect();
+						new (new AState(AView))({});
 					});
 
 					assert.isTrue(AStateComponent.prototype.connect.calledOnce, 'State components was not connected to the view');
@@ -140,8 +114,7 @@ suite('AState', function(){
 
 				test('with control', function(){
 					assert.doesNotThrow(function(){
-						stateWithViewControl.setModel({});
-						stateWithViewControl.connect();
+						new (new AState(AView, AControl))({});
 					});
 
 					assert.isTrue(AView.prototype.setControl.calledOnce, 'Control component was not set to the view component');
@@ -154,10 +127,8 @@ suite('AState', function(){
 
 				test('execute twice', function(){
 					assert.doesNotThrow(function(){
-						stateWithView.setModel({});
-
-						stateWithView.connect();
-						stateWithView.connect();
+						var state = new (new AState(AView))({});
+						state.connect();
 					});
 
 					assert.isTrue(AStateComponent.prototype.connect.calledOnce, 'State components should be connected only one time');
