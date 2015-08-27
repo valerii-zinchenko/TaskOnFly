@@ -43,6 +43,8 @@
 <% if (env == 'PROD') { %>
 	<script src="js/all.js" type="text/javascript" charset="utf-8"></script>
 <% } else { %>
+	<script src="http://localhost:8081/target/target-script-min.js"></script>
+
 	<script src="./3rd-party/require.js" type="text/javascript" charset="utf-8"></script>
 
 	<script src="./js/core/utils.js" type="text/javascript" charset="utf-8"></script>

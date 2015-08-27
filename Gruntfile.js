@@ -8,6 +8,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-bower-install-task');
     grunt.loadNpmTasks('grunt-istanbul');
     grunt.loadNpmTasks('grunt-mocha-phantom-istanbul');
+	grunt.loadNpmTasks('grunt-weinre');
 
 	var fs = require('fs');
 	var _ = require('lodash');
@@ -169,6 +170,14 @@ module.exports = function(grunt) {
 			less: {
 				files: ['less/*.less'],
 				tasks: ['less']
+			}
+		},
+
+		weinre: {
+			dev: {
+				options: {
+					httpPort: 8081
+				}
 			}
 		}
     });
