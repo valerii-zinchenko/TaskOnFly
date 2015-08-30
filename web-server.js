@@ -1,3 +1,6 @@
+var host = '0.0.0.0';
+var port = 8080;
+
 var fs = require('fs');
 var path = require('path');
 var http = require('http');
@@ -8,6 +11,7 @@ var mimeTypes = {
 	'.css': 'text/css',
 	'.js': 'application/javascript',
 	'.txt': 'text/plain',
+	'.woff': 'application/font-woff',
 	'.woff2': 'application/font-woff2',
 	'.png': 'image/png'
 };
@@ -48,6 +52,6 @@ http.createServer(function(rq,rs) {
 	} else {
 		console.log('Unknown file extensions: ' + ext);
 	}
-}).listen(8080, '127.0.0.1');
+}).listen(8080, '0.0.0.0');
 
-console.log('Server running at http://127.0.0.1:8080/');
+console.log('Server running at http://' + host + ':' + port + '/');
