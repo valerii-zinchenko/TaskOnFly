@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html manifest="cache.manifest">
+<html lang="en" manifest="cache.manifest">
 <head>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TaskOnFly - Task manager</title>
+
+    <meta name="description" content="Simple, light and offline task manager. Manage your tasks and lists of tasks on the fly. You can work with TaskOnFly when you offline, becase all your tasks are stored in the browser">
     <meta name="author" content="Valerii Zinchenko">
-    <meta name="description" content="TaskOnFly allows you easy manage your tasks and task lists on the fly from your mobile or desktop device.">
-    <title>TaskOnFly</title>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<link rel="shortcut icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="css/main.css">
@@ -21,6 +23,12 @@
 	var progressBar = document.getElementById('progressBar');
 	var progress = 0;
 	var total = 4;
+
+	function setProgress(step) {
+		progress = step/total * 100;
+		progressBar.style.width = progress + "%";
+		progressBar.setAttribute("aria-valuenow", progress);
+	}
 </script>
 
 
@@ -100,9 +108,7 @@
 
 	</div>
 	<script>
-		progress = 1/total * 100;
-		progressBar.style.width = progress + "%";
-		progressBar.setAttribute("aria-valuenow", progress);
+		setProgress(1);
 	</script>
 
 	<div id="editor" class="page hidden">
@@ -177,9 +183,7 @@
 
 	</div>
 	<script>
-		progress = 2/total * 100;
-		progressBar.style.width = progress + "%";
-		progressBar.setAttribute("aria-valuenow", progress);
+		setProgress(2);
 	</script>
 
 	<div id="about" class="page hidden">
@@ -195,8 +199,8 @@
 </nav>
 <div class="container-fluid">
 	<div class="well justify">
-		<p>Version 3.0.1</p>
-		<p>TaskOnFly gives you an easy way to track your tasks from any device with HTML5 compatible browser and enabled JavaScript.</p>
+		<p>Version 3.0.2</p>
+		<p>Simple, light and offline task manager. Manage your tasks and lists of tasks on the fly. You can work with TaskOnFly when you offline, becase all your tasks are stored in the browser.</p>
 	</div>
 	<div class="well justify">
 		<p>Copyright (C) 2014-2015  Valerii Zinchenko</p>
@@ -234,6 +238,7 @@
 		<a href="http://chaijs.com/" class="chaijs-link">
 			<img src="http://chaijs.com/public/img/chai-logo-small.png" alt="Chai Assertion Library">
 		</a>
+		<a href="http://people.apache.org/~pmuellr/weinre-docs/latest/" class="weinre-link">weinre</a>
 		<a href="http://bower.io/" class="bower-link">
 			<img src="http://bower.io/img/bower-logo.png" alt="Bower">
 		</a>
@@ -244,16 +249,14 @@
 			<img src="http://backbonejs.org/docs/images/backbone.png" alt="Backbone.js">
 		</a>
 		<a href="http://glyphicons.com/" class="bootstrap-glyphicons-link">
-			<img src="http://glyphicons.com/wp-content/themes/glyphicons/sk/public/img/logo.svg" alt="Glyphicons">
+			<img src="http://glyphicons.com/img/logo.svg" alt="Glyphicons">
 		</a>
 	</div>
 </div>
 
 	</div>
 	<script>
-		progress = 3/total * 100;
-		progressBar.style.width = progress + "%";
-		progressBar.setAttribute("aria-valuenow", progress);
+		setProgress(3);
 	</script>
 
 
@@ -262,9 +265,7 @@
 
 
 	<script>
-		var progress = 100;
-		progressBar.style.width = progress + "%";
-		progressBar.setAttribute("aria-valuenow", progress);
+		setProgress(4);
 
 
 		var $loading = $('#loading');
