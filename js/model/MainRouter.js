@@ -60,6 +60,14 @@ define(['../../3rd-party/backbone'], function () {
 			view.show();
 
 			this._view = view;
+
+			if (window.ga) {
+				ga('set', 'pageview', {
+					'page': '/#' + pageName,
+					'title': pageName
+				});
+				ga('send', 'pageview');
+			}
 		},
 
         home: function() {
