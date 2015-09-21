@@ -121,7 +121,7 @@ define(function () {
             this.controls = properties.controls;
         },
         render: function() {
-            this.$el = $(_.template(this.template, this));
+            this.$el = $(_.template(this.template)(this));
             $(document.body).append(this.$el);
 
             this._attachEvents();
