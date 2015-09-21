@@ -25,10 +25,10 @@
 
 define([
 	'version',
-	'model/MainRouter',
+	'app/Router',
 	'modules/Task',
 	'modules/TaskList'
-], function(version, MainRouter, Task, TaskList) {
+], function(version, Router, Task, TaskList) {
 	function saveLocal(key, data) {
 		window.localStorage.setItem(key, JSON.stringify(data));
 	}
@@ -67,8 +67,7 @@ define([
 			this.setRootList(rootList);
 			this.setCurrentList(rootList);
 
-			new MainRouter();
-			Backbone.history.start();
+			Router.start(location.href);
 		},
 
 		sync: function(listRef, ids) {
@@ -131,11 +130,11 @@ define([
 		},
 
 		changeView: function(page) {
-			window.location.hash = '#' + page;
+			this.router.navigateTo(page);
 		},
 
 		back: function() {
-			window.history.back();
+			this.router.back();
 		},
 
 		saveItem: function(item) {
