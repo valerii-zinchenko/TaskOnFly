@@ -7,11 +7,10 @@
   "main": "index.html",
   "license": "GPLv3",
   "dependencies": {
-	"requirejs": "=2.1.14",
-	"jquery": "=2.1.1",
-	"bootstrap": "=3.3.4",
-	"underscore": "=1.6.0",
-	"backbone": "=1.1.2"
+    "bootstrap": "=3.3.4",
+    "jquery": "=2.1.1",
+    "lodash": "~3.10.1",
+    "requirejs": "=2.1.14",
   },
   "ignore": [
     "**/.*",

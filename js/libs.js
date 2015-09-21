@@ -26,7 +26,6 @@
 define([
 	'../3rd-party/jquery',
 	'../3rd-party/bootstrap',
-	'../3rd-party/underscore',
-	'../3rd-party/backbone',
+	'../3rd-party/lodash',
 	'../3rd-party/require'
 ], function(){});

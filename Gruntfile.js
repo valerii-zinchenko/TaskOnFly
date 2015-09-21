@@ -25,7 +25,7 @@ module.exports = function(grunt) {
 			js: {
 				expand: true,
 				cwd: "./bower_components",
-				src: ["requirejs/require.js", "jquery/dist/jquery.js", "bootstrap/dist/js/bootstrap.js", "underscore/underscore.js", "backbone/backbone.js"],
+				src: ["requirejs/require.js", "jquery/dist/jquery.js", "bootstrap/dist/js/bootstrap.js", "lodash/lodash.js"],
 				dest: "build/3rd-party",
 				flatten: true
 			},

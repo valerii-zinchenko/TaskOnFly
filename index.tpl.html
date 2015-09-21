@@ -42,7 +42,6 @@
 
 <% if (env == 'PROD') { %>
 	<script src="js/all.js" type="text/javascript" charset="utf-8"></script>
-   }
 <% } else { %>
 	<script src="http://localhost:8081/target/target-script-min.js"></script>
 
@@ -60,6 +59,7 @@
 	<script src="./js/core/AState.js" type="text/javascript" charset="utf-8"></script>
 	<script src="./js/core/EventHandler.js" type="text/javascript" charset="utf-8"></script>
 	<script src="./js/core/MVCModule.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./js/core/HashRouter.js" type="text/javascript" charset="utf-8"></script>
 
 	<script>
 		requirejs.config({
@@ -68,11 +68,10 @@
 
 		requirejs([
 			'./3rd-party/jquery.js',
-			'./3rd-party/underscore.js'
+			'./3rd-party/lodash.js'
 		], function(){
 			requirejs([
-				'./3rd-party/bootstrap.js',
-				'./3rd-party/backbone.js'
+				'./3rd-party/bootstrap.js'
 			], function(){
 				requirejs([
 					"boot"
@@ -105,10 +104,8 @@
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		if (ga) {
-			ga('create', 'UA-66399411-1', 'auto');
-			ga('send', 'pageview');
-		}
+		ga('create', 'UA-66399411-1', 'auto');
+		ga('send', 'pageview');
 	</script>
 <% } %>
 </body>
