@@ -74,97 +74,20 @@ suite('AView', function() {
 			assert.isTrue(AStateComponent.prototype.destruct.calledOnce, 'Parent\'s destruct() should be called');
 		});
 
-		/*
-		suite('render()', function(){
-			setup(function(){
-				sinon.spy(AView.prototype, 'processTemplate');
-				sinon.spy(AView.prototype, '_initElements');
-			});
-			teardown(function(){
-				AView.prototype.processTemplate.restore();
-				AView.prototype._initElements.restore();
-			});
-
-			test('without model', function(){
-				assert.throw(function(){
-					aView.render();
-				}, Error, 'Model is not connected');
-			});
-
-			test('first call with model', function(){
+		['render', 'update', '_initElements', '_attachEvents'].forEach(function(method) {
+			test(method + '()', function() {
 				assert.doesNotThrow(function(){
-					aView.setModel({});
-					aView.render();
+					aView[method]();
 				});
-
-				assert.isTrue(AView.prototype.processTemplate.called, 'processTemplate() should be called inside of render()');
-				assert.isTrue(AView.prototype._postProcessTemplate.called, '_postProcessTemplate() should be called inside of render()');
-				assert.isTrue(AView.prototype.renderSubModules.called, 'renderSubModules() should be called inside of render()');
 			});
 		});
 
-		suite('postRender()', function(){
-			setup(function(){
-				sinon.spy(AView.prototype, '_postRender');
-				sinon.spy(AView.prototype, '_attachEvents');
-				sinon.spy(AView.prototype, '_postRenderModules');
-			});
-			teardown(function(){
-				AView.prototype._postRender.restore();
-				AView.prototype._attachEvents.restore();
-				AView.prototype._postRenderModules.restore();
-			});
-
-			test('execute', function(){
+		['show', 'hide'].forEach(function(method) {
+			test(method + '()', function() {
+				aView.$el = $();
 				assert.doesNotThrow(function(){
-					aView.postRender();
+					aView[method]();
 				});
-				assert.isTrue(aView._postRender.called, '_postRender() should be called inside of postRender()');
-				assert.isTrue(aView._attachEvents.called, '_attachEvents() should be called inside of postRender()');
-				assert.isTrue(aView._postRenderModules.called, '_postRenderModules() should be called inside of postRender()');
-			});
-		});
-
-		suite('execute render(), postRender(), render() and postRender()', function() {
-			setup(function(){
-				sinon.spy(AView.prototype, 'processTemplate');
-				sinon.spy(AView.prototype, '_postProcessTemplate');
-				sinon.spy(AView.prototype, 'renderSubModules');
-				sinon.spy(AView.prototype, '_postRender');
-				sinon.spy(AView.prototype, '_attachEvents');
-				sinon.spy(AView.prototype, '_postRenderModules');
-			});
-			teardown(function(){
-				AView.prototype.processTemplate.restore();
-				AView.prototype._postProcessTemplate.restore();
-				AView.prototype.renderSubModules.restore();
-				AView.prototype._postRender.restore();
-				AView.prototype._attachEvents.restore();
-				AView.prototype._postRenderModules.restore();
-			});
-
-			test('execute chain', function(){
-				assert.doesNotThrow(function(){
-					aView.setModel(new AView());
-					aView.render();
-					aView.postRender();
-					aView.render();
-					aView.postRender();
-				});
-
-				assert.isTrue(aView._postRender.calledOnce, '_postRender() should be called once by execution render(), postRender(), render() and postRender()');
-				assert.isTrue(aView._attachEvents.calledOnce, '_attachEvents() should be called once by execution render(), postRender(), render() and postRender()');
-				assert.isTrue(aView._postRenderModules.calledOnce, '_postRenderModules() should be called once by execution render(), postRender(), render() and postRender()');
-				assert.isTrue(aView._postRender.calledOnce, '_postRender() should be called once by execution render(), postRender(), render() and postRender()');
-				assert.isTrue(aView._attachEvents.calledOnce, '_attachEvents() should be called once by execution render(), postRender(), render() and postRender()');
-				assert.isTrue(aView._postRenderModules.calledOnce, '_postRenderModules() should be called once by execution render(), postRender(), render() and postRender()');
-			});
-		});
-		*/
-
-		test('update()', function() {
-			assert.doesNotThrow(function(){
-				aView.update();
 			});
 		});
 	});
