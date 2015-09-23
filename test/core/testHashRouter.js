@@ -300,6 +300,11 @@ suite('HashRouter', function() {
 					url: 'http://localhost:8080/index.html?key=value&key2=value2#route/path',
 					hash: '#route/path',
 					query: '?key=value&key2=value2'
+				},
+				{
+					url: 'http://localhost:8080/index.html?key=value#route/path?key2=value2',
+					hash: '#route/path',
+					query: '?key=value&key2=value2'
 				}
 			].forEach(function(testCase) {
 				test('url: ' + testCase.url, function() {

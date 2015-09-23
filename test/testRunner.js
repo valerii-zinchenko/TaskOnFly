@@ -1,11 +1,6 @@
 window.assert = chai.assert;
 window.sinon = sinon;
 
-var TaskManager = {
-    Pages: {},
-    Modules: {}
-};
-
 mocha.setup({
 	ui: 'tdd',
 	bail: false
@@ -19,8 +14,6 @@ requirejs([
 	'./core/testAStateComponent.js',
 	'./core/testAControl.js',
 	'./core/testAView.js',
-	'./core/StaticView.js',
-	'./core/DynamicView.js',
 	'./core/testAState.js',
 	'./core/testMVCModule.js',
 	'./core/testEventHandler.js',
