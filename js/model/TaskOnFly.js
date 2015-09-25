@@ -49,6 +49,7 @@ define([
 		version: version(),
 		ROOT_TASK_LIST: null,
 		CURRENT_TASK_LIST: null,
+		ITEMS: {},
 
 		start: function() {
 			var store = this.loadItem('root'),
@@ -77,13 +78,14 @@ define([
 					return;
 				}
 
+				var item;
 				switch (itemData.type) {
 					case 'Task':
-						listRef.addItem(this.createTask(itemData));
+						item = listRef.addItem(this.createTask(itemData));
 						break;
 
 					case 'List':
-						var item = listRef.addItem(this.createTaskList(itemData));
+						item = listRef.addItem(this.createTaskList(itemData));
 						item.model._parent = listRef;
 						item.model._path = [listRef._path, item.model.public.id, '/'].join('');
 
@@ -92,6 +94,7 @@ define([
 						this.sync(item.model, ids);
 						break;
 				}
+				this.ITEMS[item.model.public.id] = item;
 			}, this);
 		},
 
@@ -129,12 +132,16 @@ define([
 			return this.CURRENT_TASK_LIST;
 		},
 
+		getItem: function(id) {
+			return this.ITEMS[id];
+		},
+
 		changeView: function(page) {
-			this.router.navigateTo(page);
+			Router.routeTo(page);
 		},
 
 		back: function() {
-			this.router.back();
+			Router.back();
 		},
 
 		saveItem: function(item) {

@@ -29,12 +29,11 @@ define(function () {
 		'about': 'about',
 		'add/:what': 'add',
 		'edit/:id': 'edit',
-		'path': 'path',
 		'path/(.*/?)': 'path',
 		'': 'home'
 	},
 	{
-		prefix: '',
+		prefix: '!',
 		_view: null,
 
 		/**
@@ -130,8 +129,7 @@ define(function () {
 		 * @param {string} id Item name in the current list.
 		 */
 		edit: function(id) {
-			var list = TaskOnFly.model.getCurrentList(),
-			item = list.model.getItem(id);
+			var item = TaskOnFly.model.getItem(id);
 
 			if (!item) {
 				throw new Error('Item with id: "' + id + '" was not found');
@@ -140,7 +138,7 @@ define(function () {
 			this._openPage('itemEditor', function() {
 				this.setHeader(item.model.public.type);
 				this.setDataModel(item.model);
-				this.control.setSaveCallback(list.model.saveData.bind(item.model));
+				this.control.setSaveCallback(item.model.saveData.bind(item.model));
 			});
 		},
 
