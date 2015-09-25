@@ -23,21 +23,21 @@
 
 'use strict';
 
-suite('AClass', function() {
+suite('FClass', function() {
     suite('Input arguments', function() {
         test('No arguments', function() {
             assert.throw(function() {
-                new AClass();
+                new FClass();
             }, Error, 'Incorrect input arguments. Constructor function is not defined');
         });
 		test('Incorrect type of input argument', function(){
 			assert.throw(function() {
-				new AClass(2);
+				new FClass(2);
 			}, Error, 'Constructor should be an function');
 		});
 		test('Correct input arguments', function() {
 			assert.doesNotThrow(function() {
-				new AClass(function() {});
+				new FClass(function() {});
 			});
 		});
     });
@@ -45,7 +45,7 @@ suite('AClass', function() {
     suite('Test returned class constructor', function() {
         var SomeClassBuilder;
         setup(function() {
-            SomeClassBuilder = new AClass(function(){});
+            SomeClassBuilder = new FClass(function(){});
         });
 		teardown(function(){
 			SomeClassBuilder = null;

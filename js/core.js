@@ -25,7 +25,7 @@
 
 define([
 	'core/utils',
-	'core/AClass',
+	'core/FClass',
 	'core/Class',
 	'core/SingletonClass',
 	'core/AStateComponent',
