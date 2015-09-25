@@ -275,46 +275,85 @@ suite('HashRouter', function() {
 			});
 		});
 
-		suite('_getHash & _getQuery', function(){
+		suite('_getHash', function(){
 			[
 				{
 					url: 'http://localhost:8080/index.html',
 					hash: '#'
 				},
 				{
+					url: 'http://localhost:8080/index.html#route',
+					hash: '#route'
+				},
+				{
 					url: 'http://localhost:8080/index.html#route?key=value',
-					hash: '#route',
-					query: '?key=value'
+					hash: '#route'
 				},
 				{
 					url: 'http://localhost:8080/index.html?key=value#route',
-					hash: '#route',
-					query: '?key=value'
+					hash: '#route'
 				},
 				{
-					url: 'http://localhost:8080/index.html#route/path?key=value&key2=value2',
-					hash: '#route/path',
-					query: '?key=value&key2=value2'
-				},
-				{
-					url: 'http://localhost:8080/index.html?key=value&key2=value2#route/path',
-					hash: '#route/path',
-					query: '?key=value&key2=value2'
-				},
-				{
-					url: 'http://localhost:8080/index.html?key=value#route/path?key2=value2',
+					url: 'http://localhost:8080/index.html#route/path?key=value',
 					hash: '#route/path',
 					query: '?key=value&key2=value2'
 				}
 			].forEach(function(testCase) {
 				test('url: ' + testCase.url, function() {
-					var hash, query;
+					var hash;
 					assert.doesNotThrow(function(){
 						hash = router._getHash(testCase.url);
-						query = router._getQuery(testCase.url);
 					});
 
 					assert.equal(testCase.hash, hash, 'Hash was incorrectly extracted');
+				});
+			});
+		});
+
+		suite('_getQuery', function(){
+			[
+				{
+					url: 'http://localhost:8080/index.html'
+				},
+				{
+					url: 'http://localhost:8080/index.html?key=value',
+					query: '?key=value'
+				},
+				{
+					url: 'http://localhost:8080/index.html#route?key=value',
+					query: '?key=value'
+				},
+				{
+					url: 'http://localhost:8080/index.html?key=value#route',
+					query: '?key=value'
+				},
+				{
+					url: 'http://localhost:8080/index.html?key=value#route?key2=value2',
+					query: '?key=value&key2=value2'
+				},
+				{
+					url: 'http://localhost:8080/index.html?&key=value',
+					query: '?&key=value'
+				},
+				{
+					url: 'http://localhost:8080/index.html?key=value&',
+					query: '?key=value&'
+				},
+				{
+					url: 'http://localhost:8080/index.html?key=value&key2=value2',
+					query: '?key=value&key2=value2'
+				},
+				{
+					url: 'http://localhost:8080/index.html?key=value&key2=value2',
+					query: '?key=value&key2=value2'
+				}
+			].forEach(function(testCase) {
+				test('url: ' + testCase.url, function() {
+					var query;
+					assert.doesNotThrow(function(){
+						query = router._getQuery(testCase.url);
+					});
+
 					assert.equal(testCase.query, query, 'Query was incorrectly extracted');
 				});
 			});
@@ -343,23 +382,47 @@ suite('HashRouter', function() {
 		});
 
 		suite('query2Object', function() {
-			test('undefined', function() {
-				assert.deepEqual({}, router.query2Object(), 'Empty object should be returned if query is undefined');
-			});
-			test('?', function() {
-				assert.deepEqual({}, router.query2Object('?'), 'Empty query was incorrectly converted');
-			});
-			test('key=value', function() {
-				assert.deepEqual({}, router.query2Object('key=value'), 'String without "?" should return an empty object');
-			});
-			test('?key=value', function() {
-				assert.deepEqual({"key":"value"}, router.query2Object('?key=value'), 'Simple single query was incorrectly converted');
-			});
-			test('?key=value&key2=value2', function() {
-				assert.deepEqual({"key":"value","key2":"value2"}, router.query2Object('?key=value&key2=value2'), 'Query with two key-value pairs were incorrectly converted');
-			});
-			test('?key=&key2=value2', function() {
-				assert.deepEqual({"key":"","key2":"value2"}, router.query2Object('?key=&key2=value2'), 'Query with two key-value pairs where the first pair without a value were incorrectly converted');
+			[
+				{
+					query: undefined,
+					expected: {}
+				},
+				{
+					query: '?',
+					expected: {}
+				},
+				{
+					query: 'key=value',
+					expected: {}
+				},
+				{
+					query: '?key=value',
+					expected: {"key":"value"}
+				},
+				{
+					query: '?key=value&key2=value2',
+					expected: {"key":"value","key2":"value2"}
+				},
+				{
+					query: '?key=&key2=value2',
+					expected: {"key":"","key2":"value2"}
+				},
+				{
+					query: '?key=value&',
+					expected: {"key":"value"}
+				},
+				{
+					query: '?&key=value',
+					expected: {"key":"value"}
+				}
+			].forEach(function(testCase) {
+				test('query: ' + testCase.query, function() {
+					var result;
+					assert.doesNotThrow(function(){
+						result = router.query2Object(testCase.query);
+					});
+					assert.deepEqual(testCase.expected, result, 'Query was incorrectly converted into the object');
+				});
 			});
 		});
 
