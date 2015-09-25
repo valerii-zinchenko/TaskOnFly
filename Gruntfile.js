@@ -170,6 +170,10 @@ module.exports = function(grunt) {
 			less: {
 				files: ['less/*.less'],
 				tasks: ['less']
+			},
+			tests: {
+				files: ['test/index.tpl.html'],
+				tasks: ['template:TEST']
 			}
 		},
 
