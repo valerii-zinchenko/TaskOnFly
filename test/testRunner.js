@@ -8,7 +8,7 @@ mocha.setup({
 
 requirejs([
 	'./core/test_utils.js',
-	'./core/testFClass.js',
+	'./core/FClass.js',
 	'./core/testClass.js',
 	'./core/testSingletonClass.js',
 	'./core/testAStateComponent.js',
