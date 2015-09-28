@@ -6771,6 +6771,10 @@ footer .module {
   background-color: #0769AD;
   padding: 0 2px;
 }
+.lodashjs-link {
+  font-size: 2em;
+  vertical-align: middle;
+}
 .nodejs-link img {
   background-color: #303030;
   padding: 0 2px;

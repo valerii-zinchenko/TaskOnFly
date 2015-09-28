@@ -43,14 +43,14 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a href="#" class="navbar-brand">TaskOnFly</a>
+			<a href="#!" class="navbar-brand">TaskOnFly</a>
 		</div>
 
 		<div id="mainPanel" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#add/task"><span class="glyphicon glyphicon-plus"></span> Add task</a></li>
-				<li><a href="#add/list"><span class="glyphicon glyphicon-plus"></span> Add list</a></li>
-				<li><a href="#about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+				<li><a href="#!add/task"><span class="glyphicon glyphicon-plus"></span> Add task</a></li>
+				<li><a href="#!add/list"><span class="glyphicon glyphicon-plus"></span> Add list</a></li>
+				<li><a href="#!about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
 			</ul>
 		</div>
 	</div>
@@ -199,7 +199,7 @@
 </nav>
 <div class="container-fluid">
 	<div class="well justify">
-		<p>Version 3.0.2</p>
+		<p>Version 3.1.0</p>
 		<p>Simple, light and offline task manager. Manage your tasks and lists of tasks on the fly. You can work with TaskOnFly when you offline, becase all your tasks are stored in the browser.</p>
 	</div>
 	<div class="well justify">
@@ -222,6 +222,7 @@
 		<a href="http://requirejs.org/" class="requirejs-link">
 			<img src="http://requirejs.org/i/logo.png" alt="Require JS">
 		</a>
+		<a href="http://lodash.com/" class="lodashjs-link">lodash</a>
 		<a href="https://nodejs.org/" class="nodejs-link">
 			<img src="https://nodejs.org/images/logo.svg" alt="Node.js">
 		</a>
@@ -241,12 +242,6 @@
 		<a href="http://people.apache.org/~pmuellr/weinre-docs/latest/" class="weinre-link">weinre</a>
 		<a href="http://bower.io/" class="bower-link">
 			<img src="http://bower.io/img/bower-logo.png" alt="Bower">
-		</a>
-		<a href="http://underscorejs.org/" class="underscorejs-link">
-			<img src="http://underscorejs.org/docs/images/underscore.png" alt="Underscore.js">
-		</a>
-		<a href="http://backbonejs.org/" class="backbonejs-link">
-			<img src="http://backbonejs.org/docs/images/backbone.png" alt="Backbone.js">
 		</a>
 		<a href="http://glyphicons.com/" class="bootstrap-glyphicons-link">
 			<img src="http://glyphicons.com/img/logo.svg" alt="Glyphicons">
@@ -275,15 +270,15 @@
 		}, 500);
 
 	</script>
+
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		if (ga) {
-			ga('create', 'UA-66399411-1', 'auto');
-			ga('send', 'pageview');
-		}
+		ga('create', 'UA-66399411-1', 'auto');
+		ga('send', 'pageview');
 	</script>
+
 </body>
 </html>
