@@ -14,6 +14,8 @@ requirejs([
 	'./core/testAStateComponent.js',
 	'./core/testAControl.js',
 	'./core/testAView.js',
+	'./core/StaticView.js',
+	'./core/DynamicView.js',
 	'./core/testAState.js',
 	'./core/testMVCModule.js',
 	'./core/testEventHandler.js'
