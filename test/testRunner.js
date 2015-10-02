@@ -16,8 +16,7 @@ requirejs([
 	'./core/testAView.js',
 	'./core/testAState.js',
 	'./core/testMVCModule.js',
-	'./core/testEventHandler.js',
-	'./core/testHashRouter.js'
+	'./core/testEventHandler.js'
 ], function() {
 	requirejs([
 		'../js/modules/AItem/Model',

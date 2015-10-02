@@ -35,6 +35,5 @@ define([
 	'core/AControl',
 	'core/AState',
 	'core/MVCModule',
-	'core/EventHandler',
-	'core/HashRouter'
+	'core/EventHandler'
 ], function(){});

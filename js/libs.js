@@ -27,5 +27,6 @@ define([
 	'../3rd-party/jquery',
 	'../3rd-party/bootstrap',
 	'../3rd-party/lodash',
-	'../3rd-party/require'
+	'../3rd-party/require',
+	'../3rd-party/HashRouter'
 ], function(){});

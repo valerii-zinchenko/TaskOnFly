@@ -23,7 +23,7 @@
 
 'use strict';
 
-define(function () {
+define(['HashRouter'], function (HashRouter) {
 	return new HashRouter({
 		'home': 'home',
 		'about': 'about',

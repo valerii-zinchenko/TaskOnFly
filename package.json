@@ -20,13 +20,14 @@
     "grunt-template": "~0.2.3",
     "lodash": "~3.10.0",
     "bower": "~1.4.1",
-    "grunt-bower-install-task": "0.0.4"
+    "grunt-bower-install-task": "0.0.4",
+    "HashRouter": "git://github.com/valerii-zinchenko/HashRouter"
   },
   "devDependencies": {
     "chai": "~1.10.0",
     "sinon": "~1.12.1",
     "istanbul": "~0.3.14",
-	"mocha": "~2.3.3",
+    "mocha": "~2.3.3",
     "grunt-mocha-phantom-istanbul": "~0.2.1",
     "grunt-istanbul": "~0.5.0",
     "grunt-contrib-watch": "~0.6.1",
