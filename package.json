@@ -21,7 +21,7 @@
     "lodash": "~3.10.0",
     "bower": "~1.4.1",
     "grunt-bower-install-task": "0.0.4",
-    "HashRouter": "git://github.com/valerii-zinchenko/HashRouter"
+    "hash-router": "git://github.com/valerii-zinchenko/hash-router"
   },
   "devDependencies": {
     "chai": "~1.10.0",
