@@ -94,7 +94,7 @@ define([
 						this.sync(item.model, ids);
 						break;
 				}
-				this.ITEMS[item.model.public.id] = item;
+				this.ITEMS[item.model.public.id] = item.model;
 			}, this);
 		},
 
@@ -161,6 +161,7 @@ define([
 
 			if (items.indexOf(id) === -1) {
 				items.push(id);
+				this.ITEMS[id] = item;
 			}
 
 			saveLocal('items', items);

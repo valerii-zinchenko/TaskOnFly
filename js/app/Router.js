@@ -136,9 +136,9 @@ define(['HashRouter'], function (HashRouter) {
 			}
 
 			this._openPage('itemEditor', function() {
-				this.setHeader(item.model.public.type);
-				this.setDataModel(item.model);
-				this.control.setSaveCallback(item.model.saveData.bind(item.model));
+				this.setHeader(item.public.type);
+				this.setDataModel(item);
+				this.control.setSaveCallback(item.saveData.bind(item));
 			});
 		},
 

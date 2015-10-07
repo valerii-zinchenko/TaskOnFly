@@ -82,7 +82,9 @@ define([
             this.sort();
 
             if (toSave) {
-                TaskOnFly.model.saveItem(this);
+				this.storages.forEach(function(storage) {
+					storage.saveItem(this);
+				}, this);
             }
 
 			this.trigger('newItem', item);
