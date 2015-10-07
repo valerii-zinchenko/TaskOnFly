@@ -5,6 +5,7 @@
   "author": "Valerii Zinchenko",
   "license": "GPLv3",
   "main": "index.html",
+  "repository": "https://github.com/valerii-zinchenko/TaskOnFly",
   "directories": {
     "test": "test"
   },
