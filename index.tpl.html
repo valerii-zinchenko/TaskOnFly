@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en"<% if (env == 'PROD') {%> manifest="cache.manifest"<% } %>>
+<html lang="en"<% if (env === 'PROD') {%> manifest="cache.manifest"<% } %>>
 <head>
     <title>TaskOnFly - Task manager</title>
 
-    <meta name="description" content="Simple, light and offline task manager. Manage your tasks and lists of tasks on the fly. You can work with TaskOnFly when you offline, becase all your tasks are stored in the browser">
+    <meta name="description" content="Simple, light and offline task manager. Manage your tasks and lists of tasks on the fly. You can work with TaskOnFly when you offline, all your tasks are stored locally in the browser">
     <meta name="author" content="Valerii Zinchenko">
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -22,9 +22,11 @@
 <script>
 	var progressBar = document.getElementById('progressBar');
 	var progress = 0;
+	var step = 0;
 	var total = <%= progressSteps %>;
 
-	function setProgress(step) {
+	function setProgress() {
+		step++;
 		progress = step/total * 100;
 		progressBar.style.width = progress + "%";
 		progressBar.setAttribute("aria-valuenow", progress);
@@ -36,15 +38,18 @@
 		<%= insertHTML('html/pages/' + page + '.html') %>
 	</div>
 	<script>
-		setProgress(<%= index+1 %>);
+		setProgress();
 	</script>
 <% }, this); %>
 
-<% if (env == 'PROD') { %>
+<% if (env === 'PROD') { %>
 	<script src="js/all.js" type="text/javascript" charset="utf-8"></script>
 <% } else { %>
 	<script src="http://localhost:8081/target/target-script-min.js"></script>
 
+	<script src="./3rd-party/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./3rd-party/lodash.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./3rd-party/bootstrap.js" type="text/javascript" charset="utf-8"></script>
 	<script src="./3rd-party/require.js" type="text/javascript" charset="utf-8"></script>
 	<script src="./3rd-party/HashRouter.js" type="text/javascript" charset="utf-8"></script>
 
@@ -67,30 +72,21 @@
 		});
 
 		requirejs([
-			'./3rd-party/jquery.js',
-			'./3rd-party/lodash.js'
+			"boot"
 		], function(){
-			requirejs([
-				'./3rd-party/bootstrap.js'
-			], function(){
-				requirejs([
-					"boot"
-				], function(){
-					var $loading = $('#loading');
-					$loading.css('opacity', '0');
-					setTimeout(function(){
-						$loading.css('display', 'none');
-					}, 500);
-				});
-			});
+			var $loading = $('#loading');
+			$loading.css('opacity', '0');
+			setTimeout(function(){
+				$loading.css('display', 'none');
+			}, 500);
 		});
 	</script>
 <% } %>
 
 	<script>
-		setProgress(<%= progressSteps %>);
+		setProgress();
 
-<% if (env == 'PROD') { %>
+<% if (env === 'PROD') { %>
 		var $loading = $('#loading');
 		$loading.css('opacity', '0');
 		setTimeout(function(){
@@ -98,7 +94,7 @@
 		}, 500);
 <% } %>
 	</script>
-<% if (env == 'PROD') { %>
+<% if (env === 'PROD') { %>
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
