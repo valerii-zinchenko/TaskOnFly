@@ -32,12 +32,44 @@
 <body>
     <div id="mocha"></div>
 
-    <script type="text/javascript" charset="utf-8">
-		require.config({
+	<script charset="utf-8">
+		window.assert = chai.assert;
+		window.sinon = sinon;
+
+		mocha.setup({
+			ui: 'tdd',
+			bail: false
+		});
+
+		requirejs.config({
 			baseUrl: '<%= jsFolder %>'
 		});
-	</script>
+		requirejs([
+			'./core/test_utils.js',
+			'./core/FClass.js',
+			'./core/testClass.js',
+			'./core/testSingletonClass.js',
+			'./core/testAStateComponent.js',
+			'./core/testAControl.js',
+			'./core/testAView.js',
+			'./core/StaticView.js',
+			'./core/DynamicView.js',
+			'./core/testAState.js',
+			'./core/testMVCModule.js',
+			'./core/testEventHandler.js'
+		], function() {
+			requirejs([
+				'../js/modules/AItem/Model',
+				//'../js/model/TaskOnFly',
 
-    <script src="testRunner.js" type="text/javascript" charset="utf-8"></script>
+				'./modules/AItem/testModel.js'
+				//'./model/testTaskOnFly.js'
+			], function() {
+			//requirejs(['main'], function(){
+				mocha.run();
+			//});
+			});
+		});
+	</script>
 </body>
 </html>
