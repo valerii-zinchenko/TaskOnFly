@@ -10,10 +10,13 @@ var mimeTypes = {
 	'.manifest': 'text/cache-manifest',
 	'.css': 'text/css',
 	'.js': 'application/javascript',
+	'': 'text/plain',
 	'.txt': 'text/plain',
 	'.woff': 'application/font-woff',
 	'.woff2': 'application/font-woff2',
-	'.png': 'image/png'
+	'.jpg': 'image/jpg',
+	'.png': 'image/png',
+	'.ico': 'image/x-icon'
 };
 
 function getFile(path, rs, mimeType) {
@@ -32,7 +35,10 @@ function getFile(path, rs, mimeType) {
 }
 
 http.createServer(function(rq,rs) {
-	var filename = rq.url || "index.html";
+	var filename = rq.url;
+	if (rq.url === '/') {
+		filename = '/index.html';
+	}
 	var ext = path.extname(filename);
 	var localPath = __dirname + filename;
 
@@ -51,6 +57,8 @@ http.createServer(function(rq,rs) {
 		});
 	} else {
 		console.log('Unknown file extensions: ' + ext);
+		rs.writeHead(404);
+		rs.end();
 	}
 }).listen(8080, '0.0.0.0');
 
