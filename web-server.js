@@ -6,17 +6,21 @@ var path = require('path');
 var http = require('http');
 
 var mimeTypes = {
+	'': 'text/plain',
+	'.txt': 'text/plain',
 	'.html': 'text/html',
 	'.manifest': 'text/cache-manifest',
 	'.css': 'text/css',
 	'.js': 'application/javascript',
-	'': 'text/plain',
-	'.txt': 'text/plain',
 	'.woff': 'application/font-woff',
 	'.woff2': 'application/font-woff2',
 	'.jpg': 'image/jpg',
 	'.png': 'image/png',
-	'.ico': 'image/x-icon'
+	'.ico': 'image/x-icon',
+	'.mp4': 'video/mp4',
+	'.ogg': 'video/ogg',
+	'.webm': 'video/webm',
+	'.vtt': 'text/vtt'
 };
 
 function getFile(path, rs, mimeType) {
