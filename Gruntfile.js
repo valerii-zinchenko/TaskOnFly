@@ -48,7 +48,15 @@ module.exports = function(grunt) {
 		},
 
 		less: {
-			compile: {
+			dev: {
+				files: {
+					'css/main.css': ['less/main.less']
+				}
+			},
+			prod: {
+				options: {
+					compress: true,
+				},
 				files: {
 					'css/main.css': ['less/main.less']
 				}
@@ -56,7 +64,7 @@ module.exports = function(grunt) {
 		},
 
 		template: {
-			DEV: {
+			dev: {
 				options: {
 					data: {
 						env: 'DEV',
@@ -69,7 +77,7 @@ module.exports = function(grunt) {
 					'js/version.js': ['js/version.tpl.js']
 				}
 			},
-			PROD: {
+			prod: {
 				options: {
 					data: {
 						env: 'PROD',
@@ -84,7 +92,7 @@ module.exports = function(grunt) {
 				}
 			},
 
-			TEST: {
+			test: {
 				options: {
 					data: {
 						jsFolder: '../js'
@@ -94,7 +102,7 @@ module.exports = function(grunt) {
 					'test/index.html': ['test/index.tpl.html']
 				}
 			},
-			CODE_COVERAGE: {
+			code_coverage: {
 				options: {
 					data: {
 						jsFolder: '../js-cov'
@@ -165,15 +173,15 @@ module.exports = function(grunt) {
 		watch: {
 			templates: {
 				files: ['index.tpl.html', 'html/**/*.html'],
-				tasks: ['template:DEV']
+				tasks: ['template:dev']
 			},
 			less: {
 				files: ['less/*.less'],
-				tasks: ['less']
+				tasks: ['less:dev']
 			},
 			tests: {
 				files: ['test/index.tpl.html'],
-				tasks: ['template:TEST']
+				tasks: ['template:test']
 			}
 		},
 
@@ -186,11 +194,11 @@ module.exports = function(grunt) {
 		}
     });
 
-    grunt.registerTask('test', ['template:TEST', 'mocha:test']);
-    grunt.registerTask('coverage', ['prepareForCoverage', 'template:CODE_COVERAGE', 'mocha:coverage', 'clean:coverage']);
+    grunt.registerTask('test', ['template:test', 'mocha:test']);
+    grunt.registerTask('coverage', ['prepareForCoverage', 'template:code_coverage', 'mocha:coverage', 'clean:coverage']);
 
-	grunt.registerTask('build-dev', ['bower_install', 'less', 'template:DEV', 'copy']);
-	grunt.registerTask('build', ['bower_install', 'less', 'template:PROD', 'copy', 'requirejs', 'clean:build']);
+	grunt.registerTask('build-dev', ['bower_install', 'less:dev', 'template:dev', 'copy']);
+	grunt.registerTask('build', ['bower_install', 'less:prod', 'template:prod', 'copy', 'requirejs', 'clean:build']);
 
 	var istanbul = require('istanbul');
 	grunt.registerMultiTask('prepareForCoverage', 'Generates coverage reports for JS using Istanbul', function() {
