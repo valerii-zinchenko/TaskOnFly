@@ -24,9 +24,9 @@
 'use strict';
 
 define([
-    "./AItem/Model",
-    "./AItem/InList/View",
-    "./AItem/InList/Control"
+    "./Task/Model",
+    "./Task/InList/View",
+    "./Task/InList/Control"
 ], function (Model, InListView, InListControl) {
     return new MVCModule({
         Model: Model,

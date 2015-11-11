@@ -25,9 +25,9 @@
 'use strict';
 
 define([
-    '../AItem/Model'
+    '../Task/Model'
 ], function (Parent) {
-    var TaskListModel = new Class(Parent, {
+    return new Class(Parent, {
         _parent: null,
         _NDone: 0,
         _path: '/',
@@ -279,8 +279,4 @@ define([
 			this.removeItem(id, model);
 		}
     });
-
-    TaskListModel._counter = 0;
-
-    return TaskListModel;
 });

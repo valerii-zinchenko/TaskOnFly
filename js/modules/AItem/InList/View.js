@@ -57,8 +57,6 @@ define(function () {
         },
 
         _attachEvents: function() {
-            this.$checkBox.on('change', this.onChange.bind(this));
-
             this.$el.find('.js-btn-edit').on('click', this.onEdit.bind(this));
             this.$el.find('.js-btn-remove').on('click', this.onRemove.bind(this));
         },
@@ -79,9 +77,6 @@ define(function () {
 		updateTitle: function(value) {
 			this.$title.html(value);
 		},
-		updatePriority: function(value) {
-			this.$listItem.attr('data-priority', value);
-		},
 
 		hide: function() {
 			this.$el.addClass('hidden');
@@ -90,12 +85,12 @@ define(function () {
 			this.$el.removeClass('hidden');
 		},
 
-        onChange: function(ev) {
-            ev.preventDefault();
+		onClick: function(ev) {
+			ev.preventDefault();
 			ev.stopPropagation();
 
-            this.control.action();
-        },
+			this.control.action();
+		},
         onEdit: function(ev) {
             ev.preventDefault();
 

@@ -23,41 +23,22 @@
 
 'use strict';
 
-define(function () {
-    return new Class(AControl, {
+define([
+	'../../AItem/InList/Control'
+],function (Parent) {
+    return new Class(Parent, {
 		connect: function() {
-			this.model.listen({
-				updateIsDone: _.bind(this.onUpdateIsDone, this),
-				updateTitle: _.bind(this.onUpdateTitle, this),
-				hide: _.bind(this.onHide, this),
-				show: _.bind(this.onShow, this)
-			});
+			Parent.prototype.connect.call(this);
+
+			this.model.listen('updatePriority', _.bind(this.onUpdatePriority, this));
 		},
 
-		onUpdateIsDone: function(model) {
-			this.view.updateIsDone(model.public.isDone);
+		onUpdatePriority: function(model) {
+			this.view.updatePriority(model.public.priority);
 		},
 
-		onUpdateTitle: function(model) {
-			this.view.updateTitle(model.public.title);
-		},
-
-		onHide: function(model) {
-			this.view.hide();
-		},
-
-		onShow: function(model) {
-			this.view.show();
-		},
-
-		action: function() {},
-
-        removeModel: function() {
-            this.model.destruct();
-        },
-
-        editModel: function() {
-            TaskOnFly.model.changeView(['edit', this.model.public.id].join('/'));
+        action: function() {
+            this.model.toggleStatus();
         }
     });
 });

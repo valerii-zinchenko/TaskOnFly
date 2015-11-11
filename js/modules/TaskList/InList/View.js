@@ -63,7 +63,7 @@ define([
 		_attachEvents: function() {
 			Parent.prototype._attachEvents.call(this);
 
-			this.$listItem.on('click', this.onChange.bind(this));
+			this.$listItem.on('click', this.onClick.bind(this));
 		},
 
 		updateNItems: function(N) {
