@@ -49,9 +49,7 @@ define(function () {
         },
 
         destruct: function() {
-            var id = this.public.id;
-
-			this.trigger('remove', id);
+			this.trigger('remove', this.public.id);
 
             this.public = null;
         },

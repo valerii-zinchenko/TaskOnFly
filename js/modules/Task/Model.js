@@ -101,11 +101,12 @@ define([
 		},
 
 		destruct: function() {
+			var id = this.public.id;
 			this.storages.forEach(function(storage) {
 				storage.removeItem(id);
 			});
 
-			this.parent.desctuct();
+			Parent.prototype.destruct.call(this);
 		},
 
 		upgrade: function(data) {
@@ -143,7 +144,7 @@ define([
 		},
 
 		toggleStatus: function() {
-			this.parent.toggleStatus();
+			Parent.prototype.toggleStatus.call(this);
 
 			this.saveData({
 				isDone: this.public.isDone,

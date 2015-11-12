@@ -50,14 +50,14 @@ define([
             items: []
         },
 
-        desctuct: function() {
+        destruct: function() {
             this._parent = null;
             this._NDone = null;
             this._path = null;
             this.models = null;
             this.sortingOrder = null;
 
-            this.parent.desctuct();
+            Parent.prototype.destruct.call(this);
         },
 
         addItem: function(item, toSave) {
