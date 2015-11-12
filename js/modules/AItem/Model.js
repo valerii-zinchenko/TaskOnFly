@@ -55,7 +55,9 @@ define(function () {
         },
 
 		toggleStatus: function() {
-			this.trigger('toggleStatus', this.public.isDone);
+			this.public.isDone = !this.public.isDone;
+
+			this.trigger('updateIsDone', this.public.isDone);
 		},
 
 		triggerEvents: function(data) {
