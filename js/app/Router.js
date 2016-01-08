@@ -25,145 +25,147 @@
 
 define(function () {
 	return new HashRouter({
-		'home': 'home',
-		'about': 'about',
-		'add/:what': 'add',
-		'edit/:id': 'edit',
-		'path/(.*/?)': 'path',
-		'': 'home'
-	},
-	{
 		prefix: '!',
-		_view: null,
+		fallbackRoute: 'home',
+		map: {
+			'home': 'home',
+			'about': 'about',
+			'add/:what': 'add',
+			'edit/:id': 'edit',
+			'path/(.*/?)': 'path',
+			'': 'home'
+		},
+		context: {
+			_view: null,
 
-		/**
-		 *
-		 * @param {string} pageName Page name, that should be opened.
-		 * @param {Function} [fn] Function that calls before rendering of view.
-		 * @private
-		 */
-		_openPage: function(pageName, fn) {
-			var page = TaskOnFly.useState(pageName);
-			var view = page.view;
+			/**
+			 *
+			 * @param {string} pageName Page name, that should be opened.
+			 * @param {Function} [fn] Function that calls before rendering of view.
+			 * @private
+			 */
+			_openPage: function(pageName, fn) {
+				var page = TaskOnFly.useState(pageName);
+				var view = page.view;
 
-			if (fn) {
-				fn.call(view);
-			}
+				if (fn) {
+					fn.call(view);
+				}
 
-			view.update();
+				view.update();
 
-			if (this._view) {
-				this._view.hide();
-			}
+				if (this._view) {
+					this._view.hide();
+				}
 
-			view.show();
+				view.show();
 
-			this._view = view;
+				this._view = view;
 
-			if (window.ga) {
-				ga('set', 'pageview', {
-					'title': pageName
+				if (window.ga) {
+					ga('set', 'pageview', {
+						'title': pageName
+					});
+					ga('send', 'pageview');
+				}
+			},
+
+			home: function() {
+				if (window.ga) {
+					ga('set', 'pageview', {
+						'page': '/#!home',
+					});
+				}
+
+				this._openPage('home');
+			},
+			about: function() {
+				if (window.ga) {
+					ga('set', 'pageview', {
+						'page': '/#!about',
+					});
+				}
+
+				this._openPage('about');
+			},
+
+			/**
+			 *
+			 * @param {string} what Defines what should be added to the current list. It can be: 'task', 'list'
+			 */
+			add: function(what) {
+				switch (what) {
+					case 'task':
+					case 'list':
+						break;
+					default :
+						console.warn('Unknown element name "' + what + '"');
+					return;
+				}
+
+				var fn = '_add' + what[0].toUpperCase() + what.slice(1);
+				var _this = this;
+				this._openPage('itemEditor', function() {
+					this.setHeader('Add ' + what);
+
+					this.control.setSaveCallback(_this[fn]);
 				});
-				ga('send', 'pageview');
-			}
-		},
+			},
+			_addTask: function(data){
+				var list = TaskOnFly.model.getCurrentList();
 
-		home: function() {
-			if (window.ga) {
-				ga('set', 'pageview', {
-					'page': '/#!home',
+				list.model.addItem(TaskOnFly.model.createTask(data));
+			},
+			_addList: function(data){
+				var list = TaskOnFly.model.getCurrentList();
+
+				var newList = TaskOnFly.model.createTaskList(data);
+				newList.model._parent = list.model;
+				newList.model._path = [list.model._path, newList.model.public.id, '/'].join('');
+
+				list.model.addItem(newList);
+			},
+
+			/**
+			 *
+			 * @param {string} id Item name in the current list.
+			 */
+			edit: function(id) {
+				var item = TaskOnFly.model.getItem(id);
+
+				if (!item) {
+					throw new Error('Item with id: "' + id + '" was not found');
+				}
+
+				this._openPage('itemEditor', function() {
+					this.setHeader(item.public.type);
+					this.setDataModel(item);
+					this.control.setSaveCallback(item.saveData.bind(item));
 				});
-			}
+			},
 
-			this._openPage('home');
-		},
-		about: function() {
-			if (window.ga) {
-				ga('set', 'pageview', {
-					'page': '/#!about',
-				});
-			}
+			path: function(path) {
+				var list = TaskOnFly.model.getRootList(),
+				pathStack;
 
-			this._openPage('about');
-		},
+				if (path) {
+					pathStack = path.split('/');
+					pathStack.pop();
+					list = list.model.findList(pathStack);
+				}
 
-		/**
-		 *
-		 * @param {string} what Defines what should be added to the current list. It can be: 'task', 'list'
-		 */
-		add: function(what) {
-			switch (what) {
-				case 'task':
-				case 'list':
-					break;
-				default :
-					console.warn('Unknown element name "' + what + '"');
-				return;
-			}
+				if (!list) {
+					TaskOnFly.model.changeView('home');
 
-			var fn = '_add' + what[0].toUpperCase() + what.slice(1);
-			var _this = this;
-			this._openPage('itemEditor', function() {
-				this.setHeader('Add ' + what);
+					return;
+				}
 
-				this.control.setSaveCallback(_this[fn]);
-			});
-		},
-		_addTask: function(data){
-			var list = TaskOnFly.model.getCurrentList();
+				TaskOnFly.model.setCurrentList(list);
 
-			list.model.addItem(TaskOnFly.model.createTask(data));
-		},
-		_addList: function(data){
-			var list = TaskOnFly.model.getCurrentList();
-
-			var newList = TaskOnFly.model.createTaskList(data);
-			newList.model._parent = list.model;
-			newList.model._path = [list.model._path, newList.model.public.id, '/'].join('');
-
-			list.model.addItem(newList);
-		},
-
-		/**
-		 *
-		 * @param {string} id Item name in the current list.
-		 */
-		edit: function(id) {
-			var item = TaskOnFly.model.getItem(id);
-
-			if (!item) {
-				throw new Error('Item with id: "' + id + '" was not found');
-			}
-
-			this._openPage('itemEditor', function() {
-				this.setHeader(item.public.type);
-				this.setDataModel(item);
-				this.control.setSaveCallback(item.saveData.bind(item));
-			});
-		},
-
-		path: function(path) {
-			var list = TaskOnFly.model.getRootList(),
-			pathStack;
-
-			if (path) {
-				pathStack = path.split('/');
-				pathStack.pop();
-				list = list.model.findList(pathStack);
-			}
-
-			if (!list) {
-				TaskOnFly.model.changeView('home');
-
-				return;
-			}
-
-			TaskOnFly.model.setCurrentList(list);
-
-			if (!this._view || this._view.page !== 'home') {
-				this.home();
+				if (!this._view || this._view.page !== 'home') {
+					this.home();
+				}
 			}
 		}
-	},
-	'home');
+	});
 });
