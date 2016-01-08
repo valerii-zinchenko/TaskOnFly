@@ -53,42 +53,49 @@ define([
 				assert.instanceOf(Module.prototype, Parent, 'Parent was changed');
 			});
 
-			test('without all/some arguments', function() {
-				assert.throw(function() {
-					new Module();
-				}, Error, 'Invalid input arguments');
-				assert.throw(function() {
-					new Module(null);
-				}, Error, 'Invalid input arguments');
-				assert.throw(function() {
-					new Module(null, null);
-				}, Error, 'Invalid input arguments');
-				assert.throw(function() {
-					new Module(null, null, null);
-				}, Error, 'Incorrect type of "data" argument');
-			});
-
-			test('incorrect type of "data" argument', function() {
+			suite('incorrect type of "data" argument', function() {
 				[undefined, null, true, 1, 'str', [], function(){}].forEach(function(input){
-					assert.throw(function() {
-						new Module(input, null, null);
-					}, Error, 'Incorrect type of "data" argument');
+					test(input, function(){
+						assert.throw(function() {
+							new Module(input);
+						}, Error, 'Incorrect type of "data" argument');
+					});
 				});
 			});
 
-			test('incorrect type of "version" argument', function() {
-				[undefined, null, true, 1, {}, [], function(){}].forEach(function(input){
-					assert.throw(function() {
-						new Module({}, input, null);
-					}, Error, 'Incorrect type of "version" argument');
+			suite('incorrect type of "version" argument', function() {
+				[undefined, null].forEach(function(input){
+					test(input, function(){
+						assert.doesNotThrow(function() {
+							new Module({}, input);
+						});
+					});
+				});
+
+				[true, 1, {}, [], function(){}].forEach(function(input){
+					test(input, function(){
+						assert.throw(function() {
+							new Module({}, input);
+						}, Error, 'Incorrect type of "version" argument');
+					});
 				});
 			});
 
-			test('incorrect type of "storages" argument', function() {
-				[undefined, null, true, 1, {}, 'str', function(){}].forEach(function(input){
-					assert.throw(function() {
-						new Module({}, '1', input);
-					}, Error, 'Incorrect type of "storages" argument');
+			suite('incorrect type of "storages" argument', function() {
+				[undefined, null].forEach(function(input){
+					test(input, function(){
+						assert.doesNotThrow(function() {
+							new Module({}, '1', input);
+						});
+					});
+				});
+
+				[true, 1, {}, 'str', function(){}].forEach(function(input){
+					test(input, function(){
+						assert.throw(function() {
+							new Module({}, '1', input);
+						}, Error, 'Incorrect type of "storages" argument');
+					});
 				});
 			});
 
@@ -139,7 +146,7 @@ define([
 					assert.isTrue(Module.prototype.upgrade.called, 'upgrade() should be called');
 				});
 
-				test('0.10.0  -> 0.0.2', function() {
+				test('0.10.0 -> 0.0.2', function() {
 					var data = {version: '0.10.0'};
 					var version = '0.0.2';
 

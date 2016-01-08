@@ -66,24 +66,24 @@ define([
 		},
 
 		/**
-		 * @params {Object} data
+		 * @param {Object} data - Public model data
+		 * @param {String} [version] - Model version
+		 * @param {[Object]} [storages] - Array of storages
 		 */
 		initialize: function(data, version, storages) {
-			if (arguments.length !== 3) {
-				throw new Error('Invalid input arguments');
-			}
-
 			if (!utils.isObject(data)) {
 				throw new Error('Incorrect type of "data" argument');
 			}
-			if (!utils.isString(version)) {
+			if (version && !utils.isString(version)) {
 				throw new Error('Incorrect type of "version" argument');
 			}
-			if (!utils.isArray(storages)) {
-				throw new Error('Incorrect type of "storages" argument');
-			}
+			if (storages) {
+				if (!utils.isArray(storages)) {
+					throw new Error('Incorrect type of "storages" argument');
+				}
 
-			this.storages = storages;
+				this.storages = storages;
+			}
 
 			this.public.timestamp = Date.now();
 			this.public.startDate = utils.date(new Date(this.public.timestamp));
@@ -92,7 +92,7 @@ define([
 				data.version = '0.0.0';
 			}
 
-			if (utils.compareVersions(data.version, version) < 0) {
+			if (version && utils.compareVersions(data.version, version) < 0) {
 				this.upgrade(data);
 				data.version = version;
 			}
