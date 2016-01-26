@@ -6,19 +6,19 @@ suite('StaticView', function(){
 
 		test('initialize', function(){
 			assert.doesNotThrow(function(){
-				new StaticView();
+				new StaticView({});
 			});
 		});
 
 		test('is singleton', function(){
-			assert.equal(new StaticView(), new StaticView(), 'StaticView should behave as singleton');
+			assert.equal(new StaticView({}), new StaticView({}), 'StaticView should behave as singleton');
 		});
 	});
 
 	suite('Methods', function(){
 		var view;
 		setup(function() {
-			view = new StaticView();
+			view = new StaticView({});
 		});
 		teardown(function(){
 			view = null;

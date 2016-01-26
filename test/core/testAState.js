@@ -87,6 +87,17 @@ suite('AState', function(){
 				assert.isNotNull(result.control, 'Control component of the state was not setup');
 				assert.equal(result.control.model, model, 'Model was incorrectly set');
 			});
+
+			test('state\'s configuration', function(){
+				var config = {};
+
+				var result;
+				assert.doesNotThrow(function(){
+					result = new (new AState(AView, AControl))({}, config);
+				});
+				assert.equal(result.view.config, config, 'Configuration was incorrectly set to the view');
+				assert.equal(result.control.config, config, 'Configuration was incorrectly set to the control');
+			});
 		});
 
 		suite('Methods', function(){

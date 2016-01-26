@@ -28,18 +28,12 @@ suite('AControl', function() {
 		test('Inheritance', function(){
 			assert.instanceOf(AControl.prototype, AStateComponent, 'AControl should be inherited from AStateComponent');
 		});
-
-		test('initialize()', function(){
-			assert.doesNotThrow(function(){
-				new AControl();
-			});
-		});
 	});
 
 	suite('Methods', function(){
 		var aControl;
 		setup(function(){
-			aControl = new AControl();
+			aControl = new AControl({});
 			sinon.spy(AStateComponent.prototype, "destruct");
 		});
 		teardown(function(){
@@ -47,15 +41,17 @@ suite('AControl', function() {
 			AStateComponent.prototype.destruct.restore();
 		});
 
-		suite('setView()', function(){
+		suite('setView', function(){
 			test('incorrect view instance', function(){
-				assert.throw(function(){
-					aControl.setView({});
-				}, Error, 'Incorrect type of view component');
+				[undefined, null, false, true, 0, 1, '', '1', [], {}, function(){}].forEach(function(testCase){
+					assert.throw(function(){
+						aControl.setView(testCase);
+					}, Error, 'Incorrect type of view component');
+				});
 			});
 
 			test('correct view instance', function(){
-				var view = new AView();
+				var view = new AView({});
 				assert.doesNotThrow(function(){
 					aControl.setView(view);
 				});
@@ -63,9 +59,9 @@ suite('AControl', function() {
 			});
 		});
 
-		test('desctuct()', function(){
+		test('desctuct', function(){
 			assert.doesNotThrow(function(){
-				aControl.setView(new AView());
+				aControl.setView(new AView({}));
 				aControl.destruct();
 			});
 

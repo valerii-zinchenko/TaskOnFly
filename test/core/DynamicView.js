@@ -26,14 +26,14 @@
 suite('DynamicView', function(){
 	suite('Constructor', function(){
 		test('is singleton', function(){
-			assert.notEqual(new DynamicView(), new DynamicView(), 'DynamicView should not behave as singleton');
+			assert.notEqual(new DynamicView({}), new DynamicView({}), 'DynamicView should not behave as singleton');
 		});
 	});
 
 	suite('Methods', function(){
 		var view;
 		setup(function(){
-			view = new DynamicView();
+			view = new DynamicView({});
 		});
 		teardown(function(){
 			view = null;
@@ -58,13 +58,7 @@ suite('DynamicView', function(){
 				view._attachEvents.restore();
 			});
 
-			test('without model', function(){
-				assert.throw(function(){
-					view.render();
-				}, Error, 'Model is not connected');
-			});
-
-			test('with model', function(){
+			test('rendering flow', function(){
 				view.model = {};
 				assert.doesNotThrow(function(){
 					view.render();
