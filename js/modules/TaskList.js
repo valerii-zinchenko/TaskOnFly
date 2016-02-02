@@ -30,7 +30,7 @@ define([
     "./TaskList/AsList/View",
     "./TaskList/AsList/Control"
 ], function (Model, InListView, InListControl, AsListView, AsListControl) {
-    return new MVCModule({
+    return AFMVCModule({
         Model: Model,
         states: {
             inList: new AState(InListView, InListControl),

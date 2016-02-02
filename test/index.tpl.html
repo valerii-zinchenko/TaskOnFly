@@ -26,6 +26,7 @@
 	<script src="<%= jsFolder %>/core/AState.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<%= jsFolder %>/core/EventHandler.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<%= jsFolder %>/core/MVCModule.js" type="text/javascript" charset="utf-8"></script>
+	<script src="<%= jsFolder %>/core/AFMVCModule.js" type="text/javascript" charset="utf-8"></script>
 
 	<link rel="stylesheet" href="../node_modules/mocha/mocha.css" type="text/css" media="screen" title="no title" charset="utf-8">
 </head>
@@ -85,6 +86,7 @@
 			'./core/DynamicView.js',
 			'./core/testAState.js',
 			'./core/testMVCModule.js',
+			'./core/AFMVCModule.js',
 			'./core/testEventHandler.js'
 		], function() {
 			requirejs([

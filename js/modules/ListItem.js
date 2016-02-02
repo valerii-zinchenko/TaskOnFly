@@ -27,7 +27,7 @@ define([
     './ListItem/View',
     './ListItem/Control'
 ],function (View, Control) {
-    return new MVCModule({
+    return AFMVCModule({
         View: View,
         Control: Control
     });

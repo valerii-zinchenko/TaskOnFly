@@ -27,7 +27,7 @@ define([
     './ListViewGroupedByDate/View',
     './ListViewGroupedByDate/Control'
 ],function (View, Control) {
-    return new MVCModule({
+    return AFMVCModule({
         View: View,
         Control: Control,
 

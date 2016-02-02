@@ -32,7 +32,7 @@ define([
 	'modules/FastTask',
 	'modules/SimpleSearch'
 ], function(Model, Home, ItemEditor, About, FastTask, FastSearch) {
-	return new MVCModule({
+	return AFMVCModule({
 		Model: Model,
 		states: {
 			home: new Home(),

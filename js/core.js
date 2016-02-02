@@ -35,5 +35,6 @@ define([
 	'core/AControl',
 	'core/AState',
 	'core/MVCModule',
+	'core/AFMVCModule',
 	'core/EventHandler'
 ], function(){});
