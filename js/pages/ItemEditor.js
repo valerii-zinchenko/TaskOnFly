@@ -29,6 +29,6 @@ define([
 	'./ItemEditor/Control'
 ], function (View, Control) {
 	return function() {
-		return new AState(View, Control);
+		return AFState(View, Control);
 	}
 });

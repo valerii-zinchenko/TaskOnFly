@@ -34,6 +34,7 @@ define([
 	'core/DynamicView',
 	'core/AControl',
 	'core/AState',
+	'core/AFState',
 	'core/MVCModule',
 	'core/AFMVCModule',
 	'core/EventHandler'

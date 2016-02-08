@@ -33,8 +33,8 @@ define([
     return AFMVCModule({
         Model: Model,
         states: {
-            inList: new AState(InListView, InListControl),
-            asList: new AState(AsListView, AsListControl)
+            inList: AFState(InListView, InListControl),
+            asList: AFState(AsListView, AsListControl)
         }
     });
 });

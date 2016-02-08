@@ -85,7 +85,7 @@ suite('AFMVCModule', function() {
 								state: testCase
 							}
 						},
-						error: 'Incorrect type of state "state", Function expected'
+						error: 'Incorrect type of a state "state", Function expected'
 					};
 				})
 			).forEach(function(testCase){
@@ -153,10 +153,10 @@ suite('AFMVCModule', function() {
 				assert.deepEqual(spyModel.args[0], args, 'Input arguments for Model\'s constructor were incorrectly forwarded');
 
 				assert.isTrue(AView.prototype.initialize.calledOnce, 'View\'s constructor should be called once');
-				assert.equal(AView.prototype.initialize.args[0][1], config, 'Configurations were incorrectly forwarded to a view\'s constructor');
+				assert.equal(AView.prototype.initialize.args[0][0], config, 'Configurations were incorrectly forwarded to a view\'s constructor');
 
 				assert.isTrue(AControl.prototype.initialize.calledOnce, 'Control\'s constructor should be called once');
-				assert.equal(AControl.prototype.initialize.args[0][1], config, 'Configurations were incorrectly forwarded to a control\'s constructor');
+				assert.equal(AControl.prototype.initialize.args[0][0], config, 'Configurations were incorrectly forwarded to a control\'s constructor');
 			});
 		});
 
@@ -182,8 +182,8 @@ suite('AFMVCModule', function() {
 					var Factory = AFMVCModule({
 						Model: function(){},
 						states: {
-							state0: new AState(AView),
-							state1: new AState(AView)
+							state0: AFState(AView),
+							state1: AFState(AView)
 						}
 					});
 

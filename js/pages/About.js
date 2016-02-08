@@ -28,6 +28,6 @@ define([
 	'./About/View'
 ], function (View) {
 	return function() {
-		return new AState(View);
+		return AFState(View);
 	}
 });

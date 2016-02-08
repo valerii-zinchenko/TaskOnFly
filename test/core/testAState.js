@@ -23,35 +23,8 @@
 
 'use strict';
 
-suite('AState', function(){
-	suite('Test factory', function(){
-		test('no arguments', function(){
-			assert.throw(function(){
-				new AState();
-			}, Error, 'Incorrect input arguments. Expected AStateComponent ViewConstructor, [AStateComponent ControlConstructor]');
-		});
-
-		test('incorrect type of ViewConstructor', function(){
-			assert.throw(function(){
-				new AState({});
-			}, Error, 'View constructor should be inherited from AStateComponent');
-		});
-
-		test('incorrect type of ControlConstructor', function(){
-			assert.throw(function(){
-				new AState(AView, {});
-			}, Error, 'Control constructor should be inherited from AStateComponent');
-		});
-
-		test('correct arguments', function(){
-			assert.doesNotThrow(function(){
-				new AState(AView, AControl);
-			});
-		});
-	});
-
-	suite('Factory result', function(){
-		suite('initialize()', function(){
+suite('State', function(){
+		suite('Constructor', function(){
 			setup(function(){
 				sinon.spy(AStateComponent.prototype, "connect");
 			});
@@ -59,49 +32,29 @@ suite('AState', function(){
 				AStateComponent.prototype.connect.restore();
 			});
 
-			test('without model as input argument', function(){
-				var result;
-				assert.throw(function(){
-					result = new (new AState(AView))();
-				}, Error, 'Model is undefined');
+			suite('incorrect model', function(){
+				[undefined, null, 0, 1, false, true, [], function(){}].forEach(function(testCase){
+					test(testCase, function(){
+						assert.throw(function(){
+							new State(testCase);
+						}, Error, 'Incorrect type of the model. Expected: Object');
+					});
+				});
 			});
 
-			test('without ControlConstructor', function(){
-				var model = {};
-				var result;
-				assert.doesNotThrow(function(){
-					result = new (new AState(AView))(model);
+			suite('incorrect view', function(){
+				[undefined, null, 0, 1, false, true, [], function(){}].forEach(function(testCase){
+					test(testCase, function(){
+						assert.throw(function(){
+							new State({}, testCase);
+						}, Error, 'View constructor should be inherited from AStateComponent');
+					});
 				});
-				assert.isNotNull(result.view, 'View component of the state was not setup');
-				assert.equal(result.view.model, model, 'Model was incorrectly set');
-				assert.isTrue(AStateComponent.prototype.connect.called, 'Astate components should be connected');
-			});
-
-			test('with ControlConstructor', function(){
-				var model = {};
-				var result;
-				assert.doesNotThrow(function(){
-					result = new (new AState(AView, AControl))(model);
-				});
-				assert.isNotNull(result.view, 'View component of the state was not setup');
-				assert.isNotNull(result.control, 'Control component of the state was not setup');
-				assert.equal(result.control.model, model, 'Model was incorrectly set');
-			});
-
-			test('state\'s configuration', function(){
-				var config = {};
-
-				var result;
-				assert.doesNotThrow(function(){
-					result = new (new AState(AView, AControl))({}, config);
-				});
-				assert.equal(result.view.config, config, 'Configuration was incorrectly set to the view');
-				assert.equal(result.control.config, config, 'Configuration was incorrectly set to the control');
 			});
 		});
 
 		suite('Methods', function(){
-			suite('connect()', function(){
+			suite('connect', function(){
 				setup(function(){
 					sinon.spy(AStateComponent.prototype, 'connect');
 					sinon.spy(AView.prototype, 'setControl');
@@ -114,8 +67,10 @@ suite('AState', function(){
 				});
 
 				test('without control', function(){
+					var model = {};
+
 					assert.doesNotThrow(function(){
-						new (new AState(AView))({});
+						new State(model, new AView(model));
 					});
 
 					assert.isTrue(AStateComponent.prototype.connect.calledOnce, 'State components was not connected to the view');
@@ -124,8 +79,10 @@ suite('AState', function(){
 				});
 
 				test('with control', function(){
+					var model = {};
+
 					assert.doesNotThrow(function(){
-						new (new AState(AView, AControl))({});
+						new State(model, new AView(model), new AControl(model));
 					});
 
 					assert.isTrue(AView.prototype.setControl.calledOnce, 'Control component was not set to the view component');
@@ -137,8 +94,10 @@ suite('AState', function(){
 				});
 
 				test('execute twice', function(){
+					var model = {};
+
 					assert.doesNotThrow(function(){
-						var state = new (new AState(AView))({});
+						var state = new State(model, new AView(model));
 						state.connect();
 					});
 
@@ -146,5 +105,4 @@ suite('AState', function(){
 				});
 			});
 		});
-	} );
 });

@@ -28,6 +28,6 @@ define([
     'modules/FastTask/Control'
 ], function (View, Control) {
     return function() {
-		return new AState(View, Control);
+		return AFState(View, Control);
 	};
 });
