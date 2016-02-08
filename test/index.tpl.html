@@ -76,20 +76,20 @@
 			baseUrl: '<%= jsFolder %>'
 		});
 		requirejs([
-			'./core/test_utils.js',
+			'./core/utils.js',
 			'./core/FClass.js',
-			'./core/testClass.js',
-			'./core/testSingletonClass.js',
-			'./core/testAStateComponent.js',
-			'./core/testAControl.js',
-			'./core/testAView.js',
+			'./core/Class.js',
+			'./core/SingletonClass.js',
+			'./core/AStateComponent.js',
+			'./core/AControl.js',
+			'./core/AView.js',
 			'./core/StaticView.js',
 			'./core/DynamicView.js',
 			'./core/State.js',
 			'./core/AFState.js',
-			'./core/testMVCModule.js',
+			'./core/MVCModule.js',
 			'./core/AFMVCModule.js',
-			'./core/testEventHandler.js'
+			'./core/EventHandler.js'
 		], function() {
 			requirejs([
 				'../js/modules/AItem/Model',
