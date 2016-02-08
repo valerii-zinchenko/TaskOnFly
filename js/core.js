@@ -33,7 +33,7 @@ define([
 	'core/StaticView',
 	'core/DynamicView',
 	'core/AControl',
-	'core/AState',
+	'core/State',
 	'core/AFState',
 	'core/MVCModule',
 	'core/AFMVCModule',
