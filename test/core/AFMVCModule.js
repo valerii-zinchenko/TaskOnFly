@@ -34,58 +34,49 @@ suite('AFMVCModule', function() {
 					};
 				}),
 				
-				[{hello: ':]'}].map(function(testCase){
+				[undefined, null, false, true, 0, 1, '', 'str', [], {}].map(function(testCase){
 					return {
-						input: testCase,
+						input: {
+							Model: testCase,
+							States: {
+								state: function(){}
+							}
+						},
 						error: 'Model constructor should be a function'
+					};
+				}),
+
+				[undefined, null, false, true, 0, 1, '', 'str', [], function(){}].map(function(testCase){
+					return {
+						input: {
+							Model: function(){},
+							States: testCase
+						},
+						error: 'Incorrect type for model\'s states'
 					};
 				}),
 
 				[undefined, null, false, true, 0, 1, '', 'str', [], {}].map(function(testCase){
 					return {
 						input: {
-							Model: testCase
-						},
-						error: 'Model constructor should be a function'
-					};
-				}),
-
-				{
-					input: {
-						Model: function(){},
-						Control: function(){}
-					},
-					error: 'No model states are defined'
-				},
-				[undefined, null, false, 0, ''].map(function(testCase){
-					return {
-						input: {
 							Model: function(){},
-							states: testCase
-						},
-						error: 'No model states are defined'
-					};
-				}),
-
-				[true, 1, 'str', [], function(){}].map(function(testCase){
-					return {
-						input: {
-							Model: function(){},
-							states: testCase
-						},
-						error: 'Incorrect type for defined model states'
-					};
-				}),
-
-				[undefined, null, 0, 1, false, true, '', '1', [], {}].map(function(testCase){
-					return {
-						input: {
-							Model: function(){},
-							states: {
+							States: {
 								state: testCase
 							}
 						},
 						error: 'Incorrect type of a state "state", Function expected'
+					};
+				}),
+				[undefined, null, false, true, 0, 1, '', 'str', [], {}].map(function(testCase){
+					return {
+						input: {
+							Model: function(){},
+							States: {
+								state: function(){},
+								badState: testCase
+							}
+						},
+						error: 'Incorrect type of a state "badState", Function expected'
 					};
 				})
 			).forEach(function(testCase){
@@ -96,104 +87,107 @@ suite('AFMVCModule', function() {
 				});
 			});
 		});
-
-		test('Correct state definition', function() {
-			assert.doesNotThrow(function() {
-				AFMVCModule({
-					Model: function(){},
-					states: {
-						state: function(){}
-					}
-				});
-			});
-		});
-
-		test('Implicit state', function(){
-			var Constructors = {
-				Model: function(){},
-				View: AView,
-				Control: AControl
-			};
-			
-			assert.doesNotThrow(function(){
-				AFMVCModule(Constructors);
-			});
-
-			assert.isObject(Constructors.states, '"states" Object should be created by defining implicit state');
-			assert.isFunction(Constructors.states._implicit, '"_implicit" state shoube created by implicit state definition');
-		});
 	});
 
 	suite('Integration', function() {
-		suite('Module\'s constructors', function(){
-			setup(function(){
-				sinon.stub(AView.prototype, 'initialize', function(){});
-				sinon.stub(AControl.prototype, 'initialize', function(){});
-			});
-			teardown(function(){
-				AView.prototype.initialize.restore();
-				AControl.prototype.initialize.restore();
-			});
+		test('Constructing of each module\'s components', function() {
+			var Module = sinon.spy();
+			var Model = sinon.spy();
+			var State = sinon.spy();
 
-			test('Model\'s constructor', function(){
-				var spyModel = sinon.spy();
-				var args = [1,'2',{}];
-				var config = {};
-
-				assert.doesNotThrow(function(){
-					var Factory = AFMVCModule({
-						Model: spyModel,
-						View: AView,
-						Control: AControl
-					});
-					Factory(args, {_implicit: config});
+			var Builder;
+			var result;
+			assert.doesNotThrow(function() {
+				Builder = AFMVCModule({
+					Model: Model,
+					States: {
+						state: State
+					},
+					Module: Module
 				});
 
-				assert.isTrue(spyModel.calledOnce, 'Model\'s constructor should be constructed once');
-				assert.deepEqual(spyModel.args[0], args, 'Input arguments for Model\'s constructor were incorrectly forwarded');
-
-				assert.isTrue(AView.prototype.initialize.calledOnce, 'View\'s constructor should be called once');
-				assert.equal(AView.prototype.initialize.args[0][0], config, 'Configurations were incorrectly forwarded to a view\'s constructor');
-
-				assert.isTrue(AControl.prototype.initialize.calledOnce, 'Control\'s constructor should be called once');
-				assert.equal(AControl.prototype.initialize.args[0][0], config, 'Configurations were incorrectly forwarded to a control\'s constructor');
+				result = Builder();
 			});
+
+			assert.isTrue(Model.calledWithNew(), 'Model\'s constructor should be called with "new" operator');
+			var model = Model.returnValues[0];
+
+			assert.isTrue(State.calledWithNew(), 'State\'s constructor should be called with "new" operator');
+			assert.isTrue(State.calledWithExactly(model, undefined), 'Arguments for the state\'s "state" constructor were incorrectly passed');
+			var state = State.returnValues[0];
+
+			assert.isTrue(Module.calledWithNew(), 'Module\'s constructor should be called with "new" operator');
+			assert.equal(Module.args[0].length, 2, 'Incorrect amount of input arguments is passed into the module\'s constructor');
+			assert.equal(Module.args[0][0], model, 'Model should be the first argument');
+			assert.isObject(Module.args[0][1], 'Second argument should be an object of mode\'s states');
+			assert.equal(Module.args[0][1].state, state, 'State "state" was incorrectly passed');
+
+			assert.equal(result, Module.returnValues[0], 'Builder should return a result of module\'s constructor');
 		});
 
-		suite('Creating states', function() {
-			test('Implicit state', function(){
-				var module;
-				assert.doesNotThrow(function() {
-					var Factory = AFMVCModule({
-						Model: function(){},
-						View: AView
-					});
+		test('Default module\'s constructor', function() {
+			var Model = sinon.spy();
+			var State = sinon.spy();
 
-					module = Factory();
+			var Builder;
+			var result;
+			assert.doesNotThrow(function() {
+				Builder = AFMVCModule({
+					Model: Model,
+					States: {
+						state: State
+					}
 				});
 
-				assert.isObject(module.states, 'AFMVCModule should always contain a state object');
-				assert.isObject(module.states._implicit, '"_implicit" state was not created for module with single implicit state');
+				result = Builder();
 			});
 
-			test('Explicit states', function(){
-				var module;
-				assert.doesNotThrow(function() {
-					var Factory = AFMVCModule({
-						Model: function(){},
-						states: {
-							state0: AFState(AView),
-							state1: AFState(AView)
-						}
-					});
+			var model = Model.returnValues[0];
+			var state = State.returnValues[0];
 
-					module = Factory();
+			assert.instanceOf(result, MVCModule, 'Builder should call MVCModule\'s constructor');
+		});
+
+		test('Input arguments for a builder function.', function() {
+			var Module = sinon.spy();
+			var Model = sinon.spy();
+			var State = sinon.spy();
+			var State1 = sinon.spy();
+
+			var modelArgs = [{}, {}];
+			var statesConfigs = {
+				state: {}
+			};
+
+			var Builder;
+			var result;
+			assert.doesNotThrow(function() {
+				Builder = AFMVCModule({
+					Model: Model,
+					States: {
+						state: State,
+						state1: State1
+					},
+					Module: Module
 				});
 
-				assert.isObject(module.states, '"states" object was not created for module with explicit states');
-				assert.isObject(module.states.state0, 'State "state0" was not created for module with explicit states');
-				assert.isObject(module.states.state1, 'State "state1" was not created for module with explicit states');
+				result = Builder(modelArgs, statesConfigs);
 			});
+
+			assert.isTrue(Model.calledWithExactly.apply(Model, modelArgs), 'Arguments for a model\'s constructor were incorrectly passed');
+			var model = Model.returnValues[0];
+
+			assert.isTrue(State.calledWithExactly(model, statesConfigs.state), 'Arguments for the state\'s "state" constructor were incorrectly passed');
+			var state = State.returnValues[0];
+
+			assert.isTrue(State1.calledWithExactly(model, undefined), 'Arguments for the state\'s "state1" constructor were incorrectly passed');
+			var state1 = State1.returnValues[0];
+
+			assert.equal(Module.args[0].length, 2, 'Incorrect amount of input arguments is passed into the module\'s constructor');
+			assert.equal(Module.args[0][0], model, 'Model should be the first argument');
+			assert.isObject(Module.args[0][1], 'Second argument should be an object of mode\'s states');
+			assert.equal(Module.args[0][1].state, state, 'State "state" was incorrectly passed');
+			assert.equal(Module.args[0][1].state1, state1, 'State "state1" was incorrectly passed');
 		});
 	});
 });
