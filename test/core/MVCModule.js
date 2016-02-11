@@ -66,17 +66,6 @@ suite('MVCModule', function() {
 		});
 
 		suite('useState', function() {
-			test('Implicit state', function() {
-				uut.states = {_implicit: {}};
-
-				var result;
-				assert.doesNotThrow(function() {
-					result = uut.useState();
-				});
-
-				assert.equal(result, uut.states._implicit, 'Implicit states was incorrectly returned');
-			});
-
 			[undefined, null, 0, 1, false, true, [], function(){}].forEach(function(testCase){
 				test('Incorrect type of a states name: ' + testCase, function() {
 					assert.throw(function() {
