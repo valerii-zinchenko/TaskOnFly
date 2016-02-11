@@ -65,25 +65,25 @@ suite('MVCModule', function() {
 			uut = null;
 		});
 
-		suite('useState', function() {
+		suite('getState', function() {
 			[undefined, null, 0, 1, false, true, [], function(){}].forEach(function(testCase){
 				test('Incorrect type of a states name: ' + testCase, function() {
 					assert.throw(function() {
-						uut.useState(testCase);
+						uut.getState(testCase);
 					}, Error, 'Incorrect type of the input argument. Expected: String stateName');
 				});
 			});
 
 			test('Undefined state', function() {
 				assert.throw(function() {
-					uut.useState('str');
+					uut.getState('str');
 				}, Error, 'Undefined state "str"');
 			});
 
 			test('existing state', function(){
 				var result;
 				assert.doesNotThrow(function(){
-					result = uut.useState('state0');
+					result = uut.getState('state0');
 				});
 
 				assert.equal(result, uut.states.state0, 'Incorrect existing state was returned');

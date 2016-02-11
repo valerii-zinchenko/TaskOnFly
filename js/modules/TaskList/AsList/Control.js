@@ -37,7 +37,7 @@ define(function () {
 			}, this);
 		},
 		connectItem: function(module) {
-			var state = module.useState('inList');
+			var state = module.getState('inList');
 			this._items[module.model.public.id] = state;
 
 			state.model.listen({

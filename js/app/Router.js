@@ -45,7 +45,7 @@ define(function () {
 			 * @private
 			 */
 			_openPage: function(pageName, fn) {
-				var page = TaskOnFly.useState(pageName);
+				var page = TaskOnFly.getState(pageName);
 				var view = page.view;
 
 				if (fn) {

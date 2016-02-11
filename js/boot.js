@@ -30,7 +30,5 @@ requirejs([
 	"version"
 ], function(App) {
 	TaskOnFly = new App();
-	TaskOnFly.useState('fastTask');
-	TaskOnFly.useState('fastSearch');
 	TaskOnFly.model.start();
 });

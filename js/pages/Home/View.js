@@ -41,7 +41,7 @@ define(function() {
 			}
 
 			if (!this.list) {
-				this.list = TaskOnFly.model.getCurrentList().useState('asList');
+				this.list = TaskOnFly.model.getCurrentList().getState('asList');
 				this.$list.append(this.list.view.$el);
 				this.model.listen('changeList', _.bind(this._switchLists, this));
 			}
@@ -70,7 +70,7 @@ define(function() {
         },
 
         _switchLists: function(ev, newList) {
-			var list = newList.useState('asList');
+			var list = newList.getState('asList');
 			if (this.list == list) {
 				return;
 			}
