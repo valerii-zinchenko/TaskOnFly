@@ -32,7 +32,7 @@ define([
 ], function (Model, InListView, InListControl, AsListView, AsListControl) {
     return AFMVCModule({
         Model: Model,
-        states: {
+        States: {
             inList: AFState(InListView, InListControl),
             asList: AFState(AsListView, AsListControl)
         }

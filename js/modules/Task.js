@@ -30,7 +30,7 @@ define([
 ], function (Model, InListView, InListControl) {
     return AFMVCModule({
         Model: Model,
-        states: {
+        States: {
             inList: AFState(InListView, InListControl)
         }
     });

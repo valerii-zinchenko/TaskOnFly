@@ -34,7 +34,7 @@ define([
 ], function(Model, Home, ItemEditor, About, FastTask, FastSearch) {
 	return AFMVCModule({
 		Model: Model,
-		states: {
+		States: {
 			home: new Home(),
 			itemEditor: new ItemEditor(),
 			about: new About(),
