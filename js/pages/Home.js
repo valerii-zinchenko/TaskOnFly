@@ -29,6 +29,9 @@ define([
 	'./Home/Control'
 ], function (View, Control) {
 	return function() {
-		return AFState(View, Control);
+		return AFState({
+			View: View,
+			Control: Control
+		});
 	}
 });
