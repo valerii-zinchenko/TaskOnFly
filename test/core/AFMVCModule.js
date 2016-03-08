@@ -117,7 +117,7 @@ suite('AFMVCModule', function() {
 			var state = State.returnValues[0];
 
 			assert.isTrue(Module.calledWithNew(), 'Module\'s constructor should be called with "new" operator');
-			assert.equal(Module.args[0].length, 2, 'Incorrect amount of input arguments is passed into the module\'s constructor');
+			assert.equal(Module.args[0].length, 3, 'Incorrect amount of input arguments is passed into the module\'s constructor');
 			assert.equal(Module.args[0][0], model, 'Model should be the first argument');
 			assert.isObject(Module.args[0][1], 'Second argument should be an object of mode\'s states');
 			assert.equal(Module.args[0][1].state, state, 'State "state" was incorrectly passed');
@@ -171,7 +171,7 @@ suite('AFMVCModule', function() {
 					Module: Module
 				});
 
-				result = Builder(modelArgs, statesConfigs);
+				result = Builder(modelArgs, null, statesConfigs);
 			});
 
 			assert.isTrue(Model.calledWithExactly.apply(Model, modelArgs), 'Arguments for a model\'s constructor were incorrectly passed');
@@ -183,7 +183,7 @@ suite('AFMVCModule', function() {
 			assert.isTrue(State1.calledWithExactly(model, undefined), 'Arguments for the state\'s "state1" constructor were incorrectly passed');
 			var state1 = State1.returnValues[0];
 
-			assert.equal(Module.args[0].length, 2, 'Incorrect amount of input arguments is passed into the module\'s constructor');
+			assert.equal(Module.args[0].length, 3, 'Incorrect amount of input arguments is passed into the module\'s constructor');
 			assert.equal(Module.args[0][0], model, 'Model should be the first argument');
 			assert.isObject(Module.args[0][1], 'Second argument should be an object of mode\'s states');
 			assert.equal(Module.args[0][1].state, state, 'State "state" was incorrectly passed');

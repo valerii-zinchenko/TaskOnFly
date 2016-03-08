@@ -39,17 +39,52 @@ suite('MVCModule', function() {
 			});
 		});
 
-		test('correct input arguments', function(){
-			var model = {};
-			var states = {};
+		suite('correct input arguments', function(){
+			test('without a map environment-state', function(){
+				var model = {};
+				var states = {};
 
-			var result;
-			assert.doesNotThrow(function(){
-				result = new MVCModule(model, states);
+				var uut;
+				assert.doesNotThrow(function(){
+					uut = new MVCModule(model, states);
+				});
+
+				assert.equal(uut.model, model, 'Model\'s object was incotrrectly set');
+				assert.equal(uut.states, states, 'States\' object was incotrrectly set');
 			});
 
-			assert.equal(result.model, model, 'Model\'s object was incotrrectly set');
-			assert.equal(result.states, states, 'States\' object was incotrrectly set');
+			suite('with a environment-state map', function(){
+				[undefined, null, false, true, 0, 1, '', 'str', [], function(){}].forEach(function(testCase){
+					test('incorect type: ' + testCase, function(){
+						var model = {};
+						var states = {};
+
+						var uut;
+						assert.doesNotThrow(function(){
+							uut = new MVCModule(model, states, testCase);
+						});
+
+						assert.equal(uut.model, model, 'Model\'s object was incotrrectly set');
+						assert.equal(uut.states, states, 'States\' object was incotrrectly set');
+						assert.notEqual(uut.envStateMap, testCase, 'Map should not be changed');
+					});
+				});
+
+				test('correct type', function(){
+					var model = {};
+					var states = {};
+					var envStateMap = {};
+
+					var uut;
+					assert.doesNotThrow(function(){
+						uut = new MVCModule(model, states, envStateMap);
+					});
+
+					assert.equal(uut.model, model, 'Model\'s object was incotrrectly set');
+					assert.equal(uut.states, states, 'States\' object was incotrrectly set');
+					assert.equal(uut.envStateMap, envStateMap, 'Map of environment-state was not set');
+				});
+			});
 		});
 	});
 
@@ -57,8 +92,14 @@ suite('MVCModule', function() {
 		var uut;
 		setup(function() {
 			uut = new MVCModule({}, {
-				state0: {},
-				state1: {}
+				state: (AFState({
+					View: AView,
+					Decorators: {
+						deco: ADecorator
+					}
+				}))({})
+			}, {
+				someEnv: 'state'
 			});
 		});
 		teardown(function() {
@@ -66,27 +107,61 @@ suite('MVCModule', function() {
 		});
 
 		suite('getState', function() {
-			[undefined, null, 0, 1, false, true, [], function(){}].forEach(function(testCase){
-				test('Incorrect type of a states name: ' + testCase, function() {
-					assert.throw(function() {
-						uut.getState(testCase);
-					}, Error, 'Incorrect type of the input argument. Expected: String stateName');
-				});
-			});
-
 			test('Undefined state', function() {
-				assert.throw(function() {
-					uut.getState('str');
-				}, Error, 'Undefined state "str"');
+				var result;
+				assert.doesNotThrow(function(){
+					result = uut.getState('str');
+				});
+
+				assert.isNull(result, 'Null should be returned if desired state is not exist');
 			});
 
 			test('existing state', function(){
 				var result;
 				assert.doesNotThrow(function(){
-					result = uut.getState('state0');
+					result = uut.getState('state');
 				});
 
-				assert.equal(result, uut.states.state0, 'Incorrect existing state was returned');
+				assert.equal(result, uut.states.state, 'Incorrect existing state was returned');
+			});
+
+			test('with decorator', function(){
+				var result;
+				assert.doesNotThrow(function(){
+					result = uut.getState('state', 'deco');
+				});
+
+				assert.equal(result.view, uut.states.state._decorators.deco, 'Afeter decorating the "view" should point to the decorator object');
+			});
+		});
+
+		suite('getStateFor', function(){
+			test('not registered mapping', function(){
+				var result;
+				assert.doesNotThrow(function(){
+					result = uut.getStateFor('eeeeenv');
+				});
+
+				assert.isNull(result, 'Null should be returned, because it is not defined what state should be used for a specific environment');
+			});
+
+			test('registered mapping', function(){
+				var result;
+				assert.doesNotThrow(function(){
+					result = uut.getStateFor('someEnv');
+				});
+
+				assert.equal(result, uut.states.state, 'Incorrect state was returned');
+			});
+
+			test('registered mapping with a decorator', function(){
+				var result;
+				assert.doesNotThrow(function(){
+					result = uut.getStateFor('someEnv', 'deco');
+				});
+
+				assert.equal(result, uut.states.state, 'Incorrect state was returned');
+				assert.equal(result.view, uut.states.state._decorators.deco, 'State was not decorated');
 			});
 		});
 	});
