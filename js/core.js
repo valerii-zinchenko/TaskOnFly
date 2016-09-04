@@ -25,9 +25,9 @@
 
 define([
 	'core/utils',
-	'core/FClass',
-	'core/Class',
-	'core/SingletonClass',
+	'core/cpp-class/lib/FClass',
+	'core/cpp-class/lib/Class',
+	'core/cpp-class/lib/SingletonClass',
 	'core/AStateComponent',
 	'core/AView',
 	'core/AControl',

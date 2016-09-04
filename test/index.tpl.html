@@ -8,16 +8,16 @@
     <script src="../node_modules/chai/chai.js" type="text/javascript" charset="utf-8"></script>
     <script src="../node_modules/sinon/pkg/sinon.js" type="text/javascript" charset="utf-8"></script>
 
-    <script src="../3rd-party/jquery.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../3rd-party/bootstrap.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../3rd-party/lodash.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../3rd-party/require.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../3rd-party/HashRouter.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../build/3rd-party/jquery.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../build/3rd-party/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../build/3rd-party/lodash.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../build/3rd-party/require.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../build/3rd-party/HashRouter.js" type="text/javascript" charset="utf-8"></script>
 
 	<script src="<%= jsFolder %>/core/utils.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/FClass.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/Class.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/SingletonClass.js" type="text/javascript" charset="utf-8"></script>
+	<script src="<%= jsFolder %>/core/cpp-class/lib/FClass.js" type="text/javascript" charset="utf-8"></script>
+	<script src="<%= jsFolder %>/core/cpp-class/lib/Class.js" type="text/javascript" charset="utf-8"></script>
+	<script src="<%= jsFolder %>/core/cpp-class/lib/SingletonClass.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<%= jsFolder %>/core/AStateComponent.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<%= jsFolder %>/core/AControl.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<%= jsFolder %>/core/AView.js" type="text/javascript" charset="utf-8"></script>
@@ -78,9 +78,9 @@
 		});
 		requirejs([
 			'./core/utils.js',
-			'./core/FClass.js',
-			'./core/Class.js',
-			'./core/SingletonClass.js',
+			'../js/core/cpp-class/test/FClass.js',
+			'../js/core/cpp-class/test/Class.js',
+			'../js/core/cpp-class/test/SingletonClass.js',
 			'./core/AStateComponent.js',
 			'./core/AControl.js',
 			'./core/AView.js',
