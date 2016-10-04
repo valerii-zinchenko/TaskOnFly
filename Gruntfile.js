@@ -40,6 +40,13 @@ module.exports = function(grunt) {
 				dest: "build/fonts",
 				flatten: true
 			},
+			fontsDev: {
+				expand: true,
+				cwd: "./build/fonts",
+				src: ["*.*"],
+				dest: "fonts",
+				flatten: true
+			},
 			favicon: {
 				files: {
 					'build/favicon.png': ['favicon.png']
@@ -167,6 +174,7 @@ module.exports = function(grunt) {
 
         clean: {
 			build: ['build/3rd-party'],
+			buildDev: ['fonts'],
 			coverage: ['js-cov']
 		},
 
