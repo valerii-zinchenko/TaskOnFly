@@ -14,22 +14,6 @@
     <script src="../build/3rd-party/require.js" type="text/javascript" charset="utf-8"></script>
     <script src="../build/3rd-party/HashRouter.js" type="text/javascript" charset="utf-8"></script>
 
-	<script src="<%= jsFolder %>/core/utils.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/cpp-class/lib/FClass.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/cpp-class/lib/Class.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/cpp-class/lib/SingletonClass.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/AStateComponent.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/AControl.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/AView.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/StaticView.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/DynamicView.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/ADecorator.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/State.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/AFState.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/EventHandler.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/MVCModule.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<%= jsFolder %>/core/AFMVCModule.js" type="text/javascript" charset="utf-8"></script>
-
 	<link rel="stylesheet" href="../node_modules/mocha/mocha.css" type="text/css" media="screen" title="no title" charset="utf-8">
 </head>
 <body>
@@ -77,10 +61,27 @@
 			baseUrl: '<%= jsFolder %>'
 		});
 		requirejs([
+			'../build/3rd-party/class-wrapper',
+		], function(classWrapper){
+			window.Class = classWrapper.Class;
+			window.SingletonClass = classWrapper.SingletonClass;
+		requirejs([
+			"<%= jsFolder %>/core/utils.js",
+			"<%= jsFolder %>/core/AStateComponent.js",
+			"<%= jsFolder %>/core/AControl.js",
+			"<%= jsFolder %>/core/AView.js",
+			"<%= jsFolder %>/core/StaticView.js",
+			"<%= jsFolder %>/core/DynamicView.js",
+			"<%= jsFolder %>/core/ADecorator.js",
+			"<%= jsFolder %>/core/State.js",
+			"<%= jsFolder %>/core/AFState.js",
+			"<%= jsFolder %>/core/EventHandler.js",
+			"<%= jsFolder %>/core/MVCModule.js",
+			"<%= jsFolder %>/core/AFMVCModule.js"
+		], function(){
+
+		requirejs([
 			'./core/utils.js',
-			'../js/core/cpp-class/test/FClass.js',
-			'../js/core/cpp-class/test/Class.js',
-			'../js/core/cpp-class/test/SingletonClass.js',
 			'./core/AStateComponent.js',
 			'./core/AControl.js',
 			'./core/AView.js',
@@ -106,6 +107,9 @@
 				mocha.run();
 			//});
 			});
+		});
+
+		});
 		});
 	</script>
 </body>

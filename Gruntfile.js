@@ -25,7 +25,14 @@ module.exports = function(grunt) {
 			js: {
 				expand: true,
 				cwd: "./bower_components",
-				src: ["requirejs/require.js", "jquery/dist/jquery.js", "bootstrap/dist/js/bootstrap.js", "lodash/lodash.js", '../node_modules/spa-hash-router/lib/HashRouter.js'],
+				src: [
+					'requirejs/require.js',
+					'jquery/dist/jquery.js',
+					'bootstrap/dist/js/bootstrap.js',
+					'lodash/lodash.js',
+					'../node_modules/spa-hash-router/lib/HashRouter.js',
+					'../node_modules/class-wrapper/dest/class-wrapper.js'
+				],
 				dest: "build/3rd-party",
 				flatten: true
 			},
